@@ -852,12 +852,12 @@ button:focus-visible {
   }
 
   .place-note {
-    right: -1%;
-    bottom: 3.2rem;
-    width: 8.4rem;
-    min-height: 6.5rem;
-    padding: 0.8rem 0.9rem;
-    transform: scale(0.68);
+    right: 8%;
+    bottom: 4rem;
+    width: 4.5rem;
+    min-height: 3.6rem;
+    padding: 0.4rem 0.45rem;
+    transform: none;
   }
 
   .hero-copy {
@@ -881,22 +881,26 @@ button:focus-visible {
   }
 
   .place-note strong {
-    font-size: 1.45rem;
+    font-size: 0.95rem;
+    white-space: nowrap;
   }
 
   .place-note em {
-    margin-top: 0.2rem;
-    font-size: 0.8rem;
+    margin-top: 0.12rem;
+    font-size: 0.58rem;
+    line-height: 1;
+    white-space: nowrap;
   }
 
   .place-note > span {
-    width: 2.6rem;
-    margin-block: 0.55rem;
+    width: 1.6rem;
+    margin-block: 0.35rem;
   }
 
   .place-note small {
-    font-size: 0.48rem;
-    letter-spacing: 0.11em;
+    font-size: 0.36rem;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
   }
 
   .title-ornament {
@@ -965,7 +969,7 @@ button:focus-visible {
   }
 
   .place-note {
-    bottom: 2.8rem;
+    bottom: 3.8rem;
   }
 
   .hero-copy {
