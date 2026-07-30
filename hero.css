@@ -190,6 +190,652 @@ button:focus-visible {
   background: linear-gradient(0deg, var(--cream) 12%, transparent);
 }
 
+.about-section {
+  --sand-green: oklch(0.56 0.055 125);
+  position: relative;
+  display: grid;
+  min-height: min(100svh, 62rem);
+  place-items: center;
+  overflow: hidden;
+  padding: clamp(4rem, 7vw, 7rem) var(--gutter);
+  background: var(--sand-green);
+}
+
+.about-section::before {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background: linear-gradient(90deg, oklch(0.56 0.055 125 / 0.88), oklch(0.56 0.055 125 / 0.52)), url("assets/balinese-botanical-ambient.jpg") center / cover;
+  filter: saturate(0.58) contrast(0.9);
+  opacity: 0.66;
+  mix-blend-mode: multiply;
+}
+
+.about-card {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  width: min(100%, 72rem);
+  aspect-ratio: 4 / 3;
+  grid-template-columns: 1.04fr 0.96fr;
+  overflow: hidden;
+  background: var(--cream);
+  border: 1px solid oklch(0.92 0.025 84 / 0.72);
+  border-radius: 0.7rem;
+  box-shadow: 0 1.5rem 3.5rem oklch(0.22 0.045 125 / 0.22);
+}
+
+.about-panel {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  padding: clamp(2rem, 4vw, 4.5rem) clamp(1.75rem, 5.1vw, 5.25rem);
+  color: var(--sand-green);
+  text-align: center;
+}
+
+.about-intro {
+  width: 100%;
+}
+
+.about-kicker {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  color: var(--clay);
+  font-size: clamp(0.63rem, 0.8vw, 0.78rem);
+  font-weight: 700;
+  letter-spacing: 0.17em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.about-flower {
+  width: clamp(2.2rem, 4vw, 3.1rem);
+  height: auto;
+  margin-bottom: 0.8rem;
+  overflow: visible;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.45;
+}
+
+.about-kicker i {
+  width: 2.75rem;
+  height: 1px;
+  margin-top: 0.95rem;
+  background: var(--sand);
+}
+
+.about-title {
+  margin: clamp(1.35rem, 2.8vw, 2.35rem) 0 0;
+  color: var(--sand-green);
+  font-family: var(--font-display);
+  font-size: clamp(2.7rem, 4.55vw, 5rem);
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+  text-wrap: balance;
+}
+
+.about-title span,
+.about-title-role {
+  display: block;
+}
+
+.about-title span em {
+  color: var(--clay);
+  font-weight: 400;
+}
+
+.about-title-role {
+  margin-top: 0.12em;
+  font-size: 0.85em;
+  font-weight: 400;
+}
+
+.about-divider {
+  display: flex;
+  width: min(18rem, 90%);
+  align-items: center;
+  gap: 0.7rem;
+  margin: clamp(1.2rem, 2.4vw, 2rem) auto clamp(1.1rem, 2vw, 1.55rem);
+  color: var(--sand);
+}
+
+.about-divider i {
+  height: 1px;
+  flex: 1;
+  background: currentColor;
+}
+
+.about-divider span {
+  font-size: 0.5rem;
+}
+
+.about-lead {
+  max-width: 31rem;
+  margin: 0 auto;
+  color: var(--charcoal);
+  font-size: clamp(0.76rem, 1vw, 0.96rem);
+  line-height: 1.65;
+}
+
+.about-quote {
+  display: flex;
+  max-width: 29rem;
+  align-items: flex-start;
+  gap: 0.85rem;
+  margin: clamp(1.45rem, 2.8vw, 2.5rem) auto 0;
+  text-align: left;
+}
+
+.about-quote > span {
+  color: var(--clay);
+  font-family: var(--font-display);
+  font-size: 3rem;
+  line-height: 0.75;
+}
+
+.about-quote p {
+  margin: 0;
+  padding-left: 0.95rem;
+  border-left: 1px solid var(--sand);
+  color: var(--charcoal);
+  font-family: var(--font-display);
+  font-size: clamp(0.92rem, 1.1vw, 1.08rem);
+  font-style: italic;
+  line-height: 1.4;
+}
+
+.about-values {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(3, 1fr);
+  margin-top: clamp(1.65rem, 3.2vw, 3rem);
+  border-top: 1px solid oklch(0.84 0.055 82 / 0.55);
+}
+
+.about-value {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 0.55rem;
+  min-width: 0;
+  padding: 0.85rem 0.4rem 0;
+}
+
+.about-value + .about-value {
+  border-left: 1px solid oklch(0.84 0.055 82 / 0.55);
+}
+
+.value-icon {
+  display: grid;
+  width: clamp(2.8rem, 4.4vw, 4rem);
+  aspect-ratio: 1;
+  place-items: center;
+  color: var(--clay);
+  border: 1px solid oklch(0.65 0.125 42 / 0.36);
+  border-radius: 50%;
+}
+
+.value-icon svg {
+  width: 56%;
+  height: 56%;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.15;
+}
+
+.about-value strong {
+  color: var(--sand-green);
+  font-size: clamp(0.54rem, 0.7vw, 0.68rem);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.about-value > i {
+  width: 0.24rem;
+  aspect-ratio: 1;
+  background: var(--sand);
+  border-radius: 50%;
+}
+
+.about-cta {
+  display: inline-flex;
+  min-width: min(19rem, 100%);
+  min-height: 3.1rem;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: clamp(1.55rem, 3vw, 2.5rem);
+  padding: 0.75rem 1.6rem;
+  color: var(--cream);
+  background: var(--sand-green);
+  border-radius: 999px;
+  font-size: clamp(0.64rem, 0.78vw, 0.75rem);
+  font-weight: 600;
+  letter-spacing: 0.13em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  transition: background-color 240ms ease, transform 240ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.about-cta:hover {
+  background: var(--clay);
+  transform: translateY(-2px);
+}
+
+.about-photo {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  margin: 0;
+  overflow: hidden;
+  border-radius: 52% 0 0 52% / 21% 0 0 21%;
+}
+
+.about-photo::before {
+  position: absolute;
+  inset: 0 auto 0 -0.6rem;
+  z-index: 1;
+  width: 1px;
+  content: "";
+  background: var(--sand);
+  transform: rotate(0.2deg);
+}
+
+.about-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 38%;
+  filter: saturate(0.86) contrast(0.96) sepia(0.06);
+}
+
+@media (max-width: 900px) {
+  .about-section {
+    min-height: auto;
+  }
+
+  .about-card {
+    aspect-ratio: 4 / 3;
+    grid-template-columns: 1.04fr 0.96fr;
+  }
+
+  .about-panel {
+    padding: clamp(1.5rem, 4vw, 3rem) clamp(1.1rem, 3.5vw, 2.5rem);
+  }
+
+  .about-photo {
+    min-height: 0;
+    border-radius: 52% 0 0 52% / 21% 0 0 21%;
+  }
+
+  .about-photo::before {
+    inset: 0 auto 0 -0.6rem;
+    width: 1px;
+    height: auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .about-section {
+    padding: 1.25rem 1rem;
+  }
+
+  .about-card {
+    width: 100%;
+    border-radius: 0.4rem;
+  }
+
+  .about-panel {
+    padding: 0.65rem 0.55rem;
+  }
+
+  .about-kicker {
+    font-size: 0.36rem;
+    letter-spacing: 0.12em;
+  }
+
+  .about-flower {
+    width: 1.15rem;
+    margin-bottom: 0.2rem;
+    stroke-width: 1.7;
+  }
+
+  .about-kicker i {
+    width: 1.2rem;
+    margin-top: 0.25rem;
+  }
+
+  .about-title {
+    margin-top: 0.45rem;
+    font-size: clamp(1.45rem, 7.6vw, 2rem);
+    letter-spacing: -0.035em;
+  }
+
+  .about-divider {
+    width: 86%;
+    gap: 0.25rem;
+    margin-block: 0.42rem 0.35rem;
+  }
+
+  .about-divider span {
+    font-size: 0.25rem;
+  }
+
+  .about-lead {
+    max-width: 25ch;
+    font-size: 0.45rem;
+    line-height: 1.3;
+  }
+
+  .about-quote {
+    gap: 0.25rem;
+    margin-top: 0.45rem;
+  }
+
+  .about-quote > span {
+    font-size: 1.2rem;
+  }
+
+  .about-quote p {
+    padding-left: 0.3rem;
+    font-size: 0.48rem;
+    line-height: 1.25;
+  }
+
+  .about-values {
+    margin-top: 0.5rem;
+    gap: 0;
+  }
+
+  .about-value {
+    gap: 0.18rem;
+    padding: 0.25rem 0.1rem 0;
+  }
+
+  .value-icon {
+    width: clamp(1.25rem, 7vw, 1.75rem);
+    border-width: 0.5px;
+  }
+
+  .value-icon svg {
+    stroke-width: 1.4;
+  }
+
+  .about-value strong {
+    font-size: 0.34rem;
+    letter-spacing: 0.055em;
+  }
+
+  .about-value > i {
+    width: 0.1rem;
+  }
+
+  .about-cta {
+    min-width: 0;
+    min-height: 1.5rem;
+    gap: 0.3rem;
+    margin-top: 0.5rem;
+    padding: 0.25rem 0.35rem;
+    font-size: 0.34rem;
+    letter-spacing: 0.06em;
+  }
+
+  .about-photo {
+    min-height: 0;
+  }
+
+  .about-photo img {
+    object-position: center 35%;
+  }
+
+  .about-photo::before {
+    inset: 0 auto 0 -0.25rem;
+  }
+
+  .about-cta span:first-child {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .about-cta span:last-child {
+    flex: 0 0 auto;
+  }
+
+  .about-cta {
+    width: 100%;
+  }
+}
+
+.story-section {
+  --story-sand-green: oklch(0.56 0.055 125);
+  position: relative;
+  overflow: hidden;
+  padding: 0;
+  background: var(--cream);
+}
+
+.story-frame {
+  position: relative;
+  width: min(100%, 90rem);
+  aspect-ratio: 4 / 3;
+  margin-inline: auto;
+  overflow: hidden;
+  background: var(--cream) url("assets/chi-sono-background.png") center / 100% 100% no-repeat;
+}
+
+.story-content {
+  position: absolute;
+  top: 21.5%;
+  left: 58.5%;
+  z-index: 2;
+  width: 34%;
+  color: var(--cream);
+}
+
+.story-kicker {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  color: var(--clay);
+  font-size: clamp(0.62rem, 0.8vw, 0.78rem);
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.story-kicker svg {
+  width: clamp(1.8rem, 3vw, 2.8rem);
+  height: auto;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.5;
+}
+
+.story-title {
+  margin: clamp(1.25rem, 2.8vw, 2.6rem) 0 0;
+  color: var(--cream);
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 6.2vw, 5.8rem);
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  line-height: 0.88;
+}
+
+.story-title span {
+  display: block;
+}
+
+.story-title em {
+  color: var(--clay);
+  font-weight: 400;
+}
+
+.story-rule {
+  width: 3.4rem;
+  height: 1px;
+  margin: clamp(1.25rem, 2.7vw, 2.4rem) 0 clamp(1.05rem, 2vw, 1.65rem);
+  background: var(--sand);
+}
+
+.story-copy {
+  max-width: 27rem;
+  margin: 0;
+  color: oklch(0.965 0.018 84 / 0.88);
+  font-size: clamp(0.72rem, 1vw, 0.94rem);
+  line-height: 1.65;
+}
+
+.story-cta {
+  display: inline-flex;
+  width: min(100%, 21.5rem);
+  min-height: 3.4rem;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: clamp(1.5rem, 3vw, 2.35rem);
+  padding: 0.8rem 1.65rem;
+  color: var(--story-sand-green);
+  background: transparent;
+  border-radius: 999px;
+  font-size: clamp(0.62rem, 0.8vw, 0.75rem);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  transition: transform 240ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.story-cta:hover {
+  transform: translateY(-2px);
+}
+
+.story-quote {
+  position: absolute;
+  bottom: 6.5%;
+  left: 58.5%;
+  z-index: 2;
+  display: grid;
+  width: 34%;
+  grid-template-columns: auto 1fr;
+  column-gap: 0.75rem;
+  margin: 0;
+  color: var(--story-sand-green);
+}
+
+.story-quote > span {
+  color: var(--clay);
+  font-family: var(--font-display);
+  font-size: 2.7rem;
+  line-height: 0.75;
+}
+
+.story-quote p {
+  max-width: 20rem;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(0.9rem, 1.4vw, 1.25rem);
+  font-style: italic;
+  line-height: 1.25;
+}
+
+.story-quote strong {
+  grid-column: 2;
+  justify-self: end;
+  margin-top: 0.3rem;
+  color: var(--clay);
+  font-family: var(--font-hand);
+  font-size: clamp(1.6rem, 3vw, 3.1rem);
+  font-weight: 500;
+  line-height: 0.8;
+}
+
+@media (max-width: 640px) {
+  .story-content {
+    top: 19%;
+    left: 58.5%;
+    width: 34%;
+  }
+
+  .story-kicker {
+    gap: 0.22rem;
+    font-size: 1.8vw;
+    letter-spacing: 0.1em;
+  }
+
+  .story-kicker svg {
+    width: 3vw;
+    stroke-width: 1.8;
+  }
+
+  .story-title {
+    margin-top: 2.8vw;
+    font-size: 6.2vw;
+    letter-spacing: -0.035em;
+  }
+
+  .story-rule {
+    width: 6vw;
+    margin-block: 2.7vw 2vw;
+  }
+
+  .story-copy {
+    max-width: 24ch;
+    font-size: 1.1vw;
+    line-height: 1.45;
+  }
+
+  .story-cta {
+    width: 100%;
+    min-height: 5vw;
+    gap: 0.6vw;
+    margin-top: 3vw;
+    padding: 0.5vw 0.7vw;
+    font-size: 1.45vw;
+    letter-spacing: 0.055em;
+  }
+
+  .story-quote {
+    bottom: 6%;
+    left: 58.5%;
+    width: 34%;
+    column-gap: 0.7vw;
+  }
+
+  .story-quote > span {
+    font-size: 4.5vw;
+  }
+
+  .story-quote p {
+    font-size: 1.4vw;
+    line-height: 1.2;
+  }
+
+  .story-quote strong {
+    margin-top: 0.15vw;
+    font-size: 3.8vw;
+  }
+}
+
 .ambient {
   position: absolute;
   z-index: 0;
@@ -811,18 +1457,18 @@ button:focus-visible {
 
   .hero-shell {
     min-height: 100svh;
-    padding-top: 6.5rem;
-    padding-bottom: 1.1rem;
+    padding-top: clamp(5.25rem, 18vw, 6.5rem);
+    padding-bottom: 0.75rem;
   }
 
   .visual-stage {
-    height: clamp(22.5rem, 104vw, 27rem);
+    height: clamp(18rem, 92vw, 23rem);
   }
 
   .photo-main {
-    width: 75vw;
-    height: 88vw;
-    max-height: 25rem;
+    width: 72vw;
+    height: 82vw;
+    max-height: 22rem;
     border-radius: 50% 50% 1rem 1rem / 36% 36% 1rem 1rem;
   }
 
@@ -831,41 +1477,41 @@ button:focus-visible {
   }
 
   .photo-left {
-    top: 7.5rem;
+    top: clamp(5rem, 21vw, 7.5rem);
     left: -7%;
-    width: 34vw;
-    height: 48vw;
+    width: 30vw;
+    height: 42vw;
   }
 
   .photo-right {
-    top: 6.8rem;
+    top: clamp(4.6rem, 19vw, 6.8rem);
     right: -1%;
-    width: 31vw;
-    height: 48vw;
+    width: 28vw;
+    height: 42vw;
   }
 
   .seal {
-    top: 2.8rem;
-    left: -4%;
-    width: 6.6rem;
-    transform: scale(0.7);
+    top: 1.9rem;
+    left: -1%;
+    width: 5.1rem;
+    transform: scale(0.62);
   }
 
   .place-note {
-    right: 8%;
-    bottom: 4rem;
-    width: 4.5rem;
-    min-height: 3.6rem;
+    right: 7%;
+    bottom: 3.2rem;
+    width: 4.2rem;
+    min-height: 3.3rem;
     padding: 0.4rem 0.45rem;
     transform: none;
   }
 
   .hero-copy {
-    margin-top: -2rem;
+    margin-top: -1.5rem;
   }
 
   .hero-copy h1 {
-    font-size: clamp(1.9rem, 8.8vw, 2.35rem);
+    font-size: clamp(1.7rem, 8.5vw, 2.25rem);
     letter-spacing: -0.025em;
     line-height: 0.94;
   }
@@ -910,7 +1556,8 @@ button:focus-visible {
 
   .hero-copy p {
     max-width: 33ch;
-    font-size: 0.76rem;
+    font-size: 0.68rem;
+    line-height: 1.4;
   }
 
   .hero-copy p br {
@@ -918,14 +1565,14 @@ button:focus-visible {
   }
 
   .hero-cta {
-    min-height: 3rem;
-    margin-top: 0.9rem;
-    font-size: 0.62rem;
+    min-height: 2.75rem;
+    margin-top: 0.7rem;
+    font-size: 0.58rem;
   }
 
   .hero-foot {
     margin-top: 0;
-    padding-top: 1.5rem;
+    padding-top: 0.9rem;
   }
 
   .tags {
@@ -961,23 +1608,27 @@ button:focus-visible {
   }
 
   .visual-stage {
-    height: 22rem;
+    height: 19rem;
   }
 
   .seal {
-    display: none;
+    display: grid;
+    top: 1.6rem;
+    left: -2%;
+    width: 4.4rem;
+    transform: scale(0.58);
   }
 
   .place-note {
-    bottom: 3.8rem;
+    bottom: 2.8rem;
   }
 
   .hero-copy {
-    margin-top: -1.15rem;
+    margin-top: -1.35rem;
   }
 
   .hero-copy h1 {
-    font-size: clamp(1.8rem, 8.8vw, 2.2rem);
+    font-size: clamp(1.6rem, 8.8vw, 2rem);
   }
 }
 
