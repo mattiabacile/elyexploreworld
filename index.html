@@ -10,7 +10,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&amp;family=Dancing+Script:wght@500;600&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="hero.css">
+  <link rel="stylesheet" href="hero.css?v=story-section-4">
+  <link rel="stylesheet" href="responsive.css?v=approved-mobile-1">
 </head>
 <body>
   <svg class="shape-defs" aria-hidden="true" width="0" height="0">
@@ -24,120 +25,81 @@
     </defs>
   </svg>
 
-  <header class="site-header" aria-label="Navigazione dimostrativa">
+  <header id="main-header" class="site-header" aria-label="Navigazione dimostrativa">
     <div class="header-shell">
-      <div class="brand" aria-label="ELYEXPLOREWORLD">
-        <span class="brand-name">ELYEXPLOREWORLD</span>
-        <span class="brand-role">Lorem ipsum</span>
-      </div>
+      <a class="brand" href="#servizi" aria-label="ElyExploreWorld, torna ai servizi">
+        <span class="brand-name">Elyexploreworld</span>
+        <span class="brand-role">Travel designer</span>
+      </a>
 
-      <nav class="preview-nav" aria-label="Anteprima del menu">
-        <span>Lorem</span>
-        <span>Ipsum dolor</span>
-        <span>Lorem ipsum</span>
-        <span>Dolor</span>
+      <nav id="primary-nav" class="preview-nav" aria-label="Anteprima del menu">
+        <a href="#chi-sono">Chi sono</a>
+        <a class="is-current" href="#servizi">Servizi</a>
+        <a href="#ispirazioni">Ispirazioni</a>
+        <span>Blog</span>
+        <span>Contatti</span>
       </nav>
 
       <button class="header-cta" type="button" disabled aria-disabled="true">
-        <span>Lorem ipsum dolor</span>
+        <span>Parliamone</span>
         <span aria-hidden="true">→</span>
       </button>
 
-      <button class="mobile-menu" type="button" disabled aria-disabled="true">
-        <span>Menu</span>
-        <i><b></b><b></b></i>
+      <button id="mobile-menu-toggle" class="mobile-menu" type="button" aria-label="Apri il menu" aria-expanded="false" aria-controls="primary-nav">
+        <span>Servizi</span>
+        <i aria-hidden="true"><b></b><b></b><b></b></i>
       </button>
     </div>
   </header>
 
   <main>
-    <section class="hero" aria-labelledby="hero-title">
-      <div class="ambient ambient-left" aria-hidden="true"></div>
-      <div class="ambient ambient-right" aria-hidden="true"></div>
+    <section id="home" class="hero home-hero" aria-labelledby="hero-title">
+      <div class="home-hero-canvas">
+        <div class="home-hero-kicker" aria-hidden="true">
+          <span>Luoghi</span><span>Persone</span><span>Esperienze</span><span>Su misura</span><i></i>
+        </div>
 
-      <div class="hero-shell">
-        <div class="visual-stage">
-          <figure class="photo-shape photo-left">
-            <img src="assets/hero-traveler.jpg" alt="Viaggiatrice osserva un paesaggio illuminato dal sole" width="1000" height="667">
+        <p class="home-hero-note home-hero-note-left">Viaggi<br>che lasciano<br>il segno.<i></i></p>
+
+        <figure class="home-hero-side home-hero-traveler">
+          <img src="assets/hero-traveler.jpg" alt="Viaggiatrice davanti a un paesaggio desertico al tramonto" width="1000" height="667">
+        </figure>
+
+        <div class="home-hero-main-wrap">
+          <figure class="home-hero-main">
+            <img src="assets/hero-temple.jpg" alt="Tempio balinese tra giardini tropicali e acqua calma" width="1800" height="2389" fetchpriority="high">
           </figure>
+        </div>
 
-          <div class="seal" aria-hidden="true">
-            <svg viewBox="0 0 140 140">
-              <defs>
-                <path id="seal-copy-path" d="M 70 16 A 54 54 0 1 1 69.9 16"/>
-              </defs>
-              <text>
-                <textPath href="#seal-copy-path" startOffset="50%" text-anchor="middle">LOREM IPSUM · DOLOR SIT · LOREM IPSUM · DOLOR SIT ·</textPath>
-              </text>
-              <g class="seal-palm">
-                <path d="M70 88V56"/>
-                <path d="M70 61C62 54 56 55 52 58"/>
-                <path d="M70 61C77 53 84 54 89 58"/>
-                <path d="M69 65C61 62 56 65 53 70"/>
-                <path d="M71 65C79 61 84 65 87 70"/>
-              </g>
-            </svg>
-          </div>
-
-          <figure class="photo-shape photo-main">
-            <img src="assets/hero-temple.jpg" alt="Tempio tra giardini tropicali e acqua calma" width="1800" height="2389" fetchpriority="high">
-          </figure>
-          <span class="arch-frame" aria-hidden="true"></span>
-
-          <svg class="botanical-detail" viewBox="0 0 150 190" aria-hidden="true">
-            <path d="M24 176C51 145 62 112 70 70C74 49 80 31 92 14"/>
-            <path d="M59 116C37 112 25 98 27 78C48 82 61 94 59 116Z"/>
-            <path d="M68 83C87 72 105 76 116 92C96 101 78 98 68 83Z"/>
-            <path d="M79 52C67 38 69 22 82 10C94 25 93 41 79 52Z"/>
+        <div class="home-hero-seal" aria-hidden="true">
+          <svg viewBox="0 0 160 160">
+            <defs>
+              <path id="home-seal-top" d="M 25 82 A 56 56 0 0 1 135 82" />
+              <path id="home-seal-bottom" d="M 135 88 A 56 56 0 0 1 25 88" />
+            </defs>
+            <circle cx="80" cy="80" r="76" />
+            <text><textPath href="#home-seal-top" startOffset="50%" text-anchor="middle">MORE THAN TRAVEL</textPath></text>
+            <text><textPath href="#home-seal-bottom" startOffset="50%" text-anchor="middle">A KINDER WORLD</textPath></text>
+            <circle class="home-hero-seal-dot" cx="18" cy="80" r="2" />
+            <circle class="home-hero-seal-dot" cx="142" cy="80" r="2" />
+            <g class="home-hero-palm">
+              <path d="M80 111V65M80 68C69 57 58 58 52 64M80 68C90 56 102 58 108 64M78 73C67 68 57 73 53 81M82 73C93 67 103 72 107 80" />
+            </g>
           </svg>
-
-          <figure class="photo-shape photo-right">
-            <img src="assets/hero-river.jpg" alt="Canale tropicale circondato da palme" width="1000" height="1210">
-          </figure>
-
-          <article class="place-note" aria-label="Contenuto dimostrativo">
-            <strong>Lorem</strong>
-            <em>Ipsum dolor</em>
-            <span></span>
-            <small>●&ensp;Lorem ipsum</small>
-          </article>
         </div>
 
-        <div class="hero-copy">
-          <h1 id="hero-title">
-            <span>Lorem ipsum dolor</span>
-            <em>lorem ipsum sit amet.</em>
-          </h1>
+        <figure class="home-hero-side home-hero-river">
+          <img src="assets/hero-river.jpg" alt="Canale tropicale circondato da palme" width="1000" height="1210">
+        </figure>
 
-          <div class="title-ornament" aria-hidden="true">
-            <i></i><span>◆</span><i></i>
-          </div>
+        <p class="home-hero-note home-hero-note-right">Un mondo<br>più tuo.<i></i></p>
 
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.<br>Lorem ipsum dolor sit amet.</p>
-
-          <button class="hero-cta" type="button" disabled aria-disabled="true">
-            <span>Lorem ipsum dolor</span>
-            <span aria-hidden="true">→</span>
-          </button>
-        </div>
-
-        <div class="hero-foot">
-          <blockquote>
-            <span aria-hidden="true">“</span>
-            <p>Lorem ipsum dolor sit amet.<br>Lorem ipsum dolor.</p>
-          </blockquote>
-
-          <div class="tags" aria-label="Etichette dimostrative">
-            <span>Lorem</span><i></i>
-            <span>Ipsum</span><i></i>
-            <span>Dolor</span><i></i>
-            <span>Sit amet</span>
-          </div>
-
-          <div class="signature" aria-hidden="true">
-            <strong>Lorem</strong>
-            <span>Ipsum dolor</span>
-          </div>
+        <div class="home-hero-copy">
+          <h1 id="hero-title">Il viaggio che immagini, disegnato intorno <em class="hero-title-accent">a te.</em></h1>
+          <p>Lorem ipsum dolorem sit amet, consectetur adipiscing elit.</p>
+          <a class="home-hero-cta" href="#servizi">
+            <span>Scopri i servizi</span><span aria-hidden="true">→</span>
+          </a>
         </div>
       </div>
     </section>
@@ -166,7 +128,7 @@
 
             <blockquote class="about-quote">
               <span aria-hidden="true">“</span>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
+              <p>Lorem ipsum dolorem sit amet, consectetur adipiscing elit...</p>
             </blockquote>
           </div>
 
@@ -208,6 +170,47 @@
 
     <section id="chi-sono-dettaglio" class="story-section" aria-labelledby="story-title">
       <div class="story-frame">
+        <!-- Each visual is an independent layer. Only the original photography
+             and botanical artwork use the source image; the layout is live. -->
+        <svg class="story-shapes" viewBox="0 0 1445 1088" preserveAspectRatio="none" aria-hidden="true">
+          <defs>
+            <clipPath id="story-portrait-mask" clipPathUnits="objectBoundingBox">
+              <path transform="matrix(.001497006 0 0 .001010101 -.115269461 -.054545455)" d="M77 267C77 144 183 54 327 54C488 48 635 142 661 293C671 347 660 400 676 458C702 563 749 676 746 775C744 919 668 1044 460 1044C345 1044 236 1006 211 934C186 863 229 827 245 757C268 645 209 514 155 445C110 388 77 332 77 267Z"/>
+            </clipPath>
+            <linearGradient id="story-panel-color" x1="0" y1="0" x2="1" y2="1">
+              <stop stop-color="#888d73"/>
+              <stop offset=".55" stop-color="#8b9078"/>
+              <stop offset="1" stop-color="#90957d"/>
+            </linearGradient>
+            <filter id="story-paper-grain" x="0" y="0" width="100%" height="100%">
+              <feTurbulence type="fractalNoise" baseFrequency=".025" numOctaves="3" seed="8"/>
+              <feColorMatrix type="saturate" values="0"/>
+              <feComponentTransfer><feFuncA type="linear" slope=".065"/></feComponentTransfer>
+              <feBlend in="SourceGraphic" mode="soft-light"/>
+            </filter>
+          </defs>
+          <path class="story-panel-shadow" d="M669 360C672 191 795 49 949 43C1094 35 1210 83 1311 51C1354 37 1381 15 1399 0H1445V777C1278 967 1065 806 853 849C809 852 778 868 743 877C767 715 690 563 669 430Z"/>
+          <path class="story-panel-fill" d="M668 356C673 185 797 48 951 45C1098 39 1236 99 1344 53C1373 40 1400 16 1419 0H1445V748C1296 938 1100 798 853 824C811 827 780 835 748 844C760 705 692 554 674 453C668 417 665 386 668 356Z"/>
+        </svg>
+
+        <div class="story-portrait-art">
+        <figure class="story-portrait">
+          <img src="assets/chi-sono-background.png" alt="Ely sorride, con i capelli scuri e un maglione rosso" loading="lazy" decoding="async" width="1445" height="1088">
+        </figure>
+
+        <svg class="story-photo-outline" viewBox="0 0 1445 1088" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M57 280C39 147 158 37 311 40C476 37 620 132 657 278C682 376 655 400 686 503C722 623 783 758 744 888C721 967 633 1025 467 1046" class="story-photo-shadow"/>
+          <path d="M57 280C39 147 158 37 311 40C476 37 620 132 657 278C682 376 655 400 686 503C722 623 783 758 744 888M57 280C66 364 113 420 160 486C209 556 235 640 231 718C229 783 174 834 184 892C197 970 312 1030 429 1026C542 1023 568 974 625 916C661 880 703 855 748 844"/>
+        </svg>
+
+        <div class="story-botanical story-botanical-left" aria-hidden="true"><img src="assets/chi-sono-background.png" alt="" loading="lazy" decoding="async" width="1445" height="1088"></div>
+        <div class="story-seal" aria-hidden="true"><img src="assets/chi-sono-background.png" alt="" loading="lazy" decoding="async" width="1445" height="1088"></div>
+
+        </div>
+        <div class="story-botanical story-botanical-right" aria-hidden="true"><img src="assets/chi-sono-background.png" alt="" loading="lazy" decoding="async" width="1445" height="1088"></div>
+
+        <img class="story-mobile-image" src="assets/hero-river.jpg" alt="" loading="lazy" width="1000" height="1210">
+
         <div class="story-content">
           <div class="story-kicker">
             <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M32 49c-7-7-15-17-11-27 2-5 7-8 11-7 4-1 9 2 11 7 4 10-4 20-11 27Z" /><path d="M32 49c0-12 0-22 0-34M21 28c4 1 8 4 11 8M43 28c-4 1-8 4-11 8" /></svg>
@@ -229,13 +232,108 @@
           </a>
         </div>
 
-        <blockquote class="story-quote">
+        <blockquote id="story-quote" class="story-quote">
           <span aria-hidden="true">“</span>
           <p>Lorem ipsum dolorem sit amet, consectetur adipiscing elit...</p>
           <strong>Lorem</strong>
         </blockquote>
       </div>
     </section>
+
+    <section id="servizi" class="services-showcase" aria-labelledby="services-showcase-title">
+      <div class="services-heading">
+        <h2 id="services-showcase-title">A che punto è il <em>tuo viaggio?</em></h2>
+        <p>Due servizi, pensati per partire esattamente da dove sei.</p>
+      </div>
+
+      <div class="book-scene">
+        <img class="book-object book-object-passport" src="assets/services-agenda-passport-light.png" alt="" aria-hidden="true">
+        <img class="book-object book-object-agenda" src="assets/services-agenda-passport-light.png" alt="Agenda aperta con copertina verde oliva, pagine crema e passaporto italiano">
+        <div class="passport" aria-hidden="true">
+          <div class="passport-copy"><span>Passaporto</span><span>Italia</span></div>
+          <svg viewBox="0 0 120 120"><path d="M60 18 75 42 103 47 82 67l5 29-27-14-27 14 5-29-21-20 28-5Z"/><circle cx="60" cy="62" r="42"/><path d="M19 69c15-2 23 9 26 28M101 69c-15-2-23 9-26 28M23 58c13 1 21 10 24 27M97 58c-13 1-21 10-24 27"/></svg>
+        </div>
+
+        <div class="book">
+          <i class="book-cover" aria-hidden="true"></i>
+          <i class="book-pages" aria-hidden="true"></i>
+          <i class="book-spine" aria-hidden="true"></i>
+          <i class="bookmark" aria-hidden="true"></i>
+          <i class="side-tab side-tab-one" aria-hidden="true"></i>
+          <i class="side-tab side-tab-two" aria-hidden="true"></i>
+
+          <article class="book-page book-page-left" id="service-left">
+            <img class="service-mobile-image" src="assets/hero-traveler.jpg" alt="" loading="lazy" width="1000" height="667">
+            <header class="page-heading">
+              <p class="page-eyebrow">Parto da un'idea</p>
+              <h3>Viaggio su misura</h3>
+              <p class="page-subtitle">Il viaggio prende forma intorno a te.</p>
+            </header>
+            <div class="service-details">
+              <div><h4>Fa per te se...</h4><p>Lorem ipsum dolorem sit amet, consectetur adipiscing elit...</p></div>
+              <div><h4>Di cosa mi occupo</h4><p>Lorem ipsum dolorem sit amet, consectetur adipiscing elit...</p></div>
+              <div><h4>Cosa ricevi</h4><p>Lorem ipsum dolorem sit amet, consectetur adipiscing elit...</p></div>
+            </div>
+            <button class="book-button" type="button" data-preview="service" aria-haspopup="dialog"><span>Scopri il viaggio su misura</span><span aria-hidden="true">→</span></button>
+            <span class="page-number">01</span>
+          </article>
+
+          <article class="book-page book-page-right" id="service-right">
+            <img class="service-mobile-image" src="assets/hero-river.jpg" alt="" loading="lazy" width="1000" height="1210">
+            <header class="page-heading">
+              <p class="page-eyebrow">Ho già voli e hotel</p>
+              <h3>Itinerario day-by-day</h3>
+              <p class="page-subtitle">Ogni giornata trova il suo ritmo.</p>
+            </header>
+            <div class="service-details">
+              <div><h4>Fa per te se...</h4><p>Lorem ipsum dolorem sit amet, consectetur adipiscing elit...</p></div>
+              <div><h4>Di cosa mi occupo</h4><p>Lorem ipsum dolorem sit amet, consectetur adipiscing elit...</p></div>
+              <div><h4>Cosa ricevi</h4><p>Lorem ipsum dolorem sit amet, consectetur adipiscing elit...</p></div>
+            </div>
+            <button class="book-button" type="button" data-preview="service" aria-haspopup="dialog"><span>Scopri l’itinerario</span><span aria-hidden="true">→</span></button>
+            <span class="page-number">02</span>
+          </article>
+        </div>
+      </div>
+
+      <div class="services-help"><i></i><p>Non sai quale servizio fa per te? <span>Parliamone</span></p><i></i></div>
+    </section>
+
+    <section id="ispirazioni" class="itinerary-preview" aria-labelledby="itinerary-preview-title">
+      <div class="preview-copy-block">
+        <p class="preview-eyebrow">Dentro il tuo viaggio</p>
+        <h2 id="itinerary-preview-title">Un’anteprima<br>di come può essere</h2>
+        <p class="preview-description">Ecco un esempio di itinerario in cui esperienze,<br> spostamenti e tempo si incontrano nel modo giusto.</p>
+        <button class="preview-button" type="button" data-preview="itinerary" aria-haspopup="dialog"><span>Scopri l’itinerario completo</span><span aria-hidden="true">→</span></button>
+      </div>
+
+      <div class="postcard-collage" aria-label="Anteprima di un itinerario a Bali">
+        <figure class="postcard postcard-ocean">
+          <img src="assets/hero-river.jpg" alt="Mare e palme a Bali">
+          <figcaption>Bali</figcaption>
+        </figure>
+        <figure class="postcard postcard-temple">
+          <img src="assets/hero-temple.jpg" alt="Tempio balinese tra il verde">
+        </figure>
+        <span class="paperclip" aria-hidden="true"></span>
+        <article class="itinerary-card" id="itinerario-completo">
+          <h3>Itinerario dimostrativo</h3>
+          <ol class="timeline">
+            <li><time>08:00</time><span class="timeline-icon sun-icon" aria-hidden="true"></span><div><strong>Ubud</strong><small>Colazione con vista risaie</small></div></li>
+            <li><time>11:00</time><span class="timeline-icon leaf-icon" aria-hidden="true"></span><div><strong>Tegallalang</strong><small>Passeggiata tra le risaie</small></div></li>
+            <li><time>15:00</time><span class="timeline-icon wave-icon" aria-hidden="true"></span><div><strong>Uluwatu</strong><small>Relax in spiaggia</small></div></li>
+            <li><time>19:00</time><span class="timeline-icon fork-icon" aria-hidden="true"></span><div><strong>Cena al tramonto</strong><small>Show al Tempio e cena vista oceano</small></div></li>
+          </ol>
+        </article>
+        <div class="bali-stamp" aria-hidden="true"><span>Bali</span><i>✧</i><span>Indonesia</span></div>
+      </div>
+    </section>
+    <div class="showcase-tail" aria-hidden="true"></div>
   </main>
+  <dialog id="content-preview" class="content-preview" aria-labelledby="content-preview-title">
+    <button class="preview-close" type="button" aria-label="Chiudi anteprima">×</button>
+    <div class="content-preview-body"></div>
+  </dialog>
+  <script src="script.js" defer></script>
 </body>
 </html>

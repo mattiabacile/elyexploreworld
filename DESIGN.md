@@ -54,6 +54,7 @@ Strategia “full palette” con verde foresta come identità principale, argill
 
 ## Responsive Behavior
 
+- La terza sezione «Ciao, sono Ely.» deve rientrare in una sola schermata sui laptop, menu incluso. Conservare fotografia, testi, forme e ornamenti; adattare le proporzioni senza deformare il ritratto. Su mobile privilegiare la leggibilità con una disposizione verticale.
 - Sotto 1024 px la navigazione diventa drawer e compare una CTA fissa inferiore.
 - Hero e contatto passano a una colonna; le stampe decorative non competono con il testo.
 - Timeline diventa una sequenza verticale senza linea centrale.

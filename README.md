@@ -1,26 +1,22 @@
 # ElyExploreWorld
 
-Responsive visual preview for ElyExploreWorld.
-
-## Preview
-
-Open `index.html` directly, or serve the folder locally:
+Static HTML/CSS/JavaScript website. Serve this folder locally:
 
 ```sh
 python3 -m http.server 4173
 ```
 
-Then visit:
+Open http://localhost:4173/.
 
-- `http://localhost:4173/` for the new hero preview.
-- `http://localhost:4173/index2.html` for the archived full homepage.
+- `index.html` is the shared source of homepage content for desktop and mobile.
+- `hero.css` retains the existing desktop design.
+- `responsive.css` implements the approved phone composition below 768 px and the accessible navigation disclosure below 901 px.
+- `script.js` handles navigation, the mobile biography disclosure, and previews of the existing service/itinerary content.
 
-The primary preview contains only the static navigation and hero. Its controls
-are intentionally disabled and do not navigate or change the URL.
+All original website wording and Lorem Ipsum are retained. Mobile service cards contain the full original descriptions, so they are taller than the mockup's shortened examples. Mobile uses the biography shown in the supplied desktop reference; the earlier duplicate biography remains on desktop.
 
-## Before publishing
+The mockup's vase/books image is absent from the supplied assets. The mobile biography reuses `assets/hero-river.jpg`. No replacement photographs or portraits were generated.
 
-- Replace the hero placeholder copy with the approved final content.
-- Replace the temporary hero photography if final brand imagery becomes available.
-- Self-host the fonts if the production privacy policy requires it.
-- Review the archived full homepage before restoring any of its sections to the main route.
+The existing Blog/Contatti labels and disabled desktop Parliamone control have no destinations in this static project. Service and itinerary buttons open accessible previews of existing content; they do not imply additional pages or backend services.
+
+See `VALIDATION.md` for responsive and visual checks.
