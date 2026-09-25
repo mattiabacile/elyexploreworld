@@ -5,12 +5,40 @@
   const mobileNav = document.getElementById('primary-nav');
   const menuViewport = window.matchMedia('(max-width: 900px)');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const backToTop = document.querySelector('.back-to-top');
   let scrollTicking = false;
   let previousScrollY = window.scrollY;
+
+  const getPreviewLinks = () => Array.from(mobileNav?.querySelectorAll('a') || []);
+  const syncPreviewNav = (hash = location.hash) => {
+    const currentLink = getPreviewLinks().find((link) => link.getAttribute('href') === hash);
+    getPreviewLinks().forEach((link) => {
+      const isCurrent = link === currentLink;
+      link.classList.toggle('is-current', isCurrent);
+      if (isCurrent) link.setAttribute('aria-current', 'page');
+      else link.removeAttribute('aria-current');
+    });
+    if (menuButton) menuButton.querySelector('span').textContent = currentLink?.textContent.trim() || 'Menu';
+  };
+
+  const scrollToSection = (event, link) => {
+    const href = link.getAttribute('href');
+    if (!href?.startsWith('#')) return;
+    const target = document.querySelector(href);
+    if (!target) return;
+
+    event.preventDefault();
+    if (menuViewport.matches && mobileNav?.contains(link)) setMenu(false);
+    syncPreviewNav(href);
+    window.dispatchEvent(new CustomEvent('preview:navigate', { detail: { hash: href } }));
+    if (location.hash) history.replaceState(null, '', `${location.pathname}${location.search}`);
+    target.scrollIntoView({ block: 'start', behavior: reducedMotion.matches ? 'auto' : 'smooth' });
+  };
 
   const updateScrollEffects = () => {
     const scrollY = window.scrollY;
     header?.classList.toggle('stuck-nav', scrollY > 80);
+    backToTop?.classList.toggle('is-visible', scrollY > window.innerHeight * 0.75);
 
     if (header) {
       const movingDown = scrollY > previousScrollY && scrollY > 24;
@@ -35,6 +63,19 @@
   }, { passive: true });
   updateScrollEffects();
 
+  const contactSection = document.getElementById('contatti');
+  const contactObserver = 'IntersectionObserver' in window && contactSection
+    ? new IntersectionObserver(([entry]) => {
+        backToTop?.classList.toggle('is-over-contact', entry.isIntersecting);
+      }, { threshold: 0.08 })
+    : null;
+  contactObserver?.observe(contactSection);
+
+  backToTop?.addEventListener('click', (event) => {
+    event.preventDefault();
+    window.scrollTo({ top: 0, behavior: reducedMotion.matches ? 'auto' : 'smooth' });
+  });
+
   const getMenuLinks = () => Array.from(mobileNav?.querySelectorAll('a') || []);
 
   const setMenu = (open) => {
@@ -57,52 +98,27 @@
 
   mobileNav?.addEventListener('click', (event) => {
     const link = event.target.closest('a');
-    if (!link || !menuViewport.matches) return;
-    setMenu(false);
-    const target = document.querySelector(link.getAttribute('href'));
-    if (target) {
-      target.setAttribute('tabindex', '-1');
-      target.focus({ preventScroll: true });
-    }
+    if (!link) return;
+    scrollToSection(event, link);
   });
+  header?.querySelector('.brand')?.addEventListener('click', (event) => {
+    scrollToSection(event, event.currentTarget);
+  });
+  window.addEventListener('hashchange', () => syncPreviewNav());
   menuViewport.addEventListener('change', () => setMenu(false));
   setMenu(false);
   document.addEventListener('click', (event) => {
     if (menuButton?.getAttribute('aria-expanded') === 'true' && !header.contains(event.target)) setMenu(false);
   });
 
-  // The mobile biography uses the exact section from the desktop reference.
   const phoneViewport = window.matchMedia('(max-width: 767px)');
-  const storyLink = document.querySelector('.story-cta');
-  const storyQuote = document.querySelector('.story-quote');
   const aboutNavLink = mobileNav?.querySelector('a[href="#chi-sono"]');
-  const syncBiography = () => {
-    storyQuote.hidden = phoneViewport.matches;
+  const syncBiographyLink = () => {
     aboutNavLink?.setAttribute('href', phoneViewport.matches ? '#chi-sono-dettaglio' : '#chi-sono');
-    if (phoneViewport.matches) {
-      storyLink.setAttribute('role', 'button');
-      storyLink.setAttribute('aria-expanded', 'false');
-      storyLink.setAttribute('aria-controls', 'story-quote');
-    } else {
-      storyLink.removeAttribute('role');
-      storyLink.removeAttribute('aria-expanded');
-      storyLink.removeAttribute('aria-controls');
-    }
   };
-  storyLink?.addEventListener('click', (event) => {
-    if (!phoneViewport.matches) return;
-    event.preventDefault();
-    storyQuote.hidden = !storyQuote.hidden;
-    storyLink.setAttribute('aria-expanded', String(!storyQuote.hidden));
-  });
-  storyLink?.addEventListener('keydown', (event) => {
-    if (phoneViewport.matches && event.key === ' ') {
-      event.preventDefault();
-      storyLink.click();
-    }
-  });
-  phoneViewport.addEventListener('change', syncBiography);
-  syncBiography();
+  phoneViewport.addEventListener('change', syncBiographyLink);
+  syncBiographyLink();
+  syncPreviewNav();
 
   // Preview only existing content. No service pages or itinerary copy are invented.
   const contentPreview = document.getElementById('content-preview');
@@ -123,6 +139,26 @@
     });
   });
   contentPreview?.querySelector('.preview-close').addEventListener('click', () => contentPreview.close());
+
+  const contactForm = document.getElementById('contact-form');
+  contactForm?.addEventListener('submit', (event) => {
+    event.preventDefault();
+    if (!contactForm.reportValidity()) return;
+
+    const data = new FormData(contactForm);
+    const body = [
+      `Nome: ${data.get('nome') || ''}`,
+      `Email: ${data.get('email') || ''}`,
+      `Destinazione: ${data.get('destinazione') || 'Da definire'}`,
+      `Partenza: ${data.get('partenza') || 'Da definire'}`,
+      `Viaggiatori: ${data.get('viaggiatori') || 'Da definire'}`,
+      `Servizio: ${data.get('servizio') || 'Da definire'}`,
+      '',
+      String(data.get('messaggio') || '')
+    ].join('\n');
+
+    window.location.href = `mailto:hello@elyexploreworld.com?subject=${encodeURIComponent('Parliamo del mio viaggio')}&body=${encodeURIComponent(body)}`;
+  });
 
 
   document.addEventListener('keydown', (event) => {
@@ -176,30 +212,6 @@
 
   document.querySelectorAll('main > section[id]').forEach((section) => sectionObserver?.observe(section));
 
-  const mobileStickyCta = document.querySelector('.mobile-sticky-cta');
-  const heroPrimaryCta = document.querySelector('.hero-actions .button');
-  const contactSection = document.getElementById('contatti');
-  const contactForm = document.getElementById('contact-form');
-  if ('IntersectionObserver' in window && mobileStickyCta && heroPrimaryCta && contactSection) {
-    let heroCtaVisible = true;
-    let contactReached = contactSection.getBoundingClientRect().top <= window.innerHeight;
-    const updateStickyCta = () => {
-      mobileStickyCta.classList.toggle('is-hidden', heroCtaVisible || contactReached);
-    };
-    const heroCtaObserver = new IntersectionObserver(([entry]) => {
-      heroCtaVisible = entry.isIntersecting;
-      updateStickyCta();
-    }, { threshold: 0.15 });
-    const contactSectionObserver = new IntersectionObserver(([entry]) => {
-      if (!entry.isIntersecting) return;
-      contactReached = true;
-      updateStickyCta();
-    }, { threshold: 0.02 });
-    heroCtaObserver.observe(heroPrimaryCta);
-    contactSectionObserver.observe(contactSection);
-    updateStickyCta();
-  }
-
   const travelTrack = document.getElementById('travel-track');
   document.querySelectorAll('[data-gallery-direction]').forEach((button) => {
     button.addEventListener('click', () => {
@@ -208,30 +220,6 @@
       const distance = (card?.getBoundingClientRect().width || 360) + 36;
       travelTrack?.scrollBy({ left: distance * direction, behavior: reducedMotion.matches ? 'auto' : 'smooth' });
     });
-  });
-
-  const tripInput = document.getElementById('trip-idea');
-  const messageInput = document.getElementById('message');
-
-  document.querySelectorAll('.travel-card').forEach((card) => {
-    card.addEventListener('click', () => {
-      if (tripInput) tripInput.value = card.dataset.trip || '';
-      if (messageInput && !messageInput.value) {
-        messageInput.value = `Vorrei costruire un viaggio dedicato a “${card.dataset.trip}”.`;
-      }
-      document.getElementById('contatti')?.scrollIntoView({ behavior: reducedMotion.matches ? 'auto' : 'smooth' });
-      window.setTimeout(() => tripInput?.focus(), reducedMotion.matches ? 0 : 650);
-    });
-  });
-
-  const contactStatus = document.getElementById('contact-status');
-  contactForm?.addEventListener('submit', (event) => {
-    event.preventDefault();
-    if (!contactForm.checkValidity()) {
-      contactForm.reportValidity();
-      return;
-    }
-    contactStatus.textContent = 'Struttura del modulo verificata. Il servizio di invio verrà collegato prima della pubblicazione.';
   });
 
   const openDialog = (dialog) => {
@@ -266,11 +254,11 @@
   const legalCopy = {
     privacy: {
       title: 'Privacy policy',
-      body: '<p>Questa demo non invia né conserva dati su un server. Prima della pubblicazione, collega i moduli al servizio scelto e inserisci qui titolare del trattamento, finalità, base giuridica, tempi di conservazione e modalità per esercitare i diritti.</p>'
+      body: '<p>lorem ipsum dolorem...</p>'
     },
     cookie: {
       title: 'Cookie policy',
-      body: '<p>Questa pagina non installa cookie di profilazione. I servizi esterni per font, immagini o analisi dovranno essere descritti e gestiti con un consenso appropriato prima della pubblicazione.</p>'
+      body: '<p>lorem ipsum dolorem...</p>'
     }
   };
 
