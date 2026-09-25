@@ -19,7 +19,7 @@ main > .travel-stories-page[id] { scroll-margin-top: 72px; }
 .travel-stories-page em { color: var(--stories-accent); font-weight: 400; }
 .stories-subtitle { max-width: 65ch; margin: 8px auto 0; color: var(--stories-muted); font-size: clamp(14px, 1.05vw, 17px); line-height: 1.45; }
 .stories-side-note { position: absolute; top: 15%; left: 20px; margin: 0; color: var(--stories-muted); font-size: 10px; font-weight: 600; line-height: 2; letter-spacing: .15em; text-transform: uppercase; }
-.stories-hand-note { position: absolute; right: 20px; top: 16%; margin: 0; color: var(--stories-muted); font: italic 18px/1.15 var(--font-display); }
+.stories-hand-note { position: absolute; right: 20px; top: 22%; z-index: 2; margin: 0; color: var(--stories-muted); font: italic 18px/1.15 var(--font-display); }
 .stories-side-note::after, .stories-hand-note::after { content: ''; display: block; width: 28px; height: 1px; background: var(--stories-accent); margin-top: 12px; }
 .stories-carousel { position: relative; min-height: 0; min-width: 0; display: grid; grid-template-rows: minmax(0, 1.5fr) minmax(0, 1fr); gap: 12px; }
 .stories-mask-defs { position: absolute; width: 0; height: 0; pointer-events: none; }
