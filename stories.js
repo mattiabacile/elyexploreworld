@@ -8,9 +8,7 @@
     const navLinks = [...(nav?.querySelectorAll('a') || [])];
     const currentLink = navLinks.find(link => {
       const href = link.getAttribute('href');
-      return href === hash
-        || (href === '#chi-sono' && hash === '#chi-sono-dettaglio')
-        || (href === '#chi-sono-dettaglio' && hash === '#chi-sono');
+      return href === hash;
     });
     document.title = hash === '#blog' ? 'Racconti di viaggio — Elyexploreworld' : originalTitle;
     navLinks.forEach(link => {

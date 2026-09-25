@@ -111,13 +111,6 @@
     if (menuButton?.getAttribute('aria-expanded') === 'true' && !header.contains(event.target)) setMenu(false);
   });
 
-  const phoneViewport = window.matchMedia('(max-width: 767px)');
-  const aboutNavLink = mobileNav?.querySelector('a[href="#chi-sono"]');
-  const syncBiographyLink = () => {
-    aboutNavLink?.setAttribute('href', phoneViewport.matches ? '#chi-sono-dettaglio' : '#chi-sono');
-  };
-  phoneViewport.addEventListener('change', syncBiographyLink);
-  syncBiographyLink();
   syncPreviewNav();
 
   // Preview only existing content. No service pages or itinerary copy are invented.

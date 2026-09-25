@@ -225,16 +225,7 @@ a { color: inherit; text-decoration: none; }
   background: linear-gradient(0deg, var(--cream) 12%, transparent);
 }
 
-.about-section {
-  --sand-green: oklch(0.56 0.055 125);
-  position: relative;
-  display: grid;
-  min-height: min(100svh, 62rem);
-  place-items: center;
-  overflow: hidden;
-  padding: clamp(4rem, 7vw, 7rem) var(--gutter);
-  background: var(--sand-green);
-}
+
 
 .back-to-top {
   position: fixed;
@@ -293,921 +284,153 @@ a { color: inherit; text-decoration: none; }
   stroke-width: 1.7;
 }
 
-.about-section::before {
-  position: absolute;
-  inset: 0;
-  content: "";
-  background: linear-gradient(90deg, oklch(0.56 0.055 125 / 0.88), oklch(0.56 0.055 125 / 0.52)), url("assets/balinese-botanical-ambient.jpg") center / cover;
-  filter: saturate(0.58) contrast(0.9);
-  opacity: 0.66;
-  mix-blend-mode: multiply;
-}
-
-.about-card {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  width: min(100%, 72rem);
-  aspect-ratio: 4 / 3;
-  grid-template-columns: 1.04fr 0.96fr;
-  overflow: hidden;
-  background: var(--cream);
-  border: 1px solid oklch(0.92 0.025 84 / 0.72);
-  border-radius: 0.7rem;
-  box-shadow: 0 1.5rem 3.5rem oklch(0.22 0.045 125 / 0.22);
-}
-
-.about-panel {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
-  min-width: 0;
-  padding: clamp(2rem, 4vw, 4.5rem) clamp(1.75rem, 5.1vw, 5.25rem);
-  color: var(--sand-green);
-  text-align: center;
-}
-
-.about-intro {
-  width: 100%;
-}
-
-.about-kicker {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  color: var(--clay);
-  font-size: clamp(0.63rem, 0.8vw, 0.78rem);
-  font-weight: 700;
-  letter-spacing: 0.17em;
-  line-height: 1;
-  text-transform: uppercase;
-}
-
-.about-flower {
-  width: clamp(2.2rem, 4vw, 3.1rem);
-  height: auto;
-  margin-bottom: 0.8rem;
-  overflow: visible;
-  fill: none;
-  stroke: currentColor;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-width: 1.45;
-}
-
-.about-kicker i {
-  width: 2.75rem;
-  height: 1px;
-  margin-top: 0.95rem;
-  background: var(--sand);
-}
-
-.about-title {
-  margin: clamp(1.35rem, 2.8vw, 2.35rem) 0 0;
-  color: var(--sand-green);
-  font-family: var(--font-display);
-  font-size: clamp(2.7rem, 4.55vw, 5rem);
-  font-weight: 500;
-  letter-spacing: -0.04em;
-  line-height: 0.9;
-  text-wrap: balance;
-}
-
-.about-title span,
-.about-title-role {
-  display: block;
-}
-
-.about-title span em {
-  color: var(--clay);
-  font-weight: 400;
-}
-
-.about-title-role {
-  margin-top: 0.12em;
-  font-size: 0.85em;
-  font-weight: 400;
-}
-
-.about-divider {
-  display: flex;
-  width: min(18rem, 90%);
-  align-items: center;
-  gap: 0.7rem;
-  margin: clamp(1.2rem, 2.4vw, 2rem) auto clamp(1.1rem, 2vw, 1.55rem);
-  color: var(--sand);
-}
-
-.about-divider i {
-  height: 1px;
-  flex: 1;
-  background: currentColor;
-}
-
-.about-divider span {
-  font-size: 0.5rem;
-}
-
-.about-lead {
-  max-width: 31rem;
-  margin: 0 auto;
-  color: var(--charcoal);
-  font-size: clamp(0.76rem, 1vw, 0.96rem);
-  line-height: 1.65;
-}
-
-.about-quote {
-  display: flex;
-  max-width: 29rem;
-  align-items: flex-start;
-  gap: 0.85rem;
-  margin: clamp(1.45rem, 2.8vw, 2.5rem) auto 0;
-  text-align: left;
-}
-
-.about-quote > span {
-  color: var(--clay);
-  font-family: var(--font-display);
-  font-size: 3rem;
-  line-height: 0.75;
-}
-
-.about-quote p {
-  margin: 0;
-  padding-left: 0.95rem;
-  border-left: 1px solid var(--sand);
-  color: var(--charcoal);
-  font-family: var(--font-display);
-  font-size: clamp(0.92rem, 1.1vw, 1.08rem);
-  font-style: italic;
-  line-height: 1.4;
-}
-
-.about-values {
-  display: grid;
-  width: 100%;
-  grid-template-columns: repeat(3, 1fr);
-  margin-top: clamp(1.65rem, 3.2vw, 3rem);
-  border-top: 1px solid oklch(0.84 0.055 82 / 0.55);
-}
-
-.about-value {
-  position: relative;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  gap: 0.55rem;
-  min-width: 0;
-  padding: 0.85rem 0.4rem 0;
-}
-
-.about-value + .about-value {
-  border-left: 1px solid oklch(0.84 0.055 82 / 0.55);
-}
-
-.value-icon {
-  display: grid;
-  width: clamp(2.8rem, 4.4vw, 4rem);
-  aspect-ratio: 1;
-  place-items: center;
-  color: var(--clay);
-  border: 1px solid oklch(0.65 0.125 42 / 0.36);
-  border-radius: 50%;
-}
-
-.value-icon svg {
-  width: 56%;
-  height: 56%;
-  fill: none;
-  stroke: currentColor;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-width: 1.15;
-}
-
-.about-value strong {
-  color: var(--sand-green);
-  font-size: clamp(0.54rem, 0.7vw, 0.68rem);
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  line-height: 1.2;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-
-.about-value > i {
-  width: 0.24rem;
-  aspect-ratio: 1;
-  background: var(--sand);
-  border-radius: 50%;
-}
-
-.about-cta {
-  display: inline-flex;
-  min-width: min(19rem, 100%);
-  min-height: 3.1rem;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  margin-top: clamp(1.55rem, 3vw, 2.5rem);
-  padding: 0.75rem 1.6rem;
-  color: var(--cream);
-  background: var(--sand-green);
-  border-radius: 999px;
-  font-size: clamp(0.64rem, 0.78vw, 0.75rem);
-  font-weight: 600;
-  letter-spacing: 0.13em;
-  line-height: 1.2;
-  text-transform: uppercase;
-  transition: background-color 240ms ease, transform 240ms cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.about-cta:hover {
-  background: var(--clay);
-  transform: translateY(-2px);
-}
-
-.about-photo {
-  position: relative;
-  min-width: 0;
-  min-height: 0;
-  margin: 0;
-  overflow: hidden;
-  border-radius: 52% 0 0 52% / 21% 0 0 21%;
-}
-
-.about-photo::before {
-  position: absolute;
-  inset: 0 auto 0 -0.6rem;
-  z-index: 1;
-  width: 1px;
-  content: "";
-  background: var(--sand);
-  transform: rotate(0.2deg);
-}
-
-.about-photo img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center 38%;
-  filter: saturate(0.86) contrast(0.96) sepia(0.06);
-}
-
-@media (max-width: 900px) {
-  .about-section {
-    min-height: auto;
-  }
-
-  .about-card {
-    aspect-ratio: 4 / 3;
-    grid-template-columns: 1.04fr 0.96fr;
-  }
-
-  .about-panel {
-    padding: clamp(1.5rem, 4vw, 3rem) clamp(1.1rem, 3.5vw, 2.5rem);
-  }
-
-  .about-photo {
-    min-height: 0;
-    border-radius: 52% 0 0 52% / 21% 0 0 21%;
-  }
-
-  .about-photo::before {
-    inset: 0 auto 0 -0.6rem;
-    width: 1px;
-    height: auto;
-  }
-}
-
-@media (max-width: 640px) {
-  .about-section {
-    padding: 1.25rem 1rem;
-  }
-
-  .about-card {
-    width: 100%;
-    border-radius: 0.4rem;
-  }
-
-  .about-panel {
-    padding: 0.65rem 0.55rem;
-  }
-
-  .about-kicker {
-    font-size: 0.36rem;
-    letter-spacing: 0.12em;
-  }
-
-  .about-flower {
-    width: 1.15rem;
-    margin-bottom: 0.2rem;
-    stroke-width: 1.7;
-  }
-
-  .about-kicker i {
-    width: 1.2rem;
-    margin-top: 0.25rem;
-  }
-
-  .about-title {
-    margin-top: 0.45rem;
-    font-size: clamp(1.45rem, 7.6vw, 2rem);
-    letter-spacing: -0.035em;
-  }
-
-  .about-divider {
-    width: 86%;
-    gap: 0.25rem;
-    margin-block: 0.42rem 0.35rem;
-  }
-
-  .about-divider span {
-    font-size: 0.25rem;
-  }
-
-  .about-lead {
-    max-width: 25ch;
-    font-size: 0.45rem;
-    line-height: 1.3;
-  }
-
-  .about-quote {
-    gap: 0.25rem;
-    margin-top: 0.45rem;
-  }
-
-  .about-quote > span {
-    font-size: 1.2rem;
-  }
-
-  .about-quote p {
-    padding-left: 0.3rem;
-    font-size: 0.48rem;
-    line-height: 1.25;
-  }
-
-  .about-values {
-    margin-top: 0.5rem;
-    gap: 0;
-  }
-
-  .about-value {
-    gap: 0.18rem;
-    padding: 0.25rem 0.1rem 0;
-  }
-
-  .value-icon {
-    width: clamp(1.25rem, 7vw, 1.75rem);
-    border-width: 0.5px;
-  }
-
-  .value-icon svg {
-    stroke-width: 1.4;
-  }
-
-  .about-value strong {
-    font-size: 0.34rem;
-    letter-spacing: 0.055em;
-  }
-
-  .about-value > i {
-    width: 0.1rem;
-  }
-
-  .about-cta {
-    min-width: 0;
-    min-height: 1.5rem;
-    gap: 0.3rem;
-    margin-top: 0.5rem;
-    padding: 0.25rem 0.35rem;
-    font-size: 0.34rem;
-    letter-spacing: 0.06em;
-  }
-
-  .about-photo {
-    min-height: 0;
-  }
-
-  .about-photo img {
-    object-position: center 35%;
-  }
-
-  .about-photo::before {
-    inset: 0 auto 0 -0.25rem;
-  }
-
-  .about-cta span:first-child {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .about-cta span:last-child {
-    flex: 0 0 auto;
-  }
-
-  .about-cta {
-    width: 100%;
-  }
-}
-
-.story-section {
-  --story-sand-green: oklch(0.56 0.055 125);
-  position: relative;
-  overflow: hidden;
-  padding: 0;
-  background: var(--cream);
-}
-
-.story-frame {
-  --story-height: min(960px, calc(100svh - 72px));
-  --story-art-width: calc(var(--story-height) * 4 / 3);
-  position: relative;
-  isolation: isolate;
-  container-type: inline-size;
-  width: min(100%, 90rem);
-  height: var(--story-height);
-  margin-inline: auto;
-  overflow: hidden;
-  background: radial-gradient(ellipse at 36% 42%, #e9dfd3, transparent 70%), #ecdfd3;
-}
-
-.story-portrait-art {
-  position: absolute;
-  top: 0;
-  left: calc((100% - var(--story-art-width)) * .5);
-  width: var(--story-art-width);
-  height: 100%;
-  pointer-events: none;
-}
-
-.story-shapes,
-.story-photo-outline {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
-
-.story-panel-shadow { fill: #cfc2b3; }
-.story-panel-fill { fill: url(#story-panel-color); filter: url(#story-paper-grain); }
-
-.story-portrait {
-  position: absolute;
-  top: 4.9632%;
-  left: 5.3287%;
-  width: 46.2284%;
-  height: 90.9926%;
-  margin: 0;
-  overflow: hidden;
-  clip-path: url(#story-portrait-mask);
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* Display just the original portrait, independently of the source composition. */
-.story-portrait img {
-  position: absolute;
-  top: -5.4545%;
-  left: -11.5269%;
-  width: 216.3174%;
-  height: 109.899%;
-  max-width: none;
-}
 
-.story-photo-outline {
-  fill: none;
-  stroke: #b15f36;
-  stroke-width: 1.4;
-}
 
-.story-photo-outline .story-photo-shadow {
-  stroke: #b4ac9c;
-  stroke-width: 7;
-  opacity: .24;
-  transform: translate(7px, 0);
-}
+
+
+
 
 /* Original botanical artwork is windowed into separate decorative elements.
    No raster image supplies a section background, text panel or button. */
-.story-botanical,
-.story-seal {
-  position: absolute;
-  overflow: hidden;
-  pointer-events: none;
-}
 
-.story-botanical img,
-.story-seal img {
-  position: absolute;
-  max-width: none;
-}
 
-.story-botanical-left {
-  top: 55.1471%;
-  left: 0;
-  width: 17.301%;
-  height: 34.9265%;
-  clip-path: polygon(29% 0, 42% 8%, 43% 23%, 57% 14%, 55% 36%, 66% 52%, 60% 70%, 87% 88%, 100% 100%, 74% 90%, 62% 79%, 34% 89%, 7% 94%, 14% 83%, 39% 75%, 5% 71%, 0 62%, 23% 62%, 8% 46%, 21% 44%, 40% 53%, 40% 41%, 22% 31%, 16% 20%, 27% 24%, 31% 30%, 27% 14%);
-}
 
-.story-botanical-left img {
-  left: 0;
-  top: -157.8947%;
-  width: 578%;
-  height: 286.3158%;
-}
 
-.story-botanical-right {
-  right: 0;
-  top: 63.4191%;
-  width: 14.5329%;
-  height: 31.25%;
-  clip-path: polygon(0 53%, 25% 50%, 55% 42%, 80% 31%, 100% 21%, 100% 100%, 0 100%);
-  mask-image: linear-gradient(90deg, transparent, #000 25%), linear-gradient(transparent, #000 15%, #000 85%, transparent);
-  mask-composite: intersect;
-}
 
-.story-botanical-right img {
-  left: -588.0952%;
-  top: -202.9412%;
-  width: 688.0952%;
-  height: 320%;
-}
 
-.story-seal {
-  top: 59.7426%;
-  left: 7.7509%;
-  width: 13.0104%;
-  height: 17.2794%;
-  border-radius: 50%;
-  box-shadow: .5rem .7rem 1rem rgb(65 42 25 / .18);
-}
 
-.story-seal img {
-  top: -345.7447%;
-  left: -59.5745%;
-  width: 768.617%;
-  height: 578.7234%;
-}
 
-.story-benefits {
-  position: absolute;
-  top: 6.5%;
-  bottom: 6.5%;
-  left: clamp(1rem, 1.65cqw, 1.5rem);
-  z-index: 3;
-  display: grid;
-  width: clamp(9.5rem, 12.5cqw, 11.25rem);
-  grid-template-rows: repeat(4, minmax(0, 1fr));
-  padding: 0;
-  margin: 0;
-  color: var(--story-sand-green);
-  list-style: none;
-}
 
-.story-benefit {
-  display: grid;
-  min-height: 0;
-  align-content: center;
-  grid-template-columns: 2.7rem minmax(0, 1fr);
-  gap: 0.7rem;
-  padding-block: clamp(0.75rem, 1.45vh, 1.15rem);
-}
 
-.story-benefit + .story-benefit {
-  border-top: 1px solid oklch(0.56 0.055 125 / 0.28);
-}
 
-.story-benefit-icon {
-  width: 2.7rem;
-  height: 2.7rem;
-  color: var(--story-sand-green);
-  fill: none;
-  stroke: currentColor;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-width: 1.55;
-}
 
-.story-benefit strong {
-  display: block;
-  color: var(--charcoal);
-  font-size: clamp(0.6rem, 0.72vw, 0.73rem);
-  font-weight: 700;
-  letter-spacing: -0.015em;
-  line-height: 1.25;
-}
 
-.story-benefit p {
-  display: -webkit-box;
-  margin: 0.32rem 0 0;
-  overflow: hidden;
-  color: var(--story-sand-green);
-  font-size: clamp(0.5rem, 0.58vw, 0.6rem);
-  line-height: 1.45;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-}
 
-.story-content {
-  position: absolute;
-  top: 17%;
-  left: 58.5%;
-  z-index: 2;
-  width: 34%;
-  color: var(--cream);
-}
 
-.story-kicker {
-  display: flex;
-  align-items: center;
-  gap: 0.7rem;
-  color: #17231d;
-  font-size: clamp(0.62rem, 0.8vw, 0.78rem);
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  line-height: 1;
-  text-transform: uppercase;
-}
 
-.story-kicker svg {
-  width: clamp(1.8rem, 3vw, 2.8rem);
-  height: auto;
-  fill: none;
-  stroke: currentColor;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-width: 1.5;
-}
 
-.story-title {
-  margin: clamp(1rem, 2.8vh, 2.6rem) 0 0;
-  color: var(--cream);
-  font-family: var(--font-display);
-  font-size: min(6.2vw, 10svh, 5.8rem);
-  font-weight: 500;
-  letter-spacing: -0.04em;
-  line-height: 0.88;
-}
 
-.story-title span {
-  display: block;
-}
 
-.story-title em {
-  color: #fffaf2;
-  font-weight: 400;
-}
 
-.story-rule {
-  width: 3.4rem;
-  height: 1px;
-  margin: clamp(14px, 2.4vh, 30px) 0 clamp(12px, 2vh, 24px);
-  background: var(--sand);
-}
 
-.story-copy {
-  max-width: 27rem;
-  margin: 0;
-  color: oklch(0.965 0.018 84 / 0.88);
-  font-size: clamp(0.72rem, 1vw, 0.94rem);
-  line-height: 1.65;
-}
 
-.story-cta {
-  position: absolute;
-  top: calc(var(--story-height) * .4522);
-  left: .12cqw;
-  display: inline-flex;
-  width: 29.75cqw;
-  min-height: max(44px, calc(var(--story-height) * .0653));
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  margin-top: 0;
-  padding: 0.8rem 1.65rem;
-  color: var(--story-sand-green);
-  background: #ecdfd3;
-  border-radius: 999px;
-  font-size: clamp(0.62rem, 0.8vw, 0.75rem);
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  line-height: 1.2;
-  text-transform: uppercase;
-  text-decoration: none;
-  transition: transform 240ms cubic-bezier(0.16, 1, 0.3, 1);
-}
 
-.story-cta:hover {
-  transform: translateY(-2px);
-}
 
-.story-cta:focus-visible {
-  outline: 2px solid var(--clay);
-  outline-offset: 5px;
-}
 
-.story-quote {
-  position: absolute;
-  bottom: 6.5%;
-  left: 58.5%;
-  z-index: 2;
-  display: grid;
-  width: 34%;
-  grid-template-columns: auto 1fr;
-  column-gap: 0.75rem;
-  margin: 0;
-  color: var(--story-sand-green);
-}
 
-.story-quote > span {
-  color: var(--clay);
-  font-family: var(--font-display);
-  font-size: 2.7rem;
-  line-height: 0.75;
-}
 
-.story-quote p {
-  max-width: 20rem;
-  margin: 0;
-  font-family: var(--font-display);
-  font-size: clamp(0.9rem, 1.4vw, 1.25rem);
-  font-style: italic;
-  line-height: 1.25;
-}
 
-.story-quote strong {
-  grid-column: 2;
-  justify-self: end;
-  margin-top: 0.3rem;
-  color: var(--clay);
-  font-family: var(--font-hand);
-  font-size: clamp(1.6rem, 3vw, 3.1rem);
-  font-weight: 500;
-  line-height: 0.8;
-}
 
-@media (min-width: 768px) and (max-width: 1180px) {
-  .story-portrait-art {
-    left: 7.75rem;
-  }
-}
 
-@media (max-width: 640px) {
-  .story-frame {
-    display: flex;
-    flex-direction: column;
-    aspect-ratio: auto;
-    height: auto;
-    padding: 24px 0 40px;
-  }
 
-  /* Keep the portrait clip definition available on small screens. */
-  .story-shapes > path { display: none; }
 
-  .story-portrait-art {
-    position: relative;
-    top: auto;
-    left: auto;
-    width: 100%;
-    height: auto;
-  }
 
-  .story-benefits {
-    position: static;
-    width: auto;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-template-rows: none;
-    gap: 0;
-    margin: 2rem 1.25rem 0;
-  }
 
-  .story-benefit {
-    grid-template-columns: 2.5rem minmax(0, 1fr);
-    gap: 0.65rem;
-    padding: 1rem 0.75rem;
-  }
 
-  .story-benefit + .story-benefit {
-    border-top: 0;
-  }
 
-  .story-benefit:nth-child(n + 3) {
-    border-top: 1px solid oklch(0.56 0.055 125 / 0.28);
-  }
 
-  .story-benefit:nth-child(even) {
-    border-left: 1px solid oklch(0.56 0.055 125 / 0.28);
-  }
 
-  .story-benefit-icon {
-    width: 2.5rem;
-    height: 2.5rem;
-  }
 
-  .story-benefit strong {
-    font-size: 0.68rem;
-  }
 
-  .story-benefit p {
-    font-size: 0.56rem;
-  }
 
-  .story-portrait {
-    position: relative;
-    top: auto;
-    left: auto;
-    flex: none;
-    width: 85%;
-    height: auto;
-    aspect-ratio: 668 / 990;
-    margin-left: 7%;
-  }
 
-  .story-photo-outline {
-    top: -6.87cqw;
-    left: -2.8%;
-    width: 183.87%;
-    height: 138.44cqw;
-  }
 
-  .story-seal {
-    top: 75.84cqw;
-    left: 11.45%;
-    width: 23.92%;
-    height: 23.92cqw;
-  }
 
-  .story-botanical-left {
-    top: 69.48cqw;
-    left: -2.8%;
-    width: 31.81%;
-    height: 48.35cqw;
-  }
 
-  .story-botanical-right {
-    top: auto;
-    bottom: 0;
-    width: 30%;
-    height: 48cqw;
-    opacity: .6;
-  }
 
-  .story-content {
-    position: relative;
-    top: auto;
-    left: auto;
-    width: 100%;
-    margin-top: 24px;
-    padding: 52px 9% 56px;
-    isolation: isolate;
-  }
 
-  .story-content::before {
-    position: absolute;
-    z-index: -1;
-    inset: 0 -5%;
-    content: "";
-    background: linear-gradient(135deg, #888d73, #90957d);
-    border-radius: 26% 12% 23% 8% / 13% 7% 10% 9%;
-    box-shadow: 0 9px 0 #cfc2b3;
-  }
 
-  .story-kicker { gap: .7rem; font-size: .7rem; }
-  .story-kicker svg { width: 2rem; }
-  .story-title { margin-top: 1.5rem; font-size: clamp(3.5rem, 13vw, 5rem); }
-  .story-rule { margin-block: 1.5rem; }
-  .story-copy { max-width: 27rem; font-size: .95rem; line-height: 1.65; }
 
-  .story-cta {
-    position: relative;
-    top: auto;
-    left: auto;
-    width: 100%;
-    min-height: 52px;
-    gap: 1rem;
-    margin-top: 1.8rem;
-    padding: 1rem;
-    font-size: .7rem;
-  }
 
-  .story-quote {
-    position: relative;
-    bottom: auto;
-    left: auto;
-    width: 82%;
-    margin: 42px auto 0;
-    column-gap: .75rem;
-  }
 
-  .story-quote > span { font-size: 2.7rem; }
-  .story-quote p { font-size: 1.15rem; line-height: 1.3; }
-  .story-quote strong { margin-top: .5rem; font-size: 2.4rem; }
-}
+
+
+
+
+
+
+
+
+
+
 
 .ambient {
   position: absolute;
@@ -2983,15 +2206,7 @@ a { color: inherit; text-decoration: none; }
   text-align: center;
 }
 
-@media (min-width: 768px) {
-  .about-card {
-    aspect-ratio: auto;
-  }
 
-  .about-photo {
-    min-height: 58rem;
-  }
-}
 
 @media (min-width: 1181px) {
   .contact-section {
@@ -4185,9 +3400,7 @@ a { color: inherit; text-decoration: none; }
 }
 
 @media (min-width: 768px) {
-  .about-value strong {
-    white-space: normal;
-  }
+  
 
   .services-benefits {
     position: relative;
@@ -4218,366 +3431,23 @@ a { color: inherit; text-decoration: none; }
   }
 }
 
-/* Second Chi sono section: same editorial language, content-led dimensions. */
-@media (min-width: 768px) {
-  .story-section {
-    display: block;
-    padding: clamp(3rem, 5vw, 5rem) clamp(1.5rem, 4vw, 4rem);
-    overflow: hidden;
-    background:
-      radial-gradient(circle at 7% 12%, rgb(199 101 66 / .08), transparent 28%),
-      var(--cream);
-  }
 
-  .story-frame {
-    --story-height: auto;
-    --story-art-width: auto;
-    display: grid;
-    width: min(100%, 82rem);
-    height: auto;
-    min-height: 0;
-    grid-template-columns: minmax(27rem, 1.04fr) minmax(27rem, .96fr);
-    grid-template-areas:
-      "portrait content"
-      "benefits quote";
-    margin-inline: auto;
-    overflow: hidden;
-    background: #ecdfd3;
-    border: 1px solid rgb(199 101 66 / .14);
-    border-radius: .75rem;
-    box-shadow: 0 1.5rem 3.5rem rgb(45 54 43 / .14);
-  }
-
-  .story-shapes,
-  .story-botanical-right {
-    display: none;
-  }
-
-  .story-portrait-art {
-    position: relative;
-    inset: auto;
-    grid-area: portrait;
-    width: auto;
-    min-width: 0;
-    height: auto;
-    min-height: 56rem;
-    overflow: hidden;
-    background: radial-gradient(ellipse at 40% 35%, #eee4da, #dfd2c5 78%);
-  }
-
-  .story-portrait {
-    top: 3%;
-    left: 1%;
-    width: 96%;
-    height: 94%;
-  }
-
-  .story-portrait img {
-    top: -3%;
-    left: -16%;
-    width: 220%;
-    height: 106%;
-    object-fit: cover;
-  }
-
-  .story-photo-outline {
-    opacity: .82;
-  }
-
-  .story-botanical-left {
-    top: 57%;
-    left: 0;
-    width: 22%;
-    height: 34%;
-  }
-
-  .story-seal {
-    top: auto;
-    bottom: 8%;
-    left: 9%;
-    width: 17%;
-    height: 13%;
-  }
-
-  .story-content {
-    position: relative;
-    inset: auto;
-    z-index: 2;
-    display: flex;
-    grid-area: content;
-    width: auto;
-    min-width: 0;
-    align-items: flex-start;
-    flex-direction: column;
-    justify-content: center;
-    padding: clamp(3.5rem, 5.2vw, 6rem) clamp(3rem, 5vw, 5.75rem);
-    color: var(--cream);
-    background:
-      radial-gradient(circle at 92% 8%, rgb(255 255 255 / .1), transparent 30%),
-      var(--story-sand-green);
-  }
-
-  .story-kicker {
-    color: #17231d;
-  }
-
-  .story-title {
-    margin-top: clamp(1.5rem, 3vw, 2.75rem);
-    font-size: clamp(4rem, 6.5vw, 6.4rem);
-  }
-
-  .story-rule {
-    margin-block: 2rem 1.6rem;
-  }
-
-  .story-copy {
-    max-width: 35rem;
-    font-size: clamp(.98rem, 1.2vw, 1.12rem);
-    line-height: 1.72;
-  }
-
-  .story-cta {
-    position: static;
-    width: min(100%, 20rem);
-    min-height: 3.5rem;
-    margin-top: 2.4rem;
-    padding-inline: 1.8rem;
-    color: var(--story-sand-green);
-    background: #f2e8dd;
-  }
-
-  .story-benefits {
-    position: relative;
-    inset: auto;
-    z-index: 2;
-    display: grid;
-    grid-area: benefits;
-    width: auto;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-template-rows: repeat(2, minmax(8.5rem, auto));
-    padding: 1.75rem 2rem;
-    margin: 0;
-    background: #f7f3e9;
-  }
-
-  .story-benefit {
-    align-content: center;
-    grid-template-columns: 2.7rem minmax(0, 1fr);
-    padding: 1rem;
-  }
-
-  .story-benefit + .story-benefit {
-    border-top: 0;
-  }
-
-  .story-benefit:nth-child(even) {
-    border-left: 1px solid rgb(89 101 77 / .22);
-  }
-
-  .story-benefit:nth-child(n + 3) {
-    border-top: 1px solid rgb(89 101 77 / .22);
-  }
-
-  .story-benefit strong {
-    font-size: .68rem;
+/* Desktop services refinement: keep both service titles inside their page
+   and align the two CTAs on the same visual baseline. */
+@media (min-width: 761px) {
+  .book-page .page-heading h3 {
+    max-width: 100%;
+    font-size: 29px;
+    line-height: .98;
     white-space: normal;
+    text-wrap: balance;
   }
 
-  .story-benefit p {
-    font-size: .62rem;
+  .book-page-right .page-heading h3 {
+    font-size: 28px;
   }
 
-  .story-quote {
-    position: relative;
-    inset: auto;
-    z-index: 2;
-    display: grid;
-    grid-area: quote;
-    width: auto;
-    align-content: center;
-    grid-template-columns: auto minmax(0, 1fr);
-    padding: clamp(2.5rem, 4vw, 4.5rem) clamp(3rem, 5vw, 5.75rem);
-    margin: 0;
-    color: var(--story-sand-green);
-    background: #f7f3e9;
-  }
-
-  .story-quote p {
-    max-width: 38rem;
-    font-size: clamp(1.1rem, 1.55vw, 1.38rem);
-    line-height: 1.42;
-  }
-}
-
-@media (min-width: 768px) and (max-width: 1050px) {
-  .story-frame {
-    grid-template-columns: 1fr;
-    grid-template-areas:
-      "portrait"
-      "content"
-      "quote"
-      "benefits";
-  }
-
-  .story-portrait-art {
-    min-height: 44rem;
-  }
-
-  .story-content,
-  .story-quote {
-    padding-inline: clamp(3rem, 9vw, 6rem);
-  }
-}
-
-/* Desktop Chi sono: restore the original unified organic composition. */
-@media (min-width: 901px) {
-  .story-section {
-    padding: 0;
-    background: var(--cream);
-  }
-
-  .story-frame {
-    --story-height: clamp(68rem, 86vw, 78rem);
-    --story-art-width: calc(var(--story-height) * 4 / 3);
-    position: relative;
-    display: block;
-    width: min(100%, 90rem);
-    height: var(--story-height);
-    min-height: 0;
-    margin-inline: auto;
-    overflow: hidden;
-    background: radial-gradient(ellipse at 36% 42%, #e9dfd3, transparent 70%), #ecdfd3;
-    border: 0;
-    border-radius: 0;
-    box-shadow: none;
-  }
-
-  .story-shapes,
-  .story-botanical-right {
-    display: block;
-  }
-
-  .story-portrait-art {
-    position: absolute;
-    top: 0;
-    left: calc((100% - var(--story-art-width)) * .5);
-    width: var(--story-art-width);
-    height: 100%;
-    min-height: 0;
-    overflow: visible;
-    background: transparent;
-  }
-
-  .story-portrait {
-    top: 4.9632%;
-    left: 5.3287%;
-    width: 46.2284%;
-    height: 90.9926%;
-  }
-
-  .story-portrait img {
-    top: -5.4545%;
-    left: -11.5269%;
-    width: 216.3174%;
-    height: 109.899%;
-    object-fit: fill;
-  }
-
-  .story-photo-outline {
-    opacity: 1;
-  }
-
-  .story-botanical-left {
-    top: 55.1471%;
-    left: 0;
-    width: 17.301%;
-    height: 34.9265%;
-  }
-
-  .story-seal {
-    top: 59.7426%;
-    bottom: auto;
-    left: 7.7509%;
-    width: 13.0104%;
-    height: 17.2794%;
-  }
-
-  .story-content {
-    position: absolute;
-    top: 10.5%;
-    left: 57.5%;
-    display: block;
-    width: 36.5%;
-    padding: 0;
-    color: var(--cream);
-    background: transparent;
-  }
-
-  .story-title {
-    margin-top: clamp(1.2rem, 2.5vh, 2.2rem);
-    font-size: min(6.2vw, 9svh, 5.8rem);
-  }
-
-  .story-rule {
-    margin: clamp(1rem, 2vh, 1.7rem) 0 clamp(.9rem, 1.7vh, 1.4rem);
-  }
-
-  .story-copy {
-    max-width: 32rem;
-    font-size: clamp(.88rem, 1.05vw, 1rem);
-    line-height: 1.68;
-  }
-
-  .story-cta {
-    position: static;
-    width: min(100%, 22rem);
-    min-height: 3.55rem;
-    margin-top: 2rem;
-  }
-
-  .story-benefits {
-    position: absolute;
-    top: 6.5%;
-    bottom: 6.5%;
-    left: clamp(1rem, 1.65cqw, 1.5rem);
-    display: grid;
-    width: clamp(9.5rem, 12.5cqw, 11.25rem);
-    grid-template-columns: 1fr;
-    grid-template-rows: repeat(4, minmax(0, 1fr));
-    padding: 0;
-    background: transparent;
-  }
-
-  .story-benefit {
-    align-content: center;
-    grid-template-columns: 2.7rem minmax(0, 1fr);
-    padding: clamp(.75rem, 1.45vh, 1.15rem) 0;
-  }
-
-  .story-benefit + .story-benefit,
-  .story-benefit:nth-child(even),
-  .story-benefit:nth-child(n + 3) {
-    border-top: 1px solid oklch(0.56 0.055 125 / .28);
-    border-left: 0;
-  }
-
-  .story-quote {
-    position: absolute;
-    right: auto;
-    bottom: 5.5%;
-    left: 57.5%;
-    display: grid;
-    width: 36.5%;
-    align-content: initial;
-    grid-template-columns: auto minmax(0, 1fr);
-    padding: 0;
-    color: var(--story-sand-green);
-    background: transparent;
-  }
-
-  .story-quote p {
-    max-width: 31rem;
-    font-size: clamp(1rem, 1.35vw, 1.22rem);
-    line-height: 1.38;
+  .book-page-left .book-button {
+    margin-top: 39px;
   }
 }
