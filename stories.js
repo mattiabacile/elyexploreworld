@@ -1,33 +1,12 @@
 (() => {
   const section = document.getElementById('blog');
-  if (!section) return;
-  const nav = document.getElementById('primary-nav');
-  const menuButton = document.getElementById('mobile-menu-toggle');
-  const originalTitle = document.title;
-  const syncStories = (hash = location.hash) => {
-    const navLinks = [...(nav?.querySelectorAll('a') || [])];
-    const currentLink = navLinks.find(link => {
-      const href = link.getAttribute('href');
-      return href === hash;
-    });
-    document.title = hash === '#blog' ? 'Racconti di viaggio — Elyexploreworld' : originalTitle;
-    navLinks.forEach(link => {
-      link.classList.toggle('is-current', link === currentLink);
-      if (link === currentLink) link.setAttribute('aria-current', 'page');
-      else link.removeAttribute('aria-current');
-    });
-    const menuLabel = menuButton?.querySelector('span');
-    if (menuLabel) menuLabel.textContent = currentLink?.textContent.trim() || 'Menu';
-  };
-  window.addEventListener('hashchange', () => syncStories());
-  window.addEventListener('preview:navigate', event => syncStories(event.detail?.hash || ''));
-  syncStories();
-
-  const track = section.querySelector('.stories-track');
+  const track = section?.querySelector('.stories-track');
+  if (!track) return;
   const slides = [...track.querySelectorAll('.stories-slide')];
+  if (!slides.length) return;
   const controls = section.querySelector('.stories-controls');
   const status = section.querySelector('.stories-status');
-  const dialog = section.querySelector('.stories-preview');
+  const pauseButton = section.querySelector('.stories-pause');
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
   let active = 0;
   let paused = reducedMotion.matches;
@@ -36,11 +15,13 @@
   let timer;
   const schedule = () => {
     clearTimeout(timer);
-    if (!paused && visible && !hovered && !document.hidden && !dialog.open && !section.contains(document.activeElement)) {
+    if (slides.length > 1 && !paused && visible && !hovered && !document.hidden && !document.querySelector('dialog[open]') && !document.body.classList.contains('menu-open') && !section.contains(document.activeElement)) {
       timer = setTimeout(() => show(active + 1), 6000);
     }
   };
   function show(index, announce = false) {
+    // Move focus out of a link before its slide becomes inert.
+    if (slides[active].contains(document.activeElement)) track.focus({ preventScroll: true });
     active = (index + slides.length) % slides.length;
     slides.forEach((slide, i) => {
       slide.classList.toggle('is-active', i === active);
@@ -53,6 +34,13 @@
     if (announce) status.textContent = `${slides[active].dataset.destination}, racconto ${active + 1} di ${slides.length}`;
     schedule();
   }
+  const syncPause = () => {
+    pauseButton.setAttribute('aria-pressed', String(paused));
+    pauseButton.textContent = paused ? 'Riprendi' : 'Pausa';
+    pauseButton.setAttribute('aria-label', paused ? 'Riprendi la rotazione dei racconti' : 'Metti in pausa la rotazione dei racconti');
+    schedule();
+  };
+  pauseButton.addEventListener('click', () => { paused = !paused; syncPause(); });
   section.querySelector('.stories-prev').addEventListener('click', () => show(active - 1, true));
   section.querySelector('.stories-next').addEventListener('click', () => show(active + 1, true));
   track.addEventListener('keydown', event => {
@@ -66,24 +54,19 @@
   section.addEventListener('focusin', schedule);
   section.addEventListener('focusout', () => setTimeout(schedule, 0));
   document.addEventListener('visibilitychange', schedule);
-  reducedMotion.addEventListener('change', () => { paused = reducedMotion.matches; schedule(); });
-  const backToTop = document.querySelector('.back-to-top');
-  new IntersectionObserver(([entry]) => {
-    visible = entry.isIntersecting;
-    backToTop?.classList.toggle('is-over-blog', visible);
-    schedule();
-  }, { threshold: .15 }).observe(section);
-  section.querySelectorAll('button.stories-read').forEach(button => {
-    button.addEventListener('click', () => {
-      const slide = button.closest('.stories-slide');
-      dialog.querySelector('h3').textContent = slide.dataset.destination;
-      dialog.querySelector('.stories-preview-text').textContent = slide.querySelector('.stories-excerpt').textContent;
-      dialog.showModal();
-      schedule();
-    });
+  reducedMotion.addEventListener('change', () => { paused = reducedMotion.matches; syncPause(); });
+  new MutationObserver(schedule).observe(document.body, { attributes: true, attributeFilter: ['class'] });
+  document.querySelectorAll('dialog').forEach(dialog => {
+    new MutationObserver(schedule).observe(dialog, { attributes: true, attributeFilter: ['open'] });
   });
-  dialog.querySelector('.stories-preview-close').addEventListener('click', () => dialog.close());
-  dialog.addEventListener('close', schedule);
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      document.querySelector('.back-to-top')?.classList.toggle('is-over-blog', visible);
+      schedule();
+    }, { threshold: .15 }).observe(section);
+  } else visible = true;
   controls.hidden = slides.length < 2;
+  syncPause();
   show(0);
 })();

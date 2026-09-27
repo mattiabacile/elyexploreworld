@@ -28,7 +28,7 @@ Strategia “full palette” con verde foresta come identità principale, argill
 ## Layout
 
 - Contenuto centrato con larghezza massima di circa 1.560 px e margini fluidi.
-- Hero a piena altezza con fotografia full-bleed, gradiente di leggibilità e stampe sovrapposte.
+- Hero a tutta schermata con una singola fotografia reale, gradiente di leggibilità, testo chiaro allineato a sinistra e CTA contornata. Composizione e valori locali sono documentati in `.impeccable/surfaces/home-hero.md`; l’header della homepage è fisso e trasparente in cima, color crema dopo lo scroll, con controlli sempre leggibili. Una sfumatura salvia raccorda la hero alla biografia.
 - Sezioni lunghe alternate: biografia asimmetrica, processo ordinato, galleria orizzontale, magazine grid, contatto immersivo.
 - Raggi contenuti (12–18 px) per immagini e pannelli; pillole solo per pulsanti e tag.
 - Spaziatura verticale fluida tra 88 e 160 px su desktop, ridotta su mobile.
@@ -46,8 +46,8 @@ Strategia “full palette” con verde foresta come identità principale, argill
 
 ## Motion
 
-- Un ingresso iniziale orchestrato per hero e stampe fotografiche.
-- Parallasse molto lieve soltanto sul hero.
+- Il hero fotografico resta statico, senza ingresso animato o stampe sovrapposte.
+- Nessuna parallasse sul hero; la CTA usa soltanto una breve transizione di colore.
 - Reveal diversi per biografia, processo e gallery; il contenuto resta visibile anche senza JavaScript.
 - Transizioni con curve ease-out, nessun rimbalzo decorativo.
 - `prefers-reduced-motion` disattiva parallasse, animazioni continue e scorrimenti morbidi.
@@ -56,7 +56,7 @@ Strategia “full palette” con verde foresta come identità principale, argill
 
 - La terza sezione «Ciao, sono Ely.» deve rientrare in una sola schermata sui laptop, menu incluso. Conservare fotografia, testi, forme e ornamenti; adattare le proporzioni senza deformare il ritratto. Su mobile privilegiare la leggibilità con una disposizione verticale.
 - Sotto 1024 px la navigazione diventa drawer e compare una CTA fissa inferiore.
-- Hero e contatto passano a una colonna; le stampe decorative non competono con il testo.
+- Il hero mantiene fotografia a tutta larghezza e testo a sinistra anche su mobile, con ritaglio e dimensioni tipografiche dedicati; il contatto passa a una colonna.
 - Timeline diventa una sequenza verticale senza linea centrale.
 - Galleria viaggio mantiene lo scorrimento orizzontale con snap e controlli accessibili.
 - Form e newsletter impilano campi e pulsanti; target interattivi minimi di 44 px.

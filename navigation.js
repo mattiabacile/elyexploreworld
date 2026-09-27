@@ -5,6 +5,9 @@
   if (!header || !menuButton || !nav) return;
 
   let menuScrollY = 0;
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+  const background = [...document.body.children].filter(node => node !== header && !['SCRIPT', 'STYLE'].includes(node.tagName));
+  const previousInert = new Map();
 
   const lockPageScroll = () => {
     menuScrollY = window.scrollY || window.pageYOffset || 0;
@@ -17,28 +20,28 @@
     document.documentElement.classList.remove('menu-open');
     document.body.classList.remove('menu-open');
     document.body.style.removeProperty('--menu-lock-top');
-    window.scrollTo({ top: menuScrollY, left: 0, behavior: 'auto' });
+    window.scrollTo({ top: menuScrollY, left: 0, behavior: 'instant' });
   };
 
   const getLinks = () => Array.from(nav.querySelectorAll('a'));
-  const getFocusables = () => [
-    menuButton,
-    header.querySelector('.brand'),
-    header.querySelector('.header-cta'),
-    ...getLinks()
-  ].filter(Boolean);
+  const getFocusables = () => [...header.querySelectorAll('a[href], button')].filter(node => node.getClientRects().length && getComputedStyle(node).visibility !== 'hidden');
 
   const setMenu = (open) => {
+    const wasOpen = menuButton.getAttribute('aria-expanded') === 'true';
     menuButton.setAttribute('aria-expanded', String(open));
     menuButton.setAttribute('aria-label', open ? 'Chiudi il menu' : 'Apri il menu');
     nav.setAttribute('aria-hidden', String(!open));
     nav.classList.toggle('is-open', open);
 
-    if (open) {
+    if (open && !wasOpen) {
+      background.forEach(node => { previousInert.set(node, node.inert); node.inert = true; });
       lockPageScroll();
       window.requestAnimationFrame(() => getLinks()[0]?.focus());
     } else if (document.documentElement.classList.contains('menu-open') || document.body.classList.contains('menu-open')) {
       unlockPageScroll();
+      background.forEach(node => { node.inert = previousInert.get(node) || false; });
+      previousInert.clear();
+      if (nav.contains(document.activeElement)) menuButton.focus({ preventScroll: true });
     }
   };
 
@@ -46,11 +49,35 @@
   window.addEventListener('scroll', updateHeader, { passive: true });
 
   menuButton.addEventListener('click', () => setMenu(menuButton.getAttribute('aria-expanded') !== 'true'));
-  nav.addEventListener('click', (event) => {
-    if (event.target.closest('a')) setMenu(false);
+  const syncNavigation = () => {
+    getLinks().forEach(link => {
+      const current = link.getAttribute('href') === location.hash;
+      link.classList.toggle('is-current', current);
+      if (link.getAttribute('href')?.startsWith('#')) {
+        if (current) link.setAttribute('aria-current', 'location');
+        else link.removeAttribute('aria-current');
+      }
+    });
+  };
+  document.addEventListener('click', event => {
+    const link = event.target.closest('a[href]');
+    if (!link || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    if (header.contains(link)) setMenu(false);
+    const href = link.getAttribute('href');
+    if (!href.startsWith('#') || href.length < 2) return;
+    let id;
+    try { id = decodeURIComponent(href.slice(1)); } catch { return; }
+    const target = document.getElementById(id);
+    if (!target) return;
+    event.preventDefault();
+    if (location.hash !== href) history.pushState(null, '', href);
+    target.scrollIntoView({ block: 'start', behavior: reducedMotion.matches ? 'instant' : 'smooth' });
+    if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
+    target.focus({ preventScroll: true });
+    syncNavigation();
   });
-  header.querySelector('.brand')?.addEventListener('click', () => setMenu(false));
-  header.querySelector('.header-cta')?.addEventListener('click', () => setMenu(false));
+  window.addEventListener('hashchange', syncNavigation);
+  syncNavigation();
 
   document.addEventListener('keydown', (event) => {
     if (menuButton.getAttribute('aria-expanded') !== 'true') return;

@@ -2,7 +2,7 @@
   const root = document.getElementById('site-footer-root');
   if (!root) return;
 
-  const fallbackMarkup = `
+  const footerMarkup = `
 <footer class="site-footer" aria-label="Footer del sito">
   <div class="site-footer-shell">
     <a class="site-footer-brand" href="index.html#home" aria-label="ElyExploreWorld, torna alla home">
@@ -11,9 +11,9 @@
     </a>
 
     <nav class="site-footer-legal" aria-label="Informazioni legali">
-      <a href="privacy.html">Privacy Policy</a>
-      <a href="cookie-policy.html">Cookie Policy</a>
-      <a href="termini-condizioni.html">Termini e condizioni</a>
+      <span aria-disabled="true" title="Documento in preparazione">Privacy Policy</span>
+      <span aria-disabled="true" title="Documento in preparazione">Cookie Policy</span>
+      <span aria-disabled="true" title="Documento in preparazione">Termini e condizioni</span>
     </nav>
 
     <address class="site-footer-contact" aria-label="Contatti">
@@ -36,27 +36,11 @@
   </div>
 
   <div class="site-footer-meta">
-    <p>© 2026 Elyexploreworld</p>
+    <p>© <span data-year></span> Elyexploreworld</p>
     <a href="#top" aria-label="Torna all'inizio della pagina">Torna su ↑</a>
   </div>
 </footer>`;
 
-  // Render immediato: il footer è sempre presente, anche se il file condiviso
-  // non è raggiungibile (per esempio apertura locale/file:// o errore di rete).
-  root.innerHTML = fallbackMarkup;
-
-  // Se footer.html è disponibile, resta la fonte condivisa e sostituisce il fallback.
-  if (window.location.protocol === 'file:') return;
-
-  fetch(new URL('footer.html', document.baseURI), { cache: 'no-store' })
-    .then((response) => {
-      if (!response.ok) throw new Error(`Footer non disponibile: ${response.status}`);
-      return response.text();
-    })
-    .then((markup) => {
-      if (markup.trim()) root.innerHTML = markup;
-    })
-    .catch((error) => {
-      console.warn('Footer condiviso non caricato: uso il fallback integrato.', error);
-    });
+  root.innerHTML = footerMarkup;
+  root.querySelector('[data-year]').textContent = String(new Date().getFullYear());
 })();

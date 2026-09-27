@@ -15,7 +15,7 @@
   bottom: 6%;
   width: 23.5%;
   height: 80%;
-  background: url('assets/consultation-polaroid-cutout.png') center / 100% auto no-repeat;
+  background: url('assets/consultation-polaroid-cutout.webp') center / 100% auto no-repeat;
   pointer-events: none;
 }
 .consultation-copy {

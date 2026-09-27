@@ -6,14 +6,14 @@
       title: 'Giappone: tra templi, natura e <em>tradizioni</em>',
       deck: 'Un viaggio tra città luminose, paesaggi silenziosi e gesti antichi che continuano a sorprendere.',
       date: '26 aprile 2026',
-      hero: 'assets/stories/japan.jpg',
+      hero: 'assets/stories/japan.webp',
       heroAlt: 'Monte Fuji oltre un lago, incorniciato dai ciliegi in fiore e da una pagoda rossa',
       heroCaption: 'Il profilo del Monte Fuji al tramonto.',
-      detail1: 'assets/stories/japan.png',
+      detail1: 'assets/stories/japan-detail.webp',
       detail1Caption: 'Il Giappone tra natura e architettura.',
-      detail2: 'assets/stories/japan.jpg',
+      detail2: 'assets/stories/japan.webp',
       detail2Caption: 'Il paesaggio si fa quieto lontano dalla città.',
-      detail3: 'assets/stories/japan.png',
+      detail3: 'assets/stories/japan-detail.webp',
       detail3Caption: 'Tradizioni che convivono con il presente.',
       chapter1: 'Il ritmo quieto dei templi',
       chapter2: 'Paesaggi che cambiano voce',
@@ -27,14 +27,14 @@
       title: 'Bali: l’isola che sa di <em>casa</em>',
       deck: 'Templi sull’acqua, risaie e incontri: un’isola da vivere seguendo un ritmo più gentile.',
       date: '18 marzo 2026',
-      hero: 'assets/stories/bali.jpg',
+      hero: 'assets/stories/bali.webp',
       heroAlt: 'Tempio balinese sul lago Beratan tra montagne e luce del mattino',
       heroCaption: 'Il tempio di Ulun Danu Beratan al mattino.',
-      detail1: 'assets/stories/bali.png',
+      detail1: 'assets/stories/bali-detail.webp',
       detail1Caption: 'Acqua, pietra e vegetazione nel cuore dell’isola.',
-      detail2: 'assets/hero-river.jpg',
+      detail2: 'assets/hero-river.webp',
       detail2Caption: 'La natura accompagna ogni spostamento.',
-      detail3: 'assets/hero-temple.jpg',
+      detail3: 'assets/hero-temple.webp',
       detail3Caption: 'Un tempio custodito dal giardino tropicale.',
       chapter1: 'L’acqua e i templi',
       chapter2: 'Dentro il verde dell’isola',
@@ -48,14 +48,14 @@
       title: 'Singapore: un mondo in una <em>città</em>',
       deck: 'Quartieri, giardini e architetture si incontrano in una città sorprendentemente verde.',
       date: '5 gennaio 2026',
-      hero: 'assets/stories/singapore.jpg',
+      hero: 'assets/stories/singapore.webp',
       heroAlt: 'Veduta di Marina Bay a Singapore con la baia e lo skyline',
       heroCaption: 'Marina Bay e il profilo contemporaneo della città.',
-      detail1: 'assets/stories/singapore.jpg',
+      detail1: 'assets/stories/singapore.webp',
       detail1Caption: 'La città si riflette sull’acqua della baia.',
-      detail2: 'assets/hero-river.jpg',
+      detail2: 'assets/hero-river.webp',
       detail2Caption: 'Il lato tropicale della città.',
-      detail3: 'assets/stories/singapore.jpg',
+      detail3: 'assets/stories/singapore.webp',
       detail3Caption: 'Architetture e quartieri da esplorare a piedi.',
       chapter1: 'Una città sull’acqua',
       chapter2: 'Giardini dentro la metropoli',
@@ -67,7 +67,7 @@
 
   const order = ['japan', 'bali', 'singapore'];
   const params = new URLSearchParams(location.search);
-  const slug = stories[params.get('story')] ? params.get('story') : 'japan';
+  const slug = Object.hasOwn(stories, params.get('story')) ? params.get('story') : 'japan';
   const story = stories[slug];
   const currentIndex = order.indexOf(slug);
   const previousSlug = order[(currentIndex - 1 + order.length) % order.length];
@@ -122,16 +122,24 @@
   });
 
   const shareUrl = encodeURIComponent(location.href);
-  const shareTitle = encodeURIComponent(document.title);
   document.querySelector('[data-share-link="facebook"]').href = `https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`;
+  const status = document.querySelector('.copy-status');
+  let statusTimer;
+  const copyLink = async () => {
+    clearTimeout(statusTimer);
+    try {
+      if (!navigator.clipboard?.writeText) throw new Error('Clipboard unavailable');
+      await navigator.clipboard.writeText(location.href);
+      status.textContent = 'Link copiato negli appunti.';
+    } catch {
+      status.textContent = 'Copia il link dalla barra degli indirizzi del browser.';
+    }
+    statusTimer = setTimeout(() => { status.textContent = ''; }, 5000);
+  };
   document.querySelector('[data-share="native"]').addEventListener('click', async () => {
-    if (navigator.share) await navigator.share({ title: document.title, url: location.href }).catch(() => {});
-    else await navigator.clipboard?.writeText(location.href);
+    if (!navigator.share) return copyLink();
+    try { await navigator.share({ title: document.title, url: location.href }); }
+    catch (error) { if (error.name !== 'AbortError') await copyLink(); }
   });
-  document.querySelector('[data-share="copy"]').addEventListener('click', async () => {
-    await navigator.clipboard?.writeText(location.href);
-    const status = document.querySelector('.copy-status');
-    status.textContent = 'Link copiato negli appunti.';
-    window.setTimeout(() => { status.textContent = ''; }, 2500);
-  });
+  document.querySelector('[data-share="copy"]').addEventListener('click', copyLink);
 })();

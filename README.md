@@ -1,30 +1,45 @@
 # ElyExploreWorld
 
-Static HTML/CSS/JavaScript website. Serve this folder locally:
+Sito statico HTML/CSS/JavaScript, senza build o dipendenze di produzione.
 
 ```sh
 python3 -m http.server 4173
 ```
 
-Open http://localhost:4173/.
+Aprire http://localhost:4173/.
 
-- `index.html` is the shared source of homepage content for desktop and mobile.
-- `hero.css` retains the existing desktop design.
-- `responsive.css` implements the approved phone composition below 768 px and the accessible navigation disclosure below 901 px.
-- `script.js` handles navigation, the mobile biography disclosure, and previews of the service/itinerary content.
+## Struttura attuale
 
-The published copy is mapped from `SITO TD (1).docx`. Marketing fields without approved wording use the requested `lorem ipsum dolorem...` placeholder. The biography includes three editorial versions. The third, at `#chi-sono-blob`, follows the organic reference, includes both complete descriptions inside the green panel, and provides email and Instagram links.
+- `index.html`: homepage, biografia, consulenza, servizi, itinerario, carosello e contatti.
+- `racconti.html`: archivio dei racconti.
+- `racconto.html` e `racconto.js`: modello articolo e dati per Giappone, Bali e Singapore. Gli slug sconosciuti mostrano il Giappone.
+- `navigation.js` e `navigation.css`: unico menu condiviso, gestione focus, blocco dello scorrimento e navigazione alle sezioni.
+- `footer.js` e `footer.css`: footer condiviso, senza richieste aggiuntive; anno aggiornato automaticamente.
+- `script.js`: anteprime dei servizi e dell’itinerario, biografia e preparazione dell’email di contatto.
+- `stories.js` e `stories.css`: carosello dei racconti, con pausa persistente durante la visita. La rotazione si ferma con focus, mouse, menu o dialoghi aperti, scheda nascosta e sezione fuori vista. La preferenza per movimento ridotto disattiva la rotazione iniziale.
+- `hero.css`: base e composizione dei servizi/itinerario; `responsive.css`: adattamenti e anteprime; `panorama-hero.css`: apertura fotografica; `story-refined.css`: biografia; `consultation.css` e `contact.css`: sezioni corrispondenti.
+- `assets/`: risorse effettivamente usate, con immagini WebP e varianti responsive della foto iniziale. Font caricati da Google Fonts.
 
-The mockup's vase/books image is absent from the supplied assets. The third biography reuses the supplied portrait artwork, with the empty button removed from a separate image copy. Its portrait retains its aspect ratio and its green panel grows with the text. See `BIO-VALIDATION.md` for visual checks and asset provenance.
+## Contenuti da completare
 
-The Blog link opens the Racconti di viaggio section at `/#blog`. Its isolated styles and interactions are in `stories.css` and `stories.js`. Each destination now links to `racconto.html?story=<slug>`, whose editorial article layout is defined by `racconto.css` and populated by `racconto.js`. Generated photographs and their provenance are in `assets/stories/`. See `BLOG-VALIDATION.md` for the index section and `RACCONTO-VALIDATION.md` for the article surface.
+Il modulo apre l’app di posta dell’utente: non esiste un servizio di invio sul server. La pagina lo indica esplicitamente. Gli articoli e alcune parti dell’itinerario conservano i testi provvisori; i ritratti restano segnaposto. Privacy, cookie policy e termini non sono presenti: il footer mostra voci non cliccabili con l’indicazione “Documento in preparazione”, senza collegamenti a pagine inesistenti. Occorre inserire i documenti approvati e ripristinare i relativi link quando disponibili.
 
-The Contatti navigation and Parliamone control lead to the contact section, which contains the approved email address and Instagram profile. Service and itinerary buttons open accessible previews of existing content. Blog uses a panoramic photograph and overlapping caption, following the September 27 reference. Japan, Bali, and Singapore rotate automatically every six seconds. Article links open the shared long-form story template for the selected destination.
+I file `*-VALIDATION.md`, `VALIDATION.md` e i materiali `.impeccable/` documentano revisioni precedenti: non costituiscono test del sito corrente. Provenienza delle immagini: `assets/bali-rice-terraces-source.md` e `assets/stories/PROVENANCE.md`. Il riepilogo della pulizia è in `CLEANUP-REPORT.md`.
 
-See `VALIDATION.md` for responsive and visual checks.
+## Verifiche
 
-### Publishing a Blog article
+Con il server locale attivo:
 
-Each `.stories-slide` in `index.html` contains a destination, photo, caption, excerpt, and link to the matching `story` slug. The destination metadata, chapter titles, captions, related links, and images for those slugs live in `racconto.js`; the shared semantic structure lives in `racconto.html`. The long-form paragraph copy is still placeholder text and must be replaced with approved editorial copy before treating the articles as final editorial content.
+```sh
+python3 tests/check-static.py
+node tests/site-check.cjs
+```
 
-`stories.css` defines the panoramic layout directly. `stories.js` cycles through slides every six seconds with a fade transition, wrapping at both ends. Arrow buttons and keyboard arrows/Home/End provide manual navigation. Autoplay pauses on mouse hover, keyboard focus, an open preview, a hidden browser tab, or when the section leaves view. A persistent pause control is available, and reduced-motion preferences disable autoplay by default. On phones the caption stacks beneath the photograph.
+Il secondo comando richiede Playwright disponibile in Node e Google Chrome installato. `SITE_URL` permette di cambiare l’indirizzo del server. Il controllo verifica sette URL (inclusi parametri non validi), cinque larghezze da 320 a 1440 px, menu, focus, ripristino dello scroll, anteprime, carosello, errori JavaScript, condivisione senza permesso agli appunti e collegamenti interni.
+
+## Backup
+
+Prima della pulizia del 27 settembre 2026 è stata salvata una copia completa esterna alla cartella del sito:
+`/Users/Mattia/Desktop/elyexploreworld-backup-20260927-pre-cleanup.tar.gz`.
+
+Le immagini originali, le varianti scartate, `vecchi/`, `styles.css` e `footer.html` sono recuperabili da quella copia. Il backup non va pubblicato insieme al sito.

@@ -66,12 +66,6 @@ main > .travel-stories-page[id] { scroll-margin-top: 72px; }
 .travel-stories-page :focus-visible { outline: 2px solid var(--stories-accent); outline-offset: 4px; }
 .travel-stories-page ::selection { color: var(--stories-paper); background: var(--stories-ink); }
 .back-to-top.is-over-blog { opacity: 0; visibility: hidden; pointer-events: none; }
-.stories-preview { width: min(90vw, 600px); max-height: 85svh; padding: 36px; border: 1px solid #c8ceca; border-radius: 20px; color: var(--stories-ink); background: var(--stories-paper); }
-.stories-preview::backdrop { background: rgb(16 45 40 / .55); }
-.stories-preview-close { display: block; margin-left: auto; min-height: 44px; padding: 8px 16px; border: 1px solid var(--stories-ink); border-radius: 24px; background: transparent; color: inherit; cursor: pointer; }
-.stories-preview-label, .stories-preview-status { font-size: 14px; }
-.stories-preview h3 { margin: 18px 0; font: 400 48px/1 var(--font-display); }
-.stories-preview-text { font-size: 18px; line-height: 1.6; }
 @media (max-width: 1100px) {
   .stories-kicker { position: static; margin-bottom: 20px; text-align: center; }
   .stories-kicker br { display: none; }
@@ -97,3 +91,5 @@ main > .travel-stories-page[id] { scroll-margin-top: 72px; }
   .stories-branch { width: 110px; right: -40px; }
 }
 @media (prefers-reduced-motion: reduce) { .stories-slide, .stories-read, .stories-all-link::after { transition: none; transform: none; } }
+
+.stories-pause { display: block; min-height: 44px; margin: 18px auto 0; padding: 8px 20px; border: 1px solid currentColor; border-radius: 999px; color: var(--stories-ink); background: var(--stories-paper); font: inherit; cursor: pointer; }

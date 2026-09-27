@@ -157,7 +157,8 @@
   inset: 0;
   z-index: 1;
   display: grid;
-  min-height: 100dvh;
+  height: 100dvh;
+  overflow-y: auto;
   grid-template-rows: 1fr auto;
   place-items: center;
   padding: clamp(112px, 14vh, 150px) 24px clamp(28px, 5vh, 52px);
@@ -281,7 +282,7 @@ html.menu-open body {
 
 body.menu-open .site-header .preview-nav.is-open {
   overscroll-behavior: none;
-  touch-action: none;
+  touch-action: pan-y;
 }
 body.menu-open .site-header,
 body.menu-open .site-header.stuck-nav {
@@ -369,4 +370,10 @@ html.menu-open body .site-header .brand {
 
 html.menu-open body .site-header .preview-nav.is-open {
   z-index: 1;
+}
+
+@media (max-height: 600px) {
+  .site-header .preview-nav { padding-top: 90px; gap: 24px; }
+  .site-header .menu-nav-inner { gap: 14px; }
+  .site-header .menu-nav-inner > a { font-size: 30px; }
 }
