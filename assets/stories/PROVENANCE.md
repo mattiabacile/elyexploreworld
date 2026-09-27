@@ -1,5 +1,8 @@
 # Story photographs — provenance
 
+Historical creation record. During the 27 September 2026 cleanup, used images were converted to WebP. The original PNG/JPEG files and the unused Amalfi/Jordan images are now in the external pre-cleanup backup, not in the published asset folder. `bali.webp` and `japan.webp` come from the 1600px JPEG derivatives; `bali-detail.webp` and `japan-detail.webp` preserve the separate original compositions. Historical prompts below retain their original filenames.
+
+
 The exact original Bali, Amalfi Coast, Petra and Mount Fuji photographs were absent from the supplied project. The user subsequently requested that the photographs be generated from scratch, with natural photographic texture and no plastic or stereotyped AI appearance. No photographs were extracted from the reference screenshot.
 
 Generated with the built-in image_gen tool on 9 September 2026. Final files are local assets in this directory. Bali received a second composition pass so that the temple tip stays inside the custom SVG silhouette. These are generated illustrations in a photographic style, not authenticated location photographs. They retain the subjects and intended visual composition, but do not reproduce the source photograph pixels.
@@ -30,6 +33,6 @@ botanical-branch.svg is a locally authored vector drawing. Existing ../balinese-
 
 ## Blog slideshow — 25 September 2026
 
-- `bali.webp` and `japan.webp`: optimized JPEG derivatives of the existing generated illustrations above (1600 px wide). Originals retained for other uses.
+- `bali.webp` and `japan.webp`: WebP conversions of the 1600 px JPEG derivatives of the existing generated illustrations above. Original files are in the pre-cleanup backup.
 - `singapore.webp`: photograph by Bára Buri, downloaded from Unsplash. Source: https://unsplash.com/photos/mFTcsgX0SYA ; image: https://images.unsplash.com/photo-1637062285066-d408467a87a8?auto=format&fit=crop&w=1600&q=85 . Actual dimensions 1600 × 459. This is a representative destination photograph, not a photograph attributed to Ely.
-- The destination decks/excerpts are proposed editorial preview copy. Full articles, publication dates, and article URLs have not been supplied; all three entries are explicitly marked “Racconto in arrivo”.
+- The destination decks/excerpts are proposed editorial preview copy. This describes the September 25 state. The current site links to `racconto.html?story=<slug>`; article body copy is still provisional.
