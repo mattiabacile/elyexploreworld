@@ -3,11 +3,24 @@
   const heroImage = document.getElementById('hero-bg-img');
   const menuButton = document.getElementById('mobile-menu-toggle');
   const mobileNav = document.getElementById('primary-nav');
-  const menuViewport = window.matchMedia('(max-width: 900px)');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const backToTop = document.querySelector('.back-to-top');
   let scrollTicking = false;
-  let previousScrollY = window.scrollY;
+  let menuScrollY = 0;
+
+  const lockPageScroll = () => {
+    menuScrollY = window.scrollY || window.pageYOffset || 0;
+    document.documentElement.classList.add('menu-open');
+    document.body.classList.add('menu-open');
+    document.body.style.setProperty('--menu-lock-top', `-${menuScrollY}px`);
+  };
+
+  const unlockPageScroll = () => {
+    document.documentElement.classList.remove('menu-open');
+    document.body.classList.remove('menu-open');
+    document.body.style.removeProperty('--menu-lock-top');
+    window.scrollTo({ top: menuScrollY, left: 0, behavior: 'auto' });
+  };
 
   const getPreviewLinks = () => Array.from(mobileNav?.querySelectorAll('a') || []);
   const syncPreviewNav = (hash = location.hash) => {
@@ -18,7 +31,6 @@
       if (isCurrent) link.setAttribute('aria-current', 'page');
       else link.removeAttribute('aria-current');
     });
-    if (menuButton) menuButton.querySelector('span').textContent = currentLink?.textContent.trim() || 'Menu';
   };
 
   const scrollToSection = (event, link) => {
@@ -28,7 +40,7 @@
     if (!target) return;
 
     event.preventDefault();
-    if (menuViewport.matches && mobileNav?.contains(link)) setMenu(false);
+    if (mobileNav?.contains(link)) setMenu(false);
     syncPreviewNav(href);
     window.dispatchEvent(new CustomEvent('preview:navigate', { detail: { hash: href } }));
     if (location.hash) history.replaceState(null, '', `${location.pathname}${location.search}`);
@@ -37,16 +49,8 @@
 
   const updateScrollEffects = () => {
     const scrollY = window.scrollY;
-    header?.classList.toggle('stuck-nav', scrollY > 80);
+    header?.classList.toggle('stuck-nav', scrollY > 40);
     backToTop?.classList.toggle('is-visible', scrollY > window.innerHeight * 0.75);
-
-    if (header) {
-      const movingDown = scrollY > previousScrollY && scrollY > 24;
-      const movingUp = scrollY < previousScrollY - 2;
-      if (movingDown) header.classList.add('is-scroll-down');
-      if (movingUp || scrollY <= 24) header.classList.remove('is-scroll-down');
-    }
-    previousScrollY = scrollY;
 
     if (heroImage && !reducedMotion.matches && scrollY < window.innerHeight * 1.2) {
       const shift = Math.min(scrollY * 0.12, 90);
@@ -63,32 +67,31 @@
   }, { passive: true });
   updateScrollEffects();
 
-  const contactSection = document.getElementById('contatti');
-  const contactObserver = 'IntersectionObserver' in window && contactSection
-    ? new IntersectionObserver(([entry]) => {
-        backToTop?.classList.toggle('is-over-contact', entry.isIntersecting);
-      }, { threshold: 0.08 })
-    : null;
-  contactObserver?.observe(contactSection);
-
   backToTop?.addEventListener('click', (event) => {
     event.preventDefault();
     window.scrollTo({ top: 0, behavior: reducedMotion.matches ? 'auto' : 'smooth' });
   });
 
   const getMenuLinks = () => Array.from(mobileNav?.querySelectorAll('a') || []);
+  const getMenuFocusables = () => [
+    menuButton,
+    header?.querySelector('.brand'),
+    header?.querySelector('.header-cta'),
+    ...getMenuLinks()
+  ].filter(Boolean);
 
   const setMenu = (open) => {
     if (!menuButton || !mobileNav) return;
     menuButton.setAttribute('aria-expanded', String(open));
     menuButton.setAttribute('aria-label', open ? 'Chiudi il menu' : 'Apri il menu');
-    if (menuViewport.matches) mobileNav.setAttribute('aria-hidden', String(!open));
-    else mobileNav.removeAttribute('aria-hidden');
+    mobileNav.setAttribute('aria-hidden', String(!open));
     mobileNav.classList.toggle('is-open', open);
-    document.body.classList.toggle('menu-open', open);
 
     if (open) {
-      getMenuLinks()[0]?.focus();
+      lockPageScroll();
+      window.requestAnimationFrame(() => getMenuLinks()[0]?.focus());
+    } else if (document.documentElement.classList.contains('menu-open') || document.body.classList.contains('menu-open')) {
+      unlockPageScroll();
     }
   };
 
@@ -99,18 +102,22 @@
   mobileNav?.addEventListener('click', (event) => {
     const link = event.target.closest('a');
     if (!link) return;
+    setMenu(false);
     scrollToSection(event, link);
   });
+
   header?.querySelector('.brand')?.addEventListener('click', (event) => {
+    setMenu(false);
     scrollToSection(event, event.currentTarget);
   });
-  window.addEventListener('hashchange', () => syncPreviewNav());
-  menuViewport.addEventListener('change', () => setMenu(false));
-  setMenu(false);
-  document.addEventListener('click', (event) => {
-    if (menuButton?.getAttribute('aria-expanded') === 'true' && !header.contains(event.target)) setMenu(false);
+
+  header?.querySelector('.header-cta')?.addEventListener('click', (event) => {
+    setMenu(false);
+    scrollToSection(event, event.currentTarget);
   });
 
+  window.addEventListener('hashchange', () => syncPreviewNav());
+  setMenu(false);
   syncPreviewNav();
 
   // Preview only existing content. No service pages or itinerary copy are invented.
@@ -121,7 +128,11 @@
       previewBody.replaceChildren();
       if (button.dataset.preview === 'service') {
         const service = button.closest('.book-page');
-        previewBody.append(service.querySelector('.page-heading').cloneNode(true), service.querySelector('.service-details').cloneNode(true));
+        const previewParts = ['.page-heading', '.service-summary', '.service-price', '.service-inclusions']
+          .map((selector) => service.querySelector(selector))
+          .filter(Boolean)
+          .map((node) => node.cloneNode(true));
+        previewBody.append(...previewParts);
       } else {
         const card = document.querySelector('.postcard-collage .itinerary-card').cloneNode(true);
         card.removeAttribute('id');
@@ -150,7 +161,7 @@
       String(data.get('messaggio') || '')
     ].join('\n');
 
-    window.location.href = `mailto:hello@elyexploreworld.com?subject=${encodeURIComponent('Parliamo del mio viaggio')}&body=${encodeURIComponent(body)}`;
+    window.location.href = `mailto:elisa.exploreworld@gmail.com?subject=${encodeURIComponent('Parliamo del mio viaggio')}&body=${encodeURIComponent(body)}`;
   });
 
 
@@ -161,7 +172,7 @@
     }
 
     if (event.key === 'Tab' && menuButton?.getAttribute('aria-expanded') === 'true') {
-      const focusable = [...getMenuLinks(), menuButton];
+      const focusable = getMenuFocusables();
       const first = focusable[0];
       const last = focusable[focusable.length - 1];
       if (event.shiftKey && document.activeElement === first) {
@@ -226,6 +237,9 @@
     if (typeof dialog.close === 'function') dialog.close();
     else dialog.removeAttribute('open');
   };
+
+  const bioDialog = document.getElementById('bio-dialog');
+  document.querySelector('.bio-more-button')?.addEventListener('click', () => openDialog(bioDialog));
 
   const articleDialog = document.getElementById('article-dialog');
   const dialogTitle = document.getElementById('dialog-title');

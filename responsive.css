@@ -1,11 +1,11 @@
 /* Approved mobile composition. Desktop geometry remains in hero.css. */
 .hero-title-accent { font: inherit; color: inherit; }
-.service-mobile-image{ display: none; }
+
 a:focus-visible, button:focus-visible {
   outline: 2px solid var(--showcase-clay);
   outline-offset: 4px;
 }
-.home-hero-cta, .book-button, .preview-button { cursor: pointer; }
+.home-hero-cta, .preview-button{ cursor: pointer; }
 .content-preview {
   width: min(560px, calc(100% - 32px));
   max-height: calc(100svh - 48px);
@@ -28,10 +28,10 @@ a:focus-visible, button:focus-visible {
   font-size: 28px;
   cursor: pointer;
 }
-.content-preview .page-heading { min-height: 0; }
-.content-preview .page-heading h3 { font-size: 34px; white-space: normal; }
-.content-preview .page-subtitle { white-space: normal; }
-.content-preview .service-details p { font-size: 15px; }
+
+
+
+
 .content-preview .itinerary-card {
   position: static;
   width: 100%;
@@ -230,68 +230,30 @@ a:focus-visible, button:focus-visible {
   
   
 
-  .services-showcase { height: auto; min-height: 0; padding: 22px 24px 20px; overflow: visible; background: var(--showcase-ivory); }
-  .services-showcase::after { display: none; }
-  .services-heading { padding: 0; }
-  .services-heading h2 { font-size: clamp(27px, 7.8vw, 40px); line-height: 1; letter-spacing: -.04em; }
-  .services-heading h2 em { display: inline; }
-  .services-heading > p { max-width: none; margin-top: 8px; font-family: var(--font-display); font-size: 19px; line-height: 1.12; }
-  .book-scene { width: 100%; height: auto; min-height: 0; margin: 18px 0 0; padding: 0; transform: none; }
-  .book-object, .passport, .book-cover, .book-pages, .book-spine, .bookmark, .side-tab, .page-number, .services-help { display: none; }
-  .book { position: static; display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; width: 100%; padding: 0; filter: none; transform: none; }
-  .book-page, .book-page-left, .book-page-right {
-    display: flex;
-    width: 100%;
-    min-height: 0;
-    flex-direction: column;
-    margin: 0;
-    padding: 0 12px 12px;
-    background: #faf7ef;
-    border: 0;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgb(41 45 36 / .07);
-  }
-  .book-page::before, .book-page::after { display: none; }
-  .service-mobile-image {
-    display: block;
-    width: calc(100% + 24px);
-    height: auto;
-    aspect-ratio: 5 / 1;
-    margin: 0 -12px 12px;
-    object-fit: cover;
-    border-radius: 10px 10px 0 0;
-  }
-  .book-page-left .service-mobile-image { object-position: 50% 70%; }
-  .book-page-right .service-mobile-image { object-position: 50% 76%; }
-  .page-heading { min-height: 0; }
-  .page-eyebrow { margin-bottom: 5px; font-size: 10px; letter-spacing: .16em; }
-  .page-heading h3 { font-size: clamp(27px, 7.7vw, 36px); line-height: .98; white-space: normal; }
-  .page-subtitle, .book-page-left .page-subtitle {
-    max-width: none;
-    margin-top: 5px;
-    overflow: visible;
-    font-size: 20px;
-    letter-spacing: -.02em;
-    line-height: 1.05;
-    white-space: normal;
-  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   /* Keep all three original service descriptions; never substitute mockup copy. */
-  .service-details { margin-top: 8px; }
-  .service-details > div, .service-details > div:last-child { min-height: 0; padding: 9px 0; border: 0; }
-  .service-details h4 { margin: 0 0 3px; font-size: 14px; line-height: 1.25; }
-  .service-details p { max-width: none; font-size: 14px; line-height: 1.4; }
-  .book-button, .book-page-left .book-button, .book-page-right .book-button {
-    width: min(100%, 285px);
-    height: auto;
-    min-height: 44px;
-    margin: 7px 0 0;
-    padding: 10px 18px;
-    gap: 14px;
-    font-size: 18px;
-    line-height: 1.1;
-    white-space: normal;
-    background: var(--showcase-olive);
-  }
+  
+  
+  
+  
+  
 
   .services-benefits {
     position: relative;
@@ -336,9 +298,119 @@ a:focus-visible, button:focus-visible {
     padding: 0.65rem 0.8rem 0.65rem 1rem;
     font-size: 0.62rem;
   }
-  .book-button span:last-child { flex: 0 0 auto; font-size: 23px; }
+  
 
-  /* The live miniature itinerary sits beside the editorial copy, as approved.
+  
+
+/* Services — mobile/tablet adaptation of the approved book layout. */
+@media (max-width: 900px) {
+  .services-showcase {
+    min-height: 0;
+    overflow: visible;
+    padding: 34px 18px 24px;
+    background: var(--showcase-ivory);
+  }
+  .services-showcase::after { display: none; }
+  .services-heading {
+    width: 100%;
+    margin: 0 auto 24px;
+    padding-inline: 4px;
+  }
+  .services-kicker { margin-bottom: 7px; font-size: 9px; }
+  .services-heading h2 { font-size: clamp(36px, 9vw, 50px); line-height: .98; }
+  .book-scene {
+    width: 100%;
+    height: auto;
+    margin: 0;
+    overflow: visible;
+    transform: none;
+  }
+  .book-object,
+  .passport,
+  .book-cover,
+  .book-pages,
+  .book-spine,
+  .bookmark,
+  .side-tab { display: none; }
+  .book {
+    position: static;
+    display: grid;
+    width: 100%;
+    grid-template-columns: 1fr;
+    gap: 18px;
+    padding: 0;
+    transform: none;
+  }
+  .book-page,
+  .book-page-left,
+  .book-page-right {
+    width: 100%;
+    min-height: 0;
+    margin: 0;
+    padding: 28px 24px 24px;
+    background: #faf7ef;
+    border: 1px solid rgba(89,101,77,.12);
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgb(41 45 36 / .07);
+  }
+  .book-page::before,
+  .book-page::after { display: none; }
+  .page-eyebrow { margin-bottom: 8px; font-size: 10px; letter-spacing: .15em; }
+  .page-heading h3 { line-height: .94; }
+  .page-heading h3 span { font-size: clamp(32px, 8vw, 42px); }
+  .book-page-left .page-heading h3 strong { font-size: clamp(30px, 7.6vw, 40px); white-space: normal; }
+  .book-page-right .page-heading h3 strong { font-size: clamp(25px, 6.25vw, 34px); white-space: normal; }
+  .service-summary { min-height: 0; margin-top: 18px; font-size: 15px; }
+  .service-summary br { display: none; }
+  .service-price { min-height: 66px; margin-top: 18px; gap: 18px; padding-block: 9px; }
+  .service-price span { font-size: 10px; letter-spacing: .21em; }
+  .service-price strong { font-size: 43px; }
+  .service-inclusions { margin-top: 14px; gap: 7px; }
+  .service-inclusions li { min-height: 50px; grid-template-columns: 44px minmax(0,1fr); gap: 13px; font-size: 15px; }
+  .service-inclusion-icon { width: 44px; height: 44px; }
+  .service-inclusion-icon svg { width: 27px; height: 27px; }
+  .book-button,
+  .book-page-left .book-button,
+  .book-page-right .book-button {
+    position: static;
+    width: min(100%, 340px);
+    max-width: 100%;
+    height: 54px;
+    margin: 18px 0 0;
+    padding: 9px 22px 9px 26px;
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .services-showcase { padding-inline: 14px; }
+  .services-heading { margin-bottom: 20px; }
+  .services-heading h2 { font-size: 38px; }
+  .book-page,
+  .book-page-left,
+  .book-page-right { padding: 24px 20px 20px; }
+  .page-heading h3 span { font-size: 34px; }
+  .book-page-left .page-heading h3 strong { font-size: 32px; }
+  .book-page-right .page-heading h3 strong { font-size: 27px; }
+  .service-price { gap: 12px; }
+  .service-price strong { font-size: 39px; }
+  .service-inclusions li { font-size: 14px; }
+  .book-button,
+  .book-page-left .book-button,
+  .book-page-right .book-button { width: 100%; }
+}
+
+.content-preview .page-heading { min-height: 0; }
+.content-preview .page-heading h3 span { font-size: 34px; }
+.content-preview .book-page-left .page-heading h3 strong { font-size: 32px; white-space: normal; }
+.content-preview .book-page-right .page-heading h3 strong { font-size: 27px; white-space: normal; }
+.content-preview .service-summary { min-height: 0; font-size: 15px; }
+.content-preview .service-summary br { display: none; }
+.content-preview .service-price { margin-top: 18px; }
+.content-preview .service-inclusions { margin-top: 16px; }
+.content-preview .service-inclusions li { font-size: 15px; }
+
+/* The live miniature itinerary sits beside the editorial copy, as approved.
      Its CTA opens the same content at reading size. */
   .itinerary-preview {
     height: auto;
@@ -392,7 +464,7 @@ a:focus-visible, button:focus-visible {
 @media (min-width: 540px) and (max-width: 767px) {
   
   
-  .services-showcase { padding-inline: 7%; }
+  
   .itinerary-preview { grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); align-items: center; }
 }
 @media (prefers-reduced-motion: reduce) {

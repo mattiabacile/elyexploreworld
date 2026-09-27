@@ -10,12 +10,16 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&amp;family=Dancing+Script:wght@500;600&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="hero.css?v=final-copy-4">
+  <link rel="stylesheet" href="hero.css?v=services-kicker-right-1">
   <link rel="stylesheet" href="responsive.css?v=final-copy-1">
-  <link rel="stylesheet" href="stories.css?v=restored-layout-4">
-  <link rel="stylesheet" href="story-refined.css?v=blob-4">
+  <link rel="stylesheet" href="stories.css?v=panorama-2">
+  <link rel="stylesheet" href="story-refined.css?v=bio-popup-2">
+  <link rel="stylesheet" href="consultation.css?v=background-fix-7">
+  <link rel="stylesheet" href="contact.css?v=reference-1">
+  <link rel="stylesheet" href="navigation.css?v=fullscreen-2">
+  <link rel="stylesheet" href="footer.css?v=1">
 </head>
-<body>
+<body id="top">
   <svg class="shape-defs" aria-hidden="true" width="0" height="0">
     <defs>
       <clipPath id="photo-left-mask" clipPathUnits="objectBoundingBox">
@@ -29,27 +33,36 @@
 
   <header id="main-header" class="site-header" aria-label="Navigazione principale">
     <div class="header-shell">
-      <a class="brand" href="#home" aria-label="ElyExploreWorld, torna alla hero">
+      <button id="mobile-menu-toggle" class="mobile-menu" type="button" aria-label="Apri il menu" aria-expanded="false" aria-controls="primary-nav">
+        <span class="sr-only">Menu</span>
+        <i aria-hidden="true"><b></b><b></b></i>
+      </button>
+
+      <a class="brand" href="#home" aria-label="ElyExploreWorld, torna alla home">
         <span class="brand-name">Elyexploreworld</span>
         <span class="brand-role">Travel designer</span>
       </a>
 
-      <nav id="primary-nav" class="preview-nav" aria-label="Menu principale">
-        <a href="#chi-sono">Chi sono</a>
-        <a href="#servizi">Servizi</a>
-        <a href="#blog">Blog</a>
-        <a href="#contatti">Contatti</a>
+      <a class="header-cta" href="#contatti">Parliamone</a>
+
+      <nav id="primary-nav" class="preview-nav" aria-label="Menu principale" aria-hidden="true">
+        <div class="menu-nav-inner">
+          <a href="#chi-sono">Chi sono</a>
+          <a href="#servizi">I miei servizi</a>
+          <a href="#blog">Blog</a>
+          <a href="racconti.html">Tutti i racconti</a>
+          <a href="#contatti">Contatti</a>
+        </div>
+
+        <div class="menu-socials" aria-label="Contatti e social">
+          <a href="mailto:elisa.exploreworld@gmail.com" aria-label="Scrivi a elisa.exploreworld@gmail.com">
+            <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="m4 7 8 6 8-6"></path></svg>
+          </a>
+          <a href="https://www.instagram.com/elyexploreworld/" target="_blank" rel="noreferrer" aria-label="Instagram @elyexploreworld">
+            <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r=".8" fill="currentColor" stroke="none"></circle></svg>
+          </a>
+        </div>
       </nav>
-
-      <a class="header-cta" href="#contatti">
-        <span>Parliamone</span>
-        <span aria-hidden="true">→</span>
-      </a>
-
-      <button id="mobile-menu-toggle" class="mobile-menu" type="button" aria-label="Apri il menu" aria-expanded="false" aria-controls="primary-nav">
-        <span>Servizi</span>
-        <i aria-hidden="true"><b></b><b></b><b></b></i>
-      </button>
     </div>
   </header>
 
@@ -113,14 +126,15 @@
           <path class="bio-panel-shadow" d="M8 356C13 185 137 48 291 45C438 39 576 99 684 53C713 40 740 16 759 0H790V950C641 1100 440 980 193 1006C80 1020 45 980 58 850C70 730 32 554 14 453C8 417 5 386 8 356Z"/>
           <path d="M8 356C13 185 137 48 291 45C438 39 576 99 684 53C713 40 740 16 759 0H790V926C641 1076 440 956 193 982C80 996 45 956 58 826C70 706 32 554 14 453C8 417 5 386 8 356Z"/>
         </svg>
-        <svg class="bio-portrait" viewBox="0 0 780 1088" role="img" aria-label="Ritratto sorridente di Elisa, incorniciato da una forma organica e dettagli botanici">
-          <defs>
-            <clipPath id="bio-art-mask">
-              <path d="M49 280C31 139 158 30 311 33C482 30 630 130 665 278C690 376 663 400 694 503C730 623 770 754 735 872C710 989 630 1050 460 1050C334 1055 211 1017 188 941C161 878 199 809 223 718C227 640 201 560 152 490C105 424 58 365 49 280Z"/>
-              <ellipse cx="148" cy="787" rx="148" ry="208"/>
-            </clipPath>
-          </defs>
-          <image href="assets/chi-sono-background-clean.png" width="1445" height="1088" clip-path="url(#bio-art-mask)"/>
+        <svg class="bio-portrait" viewBox="0 0 780 1088" role="img" aria-label="Immagine di Elisa in arrivo">
+          <path class="bio-placeholder-frame" d="M49 280C31 139 158 30 311 33C482 30 630 130 665 278C690 376 663 400 694 503C730 623 770 754 735 872C710 989 630 1050 460 1050C334 1055 211 1017 188 941C161 878 199 809 223 718C227 640 201 560 152 490C105 424 58 365 49 280Z"/>
+
+          <text class="bio-placeholder-label" x="394" y="424" text-anchor="middle">
+            <tspan x="394">immagine</tspan>
+            <tspan x="394" dy="1.05em">in arrivo</tspan>
+          </text>
+
+          <image class="bio-botanical-art" href="assets/bio-botanical-medallion.png" x="-70" y="470" width="400" height="480" preserveAspectRatio="xMidYMid meet" aria-hidden="true"/>
         </svg>
         <div class="bio-content">
           <h2 id="bio-title" class="bio-title">
@@ -132,16 +146,20 @@
 
           <div class="bio-copy">
             <p>Sono Elisa, una <strong>Travel Designer certificata</strong> con base operativa a Modena, ma con la mente e il cuore costantemente rivolti verso l'Oriente.</p>
-            <p>La mia avventura nel mondo del turismo unisce la teoria alla pratica: ho consolidato la mia formazione tecnica all'Accademia Creativa Turismo, ma la mia conoscenza più profonda nasce dai chilometri percorsi con lo zaino in spalla.</p>
-            <p>Ho un legame viscerale con l'Asia e, in particolare, considero l'isola di Bali la mia seconda casa; una terra magica che amo far scoprire attraverso itinerari che escono dalle rotte commerciali.</p>
-            <p>Il mio lavoro consiste nel dare forma alle tue idee, costruendo itinerari unici grazie a un metodo trasparente, rigoroso e curato in ogni aspetto. Gestisco io ogni singola incombenza, dallo studio della rotta ideale fino alle conferme dei servizi, azzerando lo stress della pianificazione per lasciarti solo il bello della partenza.</p>
+            <p>Il mio obiettivo come Travel Designer è <strong>liberarti dallo stress della pianificazione</strong>, trasformando i tuoi desideri in un itinerario unico, studiato millimetro per millimetro e basato sui tuoi desideri.</p>
+            <p>Che tu voglia delegarmi l'intera organizzazione o che tu abbia già prenotato i voli e stia cercando solo la giusta ispirazione per le tue giornate, ho la <strong>soluzione su misura per te</strong>.</p>
           </div>
+
+          <button class="bio-more-button" type="button" aria-haspopup="dialog" aria-controls="bio-dialog">
+            <span>Scopri di più</span>
+            <svg viewBox="0 0 20 12" aria-hidden="true"><path d="m2 2 8 8 8-8"/></svg>
+          </button>
 
           <address class="bio-contacts" aria-label="Contatti di Elisa">
             <a href="mailto:elisa.exploreworld@gmail.com" aria-label="Scrivi a elisa.exploreworld@gmail.com">
               <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></svg> elisa.exploreworld@gmail.com
             </a>
-            <a href="https://www.instagram.com/elyexploreworld/" target="_blank" rel="noreferrer" aria-label="Seguimi su Instagram">
+            <a href="https://www.instagram.com/elyexploreworld/" target="_blank" rel="noreferrer" aria-label="Segui ElyExploreWorld su Instagram">
               <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".7"/></svg> @elyexploreworld
             </a>
           </address>
@@ -149,11 +167,53 @@
       </div>
     </section>
 
-    <section id="servizi" class="services-showcase" aria-labelledby="services-showcase-title">
-      <div class="services-heading">
-        <h2 id="services-showcase-title">Il viaggio perfetto per te non nasce per caso: <em>lo disegno io.</em></h2>
-        <p>Il mio obiettivo come Travel Designer è liberarti dallo stress della pianificazione, trasformando i tuoi desideri in un itinerario unico, studiato millimetro per millimetro e basato sui tuoi desideri. Che tu voglia delegarmi l'intera organizzazione o che tu abbia già prenotato i voli e stia cercando solo la giusta ispirazione per le tue giornate, ho la soluzione su misura per te.</p>
+    <dialog id="bio-dialog" class="bio-dialog" aria-labelledby="bio-dialog-title">
+      <button class="bio-dialog-close" type="button" data-dialog-close aria-label="Chiudi">
+        <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 4l12 12M16 4 4 16"/></svg>
+      </button>
+      <p class="bio-dialog-eyebrow">La mia storia</p>
+      <h2 id="bio-dialog-title">Scopri di più</h2>
+      <div class="bio-dialog-copy">
+        <p>La mia avventura nel mondo del turismo unisce la teoria alla pratica: ho consolidato la mia formazione tecnica all'Accademia Creativa Turismo, ma la mia conoscenza più profonda nasce dai chilometri percorsi con lo zaino in spalla.</p>
+        <p>Ho un legame viscerale con l'Asia e, in particolare, considero l'isola di Bali la mia seconda casa; una terra magica che amo far scoprire attraverso itinerari che escono dalle rotte commerciali.</p>
+        <p>Il mio lavoro consiste nel dare forma alle tue idee, costruendo itinerari unici grazie a un metodo trasparente, rigoroso e curato in ogni aspetto. Gestisco io ogni singola incombenza, dallo studio della rotta ideale fino alle conferme dei servizi, azzerando lo stress della pianificazione per lasciarti solo il bello della partenza.</p>
       </div>
+    </dialog>
+
+    <section class="consultation-banner" aria-labelledby="consultation-title">
+      <div class="consultation-art" aria-hidden="true"></div>
+      <div class="consultation-copy">
+        <p class="consultation-eyebrow">Non sai quale servizio scegliere?</p>
+        <h2 id="consultation-title">Parliamone <em>insieme</em>.</h2>
+        <p class="consultation-description">Prenota una call gratuita di 30 minuti: mi racconti il viaggio che hai<br class="consultation-break"> in mente e ti aiuto a capire quale formula fa per te.</p>
+      </div>
+      <div class="consultation-action">
+        <ul class="consultation-benefits" aria-label="Caratteristiche della call">
+          <li>
+            <svg viewBox="0 0 48 48" fill="none" aria-hidden="true"><circle cx="24" cy="24" r="18"/><path d="M24 13v12l8 5M24 6v4M42 24h-4M24 42v-4M6 24h4"/></svg>
+            <span>30 minuti</span>
+          </li>
+          <li>
+            <svg viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="M8 20h32v20H8zM24 20v20M6 14h36v6H6z"/><path d="M24 14c-7 0-11-3-11-7 0-3 2-5 5-5 5 0 6 7 6 12ZM24 14c7 0 11-3 11-7 0-3-2-5-5-5-5 0-6 7-6 12Z"/></svg>
+            <span>Gratuita</span>
+          </li>
+          <li>
+            <svg viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="M10 39c8-4 12-12 14-22M20 26c-5 0-9-3-10-8 6-1 10 2 11 6M25 19c1-6 5-10 11-10 0 6-4 10-10 11M16 33c-4 0-7-2-8-6 5-1 8 1 9 5M24 25c3-4 7-5 11-3-2 5-6 6-11 5"/></svg>
+            <span>Senza impegno</span>
+          </li>
+        </ul>
+        <a class="consultation-button" href="https://calendly.com/elyexploreworld/30min?month=2026-09" target="_blank" rel="noreferrer">
+          <span>Prenota la call gratuita</span>
+          <svg viewBox="0 0 28 16" fill="none" aria-hidden="true"><path d="M1 8h24M19 2l6 6-6 6"/></svg>
+        </a>
+      </div>
+    </section>
+
+    <section id="servizi" class="services-showcase" aria-labelledby="services-showcase-title">
+      <header class="services-heading">
+        <p class="services-kicker">I miei servizi</p>
+        <h2 id="services-showcase-title">Due percorsi, <em>un viaggio su misura.</em></h2>
+      </header>
 
       <div class="book-scene">
         <img class="book-object book-object-passport" src="assets/services-agenda-passport-light.png" alt="" aria-hidden="true">
@@ -172,35 +232,51 @@
           <i class="side-tab side-tab-two" aria-hidden="true"></i>
 
           <article class="book-page book-page-left" id="service-left">
-            <img class="service-mobile-image" src="assets/hero-traveler.jpg" alt="" loading="lazy" width="1000" height="667">
             <header class="page-heading">
-              <p class="page-eyebrow">Progettazione completa del TUO viaggio</p>
-              <h3>Soluzione <br>FULL IMMERSION</h3>
-              <p class="page-subtitle">La formula ideale per chi vuole solo preparare i bagagli e partire senza pensieri.</p>
+              <p class="page-eyebrow">Viaggio progettato da zero</p>
+              <h3><span>Percorso</span><strong>FULL IMMERSION</strong></h3>
             </header>
-            <div class="service-details">
-              <div><h4>Mi occupo io di tutto</h4><p>Dall'idea iniziale fino al tuo rientro a casa.</p></div>
-              <div><h4>Consulenza Iniziale</h4><p>Ascolto le tue idee, il tuo budget e lo stile di viaggio che sogni per tracciare la rotta perfetta.</p></div>
-              <div><h4>Esperienze ed Escursioni</h4><p>Seleziono le migliori attività sul posto, dalle visite guidate alle esperienze non convenzionali, per farti vivere il luogo come un locale.</p></div>
-            </div>
-            <button class="book-button" type="button" data-preview="service" aria-haspopup="dialog"><span>9 lorem ipsum dolorem...</span><span aria-hidden="true">→</span></button>
-            <span class="page-number"> </span>
+            <p class="service-summary">Il tuo viaggio progettato da zero,<br>in ogni dettaglio.</p>
+            <div class="service-price"><span>A partire da</span><strong>€190</strong></div>
+            <ul class="service-inclusions" aria-label="Full Immersion comprende">
+              <li>
+                <span class="service-inclusion-icon" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><path d="M8 12 18 8l12 5 10-4v27l-10 4-12-5-10 4V12Z"/><path d="M18 8v27M30 13v27"/></svg></span>
+                <span>Itinerario completo</span>
+              </li>
+              <li>
+                <span class="service-inclusion-icon" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><path d="M7 31V19h34v12M9 31h30v8H9zM12 19v-6h11v6M25 19v-6h11v6"/><path d="M7 39v3M41 39v3"/></svg></span>
+                <span>Strutture e spostamenti</span>
+              </li>
+              <li>
+                <span class="service-inclusion-icon" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><path d="M8 17h8l3-5h10l3 5h8v23H8V17Z"/><circle cx="24" cy="28" r="8"/><path d="M35 21h1"/></svg></span>
+                <span>Esperienze selezionate</span>
+              </li>
+            </ul>
+            <button class="book-button" type="button" data-preview="service" aria-haspopup="dialog"><span>Scopri Full Immersion</span><span aria-hidden="true">→</span></button>
           </article>
 
           <article class="book-page book-page-right" id="service-right">
-            <img class="service-mobile-image" src="assets/hero-river.jpg" alt="" loading="lazy" width="1000" height="1210">
             <header class="page-heading">
-              <p class="page-eyebrow">Ogni giorno, già pensato per te</p>
-              <h3>Soluzione <br>ROAD MAP - DAY BY DAY</h3>
-              <p class="page-subtitle">Hai già prenotato volo e hotel ma non sai come ottimizzare il tempo a disposizione?</p>
+              <p class="page-eyebrow">Hai già volo e hotel?</p>
+              <h3><span>Percorso</span><strong>ROAD MAP - DAY BY DAY</strong></h3>
             </header>
-            <div class="service-details">
-              <div><h4>Analisi dei tuoi piani</h4><p>Partiamo da quello che hai già prenotato (date, voli e punti di appoggio).</p></div>
-              <div><h4>Mappatura dei Tempi</h4><p>Studio i flussi e gli spostamenti logici per evitare corse inutili o giornate troppo vuote.</p></div>
-              <div><h4>Itinerario Day-by-Day Personalizzato</h4><p>Creo per te un programma dettagliato giorno per giorno, completo di tappe imperdibili, chicche nascoste, consigli su dove mangiare e indicazioni su come muoverti.</p></div>
-            </div>
-            <button class="book-button" type="button" data-preview="service" aria-haspopup="dialog"><span>10 lorem ipsum dolorem...</span><span aria-hidden="true">→</span></button>
-            <span class="page-number"> </span>
+            <p class="service-summary">Trasformo volo e hotel in un itinerario<br>perfettamente organizzato.</p>
+            <div class="service-price"><span>A partire da</span><strong>€90</strong></div>
+            <ul class="service-inclusions" aria-label="Road Map comprende">
+              <li>
+                <span class="service-inclusion-icon" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><path d="M24 42s11-12 11-22a11 11 0 1 0-22 0c0 10 11 22 11 22Z"/><circle cx="24" cy="20" r="4"/></svg></span>
+                <span>Tempi e spostamenti</span>
+              </li>
+              <li>
+                <span class="service-inclusion-icon" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><path d="M24 7v34M14 13h18l4 5-4 5H14l-4-5 4-5ZM16 27h18l4 5-4 5H16l-4-5 4-5Z"/></svg></span>
+                <span>Tappe ed esperienze</span>
+              </li>
+              <li>
+                <span class="service-inclusion-icon" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><rect x="9" y="11" width="30" height="29" rx="2"/><path d="M9 19h30M16 7v8M32 7v8"/></svg></span>
+                <span>Programma day by day</span>
+              </li>
+            </ul>
+            <button class="book-button" type="button" data-preview="service" aria-haspopup="dialog"><span>Scopri la Road Map</span><span aria-hidden="true">→</span></button>
           </article>
         </div>
       </div>
@@ -253,7 +329,7 @@
         </li>
       </ul>
 
-      <div class="services-help"><i></i><p>13 lorem ipsum dolorem...</p><i></i></div>
+      <div class="services-divider" aria-hidden="true"></div>
     </section>
 
     <section id="ispirazioni" class="itinerary-preview" aria-labelledby="itinerary-preview-title">
@@ -286,82 +362,58 @@
       </div>
     </section>
     <section id="blog" class="travel-stories-page" aria-labelledby="stories-title">
-      <div class="stories-foliage stories-foliage-left" aria-hidden="true"></div>
-      <div class="stories-foliage stories-foliage-right" aria-hidden="true"></div>
       <img class="stories-branch" src="assets/stories/botanical-branch.svg" alt="" aria-hidden="true" width="210" height="460" loading="lazy">
       <div class="stories-shell">
         <header class="stories-intro">
-          <p class="stories-kicker">26 Lorem ipsum dolorem...</p>
-          <h2 id="stories-title">Racconti di <em>viaggio</em></h2>
-          <p class="stories-subtitle">Non propongo viaggi per sentito dire: li vivo in prima persona.<br>In questa sezione del sito ti porto con me in giro per il mondo.</p>
+          <p class="stories-kicker">Racconti <br>di viaggio</p>
+          <h2 id="stories-title">Destinazioni, storie e <em>ispirazioni</em></h2>
+          <p class="stories-subtitle">Storie, luoghi e incontri dal mondo. Lasciati ispirare dai nostri racconti<br>di viaggio, con consigli, esperienze autentiche e curiosità.</p>
         </header>
-        <p class="stories-side-note" aria-hidden="true">27 Lorem<br>Ipsum<br>Dolorem<br>Lorem</p>
-        <p class="stories-hand-note" aria-hidden="true">28 Lorem ipsum<br>dolorem lorem.</p>
         <div class="stories-carousel" role="region" aria-roledescription="carosello" aria-label="Destinazioni dei racconti di viaggio">
-                    <svg class="stories-mask-defs" width="0" height="0" viewBox="0 0 1110 620" aria-hidden="true">
-            <defs>
-              <filter id="stories-foliage-ink" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 .53 0 0 0 0 .51 0 0 0 0 .43 -1 -1 -1 0 2.84"/></filter>
-              <clipPath id="stories-bali-mask" clipPathUnits="objectBoundingBox">
-                <path transform="scale(.0009009009 .0016129032)" d="M30 438C-1 355 29 205 92 129C155 52 235 19 311 20C430 19 509 91 658 78C789 68 864 81 925 137C1012 182 1071 240 1080 326C1106 415 1096 533 1052 579C1036 600 1014 604 978 604L520 605C353 605 166 591 74 527C50 510 37 479 30 438Z"/>
-              </clipPath>
-            </defs>
-            <path class="stories-photo-shadow" d="M649 105C790 116 887 111 990 153C1086 192 1095 333 1095 431L1064 544L877 490Z"/>
-            <path class="stories-photo-outline" d="M21 421C-18 322 26 182 88 113C149 43 236-1 310 8C423 8 511 90 660 76"/>
-          </svg>
-          <div id="stories-track" class="stories-track" tabindex="0" aria-label="Racconti di viaggio. Scorri o usa le frecce della tastiera.">
-            <article id="story-bali" class="stories-slide" aria-labelledby="title-bali" data-destination="Bali">
-              <figure class="stories-photo">
-                <svg class="stories-photo-contour" viewBox="0 0 1110 620" preserveAspectRatio="none" aria-hidden="true"><path d="M21 421C-18 322 26 182 88 113C149 43 236-1 310 8C423 8 511 90 660 76"/></svg>
-                <img src="assets/stories/bali.jpg" alt="Tempio balinese sul lago Beratan, tra montagne e luce del mattino" width="1600" height="900" loading="lazy" decoding="async">
-              </figure>
+          <div id="stories-track" class="stories-track" tabindex="0" aria-label="Racconti di viaggio. Usa le frecce della tastiera per cambiare destinazione.">
+            <article id="story-japan" class="stories-slide is-active" aria-labelledby="title-japan" data-destination="Giappone">
+              <figure class="stories-photo"><img src="assets/stories/japan.jpg" alt="Il Monte Fuji oltre il lago, tra ciliegi in fiore e una pagoda rossa" width="1600" height="900" loading="lazy" decoding="async"></figure>
               <div class="stories-copy">
-                <h3 id="title-bali">Bali, tra acqua,<br>silenzio e <em>rituali</em></h3>
-                <p class="stories-deck">La mia seconda casa</p>
-                <p class="stories-excerpt">Templi sull’acqua, paesaggi tropicali e un ritmo diverso. Un primo sguardo all’isola a cui sono più legata.</p>
-                <!-- Replace this publication status with a real article link when its full text is available. -->
-                <p class="stories-publication">Racconto in arrivo</p>
+                <div class="stories-heading"><time datetime="2026-04-26">26 aprile 2026</time><h3 id="title-japan">Giappone</h3></div>
+                <p class="stories-deck">Templi, natura e tradizioni<br>in perfetto equilibrio.</p>
+                <a class="stories-read" href="racconto.html?story=japan" data-story="japan">Leggi il racconto <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h17m-7-7 7 7-7 7"/></svg></a>
               </div>
+              <p class="stories-excerpt" hidden>Il profilo del Fuji, i templi e le strade delle grandi città. Un viaggio da scoprire, un contrasto alla volta.</p>
             </article>
-            <article id="story-japan" class="stories-slide" aria-labelledby="title-japan" data-destination="Giappone">
-              <figure class="stories-photo">
-                <svg class="stories-photo-contour" viewBox="0 0 1110 620" preserveAspectRatio="none" aria-hidden="true"><path d="M21 421C-18 322 26 182 88 113C149 43 236-1 310 8C423 8 511 90 660 76"/></svg>
-                <img src="assets/stories/japan.jpg" alt="Il Monte Fuji oltre il lago, tra ciliegi in fiore e una pagoda rossa" width="1600" height="711" loading="lazy" decoding="async">
-              </figure>
+            <article id="story-bali" class="stories-slide" aria-labelledby="title-bali" data-destination="Bali">
+              <figure class="stories-photo"><img src="assets/stories/bali.jpg" alt="Tempio balinese sul lago Beratan, tra montagne e luce del mattino" width="1600" height="900" loading="lazy" decoding="async"></figure>
               <div class="stories-copy">
-                <h3 id="title-japan">Giappone, l’armonia<br>nelle <em>piccole cose</em></h3>
-                <p class="stories-deck">Tra città e silenzi</p>
-                <p class="stories-excerpt">Il profilo del Fuji, i templi e le strade delle grandi città. Un viaggio da scoprire, un contrasto alla volta.</p>
-                <!-- Replace this publication status with a real article link when its full text is available. -->
-                <p class="stories-publication">Racconto in arrivo</p>
+                <div class="stories-heading"><span class="stories-date">Racconti di viaggio</span><h3 id="title-bali">Bali</h3></div>
+                <p class="stories-deck">La mia seconda casa.</p>
+                <a class="stories-read" href="racconto.html?story=bali" data-story="bali">Leggi il racconto <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h17m-7-7 7 7-7 7"/></svg></a>
               </div>
+              <p class="stories-excerpt" hidden>Templi sull’acqua, paesaggi tropicali e un ritmo diverso. Un primo sguardo all’isola a cui sono più legata.</p>
             </article>
             <article id="story-singapore" class="stories-slide" aria-labelledby="title-singapore" data-destination="Singapore">
-              <figure class="stories-photo">
-                <svg class="stories-photo-contour" viewBox="0 0 1110 620" preserveAspectRatio="none" aria-hidden="true"><path d="M21 421C-18 322 26 182 88 113C149 43 236-1 310 8C423 8 511 90 660 76"/></svg>
-                <img src="assets/stories/singapore.jpg" alt="Veduta di Marina Bay a Singapore, con la baia e lo skyline" width="1600" height="459" loading="lazy" decoding="async">
-              </figure>
+              <figure class="stories-photo"><img src="assets/stories/singapore.jpg" alt="Veduta di Marina Bay a Singapore, con la baia e lo skyline" width="1600" height="900" loading="lazy" decoding="async"></figure>
               <div class="stories-copy">
-                <h3 id="title-singapore">Singapore, un mondo<br>in una <em>città</em></h3>
-                <p class="stories-deck">Un mondo in una città</p>
-                <p class="stories-excerpt">Giardini tropicali, architetture e quartieri da esplorare. Uno sguardo a Singapore, tra natura e vita urbana.</p>
-                <!-- Replace this publication status with a real article link when its full text is available. -->
-                <p class="stories-publication">Racconto in arrivo</p>
+                <div class="stories-heading"><span class="stories-date">Racconti di viaggio</span><h3 id="title-singapore">Singapore</h3></div>
+                <p class="stories-deck">Un mondo in una città.</p>
+                <a class="stories-read" href="racconto.html?story=singapore" data-story="singapore">Leggi il racconto <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h17m-7-7 7 7-7 7"/></svg></a>
               </div>
+              <p class="stories-excerpt" hidden>Giardini tropicali, architetture e quartieri da esplorare. Uno sguardo a Singapore, tra natura e vita urbana.</p>
             </article>
           </div>
           <div class="stories-controls" hidden>
-            
-            <div class="stories-pagination">
-              <span class="stories-control-label">Sfoglia i racconti</span>
-              <span class="stories-counter" aria-hidden="true">01 / 03</span>
-              <button class="stories-arrow stories-prev" type="button" aria-label="Racconto precedente" aria-controls="stories-track"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16m-6-6 6 6-6 6"/></svg></button>
-              <button class="stories-arrow stories-next" type="button" aria-label="Racconto successivo" aria-controls="stories-track"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16m-6-6 6 6-6 6"/></svg></button>
-            </div>
+            <button class="stories-arrow stories-prev" type="button" aria-label="Racconto precedente" aria-controls="stories-track"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h17m-7-7 7 7-7 7"/></svg></button>
+            <button class="stories-arrow stories-next" type="button" aria-label="Racconto successivo" aria-controls="stories-track"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h17m-7-7 7 7-7 7"/></svg></button>
           </div>
-          <div class="stories-destinations" role="group" aria-label="Scegli una destinazione"></div>
           <p class="sr-only stories-status" role="status" aria-live="polite" aria-atomic="true"></p>
         </div>
+        <a class="stories-all-link" href="racconti.html">Visualizza tutti i racconti</a>
       </div>
+      <dialog class="stories-preview" aria-labelledby="stories-preview-title">
+        <button class="stories-preview-close" type="button" aria-label="Chiudi anteprima">Chiudi</button>
+        <p class="stories-preview-label">Anteprima del racconto</p>
+        <h3 id="stories-preview-title"></h3>
+        <p class="stories-preview-text"></p>
+        <p class="stories-preview-status">L’articolo completo è in arrivo.</p>
+      </dialog>
     </section>
 
     <section id="contatti" class="contact-section" aria-labelledby="contact-title">
@@ -370,66 +422,38 @@
           <div class="contact-intro">
             <div class="contact-copy-block">
               <p class="contact-kicker">Contatti</p>
-              <h2 id="contact-title"><span>29 Sei ancora indeciso?</span><span>Ti aiuto a capire</span><em>da dove partire.</em></h2>
+              <h2 id="contact-title"><span>Sei ancora indeciso?</span><span>Ti aiuto a capire</span><em>da dove partire.</em></h2>
               <i class="contact-rule" aria-hidden="true"></i>
-              <p class="contact-copy">30 Raccontami la tua idea di viaggio.<br>Insieme possiamo trasformare<br>dubbi, domande e desideri<br>in un itinerario su misura.</p>
-              <p class="contact-note">31 lorem ipsum dolorem...<i aria-hidden="true"></i></p>
+              <p class="contact-copy">Raccontami la tua idea di viaggio.<br>Insieme possiamo trasformare<br>dubbi, domande e desideri<br>in un itinerario su misura.</p>
+              <p class="contact-note">“Chiacchieriamo del tuo prossimo viaggio?”<i aria-hidden="true"></i></p>
             </div>
 
             <div class="contact-portrait" aria-hidden="true">
               <span class="contact-portrait-outline"></span>
-              <img src="assets/stories/amalfi.png" alt="" width="1881" height="836" loading="lazy">
               <img class="contact-branch contact-branch-top" src="assets/stories/botanical-branch.svg" alt="">
               <img class="contact-branch contact-branch-bottom" src="assets/stories/botanical-branch.svg" alt="">
-              <p>32 Lorem<br>ipsum dolorem.<i></i></p>
+              <p>immagine<br>in arrivo</p>
             </div>
           </div>
 
-          <div class="contact-start">
-            <p class="contact-section-label">33 Scegli il punto di partenza</p>
-            <div class="contact-cards">
-              <article class="contact-card">
-                <img src="assets/stories/amalfi.png" alt="Terrazza affacciata sulla Costiera Amalfitana" width="1881" height="836" loading="lazy">
-                <div>
-                  <h3>Viaggio su misura</h3>
-                  <p>Un itinerario costruito<br>intorno a te.</p>
-                  <a href="#servizi">Scopri di più</a>
-                </div>
-              </article>
-              <article class="contact-card">
-                <img class="contact-card-journal" src="assets/services-agenda-passport-final.png" alt="Agenda di viaggio e passaporto" width="1571" height="1001" loading="lazy">
-                <div>
-                  <h3>Itinerario day by day</h3>
-                  <p>Un percorso personalizzato<br>giorno per giorno.</p>
-                  <a href="#servizi">Scopri di più</a>
-                </div>
-              </article>
-              <article class="contact-card">
-                <img class="contact-card-coast" src="assets/stories/amalfi.png" alt="Borghi e mare della Costiera Amalfitana" width="1881" height="836" loading="lazy">
-                <div>
-                  <h3>Non so ancora<br>quale fa per me</h3>
-                  <p>Ti racconto la mia idea<br>e mi aiuti a capire.</p>
-                  <a href="#servizi">Scopri di più</a>
-                </div>
-              </article>
-            </div>
-          </div>
+          <address class="contact-links" aria-label="Contatti diretti">
+            <a href="mailto:elisa.exploreworld@gmail.com">
+              <span class="contact-link-icon" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="26" height="20" rx="2"/><path d="m4 8 12 10L28 8"/></svg></span>
+              <span><span class="contact-link-label">Scrivimi direttamente</span><span class="contact-link-value">elisa.exploreworld@gmail.com</span></span>
+            </a>
+            <a href="https://www.instagram.com/elyexploreworld/" target="_blank" rel="noreferrer">
+              <span class="contact-link-icon" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="26" height="26" rx="7"/><circle cx="16" cy="16" r="6"/><circle cx="24" cy="8" r="1" fill="currentColor" stroke="none"/></svg></span>
+              <span><span class="contact-link-label">Seguimi su Instagram</span><span class="contact-link-value">@elyexploreworld</span></span>
+            </a>
+          </address>
         </div>
 
         <aside class="contact-panel" aria-label="Modulo di contatto">
-          <div class="contact-direct">
-            <p>Preferisci scrivermi direttamente?</p>
-            <a href="mailto:elisa.exploreworld@gmail.com">elisa.exploreworld@gmail.com</a>
-            <div class="contact-socials" aria-label="Social media">
-              <a href="https://www.instagram.com/elyexploreworld/" target="_blank" rel="noreferrer">Instagram · @elyexploreworld</a>
-            </div>
-          </div>
-
           <form class="contact-form" id="contact-form">
             <fieldset>
               <legend>Parliamo del tuo viaggio</legend>
               <div class="contact-fields contact-fields-two">
-                <label><span class="sr-only">Nome</span><input type="text" name="nome" placeholder="Nome *" autocomplete="name" required></label>
+                <label><span class="sr-only">Nome</span><input type="text" name="nome" placeholder="Name *" autocomplete="name" required></label>
                 <label><span class="sr-only">Email</span><input type="email" name="email" placeholder="Email *" autocomplete="email" required></label>
               </div>
               <label><span class="sr-only">Destinazione</span><input type="text" name="destinazione" placeholder="Dove vorresti andare?"></label>
@@ -441,9 +465,9 @@
 
             <fieldset class="contact-needs">
               <legend>Di cosa hai bisogno?</legend>
-              <label><input type="radio" name="servizio" value="Viaggio su misura"><span>Viaggio su misura</span></label>
-              <label><input type="radio" name="servizio" value="Itinerario day by day"><span>Itinerario day by day</span></label>
-              <label><input type="radio" name="servizio" value="Non so ancora quale fa per me"><span>Non so ancora quale fa per me</span></label>
+              <label><input type="radio" name="servizio" value="Viaggio su misura"><span>Viaggio su misura<svg class="contact-help-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9 9a3 3 0 0 1 6 0c0 2-3 2-3 4"/><circle cx="12" cy="17" r=".7" fill="currentColor" stroke="none"/></svg></span></label>
+              <label><input type="radio" name="servizio" value="Itinerario day by day"><span>Itinerario day by day<svg class="contact-help-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9 9a3 3 0 0 1 6 0c0 2-3 2-3 4"/><circle cx="12" cy="17" r=".7" fill="currentColor" stroke="none"/></svg></span></label>
+              <label><input type="radio" name="servizio" value="Non so ancora quale fa per me"><span>Non so ancora quale fa per me<svg class="contact-help-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9 9a3 3 0 0 1 6 0c0 2-3 2-3 4"/><circle cx="12" cy="17" r=".7" fill="currentColor" stroke="none"/></svg></span></label>
             </fieldset>
 
             <fieldset class="contact-message-field">
@@ -459,6 +483,9 @@
     </section>
 
   </main>
+
+  <div id="site-footer-root"></div>
+
   <a class="back-to-top" href="#home" aria-label="Torna all'inizio della pagina">
     <span>Torna su</span>
     <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -469,7 +496,8 @@
     <button class="preview-close" type="button" aria-label="Chiudi anteprima">×</button>
     <div class="content-preview-body"></div>
   </dialog>
-  <script src="script.js?v=final-copy-1" defer></script>
-  <script src="stories.js?v=restored-layout-3" defer></script>
+  <script src="footer.js?v=2" defer></script>
+  <script src="script.js?v=fullscreen-menu-2" defer></script>
+  <script src="stories.js?v=autoplay-1" defer></script>
 </body>
 </html>
