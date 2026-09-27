@@ -8,8 +8,10 @@
   const status = section.querySelector('.stories-status');
   let active = 0;
   let autoplayTimer;
+  let sectionVisible = true;
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const canAutoplay = () => slides.length > 1 && !reducedMotion.matches && !document.hidden && !section.matches(':hover, :focus-within');
+  const canAutoplay = () => slides.length > 1 && !reducedMotion.matches && !document.hidden && sectionVisible &&
+    !section.matches(':hover, :focus-within') && !document.querySelector('dialog[open], .menu-open');
   function stopAutoplay() {
     clearInterval(autoplayTimer);
     autoplayTimer = undefined;
@@ -46,9 +48,13 @@
   section.addEventListener('focusin', stopAutoplay);
   section.addEventListener('focusout', () => window.setTimeout(startAutoplay, 0));
   document.addEventListener('visibilitychange', startAutoplay);
+  document.addEventListener('toggle', startAutoplay, true);
+  new MutationObserver(startAutoplay).observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
   reducedMotion.addEventListener('change', startAutoplay);
   if ('IntersectionObserver' in window) {
     new IntersectionObserver(([entry]) => {
+      sectionVisible = entry.isIntersecting;
+      startAutoplay();
       document.querySelector('.back-to-top')?.classList.toggle('is-over-blog', entry.isIntersecting);
     }, { threshold: .15 }).observe(section);
   }
