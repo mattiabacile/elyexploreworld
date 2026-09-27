@@ -31,13 +31,21 @@
     menuButton.setAttribute('aria-expanded', String(open));
     menuButton.setAttribute('aria-label', open ? 'Chiudi il menu' : 'Apri il menu');
     nav.setAttribute('aria-hidden', String(!open));
+    nav.inert = !open;
     nav.classList.toggle('is-open', open);
 
     if (open && !wasOpen) {
       background.forEach(node => { previousInert.set(node, node.inert); node.inert = true; });
       lockPageScroll();
-      window.requestAnimationFrame(() => getLinks()[0]?.focus());
-    } else if (document.documentElement.classList.contains('menu-open') || document.body.classList.contains('menu-open')) {
+      // Allow visibility and inert changes to reach the rendered frame before
+      // moving focus; focusing immediately can be ignored by the browser.
+      window.requestAnimationFrame(() => window.requestAnimationFrame(() => {
+        if (menuButton.getAttribute('aria-expanded') === 'true' &&
+            (document.activeElement === menuButton || document.activeElement === document.body)) {
+          getLinks()[0]?.focus({ preventScroll: true });
+        }
+      }));
+    } else if (!open && wasOpen) {
       unlockPageScroll();
       background.forEach(node => { node.inert = previousInert.get(node) || false; });
       previousInert.clear();
@@ -76,7 +84,20 @@
     target.focus({ preventScroll: true });
     syncNavigation();
   });
-  window.addEventListener('hashchange', syncNavigation);
+  window.addEventListener('hashchange', () => {
+    const wasOpen = menuButton.getAttribute('aria-expanded') === 'true';
+    if (wasOpen) setMenu(false);
+    syncNavigation();
+    // History navigation can happen while the body is fixed by the menu.
+    // Restore the destination after releasing the scroll lock.
+    if (wasOpen) requestAnimationFrame(() => {
+      let id;
+      try { id = decodeURIComponent(location.hash.slice(1)); } catch { return; }
+      const target = document.getElementById(id || 'top');
+      target?.scrollIntoView({ block: 'start', behavior: 'instant' });
+      target?.focus({ preventScroll: true });
+    });
+  });
   syncNavigation();
 
   document.addEventListener('keydown', (event) => {

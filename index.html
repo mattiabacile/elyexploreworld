@@ -10,15 +10,16 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&amp;family=Dancing+Script:wght@500;600&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="hero.css?v=cleanup-20260927">
-  <link rel="stylesheet" href="responsive.css?v=cleanup-20260927">
-  <link rel="stylesheet" href="stories.css?v=cleanup-20260927">
-  <link rel="stylesheet" href="story-refined.css?v=cleanup-20260927">
-  <link rel="stylesheet" href="consultation.css?v=cleanup-20260927">
-  <link rel="stylesheet" href="contact.css?v=cleanup-20260927">
-  <link rel="stylesheet" href="navigation.css?v=cleanup-20260927">
-  <link rel="stylesheet" href="footer.css?v=cleanup-20260927">
-  <link rel="stylesheet" href="panorama-hero.css?v=cleanup-20260927">
+  <link rel="stylesheet" href="hero.css?v=check2-20260927">
+  <link rel="stylesheet" href="responsive.css?v=check2-20260927">
+  <link rel="stylesheet" href="stories.css?v=compact-autoplay-20260927">
+  <link rel="stylesheet" href="story-refined.css?v=check2-20260927">
+  <link rel="stylesheet" href="consultation.css?v=check2-20260927">
+  <link rel="stylesheet" href="contact.css?v=service-tooltips-20260927">
+  <link rel="stylesheet" href="navigation.css?v=check2-20260927">
+  <link rel="stylesheet" href="footer.css?v=check2-20260927">
+  <link rel="stylesheet" href="panorama-hero.css?v=check2-20260927">
+  <link rel="stylesheet" href="copy-references.css">
 </head>
 <body id="top" class="home-page">
 <header id="main-header" class="site-header" aria-label="Navigazione principale">
@@ -39,8 +40,8 @@
         <div class="menu-nav-inner">
           <a href="#chi-sono">Chi sono</a>
           <a href="#servizi">I miei servizi</a>
-          <a href="#blog">Blog</a>
-          <a href="racconti.html">Tutti i racconti</a>
+          <a href="#blog">Racconti e consigli</a>
+          <a href="racconti.html">Tutti i contenuti</a>
           <a href="#contatti">Contatti</a>
         </div>
 
@@ -58,7 +59,7 @@
 
   <main>
     <section id="home" class="panorama-hero" aria-labelledby="hero-title">
-      <img class="panorama-hero-image" src="assets/bali-rice-terraces.webp" srcset="assets/bali-rice-terraces-768.webp 768w, assets/bali-rice-terraces-1280.webp 1280w, assets/bali-rice-terraces.webp 2400w" sizes="100vw" alt="Risaie terrazzate e palme nella valle di Tegallalang, Bali" width="2400" height="1600" fetchpriority="high" decoding="async">
+      <img class="panorama-hero-image" src="assets/bali-rice-terraces.webp" srcset="assets/bali-rice-terraces-768.webp 768w, assets/bali-rice-terraces-1280.webp 1280w, assets/bali-rice-terraces.webp 2400w" sizes="max(100vw, 150vh, 990px)" alt="Risaie terrazzate e palme nella valle di Tegallalang, Bali" width="2400" height="1600" fetchpriority="high" decoding="async">
       <div class="panorama-hero-content">
         <p class="panorama-hero-label">Travel designer</p>
         <h1 id="hero-title">Bali, Asia e itinerari<br class="panorama-title-break"> che parlano davvero di te</h1>
@@ -131,7 +132,6 @@
     </dialog>
 
     <section class="consultation-banner" aria-labelledby="consultation-title">
-      <div class="consultation-art" aria-hidden="true"></div>
       <div class="consultation-copy">
         <p class="consultation-eyebrow">Non sai quale servizio scegliere?</p>
         <h2 id="consultation-title">Parliamone <em>insieme</em>.</h2>
@@ -242,19 +242,12 @@
       </div>
 
       <div class="postcard-collage" aria-label="Anteprima di un itinerario a Bali">
-        <figure class="postcard postcard-ocean">
-          <img src="assets/hero-river.webp" alt="Mare e palme a Bali" loading="lazy" decoding="async" width="1000" height="1210">
-        </figure>
-        <figure class="postcard postcard-temple">
-          <img src="assets/hero-temple.webp" alt="Tempio balinese tra il verde" loading="lazy" decoding="async" width="1800" height="2389">
-        </figure>
-        <span class="paperclip" aria-hidden="true"></span>
         <article class="itinerary-card" id="itinerario-completo">
           <ol class="timeline">
             <li><time>00:00</time><span class="timeline-icon sun-icon" aria-hidden="true"></span><div><strong>17 lorem ipsum dolorem...</strong><small>18 lorem ipsum dolorem...</small></div></li>
             <li><time>00:00</time><span class="timeline-icon leaf-icon" aria-hidden="true"></span><div><strong>19 lorem ipsum dolorem...</strong><small>20 lorem ipsum dolorem...</small></div></li>
             <li><time>00:00</time><span class="timeline-icon wave-icon" aria-hidden="true"></span><div><strong>21 lorem ipsum dolorem...</strong><small>22 lorem ipsum dolorem...</small></div></li>
-            <li><time>00:00</time><span class="timeline-icon fork-icon" aria-hidden="true"></span><div><strong>23 lorem ipsum dolorem...</strong><small>24 lorem ipsum dolorem...</small></div></li>
+            <li class="mystery-stop"><time>00:00</time><span class="timeline-icon fork-icon" aria-hidden="true"></span><div><strong>23 lorem ipsum dolorem...</strong><small>24 lorem ipsum dolorem...</small></div></li>
           </ol>
         </article>
       </div>
@@ -295,7 +288,6 @@
             </article>
           </div>
           <div class="stories-controls" hidden>
-            <button class="stories-pause" type="button" aria-pressed="false">Pausa</button>
             <button class="stories-arrow stories-prev" type="button" aria-label="Racconto precedente" aria-controls="stories-track"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h17m-7-7 7 7-7 7"/></svg></button>
             <button class="stories-arrow stories-next" type="button" aria-label="Racconto successivo" aria-controls="stories-track"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h17m-7-7 7 7-7 7"/></svg></button>
           </div>
@@ -311,10 +303,9 @@
           <div class="contact-intro">
             <div class="contact-copy-block">
               <p class="contact-kicker">Contatti</p>
-              <h2 id="contact-title"><span>Sei ancora indeciso?</span><span>Ti aiuto a capire</span><em>da dove partire.</em></h2>
+              <h2 id="contact-title">Il tuo prossimo viaggio inizia da un messaggio</h2>
               <i class="contact-rule" aria-hidden="true"></i>
-              <p class="contact-copy">Raccontami la tua idea di viaggio.<br>Insieme possiamo trasformare<br>dubbi, domande e desideri<br>in un itinerario su misura.</p>
-              <p class="contact-note">“Chiacchieriamo del tuo prossimo viaggio?”<i aria-hidden="true"></i></p>
+              <p class="contact-copy">Raccontami che cosa sogni e al resto ci penso io: mettiamo fine allo stress da pianificazione e iniziamo a disegnare il viaggio dei tuoi sogni.</p>
             </div>
 
             <div class="contact-portrait" aria-hidden="true">
@@ -347,16 +338,32 @@
               </div>
               <label><span class="sr-only">Destinazione</span><input type="text" name="destinazione" placeholder="Dove vorresti andare?"></label>
               <div class="contact-fields contact-fields-two">
-                <label><span class="sr-only">Periodo di partenza</span><input type="text" name="partenza" placeholder="Quando pensi di partire?"></label>
-                <label><span class="sr-only">Numero di viaggiatori</span><input type="number" name="viaggiatori" min="1" placeholder="Quante persone viaggiano?"></label>
+                <div class="contact-date-field">
+                  <span class="sr-only" id="departure-label">Quando pensi di partire?</span>
+                  <input type="hidden" name="partenza" id="departure-date">
+                  <button class="contact-date-trigger" type="button" aria-labelledby="departure-label departure-value" aria-expanded="false" aria-controls="departure-calendar"><span id="departure-value">Quando pensi di partire?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 2v6M16 2v6"/></svg></button>
+                  <div class="contact-calendar" id="departure-calendar" hidden>
+                    <div class="contact-calendar-head"><button type="button" class="calendar-prev" aria-label="Mese precedente">‹</button><strong class="calendar-month"></strong><button type="button" class="calendar-next" aria-label="Mese successivo">›</button></div>
+                    <div class="contact-calendar-weekdays" aria-hidden="true"><span>L</span><span>M</span><span>M</span><span>G</span><span>V</span><span>S</span><span>D</span></div>
+                    <div class="contact-calendar-days" role="group" aria-label="Giorni del mese"></div>
+                    <div class="contact-calendar-footer"><button type="button" class="calendar-today">Oggi</button><button type="button" class="calendar-clear">Cancella</button></div>
+                  </div>
+                </div>
+                <div class="contact-travelers-field" role="group" aria-label="Numero di viaggiatori">
+                  <input type="hidden" name="viaggiatori" id="traveler-count" value="1">
+                  <span class="contact-travelers-label">Viaggiatori</span>
+                  <div class="contact-stepper"><button type="button" class="travelers-minus" aria-label="Diminuisci viaggiatori" disabled>−</button><output for="traveler-count" class="travelers-value" aria-live="polite">1</output><button type="button" class="travelers-plus" aria-label="Aumenta viaggiatori">+</button></div>
+                </div>
               </div>
             </fieldset>
 
             <fieldset class="contact-needs">
               <legend>Di cosa hai bisogno?</legend>
-              <label><input type="radio" name="servizio" value="Viaggio su misura"><span>Viaggio su misura<svg class="contact-help-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9 9a3 3 0 0 1 6 0c0 2-3 2-3 4"/><circle cx="12" cy="17" r=".7" fill="currentColor" stroke="none"/></svg></span></label>
-              <label><input type="radio" name="servizio" value="Itinerario day by day"><span>Itinerario day by day<svg class="contact-help-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9 9a3 3 0 0 1 6 0c0 2-3 2-3 4"/><circle cx="12" cy="17" r=".7" fill="currentColor" stroke="none"/></svg></span></label>
-              <label><input type="radio" name="servizio" value="Non so ancora quale fa per me"><span>Non so ancora quale fa per me<svg class="contact-help-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9 9a3 3 0 0 1 6 0c0 2-3 2-3 4"/><circle cx="12" cy="17" r=".7" fill="currentColor" stroke="none"/></svg></span></label>
+              <div class="contact-option-grid">
+                <label><input type="radio" name="servizio" value="Viaggio su misura"><span>Viaggio su misura<span class="contact-help" tabindex="0" aria-label="Informazioni su Viaggio su misura" aria-describedby="help-full-immersion"><svg class="contact-help-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9 9a3 3 0 0 1 6 0c0 2-3 2-3 4"/><circle cx="12" cy="17" r=".7" fill="currentColor" stroke="none"/></svg><span class="contact-tooltip" id="help-full-immersion" role="tooltip">Un viaggio progettato da zero, con itinerario completo, strutture, spostamenti ed esperienze selezionate.</span></span></span></label>
+                <label><input type="radio" name="servizio" value="Itinerario day by day"><span>Itinerario day by day<span class="contact-help" tabindex="0" aria-label="Informazioni su Itinerario day by day" aria-describedby="help-road-map"><svg class="contact-help-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9 9a3 3 0 0 1 6 0c0 2-3 2-3 4"/><circle cx="12" cy="17" r=".7" fill="currentColor" stroke="none"/></svg><span class="contact-tooltip" id="help-road-map" role="tooltip">Hai già volo e hotel? Organizzo tappe, tempi, spostamenti ed esperienze in un programma giorno per giorno.</span></span></span></label>
+                <label><input type="radio" name="servizio" value="Non so ancora quale fa per me"><span>Non so ancora quale fa per me<span class="contact-help" tabindex="0" aria-label="Informazioni sulla scelta del servizio" aria-describedby="help-unsure"><svg class="contact-help-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9 9a3 3 0 0 1 6 0c0 2-3 2-3 4"/><circle cx="12" cy="17" r=".7" fill="currentColor" stroke="none"/></svg><span class="contact-tooltip" id="help-unsure" role="tooltip">Raccontami la tua idea di viaggio: ti aiuto a capire quale percorso è più adatto alle tue esigenze.</span></span></span></label>
+              </div>
             </fieldset>
 
             <fieldset class="contact-message-field">
@@ -365,7 +372,7 @@
             </fieldset>
 
             <button type="submit">Parliamone</button>
-            <p class="contact-response">Il pulsante apre la tua app di posta con il messaggio da inviare.</p>
+            <p class="contact-response">Dopo aver inviato il messaggio, ti risponderò il prima possibile.</p>
           </form>
         </aside>
       </div>
@@ -385,9 +392,10 @@
     <button class="preview-close" type="button" aria-label="Chiudi anteprima">×</button>
     <div class="content-preview-body"></div>
   </dialog>
-  <script src="footer.js?v=cleanup-20260927" defer></script>
-  <script src="navigation.js?v=cleanup-20260927" defer></script>
-  <script src="script.js?v=cleanup-20260927" defer></script>
-  <script src="stories.js?v=cleanup-20260927" defer></script>
+  <script src="footer.js?v=check2-20260927" defer></script>
+  <script src="navigation.js?v=check2-20260927" defer></script>
+  <script src="script.js?v=check2-20260927" defer></script>
+  <script src="stories.js?v=compact-autoplay-20260927" defer></script>
+  <script src="copy-references.js" defer></script>
 </body>
 </html>

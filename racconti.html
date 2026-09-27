@@ -3,16 +3,17 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="description" content="Tutti i racconti di viaggio di ElyExploreWorld">
+  <meta name="description" content="Racconti di viaggio vissuti in prima persona, itinerari testati e consigli pratici da ElyExploreWorld.">
   <meta name="theme-color" content="#f7f3e9">
-  <title>Tutti i racconti — ElyExploreWorld</title>
+  <title>Racconti e consigli di viaggio — ElyExploreWorld</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23254535'/%3E%3Ctext x='32' y='44' text-anchor='middle' font-family='Georgia' font-size='40' fill='%23F7F3E9'%3EE%3C/text%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&amp;family=Dancing+Script:wght@500;600&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="racconti.css?v=cleanup-20260927">
-  <link rel="stylesheet" href="navigation.css?v=cleanup-20260927">
-  <link rel="stylesheet" href="footer.css?v=cleanup-20260927">
+  <link rel="stylesheet" href="racconti.css?v=blog-layout-20260927">
+  <link rel="stylesheet" href="navigation.css?v=check2-20260927">
+  <link rel="stylesheet" href="footer.css?v=check2-20260927">
+  <link rel="stylesheet" href="copy-references.css">
 </head>
 <body id="top">
   <a class="skip-link" href="#racconti">Vai ai racconti</a>
@@ -34,8 +35,8 @@
         <div class="menu-nav-inner">
           <a href="index.html#chi-sono">Chi sono</a>
           <a href="index.html#servizi">I miei servizi</a>
-          <a href="index.html#blog">Blog</a>
-          <a href="racconti.html" aria-current="page">Tutti i racconti</a>
+          <a href="index.html#blog">Racconti e consigli</a>
+          <a href="racconti.html" aria-current="page">Tutti i contenuti</a>
           <a href="index.html#contatti">Contatti</a>
         </div>
 
@@ -54,16 +55,16 @@
   <main id="racconti">
     <section class="stories-intro" aria-labelledby="archive-title">
       <div class="stories-intro-copy">
-        <p class="stories-kicker">Racconti di viaggio</p>
-        <h1 id="archive-title">Tutti i racconti</h1>
-        <p class="stories-lead">Appunti, luoghi e incontri raccolti lungo il viaggio. Esplora le destinazioni e apri il racconto che vuoi leggere.</p>
+        <button class="archive-back" type="button"><span aria-hidden="true">←</span> Torna indietro</button>
+        <h1 id="archive-title">Racconti e consigli di viaggio</h1>
+        <p class="stories-intro-detail">Qui troverai i racconti delle mie avventure, consigli pratici fuori dai cliché turistici e, soprattutto, <strong>itinerari reali testati in prima persona</strong>, pronti per essere vissuti.</p>
       </div>
-      <p class="stories-count" aria-label="3 racconti pubblicati"><strong>03</strong><span>racconti pubblicati</span></p>
     </section>
 
+    <div class="archive-layout">
     <section class="stories-archive" aria-labelledby="stories-list-title">
       <div class="stories-archive-heading">
-        <h2 id="stories-list-title">Esplora le storie</h2>
+        <h2 id="stories-list-title">Esplora i racconti di viaggio</h2>
         <p>Dal più recente</p>
       </div>
 
@@ -111,16 +112,54 @@
         </article>
       </div>
     </section>
+    <section class="tips-archive" id="consigli" aria-labelledby="tips-title">
+      <div class="stories-archive-heading">
+        <h2 id="tips-title">Esplora consigli e idee</h2>
+      </div>
+      <div class="stories-grid tips-grid">
+        <article class="story-card tip-card">
+          <div class="story-card-link">
+            <figure class="story-card-media"><img src="assets/tips/packing.jpg" alt="Valigia aperta con abiti, cappello e accessori da viaggio" width="1400" height="2114" loading="lazy" decoding="async"></figure>
+            <div class="story-card-body">
+              <p class="story-card-meta">Prima di partire</p>
+              <h3>La valigia giusta, senza portare troppo</h3>
+              <p class="story-card-description">Una guida essenziale per scegliere cosa serve davvero e lasciare spazio alle esperienze.</p>
+              <span class="story-card-cta">Articolo in preparazione</span>
+            </div>
+          </div>
+        </article>
+        <article class="story-card tip-card">
+          <div class="story-card-link">
+            <figure class="story-card-media"><img src="assets/tips/planning.jpg" alt="Mappa del mondo aperta con fotocamera e strumenti per pianificare un viaggio" width="1400" height="1750" loading="lazy" decoding="async"></figure>
+            <div class="story-card-body">
+              <p class="story-card-meta">Organizzazione</p>
+              <h3>Un itinerario che lascia spazio alla scoperta</h3>
+              <p class="story-card-description">Come trovare il ritmo giusto tra tappe programmate e tempo libero.</p>
+              <span class="story-card-cta">Articolo in preparazione</span>
+            </div>
+          </div>
+        </article>
+        <article class="story-card tip-card">
+          <div class="story-card-link">
+            <figure class="story-card-media"><img src="assets/tips/bali-market.jpg" alt="Banco di frutta e verdura in un mercato tradizionale di Denpasar, Bali" width="1400" height="788" loading="lazy" decoding="async"></figure>
+            <div class="story-card-body">
+              <p class="story-card-meta">Sul posto · Bali</p>
+              <h3>Mercati locali: entrare con curiosità e rispetto</h3>
+              <p class="story-card-description">Piccoli gesti per vivere un luogo quotidiano senza sentirsi soltanto di passaggio.</p>
+              <span class="story-card-cta">Articolo in preparazione</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+    </div>
   </main>
 
   <div id="site-footer-root"></div>
 
-  <script src="footer.js?v=cleanup-20260927" defer></script>
-  <script src="navigation.js?v=cleanup-20260927" defer></script>
-  <script>
-    const storyCount = document.querySelectorAll('.story-card').length;
-    const storyCountOutput = document.querySelector('.stories-count strong');
-    if (storyCountOutput) storyCountOutput.textContent = String(storyCount).padStart(2, '0');
-  </script>
+  <script src="footer.js?v=check2-20260927" defer></script>
+  <script src="navigation.js?v=check2-20260927" defer></script>
+  <script src="racconti.js" defer></script>
+  <script src="copy-references.js" defer></script>
 </body>
 </html>

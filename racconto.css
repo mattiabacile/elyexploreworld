@@ -191,7 +191,7 @@ to { opacity: 1; transform: translateY(0); filter: blur(0); }
 
 .related-card span { color: var(--clay); font: 500 16px var(--display); text-decoration: underline; text-underline-offset: 4px; }
 
-.related-card.is-current { opacity: .58; }
+.related-card.is-current { opacity: 1; }
 
 .article-cta { display: flex; align-items: center; justify-content: space-between; gap: 40px; margin-top: 50px; padding: 34px clamp(28px, 5vw, 72px); background: var(--paper-deep); border-radius: 14px; }
 

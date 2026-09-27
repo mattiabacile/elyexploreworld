@@ -1,0 +1,38 @@
+/* Visible editorial reference numbers for review feedback. */
+.copy-ref::before {
+  content: attr(data-copy-ref);
+  display: inline-flex;
+  min-width: 22px;
+  height: 22px;
+  align-items: center;
+  justify-content: center;
+  margin: 0 7px 2px 0;
+  padding: 0 4px;
+  border-radius: 999px;
+  color: #7e422f;
+  background: #eee2cd;
+  font: 700 10px/1 "Plus Jakarta Sans", Arial, sans-serif;
+  letter-spacing: 0;
+  text-transform: none;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+.copy-ref:is(a, button) { position: relative; }
+.copy-ref:is(a, button)::before {
+  position: absolute;
+  top: -9px;
+  left: -9px;
+  z-index: 2;
+  margin: 0;
+  box-shadow: 0 1px 4px rgb(0 0 0 / .16);
+}
+.panorama-hero .copy-ref::before,
+.consultation-banner .copy-ref::before,
+.itinerary-preview .preview-copy-block .copy-ref::before {
+  color: #294535;
+  background: #fff7e8;
+}
+.copy-ref:where(.article-intro)::before { margin-bottom: 12px; }
+@media (max-width: 680px) {
+  .copy-ref::before { min-width: 20px; height: 20px; font-size: 9px; margin-right: 5px; }
+}

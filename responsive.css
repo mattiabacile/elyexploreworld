@@ -307,6 +307,75 @@ main section[id] { scroll-margin-top: 82px; }
 
 .itinerary-preview { grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); align-items: center; }
 }
+
+/* The itinerary preview sits directly over a real Nusa Penida photograph. */
+.itinerary-preview {
+  min-height: 390px;
+  height: auto;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, .82fr);
+  align-items: center;
+  gap: clamp(28px, 5vw, 90px);
+  padding: 38px max(6vw, calc((100vw - 1280px) / 2));
+  color: #fffaf0;
+  background: linear-gradient(90deg, rgba(18, 38, 45, .82), rgba(18, 38, 45, .59) 48%, rgba(18, 38, 45, .28)), url('assets/nusa-penida-kelingking.jpg') center 52% / cover no-repeat;
+}
+
+.itinerary-preview .preview-copy-block { padding: 0; }
+.itinerary-preview .preview-copy-block h2 { max-width: 650px; }
+.itinerary-preview .preview-description { max-width: 475px; }
+.itinerary-preview .preview-button { border-color: currentColor; cursor: pointer; }
+
+.itinerary-preview .postcard-collage {
+  display: block;
+  left: auto;
+  width: 100%;
+  max-width: 410px;
+  height: auto;
+  margin: 0;
+  margin-left: 0;
+  transform: none;
+  container-type: normal;
+  justify-self: end;
+}
+
+.itinerary-preview .itinerary-card {
+  position: relative;
+  inset: auto;
+  width: 100%;
+  height: auto;
+  min-height: 300px;
+  padding: 26px 30px;
+  transform: none;
+  background: rgba(250, 247, 239, .96);
+  box-shadow: 0 18px 42px rgba(12, 30, 36, .25);
+}
+
+.itinerary-preview .timeline li { min-height: 65px; grid-template-columns: 42px 38px minmax(0, 1fr); }
+.itinerary-preview .timeline li:last-child { min-height: 42px; }
+.itinerary-preview .timeline::before { left: 42px; }
+.itinerary-preview .timeline li::before { top: 8px; left: 39px; width: 6px; height: 6px; border-width: 2px; }
+.itinerary-preview .timeline time { font-size: 11px; }
+.itinerary-preview .timeline-icon { width: 24px; height: 24px; margin-left: 10px; }
+.itinerary-preview .timeline div { padding-left: 7px; }
+.itinerary-preview .timeline strong { font-size: 15px; }
+.itinerary-preview .timeline small { font-size: 10px; }
+
+@media (max-width: 767px) {
+  .itinerary-preview {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding: 44px 22px;
+    background-position: center 50%;
+  }
+
+  .itinerary-preview .preview-copy-block { text-align: left; }
+  .itinerary-preview .preview-copy-block h2 { font-size: clamp(36px, 9vw, 52px); }
+  .itinerary-preview .preview-eyebrow { font-size: 10px; }
+  .itinerary-preview .preview-description { font-size: 15px; }
+  .itinerary-preview .preview-button { width: auto; min-width: min(100%, 286px); }
+  .itinerary-preview .postcard-collage { max-width: 430px; justify-self: start; padding: 0; }
+  .itinerary-preview .itinerary-card { padding: 24px; }
+}
 @media (prefers-reduced-motion: reduce) {
 
 html { scroll-behavior: auto; }
