@@ -331,7 +331,7 @@ a { color: inherit; text-decoration: none; }
   min-height: 64px;
   align-items: center;
   gap: 24px;
-  margin-top: 78px;
+  margin-top: 42px;
   padding: 8px 0;
   border-top: 1px solid var(--showcase-line);
   border-bottom: 1px solid var(--showcase-line);
@@ -395,37 +395,45 @@ a { color: inherit; text-decoration: none; }
 
 .book-button {
   position: absolute;
-  bottom: 51px;
+  bottom: 38px;
   left: 50%;
   display: flex;
   width: 292px;
   max-width: calc(100% - 36px);
-  height: 56px;
+  min-height: 54px;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 24px 8px 28px;
-  color: var(--showcase-paper);
-  background: linear-gradient(90deg, #59654d, #6f7964);
+  gap: 12px;
+  padding: 7px 9px 7px 22px;
+  color: #fffaf2;
+  background: #a5543d;
   border: 0;
   border-radius: 999px;
-  font-family: var(--font-display);
-  font-size: 18px;
-  line-height: 1;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .015em;
+  line-height: 1.25;
   cursor: pointer;
   transform: translateX(-50%);
   transition: background-color 180ms ease, transform 180ms ease;
 }
 
-.book-button span:last-child {
+.book-button .book-button-icon {
+  display: grid;
   flex: 0 0 auto;
-  font-family: var(--font-body);
-  font-size: 21px;
-  font-weight: 300;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  background: rgba(255, 250, 242, .14);
+  border-radius: 50%;
 }
 
-.book-button:hover { background: #4d5d44; transform: translate(-50%, -2px); }
+.book-button-icon svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
 
-.book-button:focus-visible { outline: 2px solid var(--showcase-clay); outline-offset: 4px; }
+.book-button:hover { background: #8f432f; transform: translate(-50%, -2px); }
+
+.book-button:focus-visible { outline: 2px solid #254535; outline-offset: 4px; }
 
 @media (max-width: 1100px) {
 
@@ -470,7 +478,7 @@ a { color: inherit; text-decoration: none; }
 
 .service-summary { min-height: 38px; margin-top: 16px; font-size: 14px; }
 
-.service-price { min-height: 60px; margin-top: 56px; }
+.service-price { min-height: 60px; margin-top: 32px; }
 
 .service-price strong { font-size: 42px; }
 
@@ -482,7 +490,7 @@ a { color: inherit; text-decoration: none; }
 
 .service-inclusion-icon svg { width: 25px; height: 25px; }
 
-.book-button { bottom: 45px; width: 270px; height: 52px; font-size: 17px; }
+.book-button { bottom: 48px; width: 270px; min-height: 52px; font-size: 12px; }
 }
 
 .itinerary-preview {

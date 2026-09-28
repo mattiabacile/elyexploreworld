@@ -17,7 +17,10 @@
   vertical-align: middle;
   white-space: nowrap;
 }
-.copy-ref:is(a, button) { position: relative; }
+.copy-ref:is(a, button):not(.book-button) { position: relative; }
+@media (max-width: 1023px) {
+  .copy-ref.book-button { position: relative; }
+}
 .copy-ref:is(a, button)::before {
   position: absolute;
   top: -9px;
