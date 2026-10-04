@@ -1,0 +1,173 @@
+/* Geometry and copy follow the supplied 980 × 1046 reference. */
+.travel-services {
+  color: #161b18;
+  background: linear-gradient(#f9e7d344, #f9e7d344), #efddc6 url('assets/services/background.png') left top / auto 100% no-repeat;
+}
+.travel-services-shell { width: min(100%, 1440px); margin-inline: auto; container-type: inline-size; }
+.travel-services-layout { padding: 5.75cqw 2.85cqw 2.65cqw; }
+.travel-services-heading { position: relative; text-align: center; margin-bottom: 1.5cqw; }
+.travel-services-kicker { margin: 0 0 2.5cqw; color: #303c39; font-size: 1.62cqw; font-weight: 600; letter-spacing: .19em; line-height: 1.4; text-transform: uppercase; }
+.travel-services-kicker::after { content: ''; position: absolute; top: 3.5cqw; left: 50%; width: 1px; height: 2cqw; background: #bd654942; }
+.travel-services-heading h2 { margin: 0; font: 500 6.9cqw/1 var(--font-display); letter-spacing: -.052em; }
+.travel-services-heading h2 em { color: #aa3e24; font-weight: 500; }
+.travel-services-intro { margin: 1.7cqw 0 0; color: #596561; font-size: 2.22cqw; line-height: 1.4; letter-spacing: -.025em; }
+.travel-services-grid { display: grid; grid-template-columns: minmax(0, 49.6fr) minmax(0, 50.4fr); gap: 2cqw; }
+.travel-service { display: flex; flex-direction: column; min-width: 0; overflow: hidden; border-radius: .45cqw; background: #f7eee3; border: 1px solid #fff3e6; box-shadow: .7cqw 1cqw .65cqw -.1cqw #72543355, .1cqw .2cqw .3cqw #76513222; }
+/* Dedicated regenerated photographs, independent from the interface. */
+.travel-service-photo { position: relative; overflow: hidden; flex-shrink: 0; }
+.travel-service-photo::before { content: ''; position: absolute; inset: 0; background-repeat: no-repeat; background-size: cover; }
+.travel-service-photo--full { height: 24.1cqw; }
+.travel-service-photo--road { height: 27.9cqw; }
+/* Keep the pencil and route visible in both desktop and mobile crops. */
+.travel-service-photo--full::before { background-image: url('assets/services/map-hd.png'); background-position: center 47%; }
+.travel-service-photo--road::before { background-image: url('assets/services/agenda-hd.png'); background-position: center 45%; }
+.travel-service-content { display: flex; flex: 1; flex-direction: column; padding: 1.8cqw 2.8cqw 1.3cqw 3.3cqw; background: linear-gradient(112deg, #fbf1e7, #f3e9dc); }
+.travel-service-eyebrow { margin: 0 0 1cqw; color: #ac452c; font-size: 1.3cqw; line-height: 1.35; font-weight: 700; letter-spacing: .17em; text-transform: uppercase; }
+.travel-service-prefix { margin: 0 0 .5cqw; color: #54615e; font-size: 1.7cqw; line-height: 1.3; }
+.travel-service h3 { margin: 0 0 .7cqw; font: 500 4.85cqw/1 var(--font-display); text-transform: uppercase; letter-spacing: -.04em; white-space: nowrap; }
+.travel-service--road h3 { font-size: 3.9cqw; letter-spacing: -.055em; }
+.travel-service-summary { margin: 0 0 .5cqw; color: #4d5c59; font-size: 1.83cqw; line-height: 1.35; letter-spacing: -.035em; }
+.travel-service-description { margin: 0; color: #64706c; font-size: 1.43cqw; line-height: 1.35; letter-spacing: -.028em; }
+.travel-service-features { display: grid; gap: .85cqw; list-style: none; margin: 1.65cqw 0 0; padding: 1.45cqw 0 0; border-top: 1px solid #e6c9b3; }
+.travel-service-features li { display: flex; align-items: center; gap: 2.9cqw; min-height: 2.85cqw; color: #51605c; font-size: 1.58cqw; line-height: 1.3; letter-spacing: -.025em; }
+.travel-service-features svg, .travel-service-consultation > svg { flex: 0 0 auto; width: 3.2cqw; height: 3.2cqw; fill: none; stroke: #b24328; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+.travel-service-button { display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; gap: .3cqw; min-height: 6.95cqw; padding: 1cqw 1.25cqw; border: 1px solid #fff0dc55; border-radius: 100px; background: #ad351b; color: #fff0e0; font-size: 1.55cqw; font-weight: 400; line-height: 1.25; letter-spacing: -.045em; transition: background-color 160ms ease; }
+.travel-service-button svg { width: 2cqw; height: 1.8cqw; fill: none; stroke: currentColor; stroke-width: 1.3; flex-shrink: 0; }
+.travel-service-button:hover { background: #902b17; }
+.travel-service-button:focus-visible { outline: 3px solid #294f43; outline-offset: 4px; }
+.travel-service-consultation { display: flex; align-items: center; gap: 1.5cqw; margin: 2.85cqw -1.45cqw 0 -1.85cqw; padding: 1.7cqw  .4cqw 1.7cqw 1.9cqw; border-radius: 2.3cqw; background: #f0d6c5b3; }
+.travel-service-consultation > svg { width: 3.4cqw; height: 3.4cqw; }
+.travel-service-consultation > div { flex: 1; min-width: 0; }
+.travel-service-consultation p { margin: 0 0 .45cqw; color: #b0472d; font-size: 1.09cqw; line-height: 1.25; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; }
+.travel-service-consultation > div > span { display: block; color: #6c726b; font-size: 1.19cqw; line-height: 1.45; letter-spacing: -.025em; }
+.travel-service-footer { display: flex; align-items: center; justify-content: space-between; gap: 1cqw; margin-top: auto; padding-top: 2.9cqw; margin-left: -.5cqw; margin-right: -.8cqw; }
+.travel-service-price { margin: 0; }
+.travel-service-price > span { display: block; color: #3d4c47; font-size: 1.17cqw; font-weight: 700; line-height: 1.5; letter-spacing: .22em; text-transform: uppercase; }
+.travel-service-price strong { display: flex; align-items: baseline; gap: .8cqw; color: #111b17; font: 500 5.2cqw/1 var(--font-display); font-variant-numeric: lining-nums; letter-spacing: -.065em; }
+.travel-service-price small { color: #54625c; font: 400 2.12cqw/1 var(--font-body); letter-spacing: -.04em; }
+.travel-service-price-note { margin: .4cqw 0 .3cqw; color: #64706a; font-size: 1.4cqw; line-height: 1.35; letter-spacing: -.025em; }
+.travel-service-footer .travel-service-button { min-width: 18.5cqw; }
+@media (max-width: 900px) {
+  .travel-services-layout { padding: 38px 18px 36px; }
+  .travel-services-heading { margin-bottom: 25px; }
+  .travel-services-kicker { margin-bottom: 26px; font-size: 11px; }
+  .travel-services-kicker::after { top: 24px; height: 14px; }
+  .travel-services-heading h2 { font-size: clamp(36px, 6.5vw, 48px); line-height: 1.04; }
+  .travel-services-heading h2 em { display: block; }
+  .travel-services-intro { margin-top: 15px; font-size: 16px; line-height: 1.45; }
+  .travel-services-intro br { display: none; }
+  .travel-services-grid { grid-template-columns: 1fr; gap: 26px; max-width: 480px; margin-inline: auto; }
+  .travel-service { border-radius: 5px; box-shadow: 5px 9px 8px -2px #72543344; }
+  .travel-service-photo--full { height: auto; aspect-ratio: 450 / 237; }
+  .travel-service-photo--road { height: auto; aspect-ratio: 454 / 274; }
+  .travel-service-content { padding: 22px 24px 16px; }
+  .travel-service-eyebrow { margin-bottom: 10px; font-size: 11px; letter-spacing: .13em; }
+  .travel-service-prefix { margin-bottom: 5px; font-size: 15px; }
+  .travel-service h3 { font-size: clamp(32px, 8vw, 44px); margin-bottom: 10px; white-space: normal; }
+  .travel-service--road h3 { font-size: clamp(29px, 7.2vw, 40px); }
+  .travel-service-summary { margin-bottom: 7px; font-size: 16px; line-height: 1.4; }
+  .travel-service-description { font-size: 14px; line-height: 1.45; }
+  .service-desktop-break { display: none; }
+  .travel-service-features { gap: 14px; margin-top: 18px; padding-top: 18px; }
+  .travel-service-features li { gap: 20px; min-height: 30px; font-size: 15px; }
+  .travel-service-features svg { width: 30px; height: 30px; stroke-width: 2.3; }
+  .travel-service-consultation { flex-wrap: wrap; gap: 12px; margin: 24px -10px 0; padding: 16px; border-radius: 20px; }
+  .travel-service-consultation > svg { width: 32px; height: 32px; }
+  .travel-service-consultation p { margin-bottom: 5px; font-size: 11px; }
+  .travel-service-consultation > div > span { font-size: 13px; }
+  .travel-service-button { min-height: 48px; padding: 12px 17px; gap: 8px; font-size: 15px; letter-spacing: -.025em; }
+  .travel-service-button svg { width: 22px; height: 20px; }
+  .travel-service-consultation .travel-service-button { width: 100%; }
+  .travel-service-footer { flex-wrap: wrap; gap: 18px; margin: 0; padding-top: 30px; }
+  .travel-service-price > span { font-size: 11px; }
+  .travel-service-price strong { font-size: 50px; gap: 8px; }
+  .travel-service-price small { font-size: 20px; }
+  .travel-service-price-note { margin-top: 5px; font-size: 13px; }
+  .travel-service-footer .travel-service-button { width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) { .travel-service-button { transition: none; } }
+
+@media (min-width: 901px) { .travel-services-heading { transform: translateX(1.1cqw); } }
+
+
+/* Native disclosure keeps the extra service copy accessible to keyboard and touch. */
+.travel-service-details { margin: 16px 0 0; font-size: clamp(15px, 1.55cqw, 20px); }
+.travel-service-details summary { display: flex; align-items: center; gap: 10px; min-height: 44px; width: fit-content; cursor: pointer; list-style: none; text-decoration: underline; text-underline-offset: 4px; color: #92402c; }
+.travel-service-details summary::-webkit-details-marker { display: none; }
+.travel-service-details summary::after { content: '+'; font-size: 24px; line-height: 1; text-decoration: none; }
+.travel-service-details[open] summary::after { content: '−'; }
+.travel-service-details summary:focus-visible { outline: 2px solid #294f43; outline-offset: 4px; border-radius: 3px; }
+.travel-service-details > p { margin: 8px 0 16px; color: #52615c; line-height: 1.6; overflow-wrap: anywhere; }
+.travel-services .copy-ref { position: relative; }
+.travel-services .copy-ref::before { position: absolute; left: -23px; top: 2px; width: 18px; min-width: 18px; height: 18px; padding: 0; margin: 0; font-size: 9px; }
+.travel-services-heading .copy-ref::before { position: static; display: inline-flex; margin: 0 7px 2px 0; vertical-align: middle; }
+.travel-services .travel-service-consultation.copy-ref::before { top: -8px; left: 12px; }
+.travel-services .travel-service-button.copy-ref::before { top: -8px; left: 12px; }
+.travel-service--full .travel-service-consultation { margin-top: auto; }
+.travel-service-details { margin-bottom: 20px; }
+@media (min-width: 901px) {
+  .travel-service-footer { min-height: 13cqw; }
+}
+@media (max-width: 900px) {
+  .travel-service-details { font-size: 15px; margin-top: 14px; margin-bottom: 18px; }
+  .travel-service--full .travel-service-consultation { margin-top: 6px; }
+  .travel-service-footer { padding-top: 8px; }
+  .travel-service-consultation p { white-space: normal; }
+}
+
+/* Desktop overview fits the available screen; expanded details remain natural height. */
+@media (min-width: 901px) {
+  .travel-services-shell { width: min(100%, 1180px); }
+  .travel-services-layout { padding: 16px 28px 20px; }
+  .travel-services-heading { margin-bottom: 16px; transform: none; }
+  .travel-services-kicker { margin-bottom: 8px; font-size: 11px; line-height: 16px; }
+  .travel-services-kicker::after { display: none; }
+  .travel-services-heading h2 { font-size: clamp(40px, 4vw, 54px); line-height: 1; }
+  .travel-services-intro { margin-top: 8px; font-size: 15px; line-height: 1.4; }
+  .travel-services-intro br { display: none; }
+  .travel-services-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+  .travel-service { border-radius: 5px; box-shadow: 6px 9px 8px -3px #72543344; }
+  .travel-service-photo--full, .travel-service-photo--road { height: clamp(80px, 13svh, 150px); }
+  .travel-service-content { padding: 16px 24px 14px 30px; }
+  .travel-service-eyebrow { margin-bottom: 5px; font-size: 11px; line-height: 1.3; }
+  .travel-service-prefix { margin-bottom: 3px; font-size: 13px; line-height: 1.3; }
+  .travel-service h3 { margin-bottom: 7px; font-size: clamp(32px, 3vw, 40px); }
+  .travel-service--road h3 { font-size: clamp(27px, 2.7vw, 34px); }
+  .travel-service-summary { margin-bottom: 5px; font-size: 15px; line-height: 1.35; }
+  .travel-service-description { font-size: 13px; line-height: 1.4; }
+  .service-desktop-break { display: none; }
+  .travel-service-features { gap: 7px; margin-top: 10px; padding-top: 10px; }
+  .travel-service--full .travel-service-features { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 16px; min-height: 96px; }
+  .travel-service-features li { gap: 12px; min-height: 24px; font-size: 13px; line-height: 1.35; }
+  .travel-service-features svg { width: 25px; height: 25px; }
+  .travel-service-details { margin: 6px 0 10px; font-size: 14px; }
+  .travel-service-details summary { min-height: 38px; }
+  .travel-service-details > p { margin-bottom: 12px; }
+  .travel-service-consultation { gap: 10px; margin: auto -12px 0 -16px; padding: 12px 8px 12px 12px; border-radius: 18px; min-height: 80px; }
+  .travel-service-consultation > svg { width: 28px; height: 28px; }
+  .travel-service-consultation p { margin-bottom: 4px; font-size: 10px; letter-spacing: .035em; white-space: normal; }
+  .travel-service-consultation > div > span { font-size: 11px; }
+  .travel-service-button { min-height: 46px; padding: 10px 13px; gap: 5px; font-size: 13px; letter-spacing: -.025em; }
+  .travel-service-button svg { width: 19px; height: 18px; }
+  .travel-service-footer { min-height: 80px; padding-top: 4px; margin: auto -8px 0 -4px; gap: 12px; }
+  .travel-service-footer .travel-service-button { min-width: 0; }
+  .travel-service-price > span { font-size: 10px; line-height: 1.4; }
+  .travel-service-price strong { font-size: 40px; gap: 6px; }
+  .travel-service-price small { font-size: 16px; }
+  .travel-service-price-note { margin: 3px 0 0; font-size: 11px; line-height: 1.35; }
+}
+
+@media (min-width: 901px) and (max-height: 850px) {
+  .travel-services-layout { padding-block: 10px 14px; }
+  .travel-services-heading { margin-bottom: 10px; }
+  .travel-services-heading h2 { font-size: 42px; }
+  .travel-services-intro { margin-top: 6px; font-size: 14px; }
+  .travel-service-photo--full, .travel-service-photo--road { height: 76px; }
+  .travel-service-content { padding-top: 12px; padding-bottom: 10px; }
+  .travel-service--full .travel-service-features { min-height: 84px; }
+  .travel-service-details { margin-block: 2px 6px; }
+  .travel-service-consultation, .travel-service-footer { min-height: 74px; }
+}
+@media (min-width: 901px) {
+  .travel-services { background-size: auto, cover; background-position: center; }
+}

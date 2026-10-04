@@ -10,9 +10,6 @@
       '.bio-title > span:first-child', '.bio-copy > p', '.bio-more-button',
       '#bio-dialog .bio-dialog-eyebrow', '#bio-dialog h2', '#bio-dialog .bio-dialog-copy > p',
       '.consultation-copy > p', '.consultation-copy > h2', '.consultation-benefits li > span', '.consultation-button',
-      '.services-heading > p', '.services-heading > h2',
-      '.book-page .page-eyebrow', '.book-page .page-heading h3', '.book-page .service-summary',
-      '.book-page .service-price strong', '.book-page .service-inclusions li > span:last-child', '.book-button',
       '.preview-copy-block > p', '.preview-copy-block > h2', '.preview-copy-block > button',
       '.itinerary-card .timeline strong', '.itinerary-card .timeline small',
       '.stories-intro > p', '.stories-intro > h2', '.stories-all-link',
@@ -34,6 +31,29 @@
       '.article-cta p', '.article-cta h2', '.article-cta a'
     ];
   } else return;
+
+  // Keep the review references stable when service layouts or copy change.
+  if (path === 'index.html') {
+    const groups = [
+      [1, '.panorama-hero-content > p, .panorama-hero-content > h1, .panorama-hero-content > a'],
+      [5, '.bio-title > span:first-child, .bio-copy > p, .bio-more-button, #bio-dialog .bio-dialog-eyebrow, #bio-dialog h2, #bio-dialog .bio-dialog-copy > p'],
+      [15, '.consultation-copy > p, .consultation-copy > h2, .consultation-benefits li > span, .consultation-button'],
+      [22, '.travel-services-kicker, #travel-services-title, .travel-services-intro, .travel-service--full .travel-service-eyebrow, #full-title, .travel-service--full .travel-service-summary, .travel-service--full .travel-service-description, .travel-service--full .travel-service-features, .travel-service-consultation'],
+      [31, '.travel-service--full summary'],
+      [32, '.travel-service--road .travel-service-eyebrow, #road-title, .travel-service--road .travel-service-summary, .travel-service--road .travel-service-description, .travel-service--road .travel-service-features, .travel-service-pricing, .travel-service--road .travel-service-button'],
+      [39, '.travel-service--road summary'],
+      [40, '.preview-copy-block > p, .preview-copy-block > h2, .preview-copy-block > button'],
+      [44, '.itinerary-card .timeline strong, .itinerary-card .timeline small'],
+      [52, '.stories-intro > p, .stories-intro > h2, .stories-all-link, .contact-copy-block > p, .contact-copy-block > h2, .contact-form > button[type="submit"]']
+    ];
+    groups.forEach(([first, selector]) => {
+      document.querySelectorAll(selector).forEach((node, index) => {
+        node.classList.add('copy-ref');
+        node.dataset.copyRef = String(first + index);
+      });
+    });
+    return;
+  }
 
   const nodes = document.querySelectorAll(selectors.join(','));
   nodes.forEach((node, index) => {

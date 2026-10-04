@@ -17,18 +17,9 @@
     button.addEventListener('click', () => {
       if (!previewBody || !contentPreview) return;
       previewBody.replaceChildren();
-      if (button.dataset.preview === 'service') {
-        const service = button.closest('.book-page');
-        const previewParts = ['.page-heading', '.service-summary', '.service-price', '.service-inclusions']
-          .map((selector) => service.querySelector(selector))
-          .filter(Boolean)
-          .map((node) => node.cloneNode(true));
-        previewBody.append(...previewParts);
-      } else {
-        const card = document.querySelector('.postcard-collage .itinerary-card').cloneNode(true);
-        card.removeAttribute('id');
-        previewBody.append(card);
-      }
+      const card = document.querySelector('.postcard-collage .itinerary-card').cloneNode(true);
+      card.removeAttribute('id');
+      previewBody.append(card);
       previewBody.querySelectorAll('[id]').forEach(node => node.removeAttribute('id'));
       let title = previewBody.querySelector('h3');
       if (!title) {
@@ -38,7 +29,7 @@
       }
       title.id = 'content-preview-title';
       if (!title.dataset.copyRef) {
-        const sourceRef = button.closest('section')?.querySelector('h2[data-copy-ref]')?.dataset.copyRef;
+        const sourceRef = button.dataset.copyRef || button.closest('section')?.querySelector('h2[data-copy-ref]')?.dataset.copyRef;
         if (sourceRef) {
           title.classList.add('copy-ref');
           title.dataset.copyRef = sourceRef;

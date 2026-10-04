@@ -36,6 +36,18 @@
 .bio-dialog h2 { margin:0 48px 28px 0; font:500 clamp(44px,7vw,68px)/.95 var(--font-display); }
 .bio-dialog-copy { display:grid; gap:18px; font-size:15px; line-height:1.75; text-wrap:pretty; }
 .bio-dialog-copy p { margin:0; }
+.bio-certifications { margin-top:36px; padding-top:28px; border-top:1px solid rgb(35 55 43 / .22); }
+.bio-certifications h3 { margin:0 0 8px; font:500 clamp(32px,5vw,40px)/1.1 var(--font-display); }
+.bio-certifications-intro { margin:0 0 26px; font-size:14px; line-height:1.6; }
+.bio-certificate { margin:0; }
+.bio-certificate + .bio-certificate { margin-top:30px; }
+.bio-certificate h4 { margin:0 0 6px; font-size:16px; font-weight:600; line-height:1.4; }
+.bio-certificate figcaption p { margin:0 0 14px; font-size:13px; line-height:1.7; }
+.bio-certificate a { display:block; color:var(--bio-ink); text-decoration:none; border-radius:4px; }
+.bio-certificate img { display:block; width:100%; height:auto; border:1px solid rgb(35 55 43 / .18); background:#fff; }
+.bio-certificate a > span { display:flex; align-items:center; gap:8px; min-height:44px; font-size:13px; text-decoration:underline; text-underline-offset:4px; }
+.bio-certificate a:hover > span { color:var(--bio-accent); }
+.bio-certificate a:focus-visible { outline:2px solid var(--bio-ink); outline-offset:5px; }
 @media (min-width:901px) and (max-width:1180px) {
   .bio-frame { grid-template-columns:40% 60%; padding:60px 5% 75px 0; }
   .bio-panel { width:72%; }
@@ -57,3 +69,6 @@
   .bio-contacts { flex-direction:column; align-items:flex-start; font-size:12px; }
   .bio-dialog { padding:52px 25px 32px; border-radius:18px; }
 }
+
+/* Revised greeting typography (copy reference 5). */
+.bio-title span:first-child { font-family: var(--font-hand); font-weight: 500; letter-spacing: 0; }
