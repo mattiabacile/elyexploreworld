@@ -43,11 +43,15 @@
 .bio-certificate + .bio-certificate { margin-top:30px; }
 .bio-certificate h4 { margin:0 0 6px; font-size:16px; font-weight:600; line-height:1.4; }
 .bio-certificate figcaption p { margin:0 0 14px; font-size:13px; line-height:1.7; }
-.bio-certificate a { display:block; color:var(--bio-ink); text-decoration:none; border-radius:4px; }
+.bio-certificate-open { display:block; width:100%; padding:0; border:0; background:transparent; border-radius:4px; cursor:zoom-in; }
 .bio-certificate img { display:block; width:100%; height:auto; border:1px solid rgb(35 55 43 / .18); background:#fff; }
-.bio-certificate a > span { display:flex; align-items:center; gap:8px; min-height:44px; font-size:13px; text-decoration:underline; text-underline-offset:4px; }
-.bio-certificate a:hover > span { color:var(--bio-accent); }
-.bio-certificate a:focus-visible { outline:2px solid var(--bio-ink); outline-offset:5px; }
+.bio-certificate-open:focus-visible, .bio-certificate-back:focus-visible { outline:2px solid var(--bio-ink); outline-offset:5px; }
+.bio-dialog.is-viewing-certificate { width:min(1100px,calc(100% - 32px)); padding:72px 24px 24px; }
+.bio-certificate-viewer[hidden], .bio-dialog-story[hidden] { display:none; }
+.bio-certificate-back { display:inline-flex; align-items:center; min-height:44px; margin:0 0 16px; padding:8px 16px; border:1px solid rgb(35 55 43 / .35); border-radius:999px; color:var(--bio-ink); background:transparent; font:inherit; cursor:pointer; }
+.bio-certificate-back:hover { background:#e4d7c8; }
+.bio-certificate-viewer h2 { margin:0 0 24px; font-size:clamp(28px,5vw,42px); line-height:1.1; }
+.bio-certificate-full { display:block; width:100%; height:auto; background:#fff; }
 @media (min-width:901px) and (max-width:1180px) {
   .bio-frame { grid-template-columns:40% 60%; padding:60px 5% 75px 0; }
   .bio-panel { width:72%; }
@@ -72,3 +76,17 @@
 
 /* Revised greeting typography (copy reference 5). */
 .bio-title span:first-child { font-family: var(--font-hand); font-weight: 500; letter-spacing: 0; }
+
+/* All photographs share the original portrait outline, without altering their pixels. */
+.bio-portrait { aspect-ratio:780 / 1088; }
+.bio-portrait-art { display:block; width:100%; height:100%; overflow:visible; }
+.bio-slide { opacity:0; transition:opacity 800ms ease; }
+.bio-slide.is-active { opacity:1; }
+.bio-slideshow-controls { position:absolute; bottom:0; left:55%; transform:translateX(-50%); display:flex; align-items:center; gap:2px; padding:2px 6px; border:1px solid #d9c6b3; border-radius:999px; background:var(--bio-paper); color:var(--bio-ink); }
+.bio-slideshow-controls[hidden] { display:none; }
+.bio-slideshow-controls button { display:grid; place-items:center; width:44px; height:44px; padding:0; border:0; border-radius:50%; background:transparent; color:inherit; font:400 26px/1 sans-serif; cursor:pointer; }
+.bio-slideshow-controls button:hover { background:#d9c8b6; }
+.bio-slideshow-controls button:focus-visible { outline:2px solid var(--bio-ink); outline-offset:1px; }
+.bio-slideshow-controls [data-bio-pause] { font-size:18px; }
+.bio-slide-count { min-width:34px; text-align:center; font-size:12px; font-variant-numeric:tabular-nums; }
+@media (prefers-reduced-motion:reduce) { .bio-slide { transition:none; } }

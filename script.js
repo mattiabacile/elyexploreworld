@@ -13,12 +13,24 @@
   // Preview only existing content. No service pages or itinerary copy are invented.
   const contentPreview = document.getElementById('content-preview');
   const previewBody = contentPreview?.querySelector('.content-preview-body');
+  const fitContentPreview = () => {
+    if (!contentPreview?.open) return;
+    const card = previewBody?.querySelector('.itinerary-card');
+    if (!card) return;
+    card.style.zoom = '1';
+    const available = Math.min(window.innerHeight, window.visualViewport?.height || window.innerHeight) - 24;
+    const naturalHeight = card.getBoundingClientRect().height;
+    if (naturalHeight > available) card.style.zoom = String(available / naturalHeight);
+  };
+  window.addEventListener('resize', fitContentPreview);
+  window.visualViewport?.addEventListener('resize', fitContentPreview);
   document.querySelectorAll('[data-preview]').forEach((button) => {
     button.addEventListener('click', () => {
       if (!previewBody || !contentPreview) return;
       previewBody.replaceChildren();
       const card = document.querySelector('.postcard-collage .itinerary-card').cloneNode(true);
       card.removeAttribute('id');
+      card.querySelector('.itinerary-card-button')?.remove();
       previewBody.append(card);
       previewBody.querySelectorAll('[id]').forEach(node => node.removeAttribute('id'));
       let title = previewBody.querySelector('h3');
@@ -36,6 +48,8 @@
         }
       }
       contentPreview.showModal();
+      fitContentPreview();
+      document.fonts.ready.then(fitContentPreview);
     });
   });
   contentPreview?.querySelector('.preview-close')?.addEventListener('click', () => contentPreview.close());
@@ -139,6 +153,50 @@
   });
 
   const bioDialog = document.getElementById('bio-dialog');
+  const bioStory = bioDialog?.querySelector('.bio-dialog-story');
+  const certificateViewer = bioDialog?.querySelector('.bio-certificate-viewer');
+  const certificateBack = bioDialog?.querySelector('.bio-certificate-back');
+  let certificateTrigger;
+  let bioScrollTop = 0;
+  const restoreBio = (restoreFocus = true) => {
+    if (!bioDialog || !certificateViewer || !bioStory) return;
+    certificateViewer.hidden = true;
+    bioStory.hidden = false;
+    bioDialog.classList.remove('is-viewing-certificate');
+    bioDialog.setAttribute('aria-labelledby', 'bio-dialog-title');
+    bioDialog.scrollTop = bioScrollTop;
+    if (restoreFocus) certificateTrigger?.focus({ preventScroll: true });
+  };
+  bioDialog?.querySelectorAll('.bio-certificate-open').forEach(button => {
+    button.addEventListener('click', () => {
+      certificateTrigger = button;
+      bioScrollTop = bioDialog.scrollTop;
+      const source = button.querySelector('img');
+      const image = certificateViewer.querySelector('img');
+      image.src = source.src;
+      image.alt = source.alt;
+      image.width = source.width;
+      image.height = source.height;
+      certificateViewer.querySelector('h2').textContent = button.dataset.certificateTitle;
+      bioStory.hidden = true;
+      certificateViewer.hidden = false;
+      bioDialog.classList.add('is-viewing-certificate');
+      bioDialog.setAttribute('aria-labelledby', 'bio-certificate-title');
+      bioDialog.scrollTop = 0;
+      certificateBack.focus({ preventScroll: true });
+    });
+  });
+  certificateBack?.addEventListener('click', () => restoreBio());
+  bioDialog?.addEventListener('cancel', event => {
+    if (certificateViewer && !certificateViewer.hidden) {
+      event.preventDefault();
+      restoreBio();
+    }
+  });
+  bioDialog?.addEventListener('close', () => {
+    restoreBio(false);
+    bioDialog.scrollTop = 0;
+  });
   document.querySelector('.bio-more-button')?.addEventListener('click', () => bioDialog?.showModal());
   document.querySelectorAll('[data-dialog-close]').forEach(button => {
     button.addEventListener('click', () => button.closest('dialog')?.close());

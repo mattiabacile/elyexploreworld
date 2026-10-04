@@ -13,15 +13,15 @@
   <link rel="stylesheet" href="hero.css?v=services-terracotta-20260928-2">
   <link rel="stylesheet" href="responsive.css?v=services-20260928-3">
   <link rel="stylesheet" href="stories.css?v=compact-autoplay-20260927">
-  <link rel="stylesheet" href="story-refined.css?v=certificazioni-20261004">
-  <link rel="stylesheet" href="consultation.css?v=check2-20260927">
+  <link rel="stylesheet" href="story-refined.css?v=certificati-popup-20261004">
+  <link rel="stylesheet" href="consultation.css?v=photo-compare-20261004">
   <link rel="stylesheet" href="contact.css?v=service-tooltips-20260927">
   <link rel="stylesheet" href="navigation.css?v=check2-20260927">
   <link rel="stylesheet" href="footer.css?v=check2-20260927">
-  <link rel="stylesheet" href="panorama-hero.css?v=check2-20260927">
+  <link rel="stylesheet" href="panorama-hero.css?v=indonesia-slideshow-20261004">
   <link rel="stylesheet" href="copy-references.css?v=services-20260928-3">
-  <link rel="stylesheet" href="services.css?v=7f292147a2e9">
-  <link rel="stylesheet" href="itinerary.css?v=20261004">
+  <link rel="stylesheet" href="services.css?v=9e8ff2b4c914">
+  <link rel="stylesheet" href="itinerary.css?v=fixed-popup-20261004">
 </head>
 <body id="top" class="home-page">
 <header id="main-header" class="site-header" aria-label="Navigazione principale">
@@ -61,17 +61,24 @@
 
   <main>
     <section id="home" class="panorama-hero" aria-labelledby="hero-title">
-      <img class="panorama-hero-image" src="assets/bali-rice-terraces.webp" srcset="assets/bali-rice-terraces-768.webp 768w, assets/bali-rice-terraces-1280.webp 1280w, assets/bali-rice-terraces.webp 2400w" sizes="max(100vw, 150vh, 990px)" alt="Risaie terrazzate e palme nella valle di Tegallalang, Bali" width="2400" height="1600" fetchpriority="high" decoding="async">
+      <img class="panorama-hero-image" src="assets/indonesia-slideshow/IMG_20230830_094751_265.jpg" alt="Risaie terrazzate a Bali, con fiori rossi in primo piano" width="1360" height="1360" fetchpriority="high" decoding="async" style="--hero-focus: 40% 56%; --hero-focus-mobile: 52% 54%">
       <div class="panorama-hero-content">
         <p class="panorama-hero-label">Travel designer</p>
-        <h1 id="hero-title">Il mondo su misura.</h1>
+        <h1 id="hero-title"><span>Il mondo</span> <em>su misura.</em></h1>
         <p class="panorama-hero-description">Progetto il tuo viaggio dei sogni</p>
         <a class="panorama-hero-link" href="#servizi">
-          <span>Scopri di più</span>
+          <span>I MIEI SERVIZI</span>
           <svg viewBox="0 0 28 16" aria-hidden="true"><path d="M1 8h24m-6-6 6 6-6 6"/></svg>
         </a>
       </div>
     </section>
+
+    <div class="panorama-slideshow-controls" role="group" aria-label="Slideshow fotografico dell’Indonesia">
+      <button type="button" data-hero-prev aria-label="Foto precedente">‹</button>
+      <span class="panorama-slide-count" aria-live="polite">1 / 10 · Risaie e fiori rossi</span>
+      <button type="button" data-hero-next aria-label="Foto successiva">›</button>
+      <button type="button" data-hero-pause aria-label="Metti in pausa lo slideshow">Ⅱ</button>
+    </div>
 
     <section id="chi-sono" class="bio-section" aria-labelledby="bio-title">
       <div class="bio-frame">
@@ -79,16 +86,31 @@
           <path class="bio-panel-shadow" d="M8 356C13 185 137 48 291 45C438 39 576 99 684 53C713 40 740 16 759 0H790V950C641 1100 440 980 193 1006C80 1020 45 980 58 850C70 730 32 554 14 453C8 417 5 386 8 356Z"/>
           <path d="M8 356C13 185 137 48 291 45C438 39 576 99 684 53C713 40 740 16 759 0H790V926C641 1076 440 956 193 982C80 996 45 956 58 826C70 706 32 554 14 453C8 417 5 386 8 356Z"/>
         </svg>
-        <svg class="bio-portrait" viewBox="0 0 780 1088" role="img" aria-label="Immagine di Elisa in arrivo">
-          <path class="bio-placeholder-frame" d="M49 280C31 139 158 30 311 33C482 30 630 130 665 278C690 376 663 400 694 503C730 623 770 754 735 872C710 989 630 1050 460 1050C334 1055 211 1017 188 941C161 878 199 809 223 718C227 640 201 560 152 490C105 424 58 365 49 280Z"/>
-
-          <text class="bio-placeholder-label" x="394" y="424" text-anchor="middle">
-            <tspan x="394">immagine</tspan>
-            <tspan x="394" dy="1.05em">in arrivo</tspan>
-          </text>
+        <div class="bio-portrait" role="region" aria-roledescription="carosello" aria-label="Le foto di Elisa">
+        <svg class="bio-portrait-art" viewBox="0 0 780 1088" role="img" aria-label="Elisa con un cocco verde">
+          <defs>
+            <clipPath id="bio-portrait-clip" clipPathUnits="userSpaceOnUse">
+              <path d="M49 280C31 139 158 30 311 33C482 30 630 130 665 278C690 376 663 400 694 503C730 623 770 754 735 872C710 989 630 1050 460 1050C334 1055 211 1017 188 941C161 878 199 809 223 718C227 640 201 560 152 490C105 424 58 365 49 280Z"/>
+            </clipPath>
+          </defs>
+          <g clip-path="url(#bio-portrait-clip)">
+            <image class="bio-slide is-active" data-label="Elisa con un cocco verde" href="assets/elisa-cocco.png" x="31" y="30" width="739" height="1025" preserveAspectRatio="xMidYMid slice" aria-hidden="true"/>
+            <image class="bio-slide" data-label="Elisa davanti alle case colorate" href="assets/elisa-case-colorate.jpg" x="31" y="30" width="739" height="1025" preserveAspectRatio="xMidYMid slice" aria-hidden="true"/>
+            <image class="bio-slide" data-label="Elisa con un cocco a Bali" href="assets/elisa-cocco-bali.jpg" x="31" y="30" width="739" height="1025" preserveAspectRatio="xMidYMid slice" aria-hidden="true"/>
+            <image class="bio-slide" data-label="Elisa sott’acqua con una tartaruga" href="assets/elisa-tartaruga.jpg" x="31" y="30" width="739" height="1025" preserveAspectRatio="xMidYMid slice" aria-hidden="true"/>
+            <image class="bio-slide" data-label="Elisa tra le risaie" href="assets/elisa-risaie.jpg" x="31" y="30" width="739" height="1025" preserveAspectRatio="xMidYMid slice" aria-hidden="true"/>
+          </g>
+          <path class="bio-placeholder-frame" style="fill:none" d="M49 280C31 139 158 30 311 33C482 30 630 130 665 278C690 376 663 400 694 503C730 623 770 754 735 872C710 989 630 1050 460 1050C334 1055 211 1017 188 941C161 878 199 809 223 718C227 640 201 560 152 490C105 424 58 365 49 280Z"/>
 
           <image class="bio-botanical-art" href="assets/bio-balinese-bamboo-medallion.webp" x="-70" y="470" width="400" height="480" preserveAspectRatio="xMidYMid meet" aria-hidden="true"/>
         </svg>
+        <div class="bio-slideshow-controls" hidden>
+          <button type="button" data-bio-prev aria-label="Foto precedente">‹</button>
+          <span class="bio-slide-count" aria-live="off">1 / 5</span>
+          <button type="button" data-bio-next aria-label="Foto successiva">›</button>
+          <button type="button" data-bio-pause aria-label="Metti in pausa lo slideshow">Ⅱ</button>
+        </div>
+        </div>
         <div class="bio-content">
           <h2 id="bio-title" class="bio-title">
             <span>Ciao, sono</span>
@@ -124,6 +146,7 @@
       <button class="bio-dialog-close" type="button" data-dialog-close aria-label="Chiudi">
         <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 4l12 12M16 4 4 16"/></svg>
       </button>
+      <div class="bio-dialog-story">
       <p class="bio-dialog-eyebrow">La mia storia</p>
       <h2 id="bio-dialog-title">Scopri di più</h2>
       <div class="bio-dialog-copy">
@@ -139,25 +162,30 @@
             <h4>Travel Designer</h4>
             <p>Attestato di specializzazione · Accademia Creativa Turismo<br>20 febbraio 2026</p>
           </figcaption>
-          <a href="assets/attestato-travel-designer.png" target="_blank" rel="noopener noreferrer" aria-label="Apri l’attestato Travel Designer in una nuova scheda">
+          <button class="bio-certificate-open" type="button" data-certificate-title="Travel Designer" aria-label="Ingrandisci il certificato Travel Designer">
             <img src="assets/attestato-travel-designer.png" alt="Attestato di specializzazione Travel Designer di Elisa Tosi" width="896" height="626" loading="lazy" decoding="async">
-            <span>Apri attestato <span aria-hidden="true">↗</span><span class="sr-only"> (nuova scheda)</span></span>
-          </a>
+          </button>
         </figure>
         <figure class="bio-certificate">
           <figcaption>
             <h4>Amadeus Basic Course</h4>
-            <p>Certificato di partecipazione · Timeducation<br>Corso online di 20 ore · 15 aprile 2026</p>
+            <p>Certificato di partecipazione · Timeducation<br>15 aprile 2026</p>
           </figcaption>
-          <a href="assets/certificato-amadeus-2026.png" target="_blank" rel="noopener noreferrer" aria-label="Apri il certificato Amadeus in una nuova scheda">
+          <button class="bio-certificate-open" type="button" data-certificate-title="Amadeus Basic Course" aria-label="Ingrandisci il certificato Amadeus Basic Course">
             <img src="assets/certificato-amadeus-2026.png" alt="Certificato di partecipazione di Elisa Tosi al corso Amadeus Basic Course" width="885" height="622" loading="lazy" decoding="async">
-            <span>Apri certificato <span aria-hidden="true">↗</span><span class="sr-only"> (nuova scheda)</span></span>
-          </a>
+          </button>
         </figure>
       </section>
+      </div>
+      <div class="bio-certificate-viewer" hidden>
+        <button class="bio-certificate-back" type="button">← Indietro</button>
+        <h2 id="bio-certificate-title"></h2>
+        <img class="bio-certificate-full" alt="">
+      </div>
     </dialog>
 
     <section class="consultation-banner" aria-labelledby="consultation-title">
+      <div class="consultation-backdrop" aria-hidden="true"></div>
       <div class="consultation-copy">
         <p class="consultation-eyebrow">Non sai quale servizio scegliere?</p>
         <h2 id="consultation-title">Parliamone <em>insieme</em>.</h2>
@@ -182,6 +210,11 @@
           <span>Prenota la call gratuita</span>
           <svg viewBox="0 0 28 16" fill="none" aria-hidden="true"><path d="M1 8h24M19 2l6 6-6 6"/></svg>
         </a>
+      </div>
+      <div class="consultation-photo-picker" role="group" aria-label="Confronta le sei foto del banner" hidden>
+        <button type="button" data-photo-step="-1" aria-label="Foto precedente"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 5-7 7 7 7"/></svg></button>
+        <span class="consultation-photo-name" aria-live="polite" aria-atomic="true">1 / 6 · La porta viola</span>
+        <button type="button" data-photo-step="1" aria-label="Foto successiva"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m10 5 7 7-7 7"/></svg></button>
       </div>
     </section>
 
@@ -237,31 +270,41 @@
 
     <section id="ispirazioni" class="itinerary-preview" aria-labelledby="itinerary-preview-title">
       <div class="preview-copy-block">
-        <p class="preview-eyebrow">Formula Road Map/Day by Day</p>
         <h2 id="itinerary-preview-title">Itinerario Day-by-Day Personalizzato</h2>
         <p class="preview-description">Questa formula ti permette di avere con te un itinerario su misura per i tuoi giorni di viaggio.</p>
-        <button class="preview-button" type="button" data-preview="itinerary" aria-haspopup="dialog"><span>Un giorno a Bali: alba sul Monte Batur</span><span aria-hidden="true">→</span></button>
       </div>
 
       <div class="postcard-collage" aria-label="Anteprima di un itinerario a Bali">
         <article class="itinerary-card" id="itinerario-completo">
           <h3 class="itinerary-day-title">Un giorno a Bali:<br><em>alba sul Monte Batur</em></h3>
+          <div class="itinerary-example-note">
+            <p>Questo è solo un esempio di ciò che riceverai con la tua <strong>Road Map</strong>: un itinerario giorno per giorno, costruito sui tuoi desideri e sul tuo ritmo.</p>
+            <p>Troverai consigli personalizzati, link alle posizioni su Google Maps, indicazioni sugli spostamenti e suggerimenti su esperienze e soste, per orientarti facilmente e goderti ogni giornata.</p>
+          </div>
           <ol class="timeline">
-            <li><time datetime="02:00">02:00</time><div><strong>Partenza dall’hotel con il tuo driver</strong><small>Arrivo al campo base e briefing con la guida</small></div></li>
-            <li><time datetime="04:00">04:00</time><div><strong>Inizio della salita al Monte Batur</strong><small>Arrivo in vetta per ammirare l’alba, con colazione inclusa</small></div></li>
-            <li><time datetime="07:30">07:30</time><div><strong>Discesa lungo il sentiero panoramico</strong><small>Relax nelle vasche termali naturali</small></div></li>
-            <li><time datetime="11:00">11:00</time><div><strong>Rientro in struttura e massaggio balinese</strong></div></li>
+            <li><time datetime="02:00">02:00</time><div><strong><svg class="itinerary-event-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 10l2-5h10l2 5M4 10h16v8H4zM7 18v2m10-2v2M7 13h1m8 0h1"/></svg><span class="itinerary-event-label">Partenza dall’hotel con il tuo driver</span></strong><small><svg class="itinerary-event-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 20L12 4l9 16ZM8 20l4-8 4 8M12 4V2"/></svg>Arrivo al campo base e briefing con la guida</small></div></li>
+            <li><time datetime="04:00">04:00</time><div><strong><svg class="itinerary-event-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 20L10 6l5 8 3-4 4 10M7 11l3 2 3-2M18 2v4m-2-2h4"/></svg><span class="itinerary-event-label">Inizio della salita al Monte Batur</span></strong><small><svg class="itinerary-event-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17h18M6 17a6 6 0 0 1 12 0M12 3v3M4 7l2 2m14-2-2 2M3 21h18"/></svg>Arrivo in vetta per ammirare l’alba, con colazione inclusa</small></div></li>
+            <li><time datetime="07:30">07:30</time><div><strong><svg class="itinerary-event-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5l6 5 5 1 7 9M14 4v7h7M3 20h5m3 0h3"/></svg><span class="itinerary-event-label">Discesa lungo il sentiero panoramico</span></strong><small><svg class="itinerary-event-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 16c3-3 5 3 8 0s5 3 10 0M3 21c3-3 5 3 8 0s5 3 10 0M7 11c-3-3 3-4 0-7m5 7c-3-3 3-4 0-7m5 7c-3-3 3-4 0-7"/></svg>Relax nelle vasche termali naturali</small></div></li>
+            <li><time datetime="11:00">11:00</time><div><strong><svg class="itinerary-event-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19c0-3 16-3 16 0s-16 3-16 0ZM7 13c0-3 10-3 10 0s-10 3-10 0ZM9 7c0-3 6-3 6 0s-6 3-6 0Z"/></svg><span class="itinerary-event-label">Rientro in struttura e massaggio balinese</span></strong></div></li>
           </ol>
           <div class="itinerary-teaser">
             <div class="itinerary-teaser-lines" aria-hidden="true">
-              <span>Il viaggio continua, seguendo il tuo ritmo.</span>
-              <span>Altre piccole scoperte ti aspettano.</span>
+              <time class="itinerary-hidden-time" datetime="14:00">14:00</time>
+              <div class="itinerary-hidden-event"><svg class="itinerary-event-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18ZM15 8l-2 6-5 2 2-6Z"/></svg><span>Il viaggio continua, seguendo il tuo ritmo.</span></div>
+              <div class="itinerary-hidden-event"><svg class="itinerary-event-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l2.5 6 6.5 3-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-3Z"/></svg><span>Altre piccole scoperte ti aspettano.</span></div>
             </div>
             <p class="copy-ref" data-copy-ref="51">Il resto? Lo disegniamo insieme.</p>
           </div>
+                  <button class="preview-button itinerary-card-button copy-ref" data-copy-ref="43" type="button" data-preview="itinerary" aria-haspopup="dialog" aria-controls="content-preview"><span>Vedi esempio</span><span aria-hidden="true">→</span></button>
         </article>
       </div>
     </section>
+    <div class="itinerary-slideshow-controls panorama-slideshow-controls" role="group" aria-label="Slideshow fotografico dell’itinerario">
+      <button type="button" data-itinerary-prev aria-label="Foto precedente">‹</button>
+      <span class="itinerary-slide-count panorama-slide-count" aria-live="polite">1 / 10 · Nusa Penida</span>
+      <button type="button" data-itinerary-next aria-label="Foto successiva">›</button>
+      <button type="button" data-itinerary-pause aria-label="Metti in pausa lo slideshow">Ⅱ</button>
+    </div>
     <section id="blog" class="travel-stories-page" aria-labelledby="stories-title">
       <img class="stories-branch" src="assets/stories/botanical-branch.svg" alt="" aria-hidden="true" width="210" height="460" loading="lazy" decoding="async">
       <div class="stories-shell">
@@ -408,8 +451,11 @@
   </dialog>
   <script src="footer.js?v=check2-20260927" defer></script>
   <script src="navigation.js?v=check2-20260927" defer></script>
-  <script src="script.js?v=check2-20260927" defer></script>
+  <script src="bio-slideshow.js" defer></script>
+  <script src="script.js?v=fixed-popup-20261004" defer></script>
   <script src="stories.js?v=compact-autoplay-20260927" defer></script>
+  <script src="consultation.js?v=photo-compare-20261004" defer></script>
+  <script src="panorama-slideshow.js?v=indonesia-20261004" defer></script>
   <script src="services.js?v=20261004" defer></script>
   <script src="copy-references.js" defer></script>
 </body>

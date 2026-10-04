@@ -42,7 +42,7 @@
       [31, '.travel-service--full summary'],
       [32, '.travel-service--road .travel-service-eyebrow, #road-title, .travel-service--road .travel-service-summary, .travel-service--road .travel-service-description, .travel-service--road .travel-service-features, .travel-service-pricing, .travel-service--road .travel-service-button'],
       [39, '.travel-service--road summary'],
-      [40, '.preview-copy-block > p, .preview-copy-block > h2, .preview-copy-block > button'],
+      [41, '.preview-copy-block > p, .preview-copy-block > h2, .preview-copy-block > button'],
       [44, '.itinerary-card .timeline strong, .itinerary-card .timeline small'],
       [52, '.stories-intro > p, .stories-intro > h2, .stories-all-link, .contact-copy-block > p, .contact-copy-block > h2, .contact-form > button[type="submit"]']
     ];
