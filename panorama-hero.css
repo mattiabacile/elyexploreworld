@@ -1,5 +1,4 @@
-/* Full-width photographic hero, replacing the former collage.
-   Photo: Artem Beliaikin / Unsplash, QCvu04PUKdg. */
+/* Full-width photographic hero with automatic crossfades. */
 .panorama-hero {
   position: relative;
   isolation: isolate;
@@ -12,10 +11,18 @@
   color: #fffaf0;
   background: #454b30;
 }
-.panorama-hero-image {
+.panorama-hero-slide {
   position: absolute;
   inset: 0;
   z-index: -2;
+  opacity: 0;
+  transition: opacity 800ms ease;
+  pointer-events: none;
+}
+.panorama-hero-slide.is-active { opacity: 1; }
+.panorama-hero-image {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -95,7 +102,7 @@
   .panorama-hero-link { min-height: 56px; padding-inline: 28px; margin-top: 30px; font-size: 11px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .panorama-hero-link { transition: none; }
+  .panorama-hero-link, .panorama-hero-slide { transition: none; }
 }
 
 /* On the homepage the photograph extends behind the fixed navigation. */
@@ -140,35 +147,3 @@
   background: linear-gradient(180deg, var(--bio-sage), transparent);
 }
 
-.panorama-slideshow-controls {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  min-height: 68px;
-  padding: 9px 18px;
-  background: #8d947d;
-  color: #fffaf0;
-}
-.panorama-slideshow-controls button {
-  display: grid;
-  place-items: center;
-  width: 42px;
-  height: 42px;
-  flex: none;
-  border: 1px solid currentColor;
-  border-radius: 50%;
-  background: transparent;
-  color: inherit;
-  font: 24px/1 Arial, sans-serif;
-  cursor: pointer;
-}
-.panorama-slideshow-controls button:hover { background: #667057; }
-.panorama-slideshow-controls button:focus-visible { outline: 2px solid #fffaf0; outline-offset: 3px; }
-.panorama-slideshow-controls [data-hero-pause] { font-size: 16px; }
-.panorama-slide-count { min-width: 230px; text-align: center; font: 500 13px/1.4 var(--font-body); }
-@media (max-width: 480px) {
-  .panorama-slideshow-controls { gap: 7px; padding-inline: 8px; }
-  .panorama-slide-count { min-width: 0; flex: 1; font-size: 11px; }
-  .panorama-slideshow-controls button { width: 38px; height: 38px; }
-}

@@ -7,7 +7,7 @@
   --footer-line: rgb(255 249 237 / .20);
   color: var(--footer-ink);
   background: var(--footer-bg);
-  border-top: 5px solid #efe3cf;
+  border-top: 0;
 }
 
 .site-footer a {
@@ -35,7 +35,7 @@
   padding-left: 20px;
   border-left: 1px solid var(--footer-line);
   color: var(--footer-muted);
-  font: 400 11px/1.65 var(--font-body, "Plus Jakarta Sans", Arial, sans-serif);
+  font: 400 14px/1.65 var(--font-body, "Plus Jakarta Sans", Arial, sans-serif);
 }
 
 .site-footer-technical p { margin: 0; }

@@ -302,8 +302,7 @@ a { color: inherit; text-decoration: none; }
 }
 
 .contact-kicker::after,
-.contact-rule,
-.contact-portrait p i {
+.contact-rule{
   display: block;
   width: 3rem;
   height: 1px;
@@ -362,69 +361,6 @@ a { color: inherit; text-decoration: none; }
   height: 1px;
   background: var(--contact-clay);
 }
-
-.contact-portrait {
-  position: relative;
-  z-index: 1;
-  width: 100%;
-  aspect-ratio: .98;
-  align-self: center;
-  margin-left: -2.2rem;
-}
-
-.contact-portrait > img:first-of-type {
-  position: absolute;
-  inset: 6% 4% 5% 1%;
-  z-index: 2;
-  width: 95%;
-  height: 89%;
-  object-fit: cover;
-  object-position: 52% center;
-  border-radius: 46% 54% 43% 57% / 51% 43% 57% 49%;
-}
-
-.contact-portrait-outline {
-  position: absolute;
-  inset: 3% 1% 2% -2%;
-  z-index: 1;
-  border: 2px solid rgba(185, 87, 65, .72);
-  border-radius: 47% 53% 44% 56% / 48% 45% 55% 52%;
-  transform: rotate(-3deg);
-}
-
-.contact-branch {
-  position: absolute;
-  z-index: 3;
-  width: 6.8rem;
-  opacity: .56;
-}
-
-.contact-branch-top {
-  top: -2%;
-  right: -1.6rem;
-  transform: rotate(-23deg) scale(.95);
-}
-
-.contact-branch-bottom {
-  bottom: -1%;
-  left: -1.4rem;
-  transform: rotate(105deg) scale(.7);
-}
-
-.contact-portrait p {
-  position: absolute;
-  right: .2rem;
-  bottom: -1.1rem;
-  z-index: 4;
-  margin: 0;
-  color: var(--contact-ink);
-  font-family: var(--font-display);
-  font-size: 1.08rem;
-  font-style: italic;
-  line-height: 1.1;
-}
-
-.contact-portrait p i { margin-top: .75rem; }
 
 .contact-panel {
   min-width: 0;
@@ -627,16 +563,6 @@ a { color: inherit; text-decoration: none; }
 
 .contact-note i { top: -1rem; }
 
-.contact-portrait {
-    width: min(100%, 48vh, 39rem);
-    max-height: 100%;
-    margin-left: clamp(-2rem, -2vw, -1rem);
-  }
-
-.contact-branch { width: clamp(4.5rem, 6vw, 6.8rem); }
-
-.contact-portrait p { bottom: 0; font-size: clamp(.86rem, 1vw, 1.05rem); }
-
 .contact-panel {
     display: flex;
     min-height: 0;
@@ -752,10 +678,6 @@ a { color: inherit; text-decoration: none; }
 .contact-copy { font-size: 1rem; }
 
 .contact-note { margin-top: 3.8rem; }
-
-.contact-portrait { width: min(100%, 34rem); margin: 2.5rem auto 0; }
-
-.contact-branch { width: 5rem; }
 
 .contact-panel { padding: 3.6rem 1.25rem 3rem; border-top: 1px solid rgba(94, 104, 88, .18); }
 

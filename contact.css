@@ -21,13 +21,6 @@
 .contact-copy-block h2 span, .contact-copy-block h2 em { white-space: normal; }
 .contact-rule { width: 3cqw; margin-top: 1.3cqw; }
 .contact-copy { max-width: 42ch; margin-top: 1.65cqw; font-size: max(15px, 1.1cqw); line-height: 1.48; }
-.contact-portrait { position: relative; top: auto; left: auto; width: 100%; height: auto; max-height: none; margin: 0; aspect-ratio: 1.035; }
-.contact-portrait::before { position: absolute; inset: .9cqw; content: ''; border-radius: 50%; background: #f7f4ef; }
-.contact-portrait-outline { inset: 0; border: 1.5px solid #de302a; border-radius: 50%; transform: none; }
-.contact-portrait > img.contact-branch { inset: auto; width: 6.5cqw; height: auto; object-fit: contain; border-radius: 0; opacity: .35; }
-.contact-portrait > img.contact-branch-top { top: -1.9cqw; right: -2.1cqw; transform: rotate(-23deg); }
-.contact-portrait > img.contact-branch-bottom { bottom: .9cqw; left: -2.4cqw; transform: rotate(105deg) scale(.7); }
-.contact-portrait p { inset: 0; display: grid; place-content: center; text-align: center; font-size: 3.4cqw; line-height: 1; padding-top: 1cqw; }
 .contact-links { display: grid; grid-template-columns: 1.1fr 1fr; margin: 1.5cqw 3.2cqw 3.1cqw; padding-top: 2cqw; border-top: 1px solid var(--contact-line); font-style: normal; }
 .contact-links a { display: flex; align-items: center; gap: 1.8cqw; min-width: 0; min-height: 5.3cqw; text-decoration: none; }
 .contact-links a + a { border-left: 1px solid var(--contact-line); padding-left: 2.9cqw; }
@@ -108,9 +101,6 @@
   .contact-copy-block h2 { font-size: clamp(36px, 6.5vw, 62px); }
   .contact-rule { margin-top: 24px; }
   .contact-copy { margin-top: 24px; font-size: 16px; }
-  .contact-portrait { position: relative; top: auto; left: auto; width: min(75vw, 430px); height: auto; aspect-ratio: 1.035; margin: 40px auto; }
-  .contact-portrait p { font-size: clamp(40px, 7vw, 60px); }
-  .contact-portrait > img.contact-branch { width: 25%; }
   .contact-links { grid-template-columns: 1fr; margin: 35px 0; padding-top: 24px; gap: 20px; }
   .contact-links a { gap: 18px; min-height: 60px; }
   .contact-links a + a { border: 0; padding: 0; }
@@ -141,16 +131,7 @@
   .contact-needs span.contact-help { top: 5px; right: 5px; }
   .contact-help-icon { width: 21px; height: 21px; }
 }
-
-/* Keep the existing portrait shape and border; crop photos inside it. */
-.contact-slideshow { position: absolute; inset: .9cqw; overflow: hidden; border-radius: 50%; isolation: isolate; }
-.contact-slide { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 800ms ease; }
-.contact-slide.is-active { opacity: 1; }
-.contact-portrait > .contact-branch { pointer-events: none; }
-.contact-slideshow-pause { position: absolute; z-index: 3; bottom: 7%; left: 50%; transform: translateX(-50%); width: 44px; height: 44px; border: 1px solid #d9c6b3; border-radius: 50%; color: var(--contact-ink); background: #fbf9f5e6; font: 18px/1 sans-serif; cursor: pointer; }
-.contact-slideshow-pause[hidden] { display: none; }
-.contact-slideshow-pause:focus-visible { outline: 2px solid var(--contact-clay); outline-offset: 3px; }
-@media (prefers-reduced-motion: reduce) { .contact-slide { transition: none; } }
+@media (prefers-reduced-motion: reduce) { }
 
 .contact-form .contact-privacy { margin: 0 0 18px; font: 400 12px/1.7 var(--font-body); color: var(--charcoal); }
 .contact-privacy a { text-decoration: underline; text-underline-offset: 3px; }

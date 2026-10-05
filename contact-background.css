@@ -1,0 +1,58 @@
+/* Travel photographs surround a fully opaque, readable contact form. */
+.contact-section { position: relative; isolation: isolate; height: auto; min-height: 0; background: #203d2c; overflow: hidden; }
+.contact-section::before { content: ''; position: absolute; z-index: 0; inset: 0; pointer-events: none; background: linear-gradient(90deg, rgb(17 39 29 / .85), rgb(17 39 29 / .72) 46%, rgb(17 39 29 / .28)); }
+.contact-section::after { content: none; }
+.contact-background-slideshow { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+.contact-background-slide { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 900ms ease; }
+.contact-background-slide.is-active { opacity: 1; }
+.contact-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(440px, .9fr); align-items: stretch; gap: 64px; width: min(100%, 1400px); height: auto; min-height: 0; margin-inline: auto; padding: 64px 40px; }
+.contact-editorial { display: flex; flex-direction: column; justify-content: center; gap: 48px; min-width: 0; padding: 24px 0; border: 0; color: #fff9ed; }
+.contact-intro { display: block; height: auto; min-height: 0; padding: 0; }
+.contact-intro::before { content: none; }
+.contact-copy-block { display: block; position: relative; inset: auto; width: auto; padding: 0; }
+.contact-kicker { margin: 0 0 24px; color: #fff9ed; }
+.contact-copy-block h2 { max-width: 13ch; margin: 0; color: #fff9ed; font-size: clamp(42px, 4.5vw, 64px); line-height: 1.06; letter-spacing: -.03em; text-wrap: balance; }
+.contact-rule { background: #dcc9a8; margin-top: 24px; }
+.contact-copy { max-width: 38ch; margin-top: 24px; color: #fff9ed; font-size: 18px; line-height: 1.65; }
+.contact-links { display: grid; grid-template-columns: 1fr; gap: 18px; margin: 0; padding-top: 26px; border-top: 1px solid rgb(255 249 237 / .45); }
+.contact-links a { min-height: 52px; gap: 18px; }
+.contact-links a + a { padding: 0; border: 0; }
+.contact-link-icon { flex-basis: 48px; height: 48px; color: #254535; background: #fbf9f5; }
+.contact-link-icon svg { width: 24px; height: 24px; }
+.contact-link-label { color: #fff9ed; font-size: 12px; }
+.contact-link-value { color: #fff9ed; font-size: clamp(22px, 2.1vw, 30px); letter-spacing: -.025em; white-space: normal; overflow-wrap: anywhere; }
+.contact-links a:focus-visible { outline-color: #fff9ed; }
+.contact-panel { position: relative; padding: 32px; border: 0; border-radius: 16px; color: #004d73; background: #fbf9f5; --contact-muted: #466575; --contact-line: #a5afb3; }
+.contact-form { color: #004d73; }
+.contact-form input:not([type='date']), .contact-form textarea, .contact-form .contact-date-trigger, .contact-form .contact-travelers-field, .contact-form .mobile-date-display, .contact-form .contact-stepper { background-color: #fbf9f5; }
+.contact-form .contact-privacy { color: #3f544a; font-size: 14px; }
+@media (max-width: 1100px) {
+  .contact-layout { grid-template-columns: minmax(0, 1fr) minmax(390px, 1fr); gap: 32px; padding: 48px 28px; }
+  .contact-copy-block h2 { font-size: clamp(38px, 4.5vw, 52px); }
+  .contact-panel { padding: 24px; }
+}
+@media (max-width: 767px), (hover: none) and (max-width: 950px) and (max-height: 500px) {
+  .contact-section::before { background: linear-gradient(180deg, rgb(17 39 29 / .8), rgb(17 39 29 / .6) 50%, rgb(17 39 29 / .72)); }
+  .contact-layout { display: flex; flex-direction: column; gap: 28px; padding: 36px var(--mobile-gutter) 32px; }
+  .contact-editorial { display: contents; }
+  .contact-intro { order: 0; display: block; }
+  .contact-kicker { margin-bottom: 16px; }
+  .contact-copy-block h2 { max-width: 16ch; font-size: clamp(36px, 9.3vw, 44px); }
+  .contact-copy { display: none; }
+  .contact-panel { order: 1; padding: 20px 16px; border: 0; border-radius: 16px; }
+  .contact-links { order: 2; margin: 0; padding-top: 24px; gap: 18px; }
+  .contact-link-value { font-size: clamp(20px, 5.2vw, 25px); }
+  .contact-form .contact-option-grid { gap: 6px; }
+  .contact-form .contact-option-grid label > span { padding-inline: 4px; overflow-wrap: anywhere; }
+}
+@media (prefers-reduced-motion: reduce) { .contact-background-slide { transition: none; } }
+
+/* Continuous desktop transition from the stories’ sage surface into the photographs. */
+@media (min-width: 768px) and (min-height: 501px), (min-width: 951px), (min-width: 768px) and (hover: hover) {
+  .home-page .travel-stories-page {
+    background-image: linear-gradient(180deg, transparent calc(100% - 90px), #d2ddcb 100%), radial-gradient(ellipse at 48% 35%, #e2e8d9, transparent 75%);
+  }
+  .contact-section::before {
+    background: linear-gradient(180deg, #d2ddcb 0, rgb(210 221 203 / .94) 18px, rgb(210 221 203 / .64) 42px, rgb(210 221 203 / .2) 76px, transparent 110px), linear-gradient(90deg, rgb(17 39 29 / .85), rgb(17 39 29 / .72) 46%, rgb(17 39 29 / .28));
+  }
+}

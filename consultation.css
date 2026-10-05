@@ -8,8 +8,8 @@
   padding: 32px max(6vw, calc((100vw - 1280px) / 2));
   border-bottom: clamp(7px, .55vw, 12px) solid #f3ead7;
   background: #162b20;
-  --photo-position: 50% 42%;
-  --photo-position-mobile: 50% 45%;
+  --photo-position: 50% 34%;
+  --photo-position-mobile: 50% 35%;
   isolation: isolate;
   overflow: hidden;
 }
@@ -139,46 +139,16 @@
 }
 @media (prefers-reduced-motion: reduce) { .consultation-button { transition: none; } }
 
-/* Each portrait keeps its own focal point in the panoramic banner. */
+/* Fixed lantern photograph in the panoramic banner. */
 .consultation-backdrop {
   position: absolute;
   inset: 0;
   z-index: -1;
-  background-image: linear-gradient(90deg, rgba(22, 43, 32, .78), rgba(22, 43, 32, .62) 48%, rgba(22, 43, 32, .76)), url('assets/consultation-japan-door-retouched.webp');
+  background-image: linear-gradient(90deg, rgba(22, 43, 32, .78), rgba(22, 43, 32, .62) 48%, rgba(22, 43, 32, .76)), url('assets/consultation-japan-lanterns-retouched.webp');
   background-size: cover;
   background-position: var(--photo-position);
   background-repeat: no-repeat;
 }
-.consultation-photo-picker[hidden] { display: none; }
-.consultation-photo-picker {
-  grid-column: 1 / -1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  margin-top: -16px;
-  color: #fff9ed;
-}
-.consultation-banner:has(.consultation-photo-picker:not([hidden])) { row-gap: 28px; }
-.consultation-photo-name { min-width: 215px; text-align: center; font: 500 13px/1.4 var(--font-body); }
-.consultation-photo-picker button {
-  display: grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  padding: 10px;
-  border: 1px solid #fff9ed;
-  border-radius: 50%;
-  background: #162b20;
-  color: #fff9ed;
-  cursor: pointer;
-}
-.consultation-photo-picker button:hover { background: #375442; }
-.consultation-photo-picker button:focus-visible { outline: 2px solid #e6b79b; outline-offset: 4px; }
-.consultation-photo-picker svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.5; }
 @media (max-width: 1050px) {
   .consultation-backdrop { background-position: var(--photo-position-mobile); }
-  .consultation-banner:has(.consultation-photo-picker:not([hidden])) { row-gap: 0; }
-  .consultation-photo-picker { margin-top: 28px; gap: 8px; }
-  .consultation-photo-name { min-width: 0; flex: 1; }
 }

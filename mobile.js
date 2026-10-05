@@ -22,6 +22,18 @@
     for (const [image, source] of responsiveImages) window.elySetImage(image, source);
   });
 
+  const portraitArtwork = document.querySelector('.bio-portrait-art');
+  const portraitPhoto = portraitArtwork?.querySelector('.bio-portrait-photo');
+  if (portraitPhoto) {
+    const source = portraitPhoto.getAttribute('href');
+    const syncPortrait = () => {
+      portraitArtwork.setAttribute('viewBox', mobile.matches ? '31 30 739 1025' : '0 0 780 1088');
+      portraitPhoto.setAttribute('href', window.elyImageSource(source));
+    };
+    mobile.addEventListener('change', syncPortrait);
+    syncPortrait();
+  }
+
   const form = document.querySelector('#contact-form');
   const nativeField = form?.querySelector('.mobile-departure-field');
   const nativeDate = form?.querySelector('#mobile-departure-date');
@@ -63,27 +75,91 @@
 
   const main = document.querySelector('.home-page main');
   const originalOrder = main ? [...main.children] : [];
+  const rememberPosition = node => ({ node, parent: node.parentNode, nextSibling: node.nextSibling });
+  const bioDetails = [...(document.querySelector('.bio-copy')?.children || [])].slice(1).map(rememberPosition);
+  const bioDialogCopy = document.querySelector('.bio-dialog-copy');
+  const serviceDetails = [...document.querySelectorAll('.travel-service-content > .travel-service-description')]
+    .map(node => ({ ...rememberPosition(node), disclosure: node.parentElement.querySelector('.travel-service-details') }))
+    .filter(item => item.disclosure);
+  const servicePreview = document.querySelector('#content-preview');
+  const servicePreviewBody = servicePreview?.querySelector('.content-preview-body');
+  let servicePreviewTrigger;
+  const clearServicePreview = (restoreFocus = true) => {
+    if (!servicePreviewTrigger) return;
+    const trigger = servicePreviewTrigger;
+    servicePreviewTrigger = null;
+    servicePreview.classList.remove('is-service-preview');
+    servicePreviewBody.replaceChildren();
+    servicePreviewBody.removeAttribute('tabindex');
+    if (restoreFocus && trigger.isConnected) trigger.focus({ preventScroll: true });
+  };
+  servicePreview?.addEventListener('close', () => {
+    // A queued close event must not clear a popup that was already reopened.
+    if (!servicePreview.open) clearServicePreview();
+  });
+  const closeServicePreview = () => {
+    if (!servicePreviewTrigger) return;
+    servicePreview.close();
+    clearServicePreview();
+  };
+  servicePreview?.addEventListener('cancel', event => {
+    if (!servicePreviewTrigger) return;
+    event.preventDefault();
+    closeServicePreview();
+  });
+  servicePreview?.querySelector('.preview-close').addEventListener('click', closeServicePreview);
+  if (servicePreviewBody) serviceDetails.forEach(item => {
+    item.cardTemplate = item.parent.closest('.travel-service').cloneNode(true);
+    item.title = rememberPosition(item.parent.querySelector('h3'));
+    item.heading = document.createElement('div');
+    item.heading.className = 'mobile-service-heading';
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'mobile-service-more';
+    const label = document.createElement('span');
+    label.textContent = item.disclosure.querySelector('summary').textContent;
+    button.append(label);
+    button.insertAdjacentHTML('beforeend', '<svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true"><circle cx="14" cy="14" r="12.5"/><path d="M14 8v12M8 14h12"/></svg>');
+    button.setAttribute('aria-haspopup', 'dialog');
+    button.setAttribute('aria-controls', servicePreview.id);
+    item.button = button;
+    item.title.node.before(item.heading);
+    item.heading.append(item.title.node, button);
+    button.addEventListener('click', () => {
+      if (servicePreview.open) return;
+      const card = item.cardTemplate.cloneNode(true);
+      card.classList.add('service-preview-card');
+      card.removeAttribute('aria-labelledby');
+      card.querySelectorAll('[id]').forEach(node => node.removeAttribute('id'));
+      const title = card.querySelector('h3');
+      title.id = 'content-preview-title';
+      card.setAttribute('aria-labelledby', title.id);
+      const paragraphs = [item.node, ...[...item.disclosure.children].filter(node => node.tagName === 'P' && node !== item.node)].map(node => node.cloneNode(true));
+      const copy = document.createElement('div');
+      copy.className = 'service-preview-copy';
+      paragraphs.forEach((paragraph, index) => {
+        if (index === 0) paragraph.classList.add('service-preview-lead');
+        copy.append(paragraph);
+      });
+      card.querySelector('.travel-service-description').replaceWith(copy);
+      card.querySelector('.travel-service-details').remove();
+      servicePreviewBody.replaceChildren(card);
+      servicePreviewBody.tabIndex = 0;
+      servicePreviewTrigger = button;
+      servicePreview.classList.add('is-service-preview');
+      servicePreview.showModal();
+      servicePreviewBody.scrollTop = 0;
+    });
+  });
+  const mobileCopy = [
+    ['.travel-service--full .travel-service-features li:nth-child(3) strong', 'Assistenza e assicurazione'],
+    ['.travel-service--full .travel-service-consultation p', 'Consulenza gratuita di 30m'],
+    ['.stories-read', 'Leggi ']
+  ].flatMap(([selector, text]) => [...document.querySelectorAll(selector)].map(element => {
+    const node = [...element.childNodes].find(child => child.nodeType === Node.TEXT_NODE && child.nodeValue.trim());
+    return node && { node, desktopText: node.nodeValue, mobileText: text };
+  }).filter(Boolean));
   const hero = document.querySelector('#home');
-  const heroControls = document.querySelector('.panorama-slideshow-controls:not(.itinerary-slideshow-controls)');
-  const itinerary = document.querySelector('#ispirazioni');
-  const itineraryControls = document.querySelector('.itinerary-slideshow-controls');
-  // The phone hero keeps its uncluttered photo while offering manual navigation by swipe.
-  if (hero && heroControls) {
-    let gesture;
-    hero.addEventListener('pointerdown', event => {
-      if (!mobile.matches || event.pointerType !== 'touch' || event.target.closest('a, button')) return;
-      gesture = { x: event.clientX, y: event.clientY, id: event.pointerId };
-    }, { passive: true });
-    hero.addEventListener('pointerup', event => {
-      if (!gesture || event.pointerId !== gesture.id) return;
-      const dx = event.clientX - gesture.x, dy = event.clientY - gesture.y;
-      gesture = null;
-      if (Math.abs(dx) >= 48 && Math.abs(dx) > Math.abs(dy) * 1.5) {
-        heroControls.querySelector(dx < 0 ? '[data-hero-next]' : '[data-hero-prev]').click();
-      }
-    }, { passive: true });
-    hero.addEventListener('pointercancel', () => { gesture = null; }, { passive: true });
-  }
   const mobileElements = [];
   let mobileLayout = false;
   const nav = document.querySelector('#primary-nav');
@@ -105,48 +181,35 @@
     hero.append(down);
     mobileElements.push(down);
   }
-  const storyTrack = document.querySelector('#stories-track');
-  if (storyTrack) {
-    const slides = [...storyTrack.querySelectorAll('.stories-slide')];
-    const dots = document.createElement('div');
-    dots.className = 'mobile-stories-dots';
-    dots.setAttribute('role', 'group');
-    dots.setAttribute('aria-label', storyTrack.getAttribute('aria-label'));
-    dots.hidden = true;
-    slides.forEach((slide, index) => {
-      const dot = document.createElement('button');
-      dot.type = 'button';
-      dot.setAttribute('aria-label', slide.dataset.destination);
-      dot.addEventListener('click', () => {
-        const current = slides.findIndex(item => item.classList.contains('is-active'));
-        const steps = (index - current + slides.length) % slides.length;
-        for (let step = 0; step < steps; step++) document.querySelector('.stories-next').click();
-      });
-      dots.append(dot);
-    });
-    const updateDots = () => slides.forEach((slide, index) => dots.children[index].setAttribute('aria-pressed', String(slide.classList.contains('is-active'))));
-    new MutationObserver(updateDots).observe(storyTrack, { subtree: true, attributes: true, attributeFilter: ['class'] });
-    storyTrack.closest('.stories-carousel').after(dots);
-    mobileElements.push(dots);
-    updateDots();
-  }
-
   const syncControls = () => {
+    let resizedServiceFocus;
+    if (mobile.matches !== mobileLayout && servicePreviewTrigger) {
+      resizedServiceFocus = servicePreviewTrigger;
+      servicePreview.close();
+      clearServicePreview(false);
+    }
     if (nativeField) nativeField.hidden = !mobile.matches;
     mobileElements.forEach(element => { element.hidden = !mobile.matches; });
+    mobileCopy.forEach(({ node, desktopText, mobileText }) => { node.nodeValue = mobile.matches ? mobileText : desktopText; });
     // Reorder the actual sections on phones so reading and keyboard order follow the design.
     // Restore every original node and control position when returning to desktop.
     if (main && mobile.matches !== mobileLayout) {
       if (mobile.matches) {
         const selectors = ['#home', '#chi-sono', '#bio-dialog', '#servizi', '.consultation-banner', '#blog', '#contatti', '#ispirazioni'];
         main.append(...selectors.map(selector => main.querySelector(selector)).filter(Boolean));
-        if (heroControls) hero.append(heroControls);
-        if (itineraryControls) itinerary.append(itineraryControls);
+        // Use the original text in the mobile disclosures, without duplicating it.
+        bioDialogCopy?.prepend(...bioDetails.map(item => item.node));
+        serviceDetails.forEach(({ node, disclosure }) => {
+          disclosure.querySelector('summary').after(node);
+        });
       } else {
         main.append(...originalOrder);
+        // Restore the exact desktop parents and positions, including dialog contents.
+        [...bioDetails, ...serviceDetails].forEach(({ node, parent, nextSibling }) => parent.insertBefore(node, nextSibling));
       }
       mobileLayout = mobile.matches;
     }
+    resizedServiceFocus?.focus({ preventScroll: true });
     form?.querySelectorAll('.contact-help').forEach(help => {
       if (mobile.matches) help.removeAttribute('tabindex');
       else help.setAttribute('tabindex', '0');

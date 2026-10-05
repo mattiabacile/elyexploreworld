@@ -77,16 +77,6 @@
 /* Revised greeting typography (copy reference 5). */
 .bio-title span:first-child { font-family: var(--font-hand); font-weight: 500; letter-spacing: 0; }
 
-/* All photographs share the original portrait outline, without altering their pixels. */
+/* The fixed photograph keeps the original portrait outline. */
 .bio-portrait { aspect-ratio:780 / 1088; }
 .bio-portrait-art { display:block; width:100%; height:100%; overflow:visible; }
-.bio-slide { opacity:0; transition:opacity 800ms ease; }
-.bio-slide.is-active { opacity:1; }
-.bio-slideshow-controls { position:absolute; bottom:0; left:55%; transform:translateX(-50%); display:flex; align-items:center; gap:2px; padding:2px 6px; border:1px solid #d9c6b3; border-radius:999px; background:var(--bio-paper); color:var(--bio-ink); }
-.bio-slideshow-controls[hidden] { display:none; }
-.bio-slideshow-controls button { display:grid; place-items:center; width:44px; height:44px; padding:0; border:0; border-radius:50%; background:transparent; color:inherit; font:400 26px/1 sans-serif; cursor:pointer; }
-.bio-slideshow-controls button:hover { background:#d9c8b6; }
-.bio-slideshow-controls button:focus-visible { outline:2px solid var(--bio-ink); outline-offset:1px; }
-.bio-slideshow-controls [data-bio-pause] { font-size:18px; }
-.bio-slide-count { min-width:34px; text-align:center; font-size:12px; font-variant-numeric:tabular-nums; }
-@media (prefers-reduced-motion:reduce) { .bio-slide { transition:none; } }

@@ -1,5 +1,9 @@
 (() => {
-  document.querySelector('[data-service-contact="road"]')?.addEventListener('click', () => {
+  document.addEventListener('click', event => {
+    if (!event.target.closest('[data-service-contact="road"]')) return;
+    event.preventDefault();
+    const preview = document.querySelector('#content-preview');
+    if (preview?.open) preview.querySelector('.preview-close').click();
     const radio = document.querySelector('input[name="servizio"][value="Itinerario day by day"]');
     if (radio) {
       radio.checked = true;
