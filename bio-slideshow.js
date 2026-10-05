@@ -7,21 +7,27 @@
   const pause = gallery.querySelector('[data-bio-pause]');
   const count = gallery.querySelector('.bio-slide-count');
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+  const mobile = matchMedia('(max-width: 767px), (hover: none) and (max-width: 950px) and (max-height: 500px)');
   let current = 0;
-  let paused = reducedMotion.matches;
+  let paused = reducedMotion.matches || mobile.matches;
   let visible = false;
   let timer;
   // Decode each original before it can become a slide, avoiding blank transitions.
-  const ready = slides.map(slide => {
-    const image = new Image();
-    image.src = slide.getAttribute('href');
-    return image.decode().then(() => true, () => false);
-  });
+  const ready = new Map();
+  const prepare = index => {
+    if (!ready.has(index)) {
+      const slide = slides[index];
+      const image = new Image();
+      image.src = window.elyImageSource(slide.dataset.src || slide.getAttribute('href'));
+      ready.set(index, image.decode().then(() => { slide.setAttribute('href', image.src); return true; }, () => false));
+    }
+    return ready.get(index);
+  };
   let request = 0;
   async function show(index) {
     const token = ++request;
     const next = (index + slides.length) % slides.length;
-    if (!await ready[next] || token !== request) return;
+    if (!await prepare(next) || token !== request) return;
     slides[current].classList.remove('is-active');
     slides[next].classList.add('is-active');
     current = next;
@@ -30,7 +36,7 @@
   }
   function schedule() {
     clearInterval(timer);
-    if (!paused && visible && !document.hidden) {
+    if (!mobile.matches && !paused && visible && !document.hidden) {
       timer = setInterval(() => show(current + 1), 5000);
     }
     pause.textContent = paused ? '▷' : 'Ⅱ';
@@ -53,13 +59,22 @@
   });
   document.addEventListener('visibilitychange', schedule);
   reducedMotion.addEventListener('change', () => {
-    paused = reducedMotion.matches;
+    paused = reducedMotion.matches || mobile.matches;
     schedule();
   });
   new IntersectionObserver(entries => {
     visible = entries[0].isIntersecting;
+    if (visible) prepare(current);
     schedule();
-  }, { threshold: 0.15 }).observe(gallery);
+  }, { rootMargin: '200px 0px', threshold: 0 }).observe(gallery);
   controls.hidden = false;
+  const syncLayout = () => {
+    // Reuse the same photographs in a clean, tighter frame on smartphones.
+    artwork.setAttribute('viewBox', mobile.matches ? '31 30 739 1025' : '0 0 780 1088');
+    if (mobile.matches) paused = true;
+    schedule();
+  };
+  mobile.addEventListener('change', syncLayout);
+  syncLayout();
   schedule();
 })();

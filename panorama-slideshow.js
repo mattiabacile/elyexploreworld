@@ -19,14 +19,16 @@
     ['../bali-rice-terraces-retouched.webp', 'Le risaie di Tegallalang', '50% 46%', '61% 50%', 'Risaie terrazzate e palme nella valle di Tegallalang, Bali'],
   ];
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const mobile = matchMedia('(max-width: 767px), (hover: none) and (max-width: 950px) and (max-height: 500px)');
+  let visible = false;
   let current = 0;
   let timer;
-  let paused = reduceMotion.matches;
+  let paused = reduceMotion.matches || mobile.matches;
   let request = 0;
 
   function schedule() {
     clearInterval(timer);
-    if (!paused) timer = setInterval(() => show(current + 1), 6500);
+    if (!paused && visible && !document.hidden) timer = setInterval(() => show(current + 1), 6500);
   }
 
   function show(index) {
@@ -36,7 +38,7 @@
     const preload = new Image();
     preload.onload = () => {
       if (token !== request) return;
-      image.src = preload.src;
+      window.elySetImage(image, `assets/indonesia-slideshow/${file}`);
       image.alt = alt;
       image.style.setProperty('--hero-focus', desktop);
       image.style.setProperty('--hero-focus-mobile', mobile);
@@ -49,7 +51,7 @@
       count.textContent = 'Foto non disponibile';
       schedule();
     };
-    preload.src = `assets/indonesia-slideshow/${file}`;
+    preload.src = window.elyImageSource(`assets/indonesia-slideshow/${file}`);
   }
 
   controls.querySelector('[data-hero-prev]').addEventListener('click', () => show(current - 1));
@@ -61,7 +63,7 @@
     schedule();
   });
   reduceMotion.addEventListener('change', event => {
-    paused = event.matches;
+    paused = event.matches || mobile.matches;
     pause.textContent = paused ? '▶' : 'Ⅱ';
     pause.setAttribute('aria-label', paused ? 'Riprendi lo slideshow' : 'Metti in pausa lo slideshow');
     schedule();
@@ -70,6 +72,8 @@
     pause.textContent = '▶';
     pause.setAttribute('aria-label', 'Riprendi lo slideshow');
   }
+  document.addEventListener('visibilitychange', schedule);
+  new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; schedule(); }, { threshold: 0 }).observe(hero);
   schedule();
 })();
 
@@ -93,14 +97,16 @@
     ['assets/indonesia-slideshow/IMG20250815122942-4k.webp', 'La strada nel villaggio', '52% 57%', '50% 56%'],
   ];
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const mobile = matchMedia('(max-width: 767px), (hover: none) and (max-width: 950px) and (max-height: 500px)');
+  let visible = false;
   let current = 0;
-  let paused = reduceMotion.matches;
+  let paused = reduceMotion.matches || mobile.matches;
   let timer;
   let request = 0;
 
   function schedule() {
     clearInterval(timer);
-    if (!paused) timer = setInterval(() => show(current + 1), 6500);
+    if (!paused && visible && !document.hidden) timer = setInterval(() => show(current + 1), 6500);
   }
 
   function show(index) {
@@ -110,7 +116,7 @@
     const preload = new Image();
     preload.onload = () => {
       if (token !== request) return;
-      banner.style.setProperty('--itinerary-photo', `url("${source}")`);
+      banner.style.setProperty('--itinerary-photo', `url("${preload.src}")`);
       banner.style.setProperty('--itinerary-focus', desktop);
       banner.style.setProperty('--itinerary-focus-mobile', mobile);
       count.textContent = `${next + 1} / ${photos.length} · ${title}`;
@@ -122,7 +128,7 @@
       count.textContent = 'Foto non disponibile';
       schedule();
     };
-    preload.src = source;
+    preload.src = window.elyImageSource(source);
   }
 
   controls.querySelector('[data-itinerary-prev]').addEventListener('click', () => show(current - 1));
@@ -134,7 +140,7 @@
     schedule();
   });
   reduceMotion.addEventListener('change', event => {
-    paused = event.matches;
+    paused = event.matches || mobile.matches;
     pause.textContent = paused ? '▶' : 'Ⅱ';
     pause.setAttribute('aria-label', paused ? 'Riprendi lo slideshow' : 'Metti in pausa lo slideshow');
     schedule();
@@ -143,5 +149,7 @@
     pause.textContent = '▶';
     pause.setAttribute('aria-label', 'Riprendi lo slideshow');
   }
+  document.addEventListener('visibilitychange', schedule);
+  new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; schedule(); }, { threshold: 0 }).observe(banner);
   schedule();
 })();

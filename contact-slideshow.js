@@ -5,8 +5,9 @@
   const slides = [...gallery.querySelectorAll('.contact-slide')];
   const pause = portrait.querySelector('.contact-slideshow-pause');
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+  const mobile = matchMedia('(max-width: 767px), (hover: none) and (max-width: 950px) and (max-height: 500px)');
   let current = 0;
-  let paused = reducedMotion.matches;
+  let paused = reducedMotion.matches || mobile.matches;
   let visible = false;
   let timer;
   let request = 0;
@@ -34,7 +35,7 @@
   }
   pause.addEventListener('click', () => { paused = !paused; schedule(); });
   document.addEventListener('visibilitychange', schedule);
-  reducedMotion.addEventListener('change', () => { paused = reducedMotion.matches; schedule(); });
+  reducedMotion.addEventListener('change', () => { paused = reducedMotion.matches || mobile.matches; schedule(); });
   new IntersectionObserver(entries => {
     visible = entries[0].isIntersecting;
     schedule();

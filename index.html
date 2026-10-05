@@ -19,6 +19,8 @@
   <link rel="stylesheet" href="panorama-hero.css?v=60d7a65ec0e6">
   <link rel="stylesheet" href="services.css?v=5fa528f7dbbc">
   <link rel="stylesheet" href="itinerary.css?v=8ce830071b5c">
+  <link rel="stylesheet" href="mobile.css?v=a17b4fef0913">
+  <link rel="stylesheet" href="mobile-mockup.css?v=f243e9dd6f6b">
 </head>
 <body id="top" class="home-page">
 <header id="main-header" class="site-header" aria-label="Navigazione principale">
@@ -58,7 +60,7 @@
 
   <main>
     <section id="home" class="panorama-hero" aria-labelledby="hero-title">
-      <img class="panorama-hero-image" src="assets/indonesia-slideshow/IMG_20230830_094751_265-4k.webp" alt="Risaie terrazzate a Bali, con fiori rossi in primo piano" width="1360" height="1360" fetchpriority="high" decoding="async" style="--hero-focus: 40% 56%; --hero-focus-mobile: 52% 54%">
+      <picture><source media="(max-width: 767px), (hover: none) and (max-width: 950px) and (max-height: 500px)" srcset="assets/mobile/indonesia-slideshow/IMG_20230830_094751_265-4k-640.webp 640w, assets/mobile/indonesia-slideshow/IMG_20230830_094751_265-4k-960.webp 960w, assets/mobile/indonesia-slideshow/IMG_20230830_094751_265-4k-1440.webp 1440w" sizes="100vw"><img class="panorama-hero-image" src="assets/indonesia-slideshow/IMG_20230830_094751_265-4k.webp" alt="Risaie terrazzate a Bali, con fiori rossi in primo piano" width="3840" height="2560" fetchpriority="high" decoding="async" style="--hero-focus: 40% 56%; --hero-focus-mobile: 52% 54%"></picture>
       <div class="panorama-hero-content">
         <p class="panorama-hero-label">Travel designer</p>
         <h1 id="hero-title"><span>Il mondo</span> <em>su misura.</em></h1>
@@ -92,12 +94,12 @@
           </defs>
           <g clip-path="url(#bio-portrait-clip)">
             <image class="bio-slide is-active" data-label="Elisa con un cocco verde" href="assets/elisa-cocco-retouched.webp" x="31" y="30" width="739" height="1025" preserveAspectRatio="xMidYMid slice" aria-hidden="true"/>
-            <image class="bio-slide" data-label="Elisa davanti alle case colorate" href="assets/elisa-case-colorate-retouched.webp" x="31" y="30" width="739" height="1025" preserveAspectRatio="xMidYMid slice" aria-hidden="true"/>
-            <image class="bio-slide" data-label="Elisa con un cocco a Bali" href="assets/elisa-cocco-bali-retouched.webp" x="31" y="30" width="739" height="1025" preserveAspectRatio="xMidYMid slice" aria-hidden="true"/>
-            <image class="bio-slide" data-label="Elisa sott’acqua con una tartaruga" href="assets/elisa-tartaruga-retouched.webp" x="31" y="30" width="739" height="1025" preserveAspectRatio="xMidYMid slice" aria-hidden="true"/>
-            <image class="bio-slide" data-label="Elisa tra le risaie" href="assets/elisa-risaie-retouched.webp" x="31" y="30" width="739" height="1025" preserveAspectRatio="xMidYMid slice" aria-hidden="true"/>
-            <image class="bio-slide" data-label="Elisa in aereo, accanto al finestrino" href="assets/elisa-aereo-retouched.webp" x="31" y="30" width="739" height="1025" preserveAspectRatio="xMidYMid slice" aria-hidden="true"/>
-            <image class="bio-slide" data-label="Elisa con un cocco al ristorante" href="assets/elisa-cocco-ristorante-retouched.webp" x="31" y="30" width="739" height="1025" preserveAspectRatio="xMidYMid slice" aria-hidden="true"/>
+            <image class="bio-slide" data-label="Elisa davanti alle case colorate" data-src="assets/elisa-case-colorate-retouched.webp" x="31" y="30" width="739" height="1025" preserveAspectRatio="xMidYMid slice" aria-hidden="true"/>
+            <image class="bio-slide" data-label="Elisa con un cocco a Bali" data-src="assets/elisa-cocco-bali-retouched.webp" x="31" y="30" width="739" height="1025" preserveAspectRatio="xMidYMid slice" aria-hidden="true"/>
+            <image class="bio-slide" data-label="Elisa sott’acqua con una tartaruga" data-src="assets/elisa-tartaruga-retouched.webp" x="31" y="30" width="739" height="1025" preserveAspectRatio="xMidYMid slice" aria-hidden="true"/>
+            <image class="bio-slide" data-label="Elisa tra le risaie" data-src="assets/elisa-risaie-retouched.webp" x="31" y="30" width="739" height="1025" preserveAspectRatio="xMidYMid slice" aria-hidden="true"/>
+            <image class="bio-slide" data-label="Elisa in aereo, accanto al finestrino" data-src="assets/elisa-aereo-retouched.webp" x="31" y="30" width="739" height="1025" preserveAspectRatio="xMidYMid slice" aria-hidden="true"/>
+            <image class="bio-slide" data-label="Elisa con un cocco al ristorante" data-src="assets/elisa-cocco-ristorante-retouched.webp" x="31" y="30" width="739" height="1025" preserveAspectRatio="xMidYMid slice" aria-hidden="true"/>
           </g>
           <path class="bio-placeholder-frame" style="fill:none" d="M49 280C31 139 158 30 311 33C482 30 630 130 665 278C690 376 663 400 694 503C730 623 770 754 735 872C710 989 630 1050 460 1050C334 1055 211 1017 188 941C161 878 199 809 223 718C227 640 201 560 152 490C105 424 58 365 49 280Z"/>
 
@@ -180,7 +182,7 @@
       <div class="bio-certificate-viewer" hidden>
         <button class="bio-certificate-back" type="button">← Indietro</button>
         <h2 id="bio-certificate-title"></h2>
-        <img class="bio-certificate-full" alt="">
+        <img class="bio-certificate-full" src="assets/attestato-travel-designer-refined.png" alt="Attestato Travel Designer di Elisa Tosi" loading="lazy" decoding="async" width="896" height="626">
       </div>
     </dialog>
 
@@ -316,7 +318,7 @@
         <div class="stories-carousel" role="region" aria-roledescription="carosello" aria-label="Destinazioni dei racconti di viaggio">
           <div id="stories-track" class="stories-track" tabindex="0" aria-label="Racconti di viaggio. Usa le frecce della tastiera per cambiare destinazione.">
             <article id="story-japan" class="stories-slide is-active" aria-labelledby="title-japan" data-destination="Giappone">
-              <figure class="stories-photo"><img src="assets/stories/japan-retouched.webp" alt="Il Monte Fuji oltre il lago, tra ciliegi in fiore e una pagoda rossa" width="1600" height="900" loading="lazy" decoding="async"></figure>
+              <figure class="stories-photo"><picture><source media="(max-width: 767px), (hover: none) and (max-width: 950px) and (max-height: 500px)" srcset="assets/mobile/stories/japan-retouched-640.webp 640w, assets/mobile/stories/japan-retouched-960.webp 960w, assets/mobile/stories/japan-retouched-1440.webp 1440w" sizes="100vw"><img src="assets/stories/japan-retouched.webp" alt="Il Monte Fuji oltre il lago, tra ciliegi in fiore e una pagoda rossa" width="1600" height="900" loading="lazy" decoding="async"></picture></figure>
               <div class="stories-copy">
                 <div class="stories-heading"><time datetime="2026-04-26">26 aprile 2026</time><h3 id="title-japan">Giappone</h3></div>
                 <p class="stories-deck">Templi, natura e tradizioni<br>in perfetto equilibrio.</p>
@@ -324,7 +326,7 @@
               </div>
             </article>
             <article id="story-bali" class="stories-slide" aria-labelledby="title-bali" data-destination="Bali">
-              <figure class="stories-photo"><img src="assets/stories/bali-retouched.webp" alt="Tempio balinese sul lago Beratan, tra montagne e luce del mattino" width="1600" height="900" loading="lazy" decoding="async"></figure>
+              <figure class="stories-photo"><picture><source media="(max-width: 767px), (hover: none) and (max-width: 950px) and (max-height: 500px)" srcset="assets/mobile/stories/bali-retouched-640.webp 640w, assets/mobile/stories/bali-retouched-960.webp 960w, assets/mobile/stories/bali-retouched-1440.webp 1440w" sizes="100vw"><img src="assets/stories/bali-retouched.webp" alt="Tempio balinese sul lago Beratan, tra montagne e luce del mattino" width="1600" height="900" loading="lazy" decoding="async"></picture></figure>
               <div class="stories-copy">
                 <div class="stories-heading"><span class="stories-date">Racconti di viaggio</span><h3 id="title-bali">Bali</h3></div>
                 <p class="stories-deck">La mia seconda casa.</p>
@@ -332,7 +334,7 @@
               </div>
             </article>
             <article id="story-singapore" class="stories-slide" aria-labelledby="title-singapore" data-destination="Singapore">
-              <figure class="stories-photo"><img src="assets/stories/singapore-retouched.webp" alt="Veduta di Marina Bay a Singapore, con la baia e lo skyline" width="1600" height="900" loading="lazy" decoding="async"></figure>
+              <figure class="stories-photo"><picture><source media="(max-width: 767px), (hover: none) and (max-width: 950px) and (max-height: 500px)" srcset="assets/mobile/stories/singapore-retouched-640.webp 640w, assets/mobile/stories/singapore-retouched-960.webp 960w, assets/mobile/stories/singapore-retouched-1440.webp 1440w" sizes="100vw"><img src="assets/stories/singapore-retouched.webp" alt="Veduta di Marina Bay a Singapore, con la baia e lo skyline" width="1600" height="900" loading="lazy" decoding="async"></picture></figure>
               <div class="stories-copy">
                 <div class="stories-heading"><span class="stories-date">Racconti di viaggio</span><h3 id="title-singapore">Singapore</h3></div>
                 <p class="stories-deck">Un mondo in una città.</p>
@@ -366,13 +368,13 @@
               <img class="contact-branch contact-branch-top" src="assets/stories/botanical-branch.svg" alt="" loading="lazy" decoding="async" width="210" height="460">
               <img class="contact-branch contact-branch-bottom" src="assets/stories/botanical-branch.svg" alt="" loading="lazy" decoding="async" width="210" height="460">
               <div class="contact-slideshow" role="img" aria-label="Elisa con un cocco verde">
-                <img class="contact-slide is-active" src="assets/elisa-cocco-retouched.webp" alt="" data-label="Elisa con un cocco verde" style="object-position: 50% 35%" loading="lazy" decoding="async">
-                <img class="contact-slide" src="assets/elisa-case-colorate-retouched.webp" alt="" data-label="Elisa davanti alle case colorate" style="object-position: 50% 40%" loading="lazy" decoding="async">
-                <img class="contact-slide" src="assets/elisa-cocco-bali-retouched.webp" alt="" data-label="Elisa con un cocco a Bali" style="object-position: 50% 35%" loading="lazy" decoding="async">
-                <img class="contact-slide" src="assets/elisa-tartaruga-retouched.webp" alt="" data-label="Elisa sott’acqua con una tartaruga" style="object-position: 50% 50%" loading="lazy" decoding="async">
-                <img class="contact-slide" src="assets/elisa-risaie-retouched.webp" alt="" data-label="Elisa tra le risaie" style="object-position: 50% 45%" loading="lazy" decoding="async">
-                <img class="contact-slide" src="assets/elisa-aereo-retouched.webp" alt="" data-label="Elisa in aereo, accanto al finestrino" style="object-position: 50% 35%" loading="lazy" decoding="async">
-                <img class="contact-slide" src="assets/elisa-cocco-ristorante-retouched.webp" alt="" data-label="Elisa con un cocco al ristorante" style="object-position: 50% 35%" loading="lazy" decoding="async">
+                <picture><source media="(max-width: 767px), (hover: none) and (max-width: 950px) and (max-height: 500px)" srcset="assets/mobile/elisa-cocco-retouched-640.webp 640w, assets/mobile/elisa-cocco-retouched-960.webp 960w, assets/mobile/elisa-cocco-retouched-1440.webp 1440w" sizes="100vw"><img class="contact-slide is-active" src="assets/elisa-cocco-retouched.webp" alt="" data-label="Elisa con un cocco verde" style="object-position: 50% 35%" loading="lazy" decoding="async"></picture>
+                <picture><source media="(max-width: 767px), (hover: none) and (max-width: 950px) and (max-height: 500px)" srcset="assets/mobile/elisa-case-colorate-retouched-640.webp 640w, assets/mobile/elisa-case-colorate-retouched-960.webp 960w, assets/mobile/elisa-case-colorate-retouched-1440.webp 1440w" sizes="100vw"><img class="contact-slide" src="assets/elisa-case-colorate-retouched.webp" alt="" data-label="Elisa davanti alle case colorate" style="object-position: 50% 40%" loading="lazy" decoding="async"></picture>
+                <picture><source media="(max-width: 767px), (hover: none) and (max-width: 950px) and (max-height: 500px)" srcset="assets/mobile/elisa-cocco-bali-retouched-640.webp 640w, assets/mobile/elisa-cocco-bali-retouched-960.webp 960w, assets/mobile/elisa-cocco-bali-retouched-1440.webp 1440w" sizes="100vw"><img class="contact-slide" src="assets/elisa-cocco-bali-retouched.webp" alt="" data-label="Elisa con un cocco a Bali" style="object-position: 50% 35%" loading="lazy" decoding="async"></picture>
+                <picture><source media="(max-width: 767px), (hover: none) and (max-width: 950px) and (max-height: 500px)" srcset="assets/mobile/elisa-tartaruga-retouched-640.webp 640w, assets/mobile/elisa-tartaruga-retouched-960.webp 960w, assets/mobile/elisa-tartaruga-retouched-1440.webp 1440w" sizes="100vw"><img class="contact-slide" src="assets/elisa-tartaruga-retouched.webp" alt="" data-label="Elisa sott’acqua con una tartaruga" style="object-position: 50% 50%" loading="lazy" decoding="async"></picture>
+                <picture><source media="(max-width: 767px), (hover: none) and (max-width: 950px) and (max-height: 500px)" srcset="assets/mobile/elisa-risaie-retouched-640.webp 640w, assets/mobile/elisa-risaie-retouched-960.webp 960w, assets/mobile/elisa-risaie-retouched-1440.webp 1440w" sizes="100vw"><img class="contact-slide" src="assets/elisa-risaie-retouched.webp" alt="" data-label="Elisa tra le risaie" style="object-position: 50% 45%" loading="lazy" decoding="async"></picture>
+                <picture><source media="(max-width: 767px), (hover: none) and (max-width: 950px) and (max-height: 500px)" srcset="assets/mobile/elisa-aereo-retouched-640.webp 640w, assets/mobile/elisa-aereo-retouched-960.webp 960w, assets/mobile/elisa-aereo-retouched-1440.webp 1440w" sizes="100vw"><img class="contact-slide" src="assets/elisa-aereo-retouched.webp" alt="" data-label="Elisa in aereo, accanto al finestrino" style="object-position: 50% 35%" loading="lazy" decoding="async"></picture>
+                <picture><source media="(max-width: 767px), (hover: none) and (max-width: 950px) and (max-height: 500px)" srcset="assets/mobile/elisa-cocco-ristorante-retouched-640.webp 640w, assets/mobile/elisa-cocco-ristorante-retouched-960.webp 960w, assets/mobile/elisa-cocco-ristorante-retouched-1440.webp 1440w" sizes="100vw"><img class="contact-slide" src="assets/elisa-cocco-ristorante-retouched.webp" alt="" data-label="Elisa con un cocco al ristorante" style="object-position: 50% 35%" loading="lazy" decoding="async"></picture>
               </div>
               <button class="contact-slideshow-pause" type="button" aria-label="Metti in pausa lo slideshow" hidden>Ⅱ</button>
             </div>
@@ -398,11 +400,12 @@
             <fieldset>
               <legend>Parliamo del tuo viaggio</legend>
               <div class="contact-fields contact-fields-two">
-                <label><span class="sr-only">Nome</span><input type="text" name="nome" placeholder="Nome *" autocomplete="name" required></label>
-                <label><span class="sr-only">Email</span><input type="email" name="email" placeholder="Email *" autocomplete="email" required></label>
+                <label><span class="sr-only contact-field-label">Nome</span><input type="text" name="nome" placeholder="Nome *" autocomplete="name" required></label>
+                <label><span class="sr-only contact-field-label">Email</span><input type="email" name="email" placeholder="Email *" autocomplete="email" required></label>
               </div>
-              <label><span class="sr-only">Destinazione</span><input type="text" name="destinazione" placeholder="Dove vorresti andare?"></label>
-              <div class="contact-fields contact-fields-two">
+              <label><span class="sr-only contact-field-label">Destinazione</span><input type="text" name="destinazione" placeholder="Dove vorresti andare?"></label>
+              <div class="contact-fields contact-fields-two contact-trip-fields">
+                <label class="mobile-departure-field" hidden><span>Partenza</span><input type="date" id="mobile-departure-date" aria-label="Quando pensi di partire?"></label>
                 <div class="contact-date-field">
                   <span class="sr-only" id="departure-label">Quando pensi di partire?</span>
                   <input type="hidden" name="partenza" id="departure-date">
@@ -423,7 +426,7 @@
             </fieldset>
 
             <fieldset class="contact-needs">
-              <legend>Di cosa hai bisogno?</legend>
+              <legend id="contact-service-label">Di cosa hai bisogno?</legend>
               <div class="contact-option-grid">
                 <label><input type="radio" name="servizio" value="Viaggio su misura"><span>Viaggio su misura<span class="contact-help" tabindex="0" aria-label="Informazioni su Viaggio su misura" aria-describedby="help-full-immersion"><svg class="contact-help-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9 9a3 3 0 0 1 6 0c0 2-3 2-3 4"/><circle cx="12" cy="17" r=".7" fill="currentColor" stroke="none"/></svg><span class="contact-tooltip" id="help-full-immersion" role="tooltip">Un viaggio progettato da zero, con itinerario completo, strutture, spostamenti ed esperienze selezionate.</span></span></span></label>
                 <label><input type="radio" name="servizio" value="Itinerario day by day"><span>Itinerario day by day<span class="contact-help" tabindex="0" aria-label="Informazioni su Itinerario day by day" aria-describedby="help-road-map"><svg class="contact-help-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9 9a3 3 0 0 1 6 0c0 2-3 2-3 4"/><circle cx="12" cy="17" r=".7" fill="currentColor" stroke="none"/></svg><span class="contact-tooltip" id="help-road-map" role="tooltip">Hai già volo e hotel? Organizzo tappe, tempi, spostamenti ed esperienze in un programma giorno per giorno.</span></span></span></label>
@@ -433,7 +436,7 @@
 
             <fieldset class="contact-message-field">
               <legend>Raccontami il tuo viaggio</legend>
-              <label><span class="sr-only">Messaggio</span><textarea name="messaggio" placeholder="Puoi parlarmi dei tuoi desideri, dei dubbi o di una prima idea.&#10;Più dettagli mi dai, meglio potrò aiutarti!" required></textarea></label>
+              <label><span class="sr-only contact-field-label">Messaggio</span><textarea name="messaggio" placeholder="Puoi parlarmi dei tuoi desideri, dei dubbi o di una prima idea.&#10;Più dettagli mi dai, meglio potrò aiutarti!" required></textarea></label>
             </fieldset>
 
             <p class="contact-privacy">Premendo “Parliamone”, i dati vengono inviati tramite Web3Forms all’email di Elisa. <a href="privacy.html">Leggi l’informativa privacy</a>.</p>
@@ -459,14 +462,15 @@
     <button class="preview-close" type="button" aria-label="Chiudi anteprima">×</button>
     <div class="content-preview-body"></div>
   </dialog>
+  <script src="mobile.js?v=589fbe7a5e35" defer></script>
   <script src="footer.js?v=ef66813fd206" defer></script>
   <script src="navigation.js?v=9540f8848ee4" defer></script>
-  <script src="bio-slideshow.js?v=7c04554ea893" defer></script>
-  <script src="contact-slideshow.js?v=ff89c921177c" defer></script>
-  <script src="script.js?v=f40fcb4a1752" defer></script>
-  <script src="stories.js?v=5fa8a52b504c" defer></script>
-  <script src="consultation.js?v=ba834a42ed0a" defer></script>
-  <script src="panorama-slideshow.js?v=bali4k-20261005" defer></script>
-  <script src="services.js?v=7c52f694db24" defer></script>
+  <script src="bio-slideshow.js?v=a6a9da3fa7db" defer></script>
+  <script src="contact-slideshow.js?v=ce48c9ac7258" defer></script>
+  <script src="script.js?v=2a6386ac0a60" defer></script>
+  <script src="stories.js?v=11adfa950c1d" defer></script>
+  <script src="consultation.js?v=744b9cc08580" defer></script>
+  <script src="panorama-slideshow.js?v=9f782016209a" defer></script>
+  <script src="services.js?v=a96a8bab68df" defer></script>
 </body>
 </html>

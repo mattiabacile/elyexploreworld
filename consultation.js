@@ -27,7 +27,7 @@
       label.textContent = `${next + 1} / ${photos.length} · ${name}`;
     };
     image.onerror = () => { if (token === request) label.textContent = 'Foto non disponibile. Prova la successiva.'; };
-    image.src = `assets/consultation-japan-${file}-retouched.webp`;
+    image.src = window.elyImageSource(`assets/consultation-japan-${file}-retouched.webp`);
     current = next;
   }
   picker.hidden = false;
