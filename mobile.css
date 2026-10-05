@@ -1,0 +1,311 @@
+/* Smartphone adaptations. Desktop compositions remain in their original stylesheets. */
+.contact-form .mobile-departure-field[hidden] { display: none; }
+.mobile-service-picker[hidden], .mobile-service-description[hidden] { display: none; }
+
+@media (max-width: 767px), (hover: none) and (max-width: 950px) and (max-height: 500px) {
+  :root {
+    --mobile-gutter: clamp(18px, 5vw, 24px);
+    --mobile-header-height: calc(68px + env(safe-area-inset-top));
+  }
+  html, body { overflow-x: visible; }
+  html { scroll-padding-top: var(--mobile-header-height); }
+  main section[id], main > .travel-stories-page[id] { scroll-margin-top: 16px; }
+  button, a, input, textarea, summary { -webkit-tap-highlight-color: transparent; }
+  button, a, summary { touch-action: manipulation; }
+  input, textarea { font-size: 16px; }
+
+  .site-header, .site-header.stuck-nav {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: var(--header-surface);
+    box-shadow: none;
+  }
+  .site-header .header-shell {
+    width: calc(100% - 2 * var(--mobile-gutter));
+    min-height: var(--mobile-header-height);
+    padding-top: env(safe-area-inset-top);
+    grid-template-columns: 44px minmax(0, 1fr) auto;
+    gap: 6px;
+  }
+  .site-header .brand { min-width: 0; }
+  .site-header .brand-name { font-size: clamp(20px, 5.5vw, 27px); }
+  .site-header .mobile-menu { width: 44px; height: 44px; min-height: 44px; border-radius: 0; }
+  .site-header .header-cta { min-width: 88px; min-height: 44px; padding: 10px 12px; font-size: 12px; letter-spacing: 0; }
+  .site-header .preview-nav {
+    height: 100dvh;
+    padding: calc(var(--mobile-header-height) + 24px) var(--mobile-gutter) max(28px, env(safe-area-inset-bottom));
+    background: var(--header-surface);
+    grid-template-rows: minmax(min-content, 1fr) auto;
+    gap: 32px;
+    overscroll-behavior: contain;
+  }
+  .site-header .menu-nav-inner { width: 100%; gap: clamp(12px, 2.5svh, 24px); }
+  .site-header .menu-nav-inner > a { display: grid; place-items: center; min-height: 48px; font-size: clamp(32px, 8.6vw, 42px); line-height: 1.1; }
+  .site-header .menu-socials a { width: 48px; height: 48px; }
+
+  .panorama-hero { min-height: 100svh; }
+  .panorama-hero-content { padding: calc(var(--mobile-header-height) + 32px) var(--mobile-gutter) 96px; }
+  .panorama-hero h1 { font-size: clamp(52px, 14vw, 68px); line-height: 1.02; }
+  .panorama-hero-label { font-size: 12px; margin-bottom: 20px; letter-spacing: .22em; }
+  .panorama-hero-description { max-width: 22ch; font-size: clamp(25px, 6.8vw, 30px); line-height: 1.3; margin-top: 22px; }
+  .panorama-hero-link { min-height: 52px; margin-top: 28px; padding: 14px 26px; font-size: 12px; letter-spacing: .14em; }
+  .panorama-slideshow-controls { min-height: 68px; gap: 8px; padding: 10px var(--mobile-gutter); color: #23372b; }
+  .panorama-slideshow-controls button { width: 44px; height: 44px; }
+  .panorama-slideshow-controls button:hover { background: #d2ddcb; }
+  .panorama-slide-count { min-width: 0; flex: 1; font-size: 12px; line-height: 1.4; }
+
+  .bio-section { background: var(--bio-paper); }
+  .bio-frame { display: flow-root; padding: 32px var(--mobile-gutter); color: var(--bio-ink); }
+  .bio-portrait { float: left; width: clamp(126px, 33vw, 154px); height: auto; aspect-ratio: auto; margin: 4px 16px 12px 0; }
+  .bio-portrait-art { height: auto; aspect-ratio: 739 / 1025; overflow: hidden; border-radius: 10px; }
+  .bio-portrait-art > g { clip-path: none; }
+  .bio-placeholder-frame, .bio-botanical-art { display: none; }
+  .bio-content { display: contents; }
+  .bio-title { font-size: clamp(46px, 12vw, 56px); margin-bottom: 16px; line-height: .92; }
+  .bio-rule { display: none; }
+  .bio-copy { display: block; font-size: 16px; line-height: 1.6; text-wrap: initial; }
+  .bio-copy p + p { margin-top: 16px; }
+  .bio-copy p:first-child { font-size: 16px; line-height: 1.6; }
+  .bio-more-button { clear: both; width: 100%; min-width: 0; min-height: 48px; margin-top: 20px; font-size: 13px; letter-spacing: .16em; }
+  .bio-contacts { gap: 4px; margin-top: 12px; font-size: 14px; }
+  .bio-contacts a { max-width: 100%; min-height: 44px; overflow-wrap: anywhere; }
+  .bio-slideshow-controls { position: static; transform: none; display: grid; grid-template-columns: 44px minmax(0, 1fr) 44px; gap: 0; margin-top: 4px; padding: 0; border: 0; border-radius: 0; background: transparent; }
+  .bio-slideshow-controls [data-bio-pause] { display: none; }
+  .bio-slide-count { min-width: 0; }
+
+  .consultation-banner { padding: 44px var(--mobile-gutter) 32px; }
+  .consultation-eyebrow { font-size: 12px; letter-spacing: .1em; }
+  .consultation-copy h2 { font-size: clamp(38px, 10vw, 52px); }
+  .consultation-description { font: 400 16px/1.65 var(--font-body); }
+  .consultation-action { margin-top: 24px; padding-top: 24px; }
+  .consultation-benefits { grid-template-columns: 1fr; gap: 12px; }
+  .consultation-benefits li { font-size: 16px; }
+  .consultation-button { max-width: none; min-height: 54px; padding: 14px 18px; font-size: 12px; letter-spacing: .08em; }
+  .consultation-photo-name { font-size: 12px; line-height: 1.4; }
+  .consultation-backdrop {
+    background-image: linear-gradient(90deg, rgba(22, 43, 32, .78), rgba(22, 43, 32, .62) 48%, rgba(22, 43, 32, .76)), url('assets/mobile/consultation-japan-door-retouched-960.webp');
+  }
+
+  .travel-services { background-image: linear-gradient(#f9e7d344, #f9e7d344), url('assets/mobile/services/background-refined-960.webp'); }
+  .travel-services-layout { padding: 44px var(--mobile-gutter) 52px; }
+  .travel-services-heading h2 { font-size: clamp(38px, 10vw, 48px); }
+  .travel-services-intro { font-size: 16px; line-height: 1.6; }
+  .travel-services-grid { gap: 28px; }
+  .travel-service { box-shadow: 0 6px 12px -6px #72543344; }
+  .travel-service-content { padding: 24px 20px 20px; }
+  .travel-service-photo--full::before { background-image: url('assets/mobile/services/map-hd-retouched-960.webp'); }
+  .travel-service-photo--road::before { background-image: url('assets/mobile/services/agenda-hd-retouched-960.webp'); }
+  .travel-service h3, .travel-service--road h3 { font-size: clamp(32px, 9vw, 42px); line-height: 1.05; }
+  .travel-service-summary, .travel-service-description { font-size: 16px; line-height: 1.55; letter-spacing: -.015em; }
+  .travel-service-summary { margin-bottom: 12px; }
+  .travel-service-features, .travel-service--road .travel-service-features { grid-template-columns: 1fr; gap: 16px; }
+  .travel-service-features li, .travel-service--road .travel-service-features li,
+  .travel-service--road .travel-service-features li:last-child { grid-column: auto; justify-content: flex-start; gap: 14px; font-size: 16px; line-height: 1.45; }
+  .travel-service-features svg { width: 28px; height: 28px; }
+  .travel-service-details { font-size: 16px; }
+  .travel-service-details summary { min-height: 48px; }
+  .travel-service-consultation { border-radius: 12px; margin-inline: 0; padding: 16px; }
+  .travel-service-consultation p { font-size: 14px; letter-spacing: 0; }
+  .travel-service-consultation > div > span, .travel-service-price-note { font-size: 14px; line-height: 1.55; }
+  .travel-service-button { min-height: 52px; font-size: 15px; }
+
+  .itinerary-preview { gap: 24px; padding: 44px var(--mobile-gutter); --itinerary-photo: url('assets/mobile/nusa-penida-kelingking-retouched-960.webp'); }
+  .itinerary-preview .preview-copy-block h2 { font-size: clamp(36px, 9.5vw, 46px); line-height: 1.08; }
+  .itinerary-preview .preview-description { font-size: 16px; line-height: 1.6; }
+  .itinerary-preview .postcard-collage { grid-template-columns: minmax(0, 1fr); }
+  .itinerary-preview .itinerary-card { grid-area: auto; padding: 24px 20px; }
+  .itinerary-preview .itinerary-day-title { font-size: 28px; line-height: 1.1; }
+  .itinerary-preview .timeline li { grid-template-columns: 44px minmax(0, 1fr); gap: 12px; padding-bottom: 16px; }
+  .itinerary-preview .timeline time { font-size: 13px; }
+  .itinerary-preview .timeline strong { font-size: 20px; line-height: 1.3; }
+  .itinerary-preview .itinerary-card-button { width: 100%; min-height: 52px; font-size: 15px; }
+
+  .stories-shell { padding: 44px var(--mobile-gutter) 48px; }
+  .stories-intro h2 { font-size: clamp(38px, 10vw, 50px); line-height: 1.05; }
+  .stories-subtitle { font-size: 16px; line-height: 1.6; }
+  .stories-track { touch-action: pan-y pinch-zoom; }
+  .stories-photo { height: auto; aspect-ratio: 4 / 3; border-radius: 12px; }
+  .stories-copy { width: calc(100% - 24px); min-height: 0; margin-top: -24px; padding: 20px; gap: 16px; border-radius: 12px; }
+  .stories-heading time, .stories-date { font-size: 12px; letter-spacing: .1em; }
+  .stories-heading h3 { font-size: 40px; }
+  .stories-deck { font-size: 16px; line-height: 1.5; }
+  .stories-read { width: 100%; min-height: 48px; font-size: 22px; }
+  .stories-controls { display: flex; justify-content: flex-end; gap: 12px; margin-top: 16px; }
+  .stories-arrow { position: static; width: 48px; height: 48px; transform: none; }
+  .stories-all-link { display: flex; align-items: center; min-height: 44px; flex-direction: column; justify-content: center; }
+
+  .contact-layout { padding: 32px var(--mobile-gutter); }
+  .contact-intro { display: grid; grid-template-columns: minmax(0, 1fr) clamp(96px, 28vw, 132px); align-items: start; gap: 16px; }
+  .contact-copy-block { display: contents; }
+  .contact-copy-block h2 { grid-column: 1 / -1; margin: 0; font-size: clamp(32px, 8.8vw, 42px); line-height: 1.06; }
+  .contact-kicker { grid-column: 1 / -1; margin: 0; }
+  .contact-rule { display: none; }
+  .contact-copy { grid-column: 1; margin: 0; font-size: 16px; line-height: 1.55; }
+  .contact-portrait { grid-column: 2; width: 100%; margin: 0; }
+  .contact-portrait > img.contact-branch { display: none; }
+  .contact-links { gap: 12px; margin: 20px 0; padding-top: 16px; }
+  .contact-links a { gap: 12px; }
+  .contact-link-icon { flex-basis: 44px; height: 44px; }
+  .contact-link-icon svg { width: 22px; height: 22px; }
+  .contact-link-label { font-size: 11px; letter-spacing: .08em; white-space: normal; }
+  .contact-link-value { font-size: clamp(20px, 5.3vw, 26px); white-space: normal; overflow-wrap: anywhere; letter-spacing: -.025em; }
+  .contact-panel { padding-top: 20px; }
+  .contact-fields-two { grid-template-columns: 1fr; }
+  .contact-trip-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .contact-form legend { font-size: 13px; line-height: 1.5; letter-spacing: .1em; margin-bottom: 12px; }
+  .contact-form fieldset:not(.contact-message-field) .contact-field-label, .contact-form .mobile-departure-field > span {
+    position: static !important; display: block; width: auto !important; height: auto !important;
+    padding: 0 !important; margin: 0 0 6px !important; overflow: visible !important;
+    clip: auto !important; white-space: normal !important; border: 0 !important;
+    color: var(--contact-ink); font: 500 14px/1.4 var(--font-body);
+  }
+  .contact-fields { gap: 12px; margin-bottom: 12px; }
+  .contact-form > fieldset:first-of-type > label { margin-bottom: 12px; }
+  .contact-form input { height: 48px; padding: 10px 12px; min-width: 0; max-width: 100%; }
+  .contact-form input[type='date'] { display: block; min-inline-size: 0; appearance: auto; -webkit-appearance: auto; }
+  .contact-form input[type='date']::-webkit-date-and-time-value { text-align: left; }
+  .contact-date-field { display: none; }
+  .contact-travelers-field { display: block; height: auto; min-height: 0; padding: 0; border: 0; border-radius: 0; }
+  .contact-travelers-label { display: block; margin-bottom: 6px; font: 500 14px/1.4 var(--font-body); }
+  .contact-form .contact-stepper button { width: 44px; height: 44px; min-height: 44px; }
+  .contact-stepper { height: 48px; gap: 0; justify-content: space-between; border: 1px solid var(--contact-line); border-radius: 9px; }
+  .contact-form .contact-stepper button { border: 0; background: transparent; }
+  .contact-needs { margin-top: 16px !important; }
+  .has-mobile-service-picker .contact-option-grid { display: none; }
+  .mobile-service-picker select { display: block; width: 100%; min-width: 0; height: 48px; padding: 10px 12px; border: 1px solid var(--contact-line); border-radius: 9px; color: var(--contact-ink); background: transparent; font: 400 16px/1.4 var(--font-body); }
+  .mobile-service-picker select:focus-visible { outline: 2px solid var(--contact-clay); outline-offset: 2px; }
+  .mobile-service-description { margin: 8px 0 0; color: var(--contact-muted); font: 400 14px/1.55 var(--font-body); }
+  .contact-option-grid { grid-template-columns: 1fr; gap: 12px; }
+  .contact-option-grid label { height: auto; }
+  .contact-option-grid label > span {
+    display: grid; grid-template-columns: 18px minmax(0, 1fr); align-items: center;
+    gap: 0 12px; min-height: 60px; height: auto; padding: 16px;
+    font: 500 16px/1.5 var(--font-body); overflow-wrap: normal;
+  }
+  .contact-option-grid label > span::before { content: ''; width: 18px; height: 18px; border: 1px solid var(--contact-green); border-radius: 50%; }
+  .contact-needs input:checked + span::before { border-color: #fffdf8; background: #fffdf8; box-shadow: inset 0 0 0 4px var(--contact-green); }
+  .contact-needs span.contact-help { position: static; grid-column: 2; width: auto; min-height: 0; display: block; padding: 0; border: 0; border-radius: 0; cursor: inherit; background: transparent; }
+  .contact-help-icon { display: none; }
+  .contact-needs span.contact-tooltip {
+    position: static; display: none; width: auto; margin-top: 8px; padding: 0; min-height: 0;
+    color: inherit; background: transparent; border: 0; box-shadow: none; border-radius: 0;
+    font: 400 14px/1.6 var(--font-body); opacity: 1; visibility: visible; transform: none; pointer-events: auto;
+  }
+  .contact-needs input:checked + span .contact-tooltip { display: block; }
+  .contact-message-field { margin-top: 20px !important; }
+  .contact-message-field legend { margin-bottom: 8px; }
+  .contact-form textarea { min-height: 112px; height: 112px; font-size: 16px; line-height: 1.55; }
+  .contact-form .contact-privacy { margin: 12px 0; font-size: 13px; line-height: 1.55; }
+  .contact-form button[type='submit'] { width: 100%; min-height: 48px; margin-top: 0; font-size: 14px; letter-spacing: .14em; }
+  .contact-response { font-size: 15px; overflow-wrap: anywhere; }
+  .contact-response:empty { margin: 0; }
+
+  .bio-dialog, .bio-dialog.is-viewing-certificate, .content-preview {
+    width: 100%; max-width: 100%; height: 100dvh; max-height: 100dvh;
+    margin: 0; border: 0; border-radius: 0; overflow-y: auto; overflow-x: hidden;
+    overscroll-behavior: contain; box-shadow: none;
+  }
+  body:has(dialog[open]) { overflow: hidden; }
+  .bio-dialog, .bio-dialog.is-viewing-certificate { padding: calc(72px + env(safe-area-inset-top)) var(--mobile-gutter) max(32px, env(safe-area-inset-bottom)); }
+  .bio-dialog::before { content: ''; position: fixed; z-index: 2; inset: 0 0 auto; height: calc(68px + env(safe-area-inset-top)); background: var(--bio-paper); }
+  .bio-dialog-close, .content-preview .preview-close { position: fixed; z-index: 3; top: calc(12px + env(safe-area-inset-top)); right: var(--mobile-gutter); width: 44px; height: 44px; }
+  .bio-dialog h2 { margin-right: 0; font-size: 44px; }
+  .bio-dialog-copy { font-size: 16px; line-height: 1.75; }
+  .bio-certifications-intro, .bio-certificate figcaption p { font-size: 14px; }
+  .content-preview { padding-bottom: max(24px, env(safe-area-inset-bottom)); }
+  .content-preview .itinerary-card h3 { padding: calc(28px + env(safe-area-inset-top)) 76px 26px var(--mobile-gutter); font-size: 32px; line-height: 1.15; }
+  .content-preview .itinerary-example-note { padding: 24px var(--mobile-gutter) 8px; }
+  .content-preview .itinerary-example-note p { font-size: 16px; line-height: 1.65; margin-bottom: 16px; }
+  .content-preview .timeline { padding: 0 var(--mobile-gutter); }
+  .content-preview .timeline li, .content-preview .timeline li:last-child { grid-template-columns: 44px minmax(0, 1fr); gap: 12px; padding-block: 20px; }
+  .content-preview .timeline strong { font-size: 16px; line-height: 1.55; }
+  .content-preview .timeline small { margin-top: 10px; font-size: 15px; line-height: 1.65; }
+  .content-preview .timeline strong, .content-preview .timeline small { padding-left: 0; }
+  .content-preview .timeline .itinerary-event-icon { position: static; width: 20px; height: 20px; margin: 0 6px 3px 0; }
+  .content-preview .itinerary-teaser { margin-inline: var(--mobile-gutter); padding: 20px 0; }
+  .content-preview .itinerary-teaser-lines { column-gap: 12px; }
+  .content-preview .itinerary-teaser-lines span { font-size: 18px; line-height: 1.5; }
+  .content-preview .itinerary-teaser p { font-size: 24px; }
+
+  .archive-layout, body:not(.home-page) .stories-intro { width: calc(100% - 2 * var(--mobile-gutter)); }
+  .stories-intro-detail { font-size: 16px; line-height: 1.65; }
+  .archive-back, .back-link, .legal-back { min-height: 44px; font-size: 13px; }
+  .archive-layout .stories-grid { grid-template-columns: 1fr; gap: 32px; }
+  .archive-layout .story-card:nth-child(2), .archive-layout .story-card:nth-child(3) { margin-top: 0; grid-column: auto; }
+  .archive-layout .story-card:nth-child(3) .story-card-link { display: flex; gap: 0; }
+  .archive-layout .story-card .story-card-media,
+  .archive-layout .story-card:nth-child(2) .story-card-media,
+  .archive-layout .story-card:nth-child(3) .story-card-media { min-height: 0; height: auto; aspect-ratio: 16 / 10; border-radius: 10px; }
+  .archive-layout .story-card h3 { font-size: 32px; line-height: 1.1; }
+  .archive-layout .story-card-description { display: block; -webkit-line-clamp: unset; overflow: visible; font-size: 16px; line-height: 1.6; }
+  .archive-layout .story-card-cta { min-height: 44px; padding-top: 10px; font-size: 14px; }
+  .story-card-meta { font-size: 12px; letter-spacing: .06em; }
+  .story-card-meta span::before { margin-right: 6px; }
+  .archive-layout .stories-archive, .archive-layout .tips-archive { padding-bottom: 48px; }
+  .story-card { animation: none; }
+  .article-masthead, .article-body, .story-ending, .article-intro { width: calc(100% - 2 * var(--mobile-gutter)); }
+  .article-masthead { padding-top: 24px; }
+  .masthead-grid { margin-top: 28px; }
+  .masthead-title-wrap h1 { font-size: clamp(46px, 12.5vw, 64px); line-height: 1; }
+  .article-meta { font-size: 12px; letter-spacing: .06em; }
+  .hero-figure img { height: auto; min-height: 0; aspect-ratio: 4 / 3; }
+  .hero-figure figcaption, .chapter-photo figcaption { font-size: 15px; }
+  .article-intro { margin-block: 40px 56px; font-size: 17px; }
+  .article-body { gap: 56px; }
+  .chapter-copy h2 { font-size: clamp(38px, 10vw, 48px); line-height: 1.05; }
+  .chapter-photo-wide img { min-height: 0; }
+  .story-ending { margin-top: 64px; }
+  .travel-note { padding: 24px; }
+  .travel-note p { font-size: 16px; }
+  .share-list button, .share-list a { width: 48px; height: 48px; }
+  .tag-list, .share-list, .story-pagination small, .related-card p { font-size: 12px; }
+  .article-cta { padding: 24px; gap: 24px; }
+  .article-cta > a { font-size: 14px; min-height: 52px; }
+  .masthead-title-wrap, .masthead-summary, .hero-figure { animation: none; }
+  .legal-content { width: calc(100% - 2 * var(--mobile-gutter)); padding: 32px 0 48px; }
+  .legal-content h2 { font-size: 30px; }
+  .legal-date { font-size: 13px; }
+
+  .site-footer-shell, .site-footer-meta { width: calc(100% - 2 * var(--mobile-gutter)); }
+  .site-footer-shell { grid-template-columns: 1fr; gap: 16px; padding: 28px 0 20px; }
+  .site-footer-brand strong { font-size: 28px; }
+  .site-footer-brand span { font-size: 10px; }
+  .site-footer-technical { padding: 16px 0; border-left: 0; border-block: 1px solid var(--footer-line); font-size: 13px; line-height: 1.7; }
+  .site-footer-technical .site-footer-technical-label { font-size: 11px; }
+  .site-footer-contact, .site-footer-legal { grid-column: auto; grid-row: auto; justify-content: flex-start; gap: 4px 20px; }
+  .site-footer-contact { flex-direction: column; align-items: flex-start; }
+  .site-footer-legal { flex-direction: row; }
+  .site-footer-legal a, .site-footer-contact a { display: inline-flex; align-items: center; min-height: 44px; font-size: 14px; letter-spacing: 0; white-space: normal; overflow-wrap: anywhere; }
+  .site-footer-contact svg { width: 18px; height: 18px; flex-basis: 18px; }
+  .site-footer-meta { gap: 16px; font-size: 11px; padding: 12px 0 max(16px, env(safe-area-inset-bottom)); }
+  .site-footer-meta a { display: inline-flex; align-items: center; min-height: 44px; white-space: nowrap; }
+  .back-to-top { width: 44px; min-width: 44px; height: 44px; min-height: 44px; padding: 0; box-shadow: none; }
+  .back-to-top > span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .back-to-top.is-over-contact, .back-to-top.is-over-footer,
+  body:has(.contact-form :focus) .back-to-top,
+  body:has(dialog[open]) .back-to-top { visibility: hidden; pointer-events: none; opacity: 0; }
+}
+
+@media (max-width: 767px) and (max-height: 600px), (hover: none) and (max-width: 950px) and (max-height: 500px) {
+  .site-header .preview-nav { padding-top: calc(var(--mobile-header-height) + 16px); gap: 24px; }
+  .site-header .menu-nav-inner { gap: 8px; }
+  .site-header .menu-nav-inner > a { min-height: 44px; font-size: 30px; }
+}
+
+@media (hover: none) and (max-width: 950px) {
+  .bio-more-button:hover, .site-header .header-cta:hover, .back-to-top:hover,
+  .story-card-link:hover .story-card-media img, .related-card a:hover img { transform: none; }
+  .content-preview { overflow-y: auto; }
+}
+
+@media (max-width: 767px) and (prefers-reduced-motion: reduce) {
+  .contact-needs span, .bio-slide, .contact-slide, .stories-slide { transition: none; }
+}
+
+@media (hover: none) and (min-width: 768px) and (max-width: 950px) and (max-height: 500px) {
+  .panorama-hero-content { padding-top: calc(var(--mobile-header-height) + 12px); padding-bottom: 32px; }
+  .panorama-hero h1 { font-size: 56px; line-height: 1; }
+  .panorama-hero-label { margin-bottom: 12px; }
+  .panorama-hero-description { margin-top: 14px; font-size: 25px; }
+  .panorama-hero-link { margin-top: 18px; }
+}

@@ -10,7 +10,8 @@
   let autoplayTimer;
   let sectionVisible = true;
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const canAutoplay = () => slides.length > 1 && !reducedMotion.matches && !document.hidden && sectionVisible &&
+  const mobile = matchMedia('(max-width: 767px), (hover: none) and (max-width: 950px) and (max-height: 500px)');
+  const canAutoplay = () => slides.length > 1 && !mobile.matches && !reducedMotion.matches && !document.hidden && sectionVisible &&
     !section.matches(':hover, :focus-within') && !document.querySelector('dialog[open], .menu-open');
   function stopAutoplay() {
     clearInterval(autoplayTimer);
@@ -51,6 +52,22 @@
   document.addEventListener('toggle', startAutoplay, true);
   new MutationObserver(startAutoplay).observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
   reducedMotion.addEventListener('change', startAutoplay);
+  mobile.addEventListener('change', startAutoplay);
+  // Horizontal swipes change stories; vertical gestures keep scrolling the page.
+  let start;
+  track.addEventListener('pointerdown', event => {
+    if (event.pointerType !== 'touch') return;
+    start = { x: event.clientX, y: event.clientY, id: event.pointerId };
+  }, { passive: true });
+  track.addEventListener('pointerup', event => {
+    if (!start || start.id !== event.pointerId) return;
+    const dx = event.clientX - start.x, dy = event.clientY - start.y;
+    start = null;
+    if (Math.abs(dx) < 48 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+    show(active + (dx < 0 ? 1 : -1), true);
+    startAutoplay();
+  }, { passive: true });
+  track.addEventListener('pointercancel', () => { start = null; }, { passive: true });
   if ('IntersectionObserver' in window) {
     new IntersectionObserver(([entry]) => {
       sectionVisible = entry.isIntersecting;
