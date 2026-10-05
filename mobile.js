@@ -26,6 +26,20 @@
   const nativeField = form?.querySelector('.mobile-departure-field');
   const nativeDate = form?.querySelector('#mobile-departure-date');
   const date = form?.querySelector('#departure-date');
+  // Keep the phone's native calendar, with a bounded visible field across Safari versions.
+  // The transparent native input covers only this field; its selected date is mirrored below.
+  let dateDisplay;
+  if (nativeField && nativeDate) {
+    const display = document.createElement('div');
+    display.className = 'mobile-date-display';
+    display.setAttribute('aria-hidden', 'true');
+    dateDisplay = document.createElement('span');
+    display.append(dateDisplay);
+    nativeField.append(display);
+  }
+  const syncDateDisplay = () => {
+    if (dateDisplay) dateDisplay.textContent = date.value || nativeDate.getAttribute('aria-label');
+  };
   const radios = [...(form?.querySelectorAll('input[name="servizio"]') || [])];
   let serviceDescription;
   if (radios.length) {
@@ -84,8 +98,8 @@
   if (hero) {
     const down = document.createElement('a');
     down.className = 'mobile-hero-down';
-    down.href = '#servizi';
-    down.setAttribute('aria-label', document.querySelector('#travel-services-title').textContent);
+    down.href = '#chi-sono';
+    down.setAttribute('aria-label', document.querySelector('#bio-title').textContent.trim().replace(/\s+/g, ' '));
     down.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v17m-8-8 8 8 8-8"/></svg>';
     down.hidden = true;
     hero.append(down);
@@ -124,7 +138,7 @@
     // Restore every original node and control position when returning to desktop.
     if (main && mobile.matches !== mobileLayout) {
       if (mobile.matches) {
-        const selectors = ['#home', '#servizi', '#chi-sono', '#bio-dialog', '.consultation-banner', '#blog', '#contatti', '#ispirazioni'];
+        const selectors = ['#home', '#chi-sono', '#bio-dialog', '#servizi', '.consultation-banner', '#blog', '#contatti', '#ispirazioni'];
         main.append(...selectors.map(selector => main.querySelector(selector)).filter(Boolean));
         if (heroControls) hero.append(heroControls);
         if (itineraryControls) itinerary.append(itineraryControls);
@@ -147,11 +161,23 @@
       date.value = selected ? new Intl.DateTimeFormat('it-IT').format(selected) : '';
       document.querySelector('#departure-value').textContent = date.value || 'Quando pensi di partire?';
       form.querySelector('.contact-date-trigger').classList.toggle('has-value', Boolean(selected));
+      syncDateDisplay();
     });
     new MutationObserver(() => {
       const parts = date.value.split('/');
       nativeDate.value = parts.length === 3 ? `${parts[2]}-${parts[1].padStart(2, '0')}-${parts[0].padStart(2, '0')}` : '';
+      syncDateDisplay();
     }).observe(document.querySelector('#departure-value'), { childList: true });
+    form.addEventListener('reset', () => {
+      if (!mobile.matches) return;
+      queueMicrotask(() => {
+        date.value = '';
+        document.querySelector('#departure-value').textContent = nativeDate.getAttribute('aria-label');
+        form.querySelector('.contact-date-trigger').classList.remove('has-value');
+        syncDateDisplay();
+      });
+    });
+    syncDateDisplay();
   }
   mobile.addEventListener('change', syncControls);
   syncControls();
