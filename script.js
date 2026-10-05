@@ -18,6 +18,8 @@
     const card = previewBody?.querySelector('.itinerary-card');
     if (!card) return;
     card.style.zoom = '1';
+    // Phone dialogs scroll at reading size, instead of shrinking their content.
+    if (matchMedia('(max-width: 767px), (hover: none) and (max-width: 950px) and (max-height: 500px)').matches) return;
     const available = Math.min(window.innerHeight, window.visualViewport?.height || window.innerHeight) - 24;
     const naturalHeight = card.getBoundingClientRect().height;
     if (naturalHeight > available) card.style.zoom = String(available / naturalHeight);

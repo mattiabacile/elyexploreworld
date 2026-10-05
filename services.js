@@ -6,7 +6,9 @@
       radio.dispatchEvent(new Event('change', { bubbles: true }));
     }
     requestAnimationFrame(() => {
-      document.getElementById('contatti')?.scrollIntoView({ behavior: 'instant' });
+      const destination = matchMedia('(max-width: 767px), (hover: none) and (max-width: 950px) and (max-height: 500px)').matches
+        ? document.getElementById('contact-form') : document.getElementById('contatti');
+      destination?.scrollIntoView({ block: 'start', behavior: 'instant' });
       document.querySelector('#contact-form input[name="nome"]')?.focus({ preventScroll: true });
     });
   });

@@ -82,7 +82,7 @@
   });
   document.querySelectorAll('[data-image]').forEach((image) => {
     const key = image.dataset.image;
-    image.src = story[key];
+    window.elySetImage(image, story[key]);
     image.alt = key === 'hero' ? story.heroAlt : story[`${key}Caption`];
   });
 
@@ -99,7 +99,7 @@
     link.href = `racconto.html?story=${targetSlug}`;
     link.querySelector(`[data-nav-title="${direction}"]`).textContent = target.destination;
     const image = link.querySelector(`[data-nav-image="${direction}"]`);
-    image.src = target.hero;
+    window.elySetImage(image, target.hero);
     image.alt = '';
   };
   setPagination('previous', previousSlug);
@@ -113,11 +113,12 @@
     card.className = `related-card${current ? ' is-current' : ''}`;
     card.innerHTML = `
       <a href="racconto.html?story=${relatedSlug}"${current ? ' aria-current="page"' : ''}>
-        <img src="${related.hero}" alt="" loading="lazy">
+        <img src="${window.elyImageSource(related.hero)}" alt="" loading="lazy" decoding="async" width="1600" height="900">
         <p>${related.date} · ${related.destination}</p>
         <h3>${related.title.replace(/<[^>]+>/g, '')}</h3>
         <span>${current ? 'Stai leggendo' : 'Leggi il racconto →'}</span>
       </a>`;
+    window.elySetImage(card.querySelector('img'), related.hero);
     relatedHost.append(card);
   });
 
