@@ -89,7 +89,7 @@ const createDB=()=>{
     if(url.endsWith('/graphql')){
       const body=JSON.parse(options.body),operation=parse(body.query).definitions[0];
       return Response.json({data:select(operation.selectionSet,{repository,createCommitOnBranch:({input})=>{
-        for(const file of input.fileChanges.additions||[])if(file.path==='content/stories.json')records=JSON.parse(Buffer.from(file.contents,'base64'));
+        for(const file of input.fileChanges.additions||[])if(file.path==='content/stories.json')records=JSON.parse(Buffer.from(file.contents,'base64'));else sources.set(file.path,Buffer.from(file.contents,'base64'));
         head='b'.repeat(40);return {commit:commit()};
       }},body.variables||{})});
     }
@@ -128,6 +128,27 @@ const createDB=()=>{
     await page.getByRole('button',{name:'Salva',exact:true}).click();
     for(let i=0;i<200&&records[0].title!=='Giappone: accesso diretto verificato';i++)await new Promise(resolve=>setTimeout(resolve,20));
     assert.equal(records[0].title,'Giappone: accesso diretto verificato');
+    assert.deepEqual(errors,[]);
+    await page.waitForTimeout(500);
+    await page.goto('http://localhost:'+server.address().port+'/admin/');
+    await page.getByRole('button',{name:'Crea Nuova Voce',exact:true}).click();
+    await page.getByLabel('Titolo',{exact:true}).fill('Nuovo racconto dal pannello');
+    await page.getByLabel('Destinazione',{exact:true}).fill('Portogallo');
+    await page.getByLabel('Data del racconto',{exact:true}).fill('2026-10-06');
+    await page.getByLabel('Introduzione breve',{exact:true}).fill('Una nuova storia creata dalla cliente.');
+    await page.locator('input[type=file]').first().setInputFiles(path.join(root,records[0].hero));
+    await page.getByText(/^\/assets\/uploads\//).first().waitFor();
+    // Sveltia renders the remaining fields when the editor pane is scrolled.
+    await page.evaluate(()=>{for(const e of document.querySelectorAll('div'))if(['auto','scroll'].includes(getComputedStyle(e).overflowY)&&e.scrollHeight>e.clientHeight)e.scrollTop=e.scrollHeight;});
+    await page.getByLabel('Descrizione della foto',{exact:true}).fill('Una fotografia del viaggio.');
+    await page.locator('[contenteditable=true]').fill('Il testo completo della nuova storia.');
+    await page.getByRole('button',{name:'Salva',exact:true}).click();
+    for(let i=0;i<200&&!records.some(r=>r.title==='Nuovo racconto dal pannello');i++)await new Promise(resolve=>setTimeout(resolve,20));
+    const created=records.find(r=>r.title==='Nuovo racconto dal pannello');
+    assert.ok(created);assert.equal(created.published,false);assert.equal(created.destination,'Portogallo');
+    assert.match(created.id,/^[a-f0-9-]{36}$/);assert.match(created.hero,/^\/assets\/uploads\/.+\.webp$/);
+    assert.ok(sources.has(created.hero.slice(1)));assert.match(created.intro,/testo completo/);
+    console.log('PASS: real Sveltia creates a draft with automatic ID and uploads an optimized cover through the restricted proxy.');
     assert.deepEqual(errors,[]);
     await page.getByRole('button',{name:'Esci dal pannello',exact:true}).click();await page.getByRole('button',{name:'Accedi',exact:true}).waitFor();
     assert.equal(await page.evaluate(()=>localStorage.getItem('sveltia-cms.user')),null);
