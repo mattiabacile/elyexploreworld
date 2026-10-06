@@ -130,8 +130,7 @@
   });
   const mobileCopy = [
     ['.travel-service--full .travel-service-features li:nth-child(3) strong', 'Assistenza e assicurazione'],
-    ['.travel-service--full .travel-service-consultation p', 'Consulenza gratuita di 30m'],
-    ['.stories-read', 'Leggi ']
+    ['.travel-service--full .travel-service-consultation p', 'Consulenza gratuita di 30m']
   ].flatMap(([selector, text]) => [...document.querySelectorAll(selector)].map(element => {
     const node = [...element.childNodes].find(child => child.nodeType === Node.TEXT_NODE && child.nodeValue.trim());
     return node && { node, desktopText: node.nodeValue, mobileText: text };

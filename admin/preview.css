@@ -1,0 +1,13 @@
+@import url('../fonts.css');
+body { margin: 0; background: #f7f3e9; color: #254535; font-family: 'Plus Jakarta Sans', sans-serif; }
+.preview-story { max-width: 780px; padding: 32px; margin: auto; overflow-wrap: anywhere; }
+h1, h2 { font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 400; line-height: 1.1; }
+h1 { font-size: 44px; } h2 { font-size: 30px; }
+p, li { line-height: 1.7; }
+.preview-status { border-bottom: 1px solid #cad1c4; padding-bottom: 12px; font-size: 13px; }
+.preview-meta, figcaption { font-size: 13px; }
+.preview-deck { font-size: 20px; }
+figure { margin: 24px 0; } img { width: 100%; height: auto; border-radius: 16px; }
+section { margin-block: 40px; } a { color: #ad321c; }
+blockquote { margin: 30px 0; padding-left: 20px; border-left: 2px solid #ad321c; font: italic 26px/1.5 Georgia, serif; }
+aside { padding: 20px; background: #e4e9dc; border-radius: 12px; }

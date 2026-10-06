@@ -1,7 +1,25 @@
-(() => {
+(async () => {
   const section = document.getElementById('blog');
   const track = section?.querySelector('.stories-track');
   if (!track) return;
+  let stories;
+  try { stories = (await ElyContent.load()).filter(story => !story.preparing); }
+  catch {
+    ElyContent.status(track, 'Non riesco a caricare i racconti in questo momento.', true);
+    return;
+  }
+  if (!stories.length) {
+    ElyContent.status(track, 'I primi racconti arriveranno presto.');
+    document.documentElement.dataset.contentReady = 'true';
+    return;
+  }
+  const e = ElyContent.escape;
+  track.innerHTML = stories.map((story, index) => `<article id="story-${e(story.id)}" class="stories-slide${index ? '' : ' is-active'}" aria-labelledby="title-${e(story.id)}" data-destination="${e(story.destination)}">
+    <figure class="stories-photo"><img src="${e(ElyContent.image(story.hero))}" data-content-image="${e(ElyContent.image(story.hero))}" alt="${e(story.heroAlt)}" width="1600" height="900" loading="lazy" decoding="async"></figure>
+    <div class="stories-copy"><div class="stories-heading"><time datetime="${e(story.date)}">${ElyContent.date(story.date)}</time><h3 id="title-${e(story.id)}">${e(story.destination)}</h3></div>
+    <p class="stories-deck">${e(story.slideText || story.deck)}</p>
+    <a class="stories-read" href="${ElyContent.href(story)}" data-story="${e(story.id)}">Leggi il racconto <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h17m-7-7 7 7-7 7"/></svg></a></div></article>`).join('');
+  ElyContent.responsive(track);
   const slides = [...track.querySelectorAll('.stories-slide')];
   if (!slides.length) return;
   const controls = section.querySelector('.stories-controls');
@@ -11,6 +29,9 @@
   let sectionVisible = true;
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const mobile = matchMedia('(max-width: 767px), (hover: none) and (max-width: 950px) and (max-height: 500px)');
+  const syncReadLabels = () => section.querySelectorAll('.stories-read').forEach(link => { link.firstChild.nodeValue = mobile.matches ? 'Leggi ' : 'Leggi il racconto '; });
+  mobile.addEventListener('change', syncReadLabels);
+  syncReadLabels();
   const canAutoplay = () => slides.length > 1 && !mobile.matches && !reducedMotion.matches && !document.hidden && sectionVisible &&
     !section.matches(':hover, :focus-within') && !document.querySelector('dialog[open], .menu-open');
   function stopAutoplay() {
@@ -78,4 +99,5 @@
   controls.hidden = slides.length < 2;
   show(0);
   startAutoplay();
+  document.documentElement.dataset.contentReady = 'true';
 })();

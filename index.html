@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="responsive.css?v=9ed8de601d0e">
   <link rel="stylesheet" href="stories.css?v=4409d8c8fd2a">
   <link rel="stylesheet" href="story-refined.css?v=c9ece8f0e68c">
-  <link rel="stylesheet" href="consultation.css?v=e7bbe4083578">
+  <link rel="stylesheet" href="consultation.css?v=860b3d3a1c7e">
   <link rel="stylesheet" href="contact.css?v=c760ee9a6461">
   <link rel="stylesheet" href="navigation.css?v=57dc40a97422">
   <link rel="stylesheet" href="footer.css?v=9deff0197e30">
@@ -23,6 +23,7 @@
   <link rel="stylesheet" href="mobile-mockup.css?v=a73be27d1fe3">
   <link rel="stylesheet" href="service-cards.css?v=49d6e665aca0">
   <link rel="stylesheet" href="contact-background.css?v=0994f1ed19b9">
+  <link rel="stylesheet" href="content.css?v=a24b7b8cc3df">
 </head>
 <body id="top" class="home-page">
 <header id="main-header" class="site-header" aria-label="Navigazione principale">
@@ -291,30 +292,7 @@
         </header>
         <div class="stories-carousel" role="region" aria-roledescription="carosello" aria-label="Destinazioni dei racconti di viaggio">
           <div id="stories-track" class="stories-track" tabindex="0" aria-label="Racconti di viaggio. Usa le frecce della tastiera per cambiare destinazione.">
-            <article id="story-japan" class="stories-slide is-active" aria-labelledby="title-japan" data-destination="Giappone">
-              <figure class="stories-photo"><picture><source media="(max-width: 767px), (hover: none) and (max-width: 950px) and (max-height: 500px)" srcset="assets/mobile/stories/japan-retouched-640.webp 640w, assets/mobile/stories/japan-retouched-960.webp 960w, assets/mobile/stories/japan-retouched-1440.webp 1440w" sizes="100vw"><img src="assets/stories/japan-retouched.webp" alt="Il Monte Fuji oltre il lago, tra ciliegi in fiore e una pagoda rossa" width="1600" height="900" loading="lazy" decoding="async"></picture></figure>
-              <div class="stories-copy">
-                <div class="stories-heading"><time datetime="2026-04-26">26 aprile 2026</time><h3 id="title-japan">Giappone</h3></div>
-                <p class="stories-deck">Templi, natura e tradizioni<br>in perfetto equilibrio.</p>
-                <a class="stories-read" href="racconto.html?story=japan" data-story="japan">Leggi il racconto <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h17m-7-7 7 7-7 7"/></svg></a>
-              </div>
-            </article>
-            <article id="story-bali" class="stories-slide" aria-labelledby="title-bali" data-destination="Bali">
-              <figure class="stories-photo"><picture><source media="(max-width: 767px), (hover: none) and (max-width: 950px) and (max-height: 500px)" srcset="assets/mobile/stories/bali-retouched-640.webp 640w, assets/mobile/stories/bali-retouched-960.webp 960w, assets/mobile/stories/bali-retouched-1440.webp 1440w" sizes="100vw"><img src="assets/stories/bali-retouched.webp" alt="Tempio balinese sul lago Beratan, tra montagne e luce del mattino" width="1600" height="900" loading="lazy" decoding="async"></picture></figure>
-              <div class="stories-copy">
-                <div class="stories-heading"><span class="stories-date">Racconti di viaggio</span><h3 id="title-bali">Bali</h3></div>
-                <p class="stories-deck">La mia seconda casa.</p>
-                <a class="stories-read" href="racconto.html?story=bali" data-story="bali">Leggi il racconto <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h17m-7-7 7 7-7 7"/></svg></a>
-              </div>
-            </article>
-            <article id="story-singapore" class="stories-slide" aria-labelledby="title-singapore" data-destination="Singapore">
-              <figure class="stories-photo"><picture><source media="(max-width: 767px), (hover: none) and (max-width: 950px) and (max-height: 500px)" srcset="assets/mobile/stories/singapore-retouched-640.webp 640w, assets/mobile/stories/singapore-retouched-960.webp 960w, assets/mobile/stories/singapore-retouched-1440.webp 1440w" sizes="100vw"><img src="assets/stories/singapore-retouched.webp" alt="Veduta di Marina Bay a Singapore, con la baia e lo skyline" width="1600" height="900" loading="lazy" decoding="async"></picture></figure>
-              <div class="stories-copy">
-                <div class="stories-heading"><span class="stories-date">Racconti di viaggio</span><h3 id="title-singapore">Singapore</h3></div>
-                <p class="stories-deck">Un mondo in una città.</p>
-                <a class="stories-read" href="racconto.html?story=singapore" data-story="singapore">Leggi il racconto <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h17m-7-7 7 7-7 7"/></svg></a>
-              </div>
-            </article>
+            <p class="content-status" role="status">Caricamento dei racconti…</p>
           </div>
           <div class="stories-controls" hidden>
             <button class="stories-arrow stories-prev" type="button" aria-label="Racconto precedente" aria-controls="stories-track"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h17m-7-7 7 7-7 7"/></svg></button>
@@ -425,13 +403,14 @@
     <button class="preview-close" type="button" aria-label="Chiudi anteprima">×</button>
     <div class="content-preview-body"></div>
   </dialog>
-  <script src="mobile.js?v=677e46d9bb7b" defer></script>
-  <script src="home-mobile.js?v=264a36764049" defer></script>
+  <script src="content.js?v=ab0b0ad87b9b" defer></script>
+  <script src="mobile.js?v=ee11b21120e1" defer></script>
+  <script src="home-mobile.js?v=7582294b4447" defer></script>
   <script src="footer.js?v=ef66813fd206" defer></script>
   <script src="navigation.js?v=9540f8848ee4" defer></script>
   <script src="contact-background.js?v=0b30348a8806" defer></script>
   <script src="script.js?v=d4946e2f9175" defer></script>
-  <script src="stories.js?v=11adfa950c1d" defer></script>
+  <script src="stories.js?v=13508d804488" defer></script>
   <script src="panorama-slideshow.js?v=b50ee2855655" defer></script>
 </body>
 </html>

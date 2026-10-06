@@ -1,0 +1,307 @@
+{
+  "$schema": "https://unpkg.com/@sveltia/cms@0.229.0/schema/sveltia-cms.json",
+  "app_title": "ElyExploreWorld · Racconti",
+  "backend": {
+    "name": "github",
+    "repo": "mattiabacile/elyexploreworld",
+    "branch": "main",
+    "base_url": "https://elyexploreworld.pages.dev",
+    "auth_endpoint": "auth",
+    "auth_scope": "public_repo",
+    "auth_methods": [
+      "oauth",
+      "token"
+    ],
+    "commit_messages": {
+      "create": "Nuovo racconto: {{slug}}",
+      "update": "Aggiorna racconto: {{slug}}",
+      "delete": "Rimuovi racconto: {{slug}}",
+      "uploadMedia": "Aggiungi foto: {{path}}",
+      "deleteMedia": "Rimuovi foto: {{path}}"
+    }
+  },
+  "site_url": "https://elyexploreworld.pages.dev",
+  "display_url": "https://elyexploreworld.pages.dev",
+  "publish_mode": "simple",
+  "media_folder": "assets/uploads",
+  "public_folder": "/assets/uploads",
+  "show_preview_links": true,
+  "media_libraries": {
+    "default": {
+      "config": {
+        "max_file_size": 25000000,
+        "slugify_filename": true,
+        "filename_template": "{{slug}}-{{uuid_short}}",
+        "transformations": {
+          "raster_image": {
+            "format": "webp",
+            "quality": 88,
+            "width": 2400,
+            "height": 2400
+          }
+        }
+      }
+    }
+  },
+  "collections": [
+    {
+      "name": "racconti",
+      "label": "Racconti e consigli",
+      "label_singular": "Racconto",
+      "description": "Gestisci racconti e consigli di viaggio. I contenuti visibili e pronti compaiono nell’archivio e nello slideshow della homepage.",
+      "file": "content/stories.json",
+      "format": "json",
+      "create": true,
+      "delete": true,
+      "duplicate": false,
+      "identifier_field": "title",
+      "summary": "{{title}} · {{destination}}",
+      "thumbnail": "hero",
+      "sortable_fields": [
+        "date",
+        "title",
+        "destination",
+        "published"
+      ],
+      "preview_path": "racconto.html?story={{fields.id}}",
+      "fields": [
+        {
+          "name": "title",
+          "label": "Titolo",
+          "widget": "string",
+          "maxlength": 180
+        },
+        {
+          "name": "kind",
+          "label": "Tipo di contenuto",
+          "widget": "select",
+          "default": "racconto",
+          "options": [
+            {
+              "label": "Racconto di viaggio",
+              "value": "racconto"
+            },
+            {
+              "label": "Consiglio di viaggio",
+              "value": "consiglio"
+            }
+          ]
+        },
+        {
+          "name": "published",
+          "label": "Visibile sul sito",
+          "widget": "boolean",
+          "default": false,
+          "hint": "Attiva quando il racconto è pronto. Dopo il salvataggio apparirà in Tutti i racconti e nello slideshow della homepage."
+        },
+        {
+          "name": "preparing",
+          "label": "Mostra solo l’anteprima: articolo in preparazione",
+          "widget": "boolean",
+          "default": false,
+          "hint": "Solo per i consigli: mostra la scheda senza il pulsante di lettura. Disattiva quando il testo è pronto."
+        },
+        {
+          "name": "date",
+          "label": "Data del racconto",
+          "widget": "datetime",
+          "type": "date",
+          "format": "YYYY-MM-DD",
+          "date_format": "DD/MM/YYYY",
+          "time_format": false,
+          "hint": "I racconti sono ordinati dal più recente. La data non programma una pubblicazione futura."
+        },
+        {
+          "name": "destination",
+          "label": "Destinazione",
+          "widget": "string",
+          "maxlength": 70,
+          "hint": "Esempio: Bali. È il titolo breve della diapositiva in homepage."
+        },
+        {
+          "name": "category",
+          "label": "Categoria",
+          "widget": "string",
+          "required": false,
+          "hint": "Esempio: Natura e cultura."
+        },
+        {
+          "name": "deck",
+          "label": "Introduzione breve",
+          "widget": "text",
+          "hint": "Compare nella scheda dell’archivio e sotto il titolo del racconto."
+        },
+        {
+          "name": "slideText",
+          "label": "Testo breve dello slideshow",
+          "widget": "text",
+          "required": false,
+          "hint": "Una o due frasi brevi. Se vuoto, viene usata l’introduzione breve."
+        },
+        {
+          "name": "hero",
+          "label": "Foto di copertina",
+          "widget": "image",
+          "choose_url": false,
+          "accept": "image/jpeg,image/png,image/webp,image/avif,image/heic",
+          "hint": "Preferisci una foto orizzontale. Verrà ottimizzata per il web durante il caricamento."
+        },
+        {
+          "name": "heroAlt",
+          "label": "Descrizione della foto",
+          "widget": "string",
+          "hint": "Descrivi cosa si vede: aiuta chi utilizza un lettore dello schermo."
+        },
+        {
+          "name": "heroCaption",
+          "label": "Didascalia della copertina",
+          "widget": "string",
+          "required": false
+        },
+        {
+          "name": "intro",
+          "label": "Apertura del racconto",
+          "widget": "richtext",
+          "modes": [
+            "rich_text"
+          ],
+          "buttons": [
+            "bold",
+            "italic",
+            "link",
+            "heading-two",
+            "heading-three",
+            "bulleted-list",
+            "numbered-list",
+            "quote"
+          ],
+          "editor_components": [
+            "image"
+          ],
+          "hint": "Scrivi liberamente, aggiungendo paragrafi, grassetto, link e immagini."
+        },
+        {
+          "name": "chapters",
+          "label": "Capitoli",
+          "widget": "list",
+          "required": false,
+          "collapsed": true,
+          "summary": "{{fields.title}}",
+          "label_singular": "Capitolo",
+          "hint": "Aggiungi tutti i capitoli che desideri e trascinali per cambiarne l’ordine.",
+          "fields": [
+            {
+              "name": "title",
+              "label": "Titolo del capitolo",
+              "widget": "string"
+            },
+            {
+              "name": "body",
+              "label": "Testo del capitolo",
+              "widget": "richtext",
+              "modes": [
+                "rich_text"
+              ],
+              "buttons": [
+                "bold",
+                "italic",
+                "link",
+                "heading-two",
+                "heading-three",
+                "bulleted-list",
+                "numbered-list",
+                "quote"
+              ],
+              "editor_components": [
+                "image"
+              ]
+            },
+            {
+              "name": "image",
+              "label": "Foto del capitolo",
+              "widget": "image",
+              "choose_url": false,
+              "accept": "image/jpeg,image/png,image/webp,image/avif,image/heic",
+              "required": false
+            },
+            {
+              "name": "imageAlt",
+              "label": "Descrizione della foto",
+              "widget": "string",
+              "required": false
+            },
+            {
+              "name": "caption",
+              "label": "Didascalia",
+              "widget": "string",
+              "required": false
+            },
+            {
+              "name": "quote",
+              "label": "Citazione",
+              "widget": "text",
+              "required": false
+            },
+            {
+              "name": "note",
+              "label": "Consiglio pratico: Da sapere",
+              "widget": "richtext",
+              "modes": [
+                "rich_text"
+              ],
+              "buttons": [
+                "bold",
+                "italic",
+                "link",
+                "heading-two",
+                "heading-three",
+                "bulleted-list",
+                "numbered-list",
+                "quote"
+              ],
+              "editor_components": [
+                "image"
+              ],
+              "required": false
+            }
+          ]
+        },
+        {
+          "name": "tags",
+          "label": "Tag",
+          "widget": "list",
+          "required": false,
+          "hint": "Esempio: Bali, Indonesia, Natura.",
+          "field": {
+            "name": "tag",
+            "label": "Tag",
+            "widget": "string"
+          }
+        },
+        {
+          "name": "titleAccent",
+          "label": "Parola del titolo in corsivo",
+          "widget": "string",
+          "required": false,
+          "hint": "Facoltativo: scrivi una parola o una frase già presente nel titolo."
+        },
+        {
+          "name": "id",
+          "label": "Identificativo del racconto",
+          "widget": "uuid",
+          "hint": "Generato automaticamente: mantiene stabile il collegamento al racconto.",
+          "preview": false
+        }
+      ]
+    }
+  ],
+  "asset_collections": [
+    {
+      "name": "foto-esistenti",
+      "label": "Foto già presenti nel sito",
+      "media_folder": "assets/stories",
+      "public_folder": "/assets/stories",
+      "readonly": true
+    }
+  ]
+}

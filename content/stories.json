@@ -1,0 +1,212 @@
+[
+  {
+    "id": "japan",
+    "published": true,
+    "title": "Giappone: tra templi, natura e tradizioni",
+    "titleAccent": "tradizioni",
+    "destination": "Giappone",
+    "category": "Paesaggi e cultura",
+    "date": "2026-04-26",
+    "deck": "Un viaggio tra città luminose, paesaggi silenziosi e gesti antichi che continuano a sorprendere.",
+    "slideText": "Templi, natura e tradizioni\nin perfetto equilibrio.",
+    "hero": "assets/stories/japan-retouched.webp",
+    "heroAlt": "Monte Fuji oltre un lago, incorniciato dai ciliegi in fiore e da una pagoda rossa",
+    "heroCaption": "Il profilo del Monte Fuji al tramonto.",
+    "intro": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus faucibus, sapien vel tincidunt posuere, augue lorem consequat arcu, vitae fermentum sem justo sed neque.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
+    "chapters": [
+      {
+        "title": "Il ritmo quieto dei templi",
+        "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.",
+        "image": "assets/stories/japan-detail-retouched.webp",
+        "imageAlt": "Il Giappone tra natura e architettura.",
+        "caption": "Il Giappone tra natura e architettura.",
+        "quote": "",
+        "note": ""
+      },
+      {
+        "title": "Paesaggi che cambiano voce",
+        "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+        "image": "assets/stories/japan-retouched.webp",
+        "imageAlt": "Il paesaggio si fa quieto lontano dalla città.",
+        "caption": "Il paesaggio si fa quieto lontano dalla città.",
+        "quote": "“Ogni dettaglio invita a rallentare, osservare e lasciarsi sorprendere.”",
+        "note": ""
+      },
+      {
+        "title": "Gesti, sapori e tradizioni",
+        "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Integer vitae justo eget magna fermentum iaculis.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.",
+        "image": "assets/stories/japan-detail-retouched.webp",
+        "imageAlt": "Tradizioni che convivono con il presente.",
+        "caption": "Tradizioni che convivono con il presente.",
+        "quote": "",
+        "note": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+      }
+    ],
+    "tags": [
+      "Giappone",
+      "Asia",
+      "Cultura",
+      "Natura",
+      "Tradizioni"
+    ],
+    "kind": "racconto"
+  },
+  {
+    "id": "bali",
+    "published": true,
+    "title": "Bali: l’isola che sa di casa",
+    "titleAccent": "casa",
+    "destination": "Bali",
+    "category": "Isole e spiritualità",
+    "date": "2026-03-18",
+    "deck": "Templi sull’acqua, risaie e incontri: un’isola da vivere seguendo un ritmo più gentile.",
+    "slideText": "La mia seconda casa.",
+    "hero": "assets/stories/bali-retouched.webp",
+    "heroAlt": "Tempio balinese sul lago Beratan tra montagne e luce del mattino",
+    "heroCaption": "Il tempio di Ulun Danu Beratan al mattino.",
+    "intro": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus faucibus, sapien vel tincidunt posuere, augue lorem consequat arcu, vitae fermentum sem justo sed neque.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
+    "chapters": [
+      {
+        "title": "L’acqua e i templi",
+        "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.",
+        "image": "assets/stories/bali-detail-retouched.webp",
+        "imageAlt": "Acqua, pietra e vegetazione nel cuore dell’isola.",
+        "caption": "Acqua, pietra e vegetazione nel cuore dell’isola.",
+        "quote": "",
+        "note": ""
+      },
+      {
+        "title": "Dentro il verde dell’isola",
+        "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+        "image": "assets/hero-river-retouched.webp",
+        "imageAlt": "La natura accompagna ogni spostamento.",
+        "caption": "La natura accompagna ogni spostamento.",
+        "quote": "“Bali non chiede di essere visitata in fretta: invita a trovare il proprio ritmo.”",
+        "note": ""
+      },
+      {
+        "title": "Il tempo delle piccole cose",
+        "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Integer vitae justo eget magna fermentum iaculis.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.",
+        "image": "assets/hero-temple-retouched.webp",
+        "imageAlt": "Un tempio custodito dal giardino tropicale.",
+        "caption": "Un tempio custodito dal giardino tropicale.",
+        "quote": "",
+        "note": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+      }
+    ],
+    "tags": [
+      "Bali",
+      "Indonesia",
+      "Templi",
+      "Natura",
+      "Spiritualità"
+    ],
+    "kind": "racconto"
+  },
+  {
+    "id": "singapore",
+    "published": true,
+    "title": "Singapore: un mondo in una città",
+    "titleAccent": "città",
+    "destination": "Singapore",
+    "category": "Città e contrasti",
+    "date": "2026-01-05",
+    "deck": "Quartieri, giardini e architetture si incontrano in una città sorprendentemente verde.",
+    "slideText": "Un mondo in una città.",
+    "hero": "assets/stories/singapore-retouched.webp",
+    "heroAlt": "Veduta di Marina Bay a Singapore con la baia e lo skyline",
+    "heroCaption": "Marina Bay e il profilo contemporaneo della città.",
+    "intro": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus faucibus, sapien vel tincidunt posuere, augue lorem consequat arcu, vitae fermentum sem justo sed neque.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
+    "chapters": [
+      {
+        "title": "Una città sull’acqua",
+        "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.",
+        "image": "assets/stories/singapore-retouched.webp",
+        "imageAlt": "La città si riflette sull’acqua della baia.",
+        "caption": "La città si riflette sull’acqua della baia.",
+        "quote": "",
+        "note": ""
+      },
+      {
+        "title": "Giardini dentro la metropoli",
+        "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+        "image": "assets/hero-river-retouched.webp",
+        "imageAlt": "Il lato tropicale della città.",
+        "caption": "Il lato tropicale della città.",
+        "quote": "“Qui il futuro non cancella la natura: le lascia spazio tra una strada e l’altra.”",
+        "note": ""
+      },
+      {
+        "title": "Quartieri, cucine e incontri",
+        "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Integer vitae justo eget magna fermentum iaculis.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.",
+        "image": "assets/stories/singapore-retouched.webp",
+        "imageAlt": "Architetture e quartieri da esplorare a piedi.",
+        "caption": "Architetture e quartieri da esplorare a piedi.",
+        "quote": "",
+        "note": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+      }
+    ],
+    "tags": [
+      "Singapore",
+      "Asia",
+      "Città",
+      "Architettura",
+      "Natura"
+    ],
+    "kind": "racconto"
+  },
+  {
+    "id": "valigia-giusta",
+    "kind": "consiglio",
+    "published": true,
+    "preparing": true,
+    "date": "2026-10-06",
+    "title": "La valigia giusta, senza portare troppo",
+    "destination": "Prima di partire",
+    "category": "Prima di partire",
+    "deck": "Una guida essenziale per scegliere cosa serve davvero e lasciare spazio alle esperienze.",
+    "slideText": "Una guida essenziale per scegliere cosa serve davvero e lasciare spazio alle esperienze.",
+    "hero": "assets/tips/packing-retouched.webp",
+    "heroAlt": "Valigia aperta con abiti, cappello e accessori da viaggio",
+    "heroCaption": "",
+    "intro": "Una guida essenziale per scegliere cosa serve davvero e lasciare spazio alle esperienze.",
+    "chapters": [],
+    "tags": []
+  },
+  {
+    "id": "itinerario-scoperta",
+    "kind": "consiglio",
+    "published": true,
+    "preparing": true,
+    "date": "2026-10-06",
+    "title": "Un itinerario che lascia spazio alla scoperta",
+    "destination": "Organizzazione",
+    "category": "Organizzazione",
+    "deck": "Come trovare il ritmo giusto tra tappe programmate e tempo libero.",
+    "slideText": "Come trovare il ritmo giusto tra tappe programmate e tempo libero.",
+    "hero": "assets/tips/planning-retouched.webp",
+    "heroAlt": "Mappa del mondo aperta con fotocamera e strumenti per pianificare un viaggio",
+    "heroCaption": "",
+    "intro": "Come trovare il ritmo giusto tra tappe programmate e tempo libero.",
+    "chapters": [],
+    "tags": []
+  },
+  {
+    "id": "mercati-locali",
+    "kind": "consiglio",
+    "published": true,
+    "preparing": true,
+    "date": "2026-10-06",
+    "title": "Mercati locali: entrare con curiosità e rispetto",
+    "destination": "Bali",
+    "category": "Sul posto · Bali",
+    "deck": "Piccoli gesti per vivere un luogo quotidiano senza sentirsi soltanto di passaggio.",
+    "slideText": "Piccoli gesti per vivere un luogo quotidiano senza sentirsi soltanto di passaggio.",
+    "hero": "assets/tips/bali-market-retouched.webp",
+    "heroAlt": "Banco di frutta e verdura in un mercato tradizionale di Denpasar, Bali",
+    "heroCaption": "",
+    "intro": "Piccoli gesti per vivere un luogo quotidiano senza sentirsi soltanto di passaggio.",
+    "chapters": [],
+    "tags": []
+  }
+]

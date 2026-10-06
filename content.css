@@ -1,0 +1,20 @@
+/* Rich content keeps the site's existing typography and chapter layouts. */
+.content-status { grid-column: 1 / -1; padding: 2rem; text-align: center; line-height: 1.6; }
+.content-status button { min-height: 44px; padding: .5rem 1rem; font: inherit; cursor: pointer; }
+.content-status a { color: inherit; text-decoration: underline; }
+[hidden] { display: none !important; }
+.stories-heading h3, .story-card h3, .masthead-title-wrap h1 { overflow-wrap: anywhere; }
+.stories-deck { white-space: pre-line; }
+.chapter-copy img, .article-intro img { max-width: 100%; height: auto; border-radius: 16px; }
+.chapter-copy a, .article-intro a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+.chapter-copy ul, .chapter-copy ol, .article-intro ul, .article-intro ol { padding-left: 1.5em; line-height: 1.7; }
+.chapter-copy li + li { margin-top: .4em; }
+.chapter-copy pre, .article-intro pre { overflow-x: auto; white-space: pre-wrap; overflow-wrap: anywhere; }
+.chapter-copy table, .article-intro table { display: block; max-width: 100%; overflow-x: auto; }
+.chapter-copy th, .chapter-copy td { padding: .5em; }
+.chapter:not(:has(.chapter-photo)) { display: block; }
+.chapter:not(:has(.chapter-photo)) .chapter-copy { max-width: 780px; margin-inline: auto; }
+.article-intro:empty { display: none; }
+.hero-figure figcaption:empty { display: none; }
+.article-intro > p:first-child::first-letter { float: left; margin: .06em .12em 0 0; color: var(--accent, #ad321c); font: 400 3.8em/.8 var(--display, "Cormorant Garamond", Georgia, serif); }
+.chapter, .chapter-copy, .article-intro { overflow-wrap: anywhere; }

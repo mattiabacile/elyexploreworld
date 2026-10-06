@@ -1,127 +1,71 @@
-(() => {
-  const stories = {
-    japan: {
-      destination: 'Giappone',
-      category: 'Paesaggi e cultura',
-      title: 'Giappone: tra templi, natura e <em>tradizioni</em>',
-      deck: 'Un viaggio tra città luminose, paesaggi silenziosi e gesti antichi che continuano a sorprendere.',
-      date: '26 aprile 2026',
-      hero: 'assets/stories/japan-retouched.webp',
-      heroAlt: 'Monte Fuji oltre un lago, incorniciato dai ciliegi in fiore e da una pagoda rossa',
-      heroCaption: 'Il profilo del Monte Fuji al tramonto.',
-      detail1: 'assets/stories/japan-detail-retouched.webp',
-      detail1Caption: 'Il Giappone tra natura e architettura.',
-      detail2: 'assets/stories/japan-retouched.webp',
-      detail2Caption: 'Il paesaggio si fa quieto lontano dalla città.',
-      detail3: 'assets/stories/japan-detail-retouched.webp',
-      detail3Caption: 'Tradizioni che convivono con il presente.',
-      chapter1: 'Il ritmo quieto dei templi',
-      chapter2: 'Paesaggi che cambiano voce',
-      chapter3: 'Gesti, sapori e tradizioni',
-      quote: '“Ogni dettaglio invita a rallentare, osservare e lasciarsi sorprendere.”',
-      tags: ['Giappone', 'Asia', 'Cultura', 'Natura', 'Tradizioni']
-    },
-    bali: {
-      destination: 'Bali',
-      category: 'Isole e spiritualità',
-      title: 'Bali: l’isola che sa di <em>casa</em>',
-      deck: 'Templi sull’acqua, risaie e incontri: un’isola da vivere seguendo un ritmo più gentile.',
-      date: '18 marzo 2026',
-      hero: 'assets/stories/bali-retouched.webp',
-      heroAlt: 'Tempio balinese sul lago Beratan tra montagne e luce del mattino',
-      heroCaption: 'Il tempio di Ulun Danu Beratan al mattino.',
-      detail1: 'assets/stories/bali-detail-retouched.webp',
-      detail1Caption: 'Acqua, pietra e vegetazione nel cuore dell’isola.',
-      detail2: 'assets/hero-river-retouched.webp',
-      detail2Caption: 'La natura accompagna ogni spostamento.',
-      detail3: 'assets/hero-temple-retouched.webp',
-      detail3Caption: 'Un tempio custodito dal giardino tropicale.',
-      chapter1: 'L’acqua e i templi',
-      chapter2: 'Dentro il verde dell’isola',
-      chapter3: 'Il tempo delle piccole cose',
-      quote: '“Bali non chiede di essere visitata in fretta: invita a trovare il proprio ritmo.”',
-      tags: ['Bali', 'Indonesia', 'Templi', 'Natura', 'Spiritualità']
-    },
-    singapore: {
-      destination: 'Singapore',
-      category: 'Città e contrasti',
-      title: 'Singapore: un mondo in una <em>città</em>',
-      deck: 'Quartieri, giardini e architetture si incontrano in una città sorprendentemente verde.',
-      date: '5 gennaio 2026',
-      hero: 'assets/stories/singapore-retouched.webp',
-      heroAlt: 'Veduta di Marina Bay a Singapore con la baia e lo skyline',
-      heroCaption: 'Marina Bay e il profilo contemporaneo della città.',
-      detail1: 'assets/stories/singapore-retouched.webp',
-      detail1Caption: 'La città si riflette sull’acqua della baia.',
-      detail2: 'assets/hero-river-retouched.webp',
-      detail2Caption: 'Il lato tropicale della città.',
-      detail3: 'assets/stories/singapore-retouched.webp',
-      detail3Caption: 'Architetture e quartieri da esplorare a piedi.',
-      chapter1: 'Una città sull’acqua',
-      chapter2: 'Giardini dentro la metropoli',
-      chapter3: 'Quartieri, cucine e incontri',
-      quote: '“Qui il futuro non cancella la natura: le lascia spazio tra una strada e l’altra.”',
-      tags: ['Singapore', 'Asia', 'Città', 'Architettura', 'Natura']
-    }
+(async () => {
+  const article = document.querySelector('#racconto > article');
+  const statusHost = document.querySelector('[data-content-state]');
+  const c = ElyContent;
+  const unavailable = (message, retry = false) => {
+    document.title = 'Racconto non disponibile — ElyExploreWorld';
+    document.documentElement.dataset.story = 'not-found';
+    c.status(statusHost, message, retry);
+    const link = document.createElement('a');
+    link.href = 'racconti.html'; link.textContent = 'Vai a tutti i racconti';
+    statusHost.append(link);
+    document.documentElement.dataset.contentReady = 'true';
   };
-
-  const order = ['japan', 'bali', 'singapore'];
-  const params = new URLSearchParams(location.search);
-  const slug = Object.hasOwn(stories, params.get('story')) ? params.get('story') : 'japan';
-  const story = stories[slug];
-  const currentIndex = order.indexOf(slug);
-  const previousSlug = order[(currentIndex - 1 + order.length) % order.length];
-  const nextSlug = order[(currentIndex + 1) % order.length];
-
-  document.documentElement.dataset.story = slug;
-  document.title = `${story.destination} — Racconti di viaggio | ElyExploreWorld`;
-  document.querySelectorAll('[data-field]').forEach((node) => {
-    const key = node.dataset.field;
-    if (key === 'title') node.innerHTML = story[key];
-    else node.textContent = story[key] || '';
+  let stories;
+  try { stories = (await c.load()).filter(story => !story.preparing); }
+  catch { unavailable('Non riesco a caricare il racconto in questo momento.', true); return; }
+  const requested = new URLSearchParams(location.search).get('story');
+  const story = requested ? stories.find(item => item.id === requested) : stories[0];
+  if (!story) { unavailable('Questo racconto non è disponibile. Scopri gli altri viaggi nell’archivio.'); return; }
+  const chapters = Array.isArray(story.chapters) ? story.chapters : [];
+  const words = [story.intro, ...chapters.map(chapter => chapter.body)].join(' ').split(/\s+/).filter(Boolean).length;
+  const view = { ...story, date: c.date(story.date), readingTime: `${Math.max(1, Math.ceil(words / 200))} min di lettura` };
+  document.documentElement.dataset.story = story.id;
+  document.title = `${story.title} — ElyExploreWorld`;
+  document.querySelector('meta[name="description"]').content = story.deck || story.title;
+  document.querySelectorAll('[data-field]').forEach(node => {
+    if (node.dataset.field === 'title') node.innerHTML = c.title(story);
+    else node.textContent = view[node.dataset.field] || '';
   });
-  document.querySelectorAll('[data-image]').forEach((image) => {
-    const key = image.dataset.image;
-    window.elySetImage(image, story[key]);
-    image.alt = key === 'hero' ? story.heroAlt : story[`${key}Caption`];
-  });
-
+  const hero = document.querySelector('[data-image="hero"]');
+  window.elySetImage(hero, c.image(story.hero));
+  hero.alt = story.heroAlt || '';
+  document.querySelector('[data-content="intro"]').innerHTML = c.markdown(story.intro);
+  const host = document.querySelector('[data-content="chapters"]');
+  host.innerHTML = chapters.filter(item => item && typeof item === 'object').map((chapter, index) => {
+    const layout = ['opening', 'landscape', 'closing'][index % 3];
+    const photo = c.image(chapter.image);
+    const figure = photo ? `<figure class="chapter-photo chapter-photo-${['tall', 'wide', 'square'][index % 3]}"><img src="${c.escape(photo)}" data-content-image="${c.escape(photo)}" alt="${c.escape(chapter.imageAlt || chapter.caption || '')}" loading="lazy" width="1600" height="900" decoding="async">${chapter.caption ? `<figcaption>${c.escape(chapter.caption)}</figcaption>` : ''}</figure>` : '';
+    const copy = `<div class="chapter-copy"><h2 id="chapter-${index + 1}-title">${c.escape(chapter.title)}</h2>${c.markdown(chapter.body)}${chapter.note ? `<aside class="travel-note"><span>Da sapere</span>${c.markdown(chapter.note)}</aside>` : ''}</div>`;
+    return `<section class="chapter chapter-${layout}" aria-labelledby="chapter-${index + 1}-title">${layout === 'closing' ? figure + copy : copy + figure}${chapter.quote ? `<blockquote>${c.escape(chapter.quote)}</blockquote>` : ''}</section>`;
+  }).join('');
+  c.responsive(host);
   const tagHost = document.querySelector('[data-list="tags"]');
-  story.tags.forEach((tag) => {
-    const span = document.createElement('span');
-    span.textContent = tag;
-    tagHost.append(span);
+  (Array.isArray(story.tags) ? story.tags : []).forEach(tag => {
+    const node = document.createElement('span'); node.textContent = tag; tagHost.append(node);
   });
-
-  const setPagination = (direction, targetSlug) => {
-    const target = stories[targetSlug];
+  document.querySelector('.tag-list').hidden = !tagHost.children.length;
+  const currentIndex = stories.indexOf(story);
+  for (const [direction, offset] of [['previous', -1], ['next', 1]]) {
+    const target = stories[(currentIndex + offset + stories.length) % stories.length];
     const link = document.querySelector(`[data-nav="${direction}"]`);
-    link.href = `racconto.html?story=${targetSlug}`;
+    link.href = c.href(target);
     link.querySelector(`[data-nav-title="${direction}"]`).textContent = target.destination;
-    const image = link.querySelector(`[data-nav-image="${direction}"]`);
-    window.elySetImage(image, target.hero);
-    image.alt = '';
-  };
-  setPagination('previous', previousSlug);
-  setPagination('next', nextSlug);
-
+    window.elySetImage(link.querySelector('img'), c.image(target.hero));
+  }
+  document.querySelector('.story-pagination').hidden = stories.length < 2;
   const relatedHost = document.querySelector('[data-list="related"]');
-  order.forEach((relatedSlug) => {
-    const related = stories[relatedSlug];
+  stories.slice(0, 3).forEach(related => {
+    const current = related.id === story.id;
     const card = document.createElement('article');
-    const current = relatedSlug === slug;
     card.className = `related-card${current ? ' is-current' : ''}`;
-    card.innerHTML = `
-      <a href="racconto.html?story=${relatedSlug}"${current ? ' aria-current="page"' : ''}>
-        <img src="${window.elyImageSource(related.hero)}" alt="" loading="lazy" decoding="async" width="1600" height="900">
-        <p>${related.date} · ${related.destination}</p>
-        <h3>${related.title.replace(/<[^>]+>/g, '')}</h3>
-        <span>${current ? 'Stai leggendo' : 'Leggi il racconto →'}</span>
-      </a>`;
-    window.elySetImage(card.querySelector('img'), related.hero);
+    card.innerHTML = `<a href="${c.href(related)}"${current ? ' aria-current="page"' : ''}><img src="${c.escape(c.image(related.hero))}" data-content-image="${c.escape(c.image(related.hero))}" alt="" loading="lazy" decoding="async" width="1600" height="900"><p>${c.date(related.date)} · ${c.escape(related.destination)}</p><h3>${c.escape(related.title)}</h3><span>${current ? 'Stai leggendo' : 'Leggi il racconto →'}</span></a>`;
     relatedHost.append(card);
   });
-
+  c.responsive(relatedHost);
+  article.hidden = false;
+  statusHost.remove();
+  document.documentElement.dataset.contentReady = 'true';
   const shareUrl = encodeURIComponent(location.href);
   document.querySelector('[data-share-link="facebook"]').href = `https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`;
   const status = document.querySelector('.copy-status');

@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="footer.css?v=9deff0197e30">
   <link rel="stylesheet" href="mobile.css?v=df338cfae62b">
   <link rel="stylesheet" href="mobile-mockup.css?v=a73be27d1fe3">
+  <link rel="stylesheet" href="content.css?v=a24b7b8cc3df">
 </head>
 <body id="top">
   <a class="skip-link" href="#racconto">Vai al racconto</a>
@@ -53,7 +54,8 @@
 
   <main id="racconto">
     <noscript><p>Per visualizzare il racconto, attiva JavaScript nel browser. Puoi anche <a href="racconti.html">tornare a tutti i racconti</a>.</p></noscript>
-    <article>
+    <div data-content-state><p class="content-status" role="status">Caricamento del racconto…</p></div>
+    <article hidden>
       <header class="article-masthead">
         <a class="back-link" href="index.html#blog"><span aria-hidden="true">←</span> Torna ai racconti</a>
         <div class="masthead-grid">
@@ -62,7 +64,7 @@
           </div>
           <div class="masthead-summary">
             <p class="article-deck" data-field="deck"></p>
-            <p class="article-meta"><span data-field="category"></span><i></i><span data-field="date"></span><i></i><span>6 min di lettura</span><i></i><span data-field="destination"></span></p>
+            <p class="article-meta"><span data-field="category"></span><i></i><span data-field="date"></span><i></i><span data-field="readingTime"></span><i></i><span data-field="destination"></span></p>
           </div>
         </div>
         <figure class="hero-figure">
@@ -71,52 +73,8 @@
         </figure>
       </header>
 
-      <div class="article-intro">
-        <p><span class="dropcap">L</span>orem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus faucibus, sapien vel tincidunt posuere, augue lorem consequat arcu, vitae fermentum sem justo sed neque.</p>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
-      </div>
-
-      <div class="article-body">
-        <section class="chapter chapter-opening" aria-labelledby="chapter-one-title">
-          <div class="chapter-copy">
-            <h2 id="chapter-one-title" data-field="chapter1"></h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.</p>
-          </div>
-          <figure class="chapter-photo chapter-photo-tall">
-            <img data-image="detail1" alt="" loading="lazy" width="1881" height="836" decoding="async">
-            <figcaption data-field="detail1Caption"></figcaption>
-          </figure>
-        </section>
-
-        <section class="chapter chapter-landscape" aria-labelledby="chapter-two-title">
-          <div class="chapter-copy">
-            <h2 id="chapter-two-title" data-field="chapter2"></h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-          </div>
-          <figure class="chapter-photo chapter-photo-wide">
-            <img data-image="detail2" alt="" loading="lazy" width="1600" height="711" decoding="async">
-            <figcaption data-field="detail2Caption"></figcaption>
-          </figure>
-          <blockquote data-field="quote"></blockquote>
-        </section>
-
-        <section class="chapter chapter-closing" aria-labelledby="chapter-three-title">
-          <figure class="chapter-photo chapter-photo-square">
-            <img data-image="detail3" alt="" loading="lazy" width="1600" height="711" decoding="async">
-            <figcaption data-field="detail3Caption"></figcaption>
-          </figure>
-          <div class="chapter-copy">
-            <h2 id="chapter-three-title" data-field="chapter3"></h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Integer vitae justo eget magna fermentum iaculis.</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.</p>
-            <aside class="travel-note">
-              <span>Da sapere</span>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-            </aside>
-          </div>
-        </section>
-      </div>
+      <div class="article-intro" data-content="intro"></div>
+      <div class="article-body" data-content="chapters"></div>
 
       <footer class="story-ending">
         <div class="end-rule"><span>Fine del racconto</span></div>
@@ -159,9 +117,12 @@
   <div id="site-footer-root"></div>
 
   <p class="copy-status" role="status" aria-live="polite"></p>
-  <script src="mobile.js?v=677e46d9bb7b" defer></script>
+  <script src="vendor/marked.js?v=f424dcb508fd" defer></script>
+  <script src="vendor/dompurify.js?v=2c90a9b46d64" defer></script>
+  <script src="content.js?v=ab0b0ad87b9b" defer></script>
+  <script src="mobile.js?v=ee11b21120e1" defer></script>
   <script src="footer.js?v=ef66813fd206" defer></script>
   <script src="navigation.js?v=9540f8848ee4" defer></script>
-  <script src="racconto.js?v=a74b9376422a" defer></script>
+  <script src="racconto.js?v=c1e8df57e00c" defer></script>
 </body>
 </html>
