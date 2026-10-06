@@ -111,7 +111,7 @@ const createDB=()=>{
       }else{
         const pathname=new URL(req.url,origin).pathname,filename=path.join(root,pathname.endsWith('/')?pathname+'index.html':pathname);
         const type=filename.endsWith('.html')?'text/html':filename.endsWith('.js')?'text/javascript':filename.endsWith('.css')?'text/css':filename.endsWith('.json')?'application/json':filename.endsWith('.webp')?'image/webp':'application/octet-stream';
-        response=filename.startsWith(root+path.sep)&&fs.existsSync(filename)?new Response(fs.readFileSync(filename),{headers:{'Content-Type':type}}):new Response('',{status:404});
+        response=pathname.startsWith('/assets/uploads/')&&sources.has(pathname.slice(1))?new Response(source().get(pathname.slice(1)),{headers:{'Content-Type':'image/webp'}}):filename.startsWith(root+path.sep)&&fs.existsSync(filename)?new Response(fs.readFileSync(filename),{headers:{'Content-Type':type}}):new Response('',{status:404});
       }
       res.writeHead(response.status,Object.fromEntries(response.headers));res.end(Buffer.from(await response.arrayBuffer()));
     }catch(error){res.writeHead(500);res.end(error.message)}
@@ -136,20 +136,36 @@ const createDB=()=>{
     await page.getByRole('button',{name:'Crea Nuova Voce',exact:true}).click();
     await page.getByLabel('Titolo',{exact:true}).fill('Nuovo racconto dal pannello');
     await page.getByLabel('Destinazione',{exact:true}).fill('Portogallo');
-    await page.getByLabel('Data del racconto',{exact:true}).fill('2026-10-06');
     await page.getByLabel('Introduzione breve',{exact:true}).fill('Una nuova storia creata dalla cliente.');
     await page.locator('input[type=file]').first().setInputFiles(path.join(root,records[0].hero));
     await page.getByText(/^\/assets\/uploads\//).first().waitFor();
-    // Sveltia renders the remaining fields when the editor pane is scrolled.
-    await page.evaluate(()=>{for(const e of document.querySelectorAll('div'))if(['auto','scroll'].includes(getComputedStyle(e).overflowY)&&e.scrollHeight>e.clientHeight)e.scrollTop=e.scrollHeight;});
+    await page.getByRole('button',{name:'Pubblica',exact:true}).click();
+    assert.match(await page.getByLabel('Data del racconto',{exact:true}).inputValue(),/^\d{4}-\d{2}-\d{2}$/);
+    await page.getByLabel('Data del racconto',{exact:true}).fill('2026-10-06');
     await page.getByLabel('Descrizione della foto',{exact:true}).fill('Una fotografia del viaggio.');
-    await page.locator('[contenteditable=true]').fill('Il testo completo della nuova storia.');
+    await page.getByRole('button',{name:'Scrivi',exact:true}).click();
+    await page.getByRole('textbox',{name:'Apertura del racconto',exact:true}).fill('Il testo completo della nuova storia.');
+    await page.getByRole('button',{name:'Personalizza',exact:true}).click();
+    const appearance=page.locator('section[data-key-path="appearance"]');
+    await appearance.getByRole('button',{name:'Espandi',exact:true}).first().click();
+    await page.getByRole('radio',{name:'Blu oceano',exact:true}).check();
+    await page.getByRole('radio',{name:'Diario di viaggio',exact:true}).check();
+    await page.frameLocator('iframe').locator('[data-text-style="journal"]').waitFor();
+    for(const [width,height,label] of [[1440,1000,'desktop'],[390,844,'mobile']]){
+      await page.setViewportSize({width,height});
+      await page.getByRole('button',{name:'Inizia',exact:true}).click();
+      await page.waitForFunction(()=>{const field=document.querySelector('section[data-key-path=title]'),heading=field?.querySelector('.ely-editor-section');return heading && heading.getBoundingClientRect().top>=0 && heading.getBoundingClientRect().top<250 && heading.querySelector('p').getBoundingClientRect().bottom<=field.querySelector('header').getBoundingClientRect().top;});
+      await page.screenshot({path:'/tmp/ely-editor-'+label+'.png'});
+      assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
+    }
+    await page.setViewportSize({width:1440,height:1000});
     await page.getByRole('button',{name:'Salva',exact:true}).click();
     for(let i=0;i<200&&!records.some(r=>r.title==='Nuovo racconto dal pannello');i++)await new Promise(resolve=>setTimeout(resolve,20));
     const created=records.find(r=>r.title==='Nuovo racconto dal pannello');
     assert.ok(created);assert.equal(created.published,false);assert.equal(created.destination,'Portogallo');
     assert.match(created.id,/^[a-f0-9-]{36}$/);assert.match(created.hero,/^\/assets\/uploads\/.+\.webp$/);
     assert.ok(sources.has(created.hero.slice(1)));assert.match(created.intro,/testo completo/);
+    assert.equal(created.appearance.theme,'ocean');assert.equal(created.appearance.textStyle,'journal');
     console.log('PASS: real Sveltia creates a draft with automatic ID and uploads an optimized cover through the restricted proxy.');
     assert.deepEqual(errors,[]);
     await page.getByRole('button',{name:'Esci dal pannello',exact:true}).click();await page.getByRole('button',{name:'Accedi',exact:true}).waitFor();

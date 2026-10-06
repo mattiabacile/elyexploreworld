@@ -18,7 +18,13 @@
   const story = requested ? stories.find(item => item.id === requested) : stories[0];
   if (!story) { unavailable('Questo racconto non è disponibile. Scopri gli altri viaggi nell’archivio.'); return; }
   const chapters = Array.isArray(story.chapters) ? story.chapters : [];
-  const words = [story.intro, ...chapters.map(chapter => chapter.body)].join(' ').split(/\s+/).filter(Boolean).length;
+  const appearance = ElyArticle.appearance(story.appearance);
+  article.style.setProperty('--clay', appearance.accent);
+  article.style.setProperty('--accent', appearance.accent);
+  article.dataset.textStyle = appearance.textStyle;
+  article.dataset.dropCap = String(appearance.dropCap);
+  article.dataset.coverFormat = appearance.coverFormat;
+  const words = [story.intro, story.conclusion, ...chapters.map(chapter => chapter.body)].join(' ').split(/\s+/).filter(Boolean).length;
   const view = { ...story, date: c.date(story.date), readingTime: `${Math.max(1, Math.ceil(words / 200))} min di lettura` };
   document.documentElement.dataset.story = story.id;
   document.title = `${story.title} — ElyExploreWorld`;
@@ -30,16 +36,50 @@
   const hero = document.querySelector('[data-image="hero"]');
   window.elySetImage(hero, c.image(story.hero));
   hero.alt = story.heroAlt || '';
+  if (story.appearance) hero.style.objectPosition = appearance.coverPosition;
   document.querySelector('[data-content="intro"]').innerHTML = c.markdown(story.intro);
+  const intro = document.querySelector('[data-content="intro"]');
+  const facts = story.travelFacts || {};
+  const factItems = [['duration', 'Durata'], ['season', 'Quando partire'], ['style', 'Tipo di viaggio']].filter(([key]) => typeof facts[key] === 'string' && facts[key].trim());
+  if (factItems.length) {
+    const details = document.createElement('dl');details.className = 'story-facts';
+    details.innerHTML = factItems.map(([key, label]) => `<div><dt>${label}</dt><dd>${c.escape(facts[key])}</dd></div>`).join('');
+    intro.before(details);
+  }
+  if (appearance.showContents && chapters.filter(item => item?.title).length > 1) {
+    const contents = document.createElement('nav');contents.className = 'story-contents';contents.setAttribute('aria-label', 'Sommario dell’articolo');
+    contents.innerHTML = '<h2>In questo racconto</h2><ol>' + chapters.map((item, index) => item?.title ? `<li><a href="#chapter-${index + 1}-title">${c.escape(item.title)}</a></li>` : '').join('') + '</ol>';
+    intro.before(contents);
+  }
   const host = document.querySelector('[data-content="chapters"]');
   host.innerHTML = chapters.filter(item => item && typeof item === 'object').map((chapter, index) => {
-    const layout = ['opening', 'landscape', 'closing'][index % 3];
+    const {layout, format} = ElyArticle.chapter(chapter, index);
     const photo = c.image(chapter.image);
-    const figure = photo ? `<figure class="chapter-photo chapter-photo-${['tall', 'wide', 'square'][index % 3]}"><img src="${c.escape(photo)}" data-content-image="${c.escape(photo)}" alt="${c.escape(chapter.imageAlt || chapter.caption || '')}" loading="lazy" width="1600" height="900" decoding="async">${chapter.caption ? `<figcaption>${c.escape(chapter.caption)}</figcaption>` : ''}</figure>` : '';
+    const figure = photo ? `<figure class="chapter-photo chapter-photo-${['tall', 'wide', 'square'][index % 3]}"${chapter.imageFormat && chapter.imageFormat !== 'auto' ? ` data-photo-format="${format}"` : ''}><img src="${c.escape(photo)}" data-content-image="${c.escape(photo)}" alt="${c.escape(chapter.imageAlt || chapter.caption || '')}" loading="lazy" width="1600" height="900" decoding="async">${chapter.caption ? `<figcaption>${c.escape(chapter.caption)}</figcaption>` : ''}</figure>` : '';
     const copy = `<div class="chapter-copy"><h2 id="chapter-${index + 1}-title">${c.escape(chapter.title)}</h2>${c.markdown(chapter.body)}${chapter.note ? `<aside class="travel-note"><span>Da sapere</span>${c.markdown(chapter.note)}</aside>` : ''}</div>`;
     return `<section class="chapter chapter-${layout}" aria-labelledby="chapter-${index + 1}-title">${layout === 'closing' ? figure + copy : copy + figure}${chapter.quote ? `<blockquote>${c.escape(chapter.quote)}</blockquote>` : ''}</section>`;
   }).join('');
+  const gallery = (Array.isArray(story.gallery) ? story.gallery : []).filter(item => item && c.image(item.image));
+  if (gallery.length) host.insertAdjacentHTML('beforeend', `<section class="story-gallery" aria-labelledby="gallery-title"><h2 id="gallery-title">Il viaggio, in immagini</h2><div class="story-gallery-grid">${gallery.map((item, index) => `<figure><button type="button" data-gallery-index="${index}" aria-label="Apri foto: ${c.escape(item.alt || item.caption || `foto ${index + 1}`)}"><img src="${c.escape(c.image(item.image))}" data-content-image="${c.escape(c.image(item.image))}" alt="${c.escape(item.alt || '')}" loading="lazy" decoding="async" width="1600" height="1200"></button>${item.caption ? `<figcaption>${c.escape(item.caption)}</figcaption>` : ''}</figure>`).join('')}</div></section>`);
+  if (story.conclusion) host.insertAdjacentHTML('beforeend', `<section class="story-conclusion"><h2>Prima di ripartire</h2>${c.markdown(story.conclusion)}</section>`);
   c.responsive(host);
+  if (gallery.length) {
+    const dialog = document.createElement('dialog');dialog.className = 'story-photo-viewer';dialog.setAttribute('aria-label', 'Galleria fotografica');
+    dialog.innerHTML = `<button type="button" class="photo-close">Chiudi foto</button><figure><img src="${c.escape(c.image(gallery[0].image))}" alt=""><figcaption></figcaption></figure><div class="photo-navigation"><button type="button" data-photo-step="-1">Foto precedente</button><span aria-live="polite"></span><button type="button" data-photo-step="1">Foto successiva</button></div>`;
+    article.append(dialog);let current = 0, trigger;
+    const show = index => {
+      current = (index + gallery.length) % gallery.length;
+      const item = gallery[current], image = dialog.querySelector('img');
+      image.src = c.image(item.image);image.alt = item.alt || '';
+      dialog.querySelector('figcaption').textContent = item.caption || '';
+      dialog.querySelector('[aria-live]').textContent = `${current + 1} di ${gallery.length}`;
+    };
+    host.querySelectorAll('[data-gallery-index]').forEach(button => button.addEventListener('click', () => {trigger = button;show(Number(button.dataset.galleryIndex));dialog.showModal();}));
+    dialog.querySelector('.photo-close').addEventListener('click', () => dialog.close());
+    dialog.querySelectorAll('[data-photo-step]').forEach(button => {button.hidden = gallery.length < 2;button.addEventListener('click', () => show(current + Number(button.dataset.photoStep)));});
+    dialog.addEventListener('keydown', event => {if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {event.preventDefault();show(current + (event.key === 'ArrowRight' ? 1 : -1));}});
+    dialog.addEventListener('close', () => trigger?.focus());
+  }
   const tagHost = document.querySelector('[data-list="tags"]');
   (Array.isArray(story.tags) ? story.tags : []).forEach(tag => {
     const node = document.createElement('span'); node.textContent = tag; tagHost.append(node);

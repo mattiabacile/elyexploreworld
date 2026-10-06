@@ -13,7 +13,20 @@ Inserire **nome utente e password** nel pannello. Non serve un account GitHub o 
 3. Inserire titolo, data, destinazione, introduzione breve e foto di copertina. Descrivere la foto nel campo dedicato.
 4. Scrivere l’apertura con l’editor. Aggiungere i capitoli necessari: ognuno può avere testo, foto, didascalia, citazione e un consiglio pratico.
 5. Controllare l’anteprima. Lasciare **Visibile sul sito** disattivato durante la preparazione.
-6. Quando il contenuto è pronto, attivare **Visibile sul sito**, disattivare **Mostra solo l’anteprima: articolo in preparazione** e salvare/pubblicare.
+6. Quando il contenuto è pronto, attivare **Visibile sul sito**, disattivare **Consiglio in preparazione** e premere **Salva**.
+
+I pulsanti **Inizia**, **Scrivi**, **Personalizza** e **Pubblica** portano alla sezione corrispondente. La guida “Come creare e pubblicare un articolo” è sempre disponibile all’inizio dell’editor. Nell’elenco, i filtri distinguono bozze, pubblicati, racconti e consigli.
+
+## Personalizzare un articolo
+
+- **Aspetto dell’articolo**: scegliere colore dei dettagli, formato e ritaglio della copertina, testo contemporaneo o da diario, iniziale grande e sommario con link ai capitoli. L’anteprima mostra il risultato mentre si modifica.
+- **Parola del titolo in corsivo**: evidenziare una parola o una frase già presente nel titolo.
+- In ogni **Capitolo**, scegliere foto a destra, a sinistra o grande sotto il testo. Il formato può essere orizzontale, verticale, quadrato o senza ritaglio. “Alternanza automatica” conserva la composizione originale.
+- **Informazioni del viaggio**: aggiungere durata, periodo consigliato e tipo di viaggio. I campi vuoti non compaiono sul sito.
+- **Galleria fotografica**: aggiungere immagini, descrizioni e didascalie; trascinare per riordinarle. Sul sito le foto si possono aprire e sfogliare ingrandite.
+- **Conclusione**: scrivere un saluto o una riflessione finale, con la stessa formattazione del testo principale.
+
+Tutte queste opzioni sono facoltative. Gli articoli esistenti mantengono il loro aspetto fino a quando si sceglie una personalizzazione.
 
 Il racconto compare nella sezione racconti dell’archivio; il consiglio nella sezione consigli. Entrambi entrano automaticamente nello slideshow della homepage e hanno una pagina di lettura. Sono ordinati dal più recente. Cloudflare pubblica la modifica dopo il salvataggio: l’aggiornamento può richiedere qualche minuto.
 
@@ -38,7 +51,7 @@ Questa parte riguarda soltanto chi configura il sito. L’accesso diretto è un�
 1. Registrare una GitHub App privata **ElyExploreWorld Editor**, con Homepage `https://elyexploreworld.pages.dev/admin/`, senza OAuth per gli utenti e senza webhook. Concedere **Contents: Read and write**; Metadata viene aggiunto in sola lettura. Installarla **solo** sul repository `mattiabacile/elyexploreworld`.
 2. Generare la chiave privata dell’app e convertirla nel formato PEM PKCS#8. Conservare App ID e Installation ID. Il server genera automaticamente credenziali di pubblicazione di breve durata, limitate al repository.
 3. Creare il database D1 `elyexploreworld-cms`, eseguire `server/cms-schema.sql` e collegarlo al progetto Pages di produzione con il nome `CMS_DB`.
-4. Nelle variabili di produzione impostare `CMS_GITHUB_APP_ID` e `CMS_GITHUB_INSTALLATION_ID`. Nei **Secret** impostare `CMS_GITHUB_PRIVATE_KEY` (PEM PKCS#8) e `CMS_SECRET` (segreto casuale di almeno 32 caratteri). Non salvare questi segreti nel repository. Ripubblicare il progetto dopo la configurazione.
+4. Nelle variabili di produzione impostare `CMS_GITHUB_APP_ID` e `CMS_GITHUB_INSTALLATION_ID`. Nei **Secret** impostare `CMS_GITHUB_PRIVATE_KEY` (PEM PKCS#8 oppure DER PKCS#8 codificato in base64) e `CMS_SECRET` (segreto casuale di almeno 32 caratteri). Non salvare questi segreti nel repository. Ripubblicare il progetto dopo la configurazione.
 5. Aprire una sola volta `/admin/#setup=SEGRETO`, usando il valore di `CMS_SECRET`. Il frammento viene rimosso subito dall’indirizzo e non è inviato nei log delle richieste. Il proprietario completa personalmente nome utente, password e conferma. Dopo il primo account, questa procedura non permette di creare altri utenti.
 
 L’accesso viene bloccato dopo dieci tentativi per indirizzo in quindici minuti; esiste anche un limite globale. La sessione usa un cookie HttpOnly, Secure e SameSite=Strict; l’uscita la revoca nel database. Non modificare `CMS_SECRET` dopo la creazione dell’account senza una procedura di ripristino: è usato anche nella verifica della password.

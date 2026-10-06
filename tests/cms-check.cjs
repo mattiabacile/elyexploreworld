@@ -42,6 +42,24 @@ const initial = JSON.parse(fs.readFileSync(require('node:path').join(__dirname, 
       await page.locator('[data-image="hero"]').evaluate(image => image.decode());
       assert.equal(await page.locator('[data-image="hero"]').getAttribute('srcset'), null);
     }
+    Object.assign(added,{appearance:{theme:'ocean',coverFormat:'natural',coverPosition:'top',textStyle:'journal',dropCap:false,showContents:true},travelFacts:{duration:'10 giorni',season:'Primavera'},gallery:[{image:added.hero,alt:'Foto uno',caption:'La prima tappa'},{image:initial[0].hero,alt:'Foto due',caption:'La seconda tappa'}],conclusion:'Una **riflessione finale**.'});
+    added.chapters.push({title:'Un altro capitolo',body:'Il viaggio continua.',image:initial[0].hero,layout:'wide',imageFormat:'natural'});
+    records[records.findIndex(item=>item.id===added.id)]=added;
+    for(const width of [390,1440]){
+      await page.setViewportSize({width,height:900});await visit('/racconto.html?story=nuovo-racconto');
+      assert.equal(await page.locator('#racconto > article').getAttribute('data-text-style'),'journal');
+      assert.equal(await page.locator('#racconto > article').evaluate(e=>e.style.getPropertyValue('--clay')),'#286274');
+      assert.equal(await page.locator('.story-contents a').count(),2);
+      assert.match(await page.locator('.story-facts').innerText(),/10 giorni/);
+      assert.equal(await page.locator('.chapter-wide [data-photo-format="natural"]').count(),1);
+      assert.equal(await page.locator('.story-conclusion strong').innerText(),'riflessione finale');
+      const photo=page.getByRole('button',{name:'Apri foto: Foto uno',exact:true});await photo.click();
+      assert.equal(await page.locator('dialog[open]').count(),1);await page.keyboard.press('ArrowRight');
+      assert.equal(await page.locator('dialog img').getAttribute('alt'),'Foto due');
+      await page.keyboard.press('Escape');assert.equal(await page.locator('dialog[open]').count(),0);
+      assert.equal(await photo.evaluate(e=>e===document.activeElement),true);
+      assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
+    }
     records.find(item => item.id === added.id).title = 'Titolo aggiornato dalla cliente';
     await visit('/racconti.html');
     assert.match(await page.locator('.stories-archive .story-card').first().innerText(), /Titolo aggiornato/);

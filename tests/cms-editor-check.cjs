@@ -1,6 +1,10 @@
 const {chromium}=require('playwright'), fs=require('fs'), assert=require('assert/strict');
 const root=require('node:path').resolve(__dirname,'..');
 const stories=JSON.parse(fs.readFileSync(root+'/content/stories.json'));
+stories[0].appearance={theme:'ocean',textStyle:'journal',coverFormat:'natural',showContents:true,dropCap:false};
+stories[0].travelFacts={duration:'Dieci giorni',season:'Primavera'};
+stories[0].gallery=[{image:stories[0].hero,alt:'Foto della galleria',caption:'Il viaggio in immagini'}];
+stories[0].conclusion='Una **riflessione finale**.';
 const files={'content/stories.json':{text:JSON.stringify(stories),type:'application/json'}};
 for(const source of new Set(stories.flatMap(s=>[s.hero,...s.chapters.map(c=>c.image)]).filter(Boolean)))files[source]={base64:fs.readFileSync(root+'/'+source).toString('base64'),type:'image/webp'};
 (async()=>{
@@ -25,6 +29,11 @@ await page.goto((process.env.SITE_URL || 'http://localhost:4173') + '/admin/?loc
 await page.getByText(/Giappone: tra templi/).first().waitFor({timeout:30000});await page.getByText(/Giappone: tra templi/).first().click();
 await page.getByLabel('Titolo', {exact:true}).fill('Giappone: verifica editor');
 await page.frameLocator('iframe').getByRole('heading', {name:'Giappone: verifica editor', exact:true}).waitFor({timeout:15000});
+assert.equal(await page.frameLocator('iframe').locator('[data-text-style="journal"]').count(),1);
+assert.equal(await page.frameLocator('iframe').locator('.preview-gallery img').count(),1);
+assert.equal(await page.frameLocator('iframe').locator('.preview-contents a').count(),3);
+assert.match(await page.frameLocator('iframe').locator('.preview-facts').innerText(),/Dieci giorni/);
+assert.match(await page.frameLocator('iframe').locator('.preview-conclusion').innerText(),/riflessione finale/);
 await page.getByRole('button',{name:'Salva',exact:true}).click();
 await page.waitForFunction(async()=>{
  try {const root=await navigator.storage.getDirectory();const dir=await root.getDirectoryHandle('content');const file=await (await dir.getFileHandle('stories.json')).getFile();

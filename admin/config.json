@@ -6,7 +6,6 @@
     "repo": "mattiabacile/elyexploreworld",
     "branch": "main",
     "base_url": "https://elyexploreworld.pages.dev",
-    "auth_endpoint": "auth",
     "auth_methods": [
       "token"
     ],
@@ -48,7 +47,7 @@
       "name": "racconti",
       "label": "Racconti e consigli",
       "label_singular": "Racconto",
-      "description": "Gestisci racconti e consigli di viaggio. I contenuti visibili e pronti compaiono nell’archivio e nello slideshow della homepage.",
+      "description": "Crea un racconto o un consiglio, aggiungi le foto e controlla l’anteprima. Salva come bozza oppure attiva “Visibile sul sito” per pubblicarlo.",
       "file": "content/stories.json",
       "format": "json",
       "create": true,
@@ -69,7 +68,8 @@
           "name": "title",
           "label": "Titolo",
           "widget": "string",
-          "maxlength": 180
+          "maxlength": 180,
+          "hint": "Scegli un titolo che racconti il viaggio. Puoi evidenziarne una parola nelle opzioni Aspetto."
         },
         {
           "name": "kind",
@@ -88,30 +88,6 @@
           ]
         },
         {
-          "name": "published",
-          "label": "Visibile sul sito",
-          "widget": "boolean",
-          "default": false,
-          "hint": "Attiva quando il racconto è pronto. Dopo il salvataggio apparirà in Tutti i racconti e nello slideshow della homepage."
-        },
-        {
-          "name": "preparing",
-          "label": "Mostra solo l’anteprima: articolo in preparazione",
-          "widget": "boolean",
-          "default": false,
-          "hint": "Solo per i consigli: mostra la scheda senza il pulsante di lettura. Disattiva quando il testo è pronto."
-        },
-        {
-          "name": "date",
-          "label": "Data del racconto",
-          "widget": "datetime",
-          "type": "date",
-          "format": "YYYY-MM-DD",
-          "date_format": "DD/MM/YYYY",
-          "time_format": false,
-          "hint": "I racconti sono ordinati dal più recente. La data non programma una pubblicazione futura."
-        },
-        {
           "name": "destination",
           "label": "Destinazione",
           "widget": "string",
@@ -119,24 +95,10 @@
           "hint": "Esempio: Bali. È il titolo breve della diapositiva in homepage."
         },
         {
-          "name": "category",
-          "label": "Categoria",
-          "widget": "string",
-          "required": false,
-          "hint": "Esempio: Natura e cultura."
-        },
-        {
           "name": "deck",
           "label": "Introduzione breve",
           "widget": "text",
           "hint": "Compare nella scheda dell’archivio e sotto il titolo del racconto."
-        },
-        {
-          "name": "slideText",
-          "label": "Testo breve dello slideshow",
-          "widget": "text",
-          "required": false,
-          "hint": "Una o due frasi brevi. Se vuoto, viene usata l’introduzione breve."
         },
         {
           "name": "hero",
@@ -178,7 +140,7 @@
           "editor_components": [
             "image"
           ],
-          "hint": "Scrivi liberamente, aggiungendo paragrafi, grassetto, link e immagini."
+          "hint": "Inizia qui il tuo articolo. Usa la barra per titoli, grassetto, elenchi, citazioni e immagini. Non servono capitoli per un testo breve."
         },
         {
           "name": "chapters",
@@ -188,7 +150,7 @@
           "collapsed": true,
           "summary": "{{fields.title}}",
           "label_singular": "Capitolo",
-          "hint": "Aggiungi tutti i capitoli che desideri e trascinali per cambiarne l’ordine.",
+          "hint": "Per un articolo lungo, aggiungi sezioni con testo e foto. Trascinale per cambiare l’ordine.",
           "fields": [
             {
               "name": "title",
@@ -217,12 +179,64 @@
               ]
             },
             {
+              "name": "layout",
+              "label": "Disposizione del capitolo",
+              "widget": "select",
+              "options": [
+                {
+                  "label": "Alternanza automatica",
+                  "value": "auto"
+                },
+                {
+                  "label": "Foto a destra del testo",
+                  "value": "right"
+                },
+                {
+                  "label": "Foto a sinistra del testo",
+                  "value": "left"
+                },
+                {
+                  "label": "Foto grande sotto il testo",
+                  "value": "wide"
+                }
+              ],
+              "default": "auto"
+            },
+            {
               "name": "image",
               "label": "Foto del capitolo",
               "widget": "image",
               "choose_url": false,
               "accept": "image/jpeg,image/png,image/webp,image/avif,image/heic",
               "required": false
+            },
+            {
+              "name": "imageFormat",
+              "label": "Formato della foto",
+              "widget": "select",
+              "options": [
+                {
+                  "label": "Automatico",
+                  "value": "auto"
+                },
+                {
+                  "label": "Orizzontale",
+                  "value": "landscape"
+                },
+                {
+                  "label": "Verticale",
+                  "value": "portrait"
+                },
+                {
+                  "label": "Quadrato",
+                  "value": "square"
+                },
+                {
+                  "label": "Foto intera, senza ritaglio",
+                  "value": "natural"
+                }
+              ],
+              "default": "auto"
             },
             {
               "name": "imageAlt",
@@ -267,15 +281,198 @@
           ]
         },
         {
-          "name": "tags",
-          "label": "Tag",
+          "name": "travelFacts",
+          "label": "Informazioni del viaggio",
+          "widget": "object",
+          "required": false,
+          "collapsed": true,
+          "hint": "Facoltative. Compariranno sotto la copertina, prima del racconto.",
+          "fields": [
+            {
+              "name": "duration",
+              "label": "Durata",
+              "widget": "string",
+              "required": false,
+              "hint": "Esempio: 10 giorni."
+            },
+            {
+              "name": "season",
+              "label": "Quando partire",
+              "widget": "string",
+              "required": false,
+              "hint": "Esempio: aprile e maggio."
+            },
+            {
+              "name": "style",
+              "label": "Tipo di viaggio",
+              "widget": "string",
+              "required": false,
+              "hint": "Esempio: città e natura, in coppia."
+            }
+          ]
+        },
+        {
+          "name": "gallery",
+          "label": "Galleria fotografica",
+          "label_singular": "Foto",
           "widget": "list",
           "required": false,
-          "hint": "Esempio: Bali, Indonesia, Natura.",
-          "field": {
-            "name": "tag",
-            "label": "Tag",
-            "widget": "string"
+          "collapsed": true,
+          "summary": "{{fields.caption}}",
+          "thumbnail": "image",
+          "hint": "Una raccolta di foto alla fine dell’articolo. Puoi cambiarne l’ordine trascinandole.",
+          "fields": [
+            {
+              "name": "image",
+              "label": "Foto",
+              "widget": "image",
+              "choose_url": false,
+              "accept": "image/jpeg,image/png,image/webp,image/avif,image/heic"
+            },
+            {
+              "name": "alt",
+              "label": "Descrizione della foto",
+              "widget": "string",
+              "hint": "Descrivi cosa si vede nella foto."
+            },
+            {
+              "name": "caption",
+              "label": "Didascalia",
+              "widget": "string",
+              "required": false
+            }
+          ]
+        },
+        {
+          "name": "conclusion",
+          "label": "Conclusione",
+          "widget": "richtext",
+          "modes": [
+            "rich_text"
+          ],
+          "buttons": [
+            "bold",
+            "italic",
+            "link",
+            "heading-two",
+            "heading-three",
+            "bulleted-list",
+            "numbered-list",
+            "quote"
+          ],
+          "editor_components": [
+            "image"
+          ],
+          "hint": "Facoltativa: una riflessione finale o un consiglio prima di salutare chi legge.",
+          "required": false
+        },
+        {
+          "name": "appearance",
+          "label": "Aspetto dell’articolo",
+          "widget": "object",
+          "required": true,
+          "collapsed": true,
+          "summary": "Colori, copertina e lettura",
+          "hint": "Controlla il risultato nell’anteprima mentre scegli.",
+          "fields": [
+            {
+              "name": "theme",
+              "label": "Colore dei dettagli",
+              "widget": "select",
+              "options": [
+                {
+                  "label": "Argilla",
+                  "value": "clay"
+                },
+                {
+                  "label": "Verde foresta",
+                  "value": "forest"
+                },
+                {
+                  "label": "Blu oceano",
+                  "value": "ocean"
+                }
+              ],
+              "default": "clay"
+            },
+            {
+              "name": "coverFormat",
+              "label": "Formato della copertina",
+              "widget": "select",
+              "options": [
+                {
+                  "label": "Panoramica",
+                  "value": "panoramic"
+                },
+                {
+                  "label": "Orizzontale classica",
+                  "value": "landscape"
+                },
+                {
+                  "label": "Foto intera, senza ritaglio",
+                  "value": "natural"
+                }
+              ],
+              "default": "panoramic"
+            },
+            {
+              "name": "coverPosition",
+              "label": "Punto del ritaglio",
+              "widget": "select",
+              "options": [
+                {
+                  "label": "Centro",
+                  "value": "center"
+                },
+                {
+                  "label": "Parte alta",
+                  "value": "top"
+                },
+                {
+                  "label": "Parte bassa",
+                  "value": "bottom"
+                }
+              ],
+              "default": "center",
+              "hint": "Agisce sulla copertina dell’articolo."
+            },
+            {
+              "name": "textStyle",
+              "label": "Stile del testo",
+              "widget": "select",
+              "options": [
+                {
+                  "label": "Contemporaneo",
+                  "value": "modern"
+                },
+                {
+                  "label": "Diario di viaggio",
+                  "value": "journal"
+                }
+              ],
+              "default": "modern"
+            },
+            {
+              "name": "dropCap",
+              "label": "Iniziale grande nel primo paragrafo",
+              "widget": "boolean",
+              "default": true
+            },
+            {
+              "name": "showContents",
+              "label": "Sommario con link ai capitoli",
+              "widget": "boolean",
+              "default": false,
+              "hint": "Compare quando ci sono almeno due capitoli."
+            }
+          ],
+          "default": {
+            "theme": "clay",
+            "coverFormat": "panoramic",
+            "coverPosition": "center",
+            "textStyle": "modern",
+            "dropCap": true,
+            "showContents": false
           }
         },
         {
@@ -286,11 +483,84 @@
           "hint": "Facoltativo: scrivi una parola o una frase già presente nel titolo."
         },
         {
+          "name": "published",
+          "label": "Visibile sul sito",
+          "widget": "boolean",
+          "default": false,
+          "hint": "Disattivato: salvi una bozza. Attivato: Salva pubblica l’articolo nell’archivio e nello slideshow. L’aggiornamento del sito richiede qualche minuto."
+        },
+        {
+          "name": "date",
+          "label": "Data del racconto",
+          "widget": "datetime",
+          "type": "date",
+          "format": "YYYY-MM-DD",
+          "date_format": "DD/MM/YYYY",
+          "time_format": false,
+          "hint": "I racconti sono ordinati dal più recente. La data non programma una pubblicazione futura.",
+          "default": "{{now}}"
+        },
+        {
+          "name": "preparing",
+          "label": "Consiglio in preparazione",
+          "widget": "boolean",
+          "default": false,
+          "hint": "Solo per i consigli: pubblica una scheda di anteprima, senza aprire l’articolo completo."
+        },
+        {
+          "name": "category",
+          "label": "Categoria",
+          "widget": "string",
+          "required": false,
+          "hint": "Esempio: Natura e cultura."
+        },
+        {
+          "name": "tags",
+          "label": "Tag",
+          "widget": "list",
+          "required": false,
+          "hint": "Esempio: Bali, Indonesia, Natura.",
+          "field": {
+            "name": "tag",
+            "label": "Tag",
+            "widget": "string"
+          },
+          "collapsed": true,
+          "summary": "{{fields.tag}}"
+        },
+        {
+          "name": "slideText",
+          "label": "Testo breve dello slideshow",
+          "widget": "text",
+          "required": false,
+          "hint": "Una o due frasi brevi. Se vuoto, viene usata l’introduzione breve."
+        },
+        {
           "name": "id",
-          "label": "Identificativo del racconto",
-          "widget": "uuid",
-          "hint": "Generato automaticamente: mantiene stabile il collegamento al racconto.",
-          "preview": false
+          "widget": "hidden",
+          "default": "{{uuid}}"
+        }
+      ],
+      "view_filters": [
+        {
+          "label": "Bozze",
+          "field": "published",
+          "pattern": "false"
+        },
+        {
+          "label": "Pubblicati",
+          "field": "published",
+          "pattern": "true"
+        },
+        {
+          "label": "Racconti di viaggio",
+          "field": "kind",
+          "pattern": "racconto"
+        },
+        {
+          "label": "Consigli di viaggio",
+          "field": "kind",
+          "pattern": "consiglio"
         }
       ]
     }

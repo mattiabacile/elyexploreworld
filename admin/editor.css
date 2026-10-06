@@ -1,0 +1,19 @@
+/* The editor keeps Sveltia's native controls and focuses on the writing flow. */
+.ely-editor-guide { margin: 12px 0 16px; padding: 16px 18px; background: #f1f4ee; color: #254535; border-radius: 12px; font: 400 14px/1.6 'Plus Jakarta Sans', sans-serif; }
+.ely-editor-guide summary { cursor: pointer; font-weight: 600; min-height: 28px; }
+.ely-editor-guide ol { padding-left: 22px; margin-block: 14px; }
+.ely-editor-guide li + li { margin-top: 10px; }
+.ely-editor-guide p { margin-bottom: 0; }
+.ely-editor-nav { display: flex; gap: 6px; flex-wrap: wrap; position: sticky; top: 0; z-index: 4; padding-block: 8px; margin: 0 0 24px; background: #fafbf8; }
+.ely-editor-nav button { min-height: 44px; flex: 1; padding: 8px 10px; border: 1px solid #b3bfb0; border-radius: 8px; background: #fff; color: #254535; font: 600 13px 'Plus Jakarta Sans', sans-serif; cursor: pointer; }
+.ely-editor-nav button:hover { background: #eef2e9; }
+.ely-editor-nav button:focus-visible, .ely-editor-guide summary:focus-visible { outline: 3px solid #9f4933; outline-offset: 3px; }
+section.field > .ely-editor-section { display: block; width: 100%; margin: 24px 0 18px; padding-top: 24px; border-top: 1px solid #c6d0c1; color: #254535; }
+section.field > .ely-editor-section h2 { margin: 0 0 6px; font: 700 19px/1.3 'Plus Jakarta Sans', sans-serif; }
+section.field > .ely-editor-section p { margin: 0; font: 400 13px/1.6 'Plus Jakarta Sans', sans-serif; color: #50634c; }
+section.field[data-key-path="title"] > section.field > .ely-editor-section { padding-top: 0; margin-top: 0; border: 0; }
+section.field[data-key-path] { scroll-margin-top: 80px; }
+.ely-editor-content { padding-bottom: 80px; }
+@media (prefers-color-scheme: dark) {
+  html[data-theme="dark"] .ely-editor-guide { background: #26382d; color: #f1f4ee; }
+}
