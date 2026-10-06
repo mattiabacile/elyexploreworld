@@ -14,6 +14,7 @@ const createDB=()=>{
  let minted=0;
  global.fetch=async(url,options)=>{
    minted++;assert.equal(url,'https://api.github.com/app/installations/987/access_tokens');
+   assert.equal(options.redirect,'manual');
    assert.deepEqual(JSON.parse(options.body),{repositories:['elyexploreworld'],permissions:{contents:'write'}});
    const jwt=options.headers.Authorization.slice(7),parts=jwt.split('.');
    assert.ok(require('node:crypto').verify('RSA-SHA256',Buffer.from(parts[0]+'.'+parts[1]),keys.publicKey,Buffer.from(parts[2],'base64url')));
@@ -55,6 +56,7 @@ const createDB=()=>{
  const forwarded=[];global.fetch=async(url,options)=>{forwarded.push({url,options});return Response.json({data:{createCommitOnBranch:{commit:{oid:'b'.repeat(40)}}}})};
  assert.equal((await call('/cms/api/graphql',{method:'POST',headers,data:mutation})).status,200);
  assert.equal(forwarded[0].url,'https://api.github.com/graphql');assert.equal(forwarded[0].options.headers.Authorization,'Bearer '+env.CMS_GITHUB_TOKEN);
+ assert.equal(forwarded[0].options.redirect,'manual');
  assert.equal((await call('/cms/api/graphql',{method:'POST',headers,data:{...mutation,query:'mutation {deleteRepository(input:{repositoryId:"x"}){clientMutationId}}'}})).status,403);
  assert.equal(forwarded.length,1);
  assert.equal((await call('/cms/api/v3/repos/attacker/other',{headers})).status,403);

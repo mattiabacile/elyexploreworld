@@ -45,7 +45,8 @@ export async function publishingToken(env) {
     method: 'POST',
     headers: {Authorization: 'Bearer ' + header + '.' + payload + '.' + signature, Accept: 'application/vnd.github+json', 'Content-Type': 'application/json', 'User-Agent': 'ElyExploreWorld-CMS', 'X-GitHub-Api-Version': '2022-11-28'},
     body: JSON.stringify({repositories: [NAME], permissions: {contents: 'write'}}),
-    redirect: 'error'
+    // Workers supports manual redirects; reject non-success responses below.
+    redirect: 'manual'
   });
   if (!response.ok) throw new Error('Publishing connection unavailable');
   const data = await response.json();
@@ -156,8 +157,9 @@ async function proxy(request, env, active) {
     method: request.method,
     headers: {'Authorization': 'Bearer ' + await publishingToken(env), 'User-Agent': 'ElyExploreWorld-CMS', 'Accept': request.headers.get('Accept') || 'application/vnd.github+json', 'Content-Type': 'application/json', 'X-GitHub-Api-Version': '2022-11-28'},
     body,
-    redirect: 'error'
+    redirect: 'manual'
   });
+  if (upstream.status >= 300 && upstream.status < 400) throw new Error('Unexpected publishing redirect');
   const outputHeaders = new Headers(headers);
   for (const key of ['content-type', 'etag', 'x-ratelimit-remaining', 'retry-after']) if (upstream.headers.has(key)) outputHeaders.set(key, upstream.headers.get(key));
   // Keep API pagination on this origin rather than exposing the publishing credential.
