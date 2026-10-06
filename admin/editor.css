@@ -166,77 +166,93 @@ section.field[data-key-path='title'] > .ely-editor-section { margin-top: 0; padd
 }
 @media (prefers-reduced-motion: reduce) { .ely-editor-nav button { transition: none; } }
 
-/* Page authoring: the selected field remains in its native CMS component. */
-.ely-mode-switch, .ely-page-actions { display: flex; gap: 4px; flex-shrink: 0; }
-.ely-mode-switch { padding: 3px; border: 1px solid var(--ely-line); border-radius: 8px; }
-.ely-mode-switch button, .ely-page-actions button, .ely-on-page-toolbar button {
-  min-height: 36px; padding: 6px 12px; border: 0; border-radius: 6px;
-  font: 600 13px/1.3 'Plus Jakarta Sans', sans-serif; cursor: pointer;
-  color: var(--ely-forest); background: transparent;
+/* Article authoring: the preview is the editor. Only media selection is modal. */
+.ely-mode-switch{display:flex;gap:4px;flex-shrink:0;padding:3px;border:1px solid var(--ely-line);border-radius:8px;background:var(--ely-surface)}
+.ely-mode-switch button,.ely-inspector button{min-height:42px;padding:8px 12px;border:0;border-radius:6px;font:600 12px/1.4 'Plus Jakarta Sans',sans-serif;color:var(--ely-forest);background:transparent;cursor:pointer}
+.ely-mode-switch button[aria-pressed='true']{background:var(--ely-forest);color:var(--ely-surface)}
+.ely-mode-switch button:hover,.ely-inspector button:hover{background:var(--ely-soft)}
+.ely-mode-switch button:focus-visible,.ely-inspector button:focus-visible,.ely-on-page-toolbar button:focus-visible{outline:2px solid var(--ely-clay);outline-offset:2px}
+
+.content-editor.ely-page-mode .content-area{position:relative;padding-right:0;box-sizing:border-box;background:var(--ely-paper)}
+.content-editor.ely-page-mode .content-area .sui.resizable-pane:has(.ely-editor-content){position:absolute;top:0;left:0;width:420px;height:100%;visibility:hidden;overflow:visible!important;pointer-events:none}
+.content-editor.ely-page-mode .pane[data-mode='edit'] *{visibility:hidden!important}
+.content-editor.ely-page-mode .content-area .sui.resizable-pane:has(iframe.preview){display:block!important;flex:1 1 100%!important;width:100%!important}
+.content-editor.ely-page-mode .resizable-handle,.content-editor.ely-page-mode .swap-button,.ely-page-feedback,.ely-mobile-actions{display:none!important}
+.content-editor.ely-page-mode .pane[data-mode='preview']{display:flex!important}
+.content-editor.ely-page-mode > .body > .sidebar{display:none!important}
+
+/* Hidden field host. Text controls are visually placed on their article block. */
+.ely-inspector{display:none}
+.ely-page-mode .ely-inspector{position:fixed;z-index:80;box-sizing:border-box;flex-direction:column;color:var(--ely-ink);overflow:hidden}
+.ely-page-mode.ely-inspector-open .ely-inspector{display:flex}
+.ely-page-mode .ely-inspector.ely-inline-edit{background:var(--ely-paper);border-radius:0;box-shadow:none;overflow:visible;pointer-events:none}
+.ely-inline-edit>header,.ely-inline-edit>nav,.ely-inline-edit>.ely-inspector-menu,.ely-inline-edit .ely-inspector-title,.ely-inline-edit .ely-inspector-back,.ely-inline-edit .ely-inspector-error{display:none!important}
+.ely-inline-edit .ely-inspector-detail{display:block!important;flex:1;min-height:0;pointer-events:none}
+.ely-inline-edit .ely-inspector-slot{height:100%}
+
+/* Image fields are the sole intentional popup in Pagina mode. */
+.ely-page-mode .ely-inspector:not(.ely-inline-edit){max-width:calc(100vw - 32px);max-height:calc(100dvh - 96px);background:var(--ely-paper);border:1px solid var(--ely-line);border-radius:12px;box-shadow:0 18px 52px #16271f33}
+.ely-inspector>header{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 18px 10px;border-bottom:1px solid var(--ely-line)}
+.ely-inspector>header h2{margin:0;font:700 15px/1.4 'Plus Jakarta Sans',sans-serif;color:var(--ely-forest)}
+.ely-inspector>nav,.ely-inspector-menu{display:none!important}
+.ely-inspector-error{font-size:13px;line-height:1.5;margin:10px 18px 0;color:var(--ely-clay)}
+.ely-inspector-error:empty{display:none}
+.ely-inspector-detail{display:none;flex:1;min-height:0;flex-direction:column}
+.ely-inspecting .ely-inspector-detail{display:flex}
+.ely-inspector-back{display:none!important}
+.ely-inspector-title{margin:0!important;padding:12px 18px 0;font:600 12px/1.4 'Plus Jakarta Sans',sans-serif;color:var(--ely-muted)}
+.ely-inspector-slot{flex:1;min-height:0;width:100%}
+
+.content-editor.ely-page-mode .pane[data-mode='edit'] .ely-on-page-field,
+.content-editor.ely-page-mode .pane[data-mode='edit'] .ely-on-page-field *{visibility:visible!important;pointer-events:auto}
+.content-editor.ely-page-mode .ely-on-page-field{position:fixed!important;z-index:81;left:var(--ely-field-left)!important;top:var(--ely-field-top)!important;width:var(--ely-field-width)!important;height:var(--ely-field-height)!important;max-height:var(--ely-field-height)!important;min-height:0!important;min-width:0!important;box-sizing:border-box;overflow:auto;overscroll-behavior:contain;margin:0!important;padding:12px 14px 54px!important;border:0!important;border-radius:0;background:var(--ely-paper);box-shadow:none;color:var(--ely-ink)}
+.ely-on-page-field>header,.ely-on-page-field>.ely-editor-section{display:none!important}
+.ely-on-page-field .field-wrapper{min-width:0}
+
+/* Strip CMS form chrome so strings and rich text read as part of the article. */
+.ely-on-page-field input:not([type='file']),
+.ely-on-page-field textarea{width:100%!important;max-width:none!important;box-sizing:border-box!important;padding:4px 2px!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;color:var(--ely-forest)!important;outline:none!important}
+.ely-on-page-field input:not([type='file']):focus,
+.ely-on-page-field textarea:focus{box-shadow:inset 0 -2px 0 var(--ely-clay)!important}
+.ely-inline-title input{font:400 44px/1.08 'Cormorant Garamond',Georgia,serif!important;letter-spacing:-.02em}
+.ely-inline-heading input{font:400 30px/1.12 'Cormorant Garamond',Georgia,serif!important}
+.ely-inline-deck textarea,.ely-inline-deck input{font:500 20px/1.55 'Plus Jakarta Sans',sans-serif!important}
+.ely-inline-caption input,.ely-inline-caption textarea{font:400 13px/1.55 'Plus Jakarta Sans',sans-serif!important;color:var(--ely-muted)!important}
+.ely-inline-control input,.ely-inline-control textarea{font:500 15px/1.5 'Plus Jakarta Sans',sans-serif!important}
+
+.ely-inline-copy .field-wrapper{height:100%;display:flex;flex-direction:column}
+.ely-inline-copy [contenteditable='true']{min-height:190px!important;padding:14px 2px!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;color:var(--ely-forest)!important;font:400 17px/1.72 'Plus Jakarta Sans',sans-serif!important}
+.ely-inline-copy [contenteditable='true']:focus{outline:none!important;box-shadow:inset 0 -2px 0 var(--ely-clay)!important}
+.ely-inline-copy .field-wrapper [role='toolbar'],
+.ely-inline-copy .field-wrapper .toolbar{position:sticky;top:0;z-index:2;margin:0 0 8px!important;padding:4px!important;border:1px solid var(--ely-line)!important;border-radius:8px!important;background:var(--ely-soft)!important;box-shadow:none!important}
+
+/* Selects, toggles and tag lists remain inline instead of becoming a dialog. */
+.ely-inline-control .field-wrapper{padding:2px 0!important}
+.ely-inline-control .field-wrapper [role='radiogroup'],
+.ely-inline-control .field-wrapper .item-list{display:flex!important;flex-wrap:wrap!important;gap:7px!important;align-items:flex-start!important}
+.ely-inline-control .field-wrapper [role='radio'],
+.ely-inline-control .field-wrapper [role='switch'],
+.ely-inline-control .field-wrapper [role='checkbox']{min-height:40px!important}
+.ely-inline-control .field-wrapper .item-list>li,
+.ely-inline-control .field-wrapper .item-list>*{max-width:100%!important}
+
+.ely-on-page-toolbar{display:flex;align-items:center;justify-content:flex-end;gap:8px;z-index:82;padding:6px 10px;border-top:1px solid var(--ely-line);background:var(--ely-paper);font-size:11px;color:var(--ely-muted);pointer-events:auto}
+.ely-on-page-toolbar[hidden]{display:none}
+.ely-on-page-toolbar>span{margin-right:auto}
+.ely-on-page-toolbar button{background:var(--ely-forest);color:var(--ely-surface);border:0;border-radius:6px;min-height:38px;min-width:76px;padding:7px 14px;font:700 12px 'Plus Jakarta Sans',sans-serif;cursor:pointer}
+
+.ely-article-backdrop{position:fixed;z-index:70;border:0;pointer-events:none;background:var(--ely-paper);opacity:1!important;filter:none!important}
+.ely-action-status{position:fixed;z-index:83;bottom:14px;left:14px;max-width:min(480px,calc(100vw - 64px));margin:0;padding:10px 13px;border-radius:8px;background:var(--ely-forest);color:var(--ely-surface);font-size:12px;line-height:1.5;pointer-events:none}
+.ely-action-status:empty{display:none}
+
+@media(max-width:767px){
+ .ely-mode-switch button{padding-inline:10px}
+ .content-editor.ely-page-mode .ely-on-page-field{padding:10px 12px 52px!important}
+ .ely-inline-title input{font-size:36px!important}
+ .ely-inline-heading input{font-size:28px!important}
+ .ely-on-page-field input,.ely-on-page-field textarea{font-size:16px}
+ .ely-page-mode .ely-inspector:not(.ely-inline-edit){max-height:calc(100dvh - 92px)}
+ .ely-inspector>header{padding:12px 14px 9px}
+ .ely-action-status{bottom:8px;font-size:12px;padding:8px 11px}
 }
-.ely-mode-switch button[aria-pressed='true'], .ely-on-page-toolbar button { background: var(--ely-forest); color: var(--ely-surface); }
-.ely-mode-switch button:hover, .ely-page-actions button:hover { background: var(--ely-soft); color: var(--ely-forest); }
-.ely-mode-switch button:focus-visible, .ely-page-actions button:focus-visible, .ely-on-page-toolbar button:focus-visible { outline: 2px solid var(--ely-clay); outline-offset: 2px; }
-.ely-page-feedback { display: none; margin: 0; padding: 12px 24px; background: var(--ely-paper); color: var(--ely-muted); font-size: 14px; line-height: 1.5; }
-.ely-page-actions { display: none; }
-.ely-page-mode .ely-page-actions { display: flex; }
-.ely-page-mode .ely-page-feedback { display: block; }
-.content-editor.ely-page-mode .content-area { position: relative; }
-.content-editor.ely-page-mode .content-area .sui.resizable-pane:has(.ely-editor-content) {
-  position: absolute; top: 0; left: 0; width: min(700px,100%); height: 100%;
-  visibility: hidden; overflow: visible !important;
-}
-.content-editor.ely-page-mode .content-area .sui.resizable-pane:has(iframe.preview) { display: block !important; flex: 1 1 100% !important; width: 100% !important; }
-.content-editor.ely-page-mode .resizable-handle, .content-editor.ely-page-mode .swap-button { display: none; }
-.content-editor.ely-page-mode .pane[data-mode='preview'] { display: flex !important; }
-.content-editor.ely-page-mode .ely-on-page-field {
-  position: fixed !important; left: var(--ely-field-left); top: var(--ely-field-top);
-  width: var(--ely-field-width); max-height: calc(100dvh - var(--ely-field-top) - 24px);
-  box-sizing: border-box; overflow: auto; overscroll-behavior: contain;
-  visibility: visible; z-index: 101; margin: 0 !important; padding: 20px !important;
-  background: var(--ely-surface); color: var(--ely-ink); border-radius: 0 0 12px 12px;
-  box-shadow: 0 12px 32px #16271f33; scrollbar-color: var(--ely-muted) var(--ely-paper);
-}
-.ely-on-page-field > .ely-editor-section { display: none; }
-.ely-on-page-toolbar {
-  position: fixed; z-index: 102; height: 44px; padding: 4px 12px 4px 20px;
-  box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; gap: 12px;
-  background: var(--ely-paper); color: var(--ely-forest); border-radius: 12px 12px 0 0;
-  font-size: 14px; font-weight: 600;
-}
-.ely-on-page-toolbar[hidden] { display: none; }
-@media (max-width: 767px) {
-  .content-editor > .primary > .inner { flex-wrap: wrap; }
-  .content-editor > .primary h2 { flex-basis: calc(100% - 80px); }
-  .ely-mode-switch button, .ely-page-actions button, .ely-on-page-toolbar button { min-height: 44px; }
-  .ely-page-feedback { padding: 10px 16px; font-size: 13px; }
-  .ely-on-page-toolbar { height: 48px; }
-  .content-editor.ely-page-mode .ely-on-page-field { padding: 16px !important; }
-}
-.ely-page-mode .ely-page-feedback { position: absolute; top: 56px; left: 0; right: 0; z-index: 1; }
-.content-editor.ely-page-mode .content-area { padding-top: 44px; }
-.content-editor.ely-page-mode #first-pane-body * { visibility: hidden !important; }
-.content-editor.ely-page-mode #first-pane-body .ely-on-page-field,
-.content-editor.ely-page-mode #first-pane-body .ely-on-page-field * { visibility: visible !important; }
-.content-editor.ely-page-mode .swap-button { display: none; }
-@media (max-width: 767px) {
-  .ely-page-mode .ely-page-feedback { top: 112px; }
-  .content-editor.ely-page-mode .content-area { padding-top: 60px; }
-}
-.content-editor.ely-page-mode .pane[data-mode='edit'] { visibility: hidden; }
-.ely-page-mode .ely-page-feedback { top: var(--ely-toolbar-height,56px); }
-.content-editor.ely-page-mode #first-pane-body .ely-on-page-field > .ely-editor-section { display: none; }
-.content-editor.ely-page-mode .pane[data-mode='preview'] #first-pane-body * { visibility: visible !important; }
-@media (max-width: 767px) {
-  .content-editor > .primary { height: auto !important; min-height: 56px; }
-  .content-editor > .primary > .inner { flex-wrap: wrap !important; }
-  .ely-page-mode .ely-page-actions { order: 2; flex-basis: 100%; justify-content: flex-end; }
-}
-.ely-page-backdrop { position: absolute; inset: 60px 0 0; width: 100%; height: calc(100% - 60px); border: 0; pointer-events: none; z-index: 2; }
-.ely-mobile-actions { display: none; }
-.ely-page-mode .ely-mobile-actions { display: flex; gap: 8px; }
-.ely-mobile-actions button { min-height: 44px; padding: 6px 12px; border: 0; border-radius: 6px; font: 600 13px/1.3 'Plus Jakarta Sans',sans-serif; color: var(--ely-forest); background: var(--ely-soft); cursor: pointer; }
-.ely-mobile-actions button:hover { background: var(--ely-line); }
-.ely-mobile-actions button:focus-visible { outline: 2px solid var(--ely-clay); outline-offset: 2px; }
-.ely-page-mode #first-pane-header button[aria-label='Anteprima'] { display: none; }
-@media (max-width: 767px) { .ely-page-mode .ely-page-actions { display: none; } }
+.ely-inline-copy textarea{font:400 17px/1.72 'Plus Jakarta Sans',sans-serif!important;color:var(--ely-forest)!important}
