@@ -49,7 +49,7 @@ export async function publishingToken(env) {
   });
   if (!response.ok) throw new Error('Publishing connection unavailable');
   const data = await response.json();
-  if (!data.token || !data.expires_at) throw new Error('Invalid publishing connection');
+  if (!data.token || !data.expires_at || data.permissions?.contents !== 'write') throw new Error('Invalid publishing connection');
   appAccess = {token: data.token, expires: Date.parse(data.expires_at), installation: env.CMS_GITHUB_INSTALLATION_ID};
   return data.token;
 }
@@ -163,6 +163,15 @@ async function proxy(request, env, active) {
   // Keep API pagination on this origin rather than exposing the publishing credential.
   const link = upstream.headers.get('Link');
   if (link) outputHeaders.set('Link', link.replaceAll('https://api.github.com/', url.origin + '/cms/api/v3/'));
+  if (upstream.ok && !env.CMS_GITHUB_TOKEN && url.pathname === '/cms/api/v3/repos/' + REPO) {
+    const repository = await upstream.json();
+    if (repository.full_name !== REPO) throw new Error('Unexpected publishing repository');
+    // Installation tokens do not describe a human user's push permission.
+    // Report the editor's capability after minting a contents-write token;
+    // every write still passes the repository, branch and file restrictions.
+    repository.permissions = {...repository.permissions, push: true, pull: true};
+    return json(repository);
+  }
   return new Response(upstream.body, {status: upstream.status, headers: outputHeaders});
 }
 

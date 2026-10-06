@@ -18,7 +18,7 @@ const createDB=()=>{
    const jwt=options.headers.Authorization.slice(7),parts=jwt.split('.');
    assert.ok(require('node:crypto').verify('RSA-SHA256',Buffer.from(parts[0]+'.'+parts[1]),keys.publicKey,Buffer.from(parts[2],'base64url')));
    const claims=JSON.parse(Buffer.from(parts[1],'base64url'));assert.equal(claims.iss,'123');assert.ok(claims.exp-Math.floor(Date.now()/1000)<=540);
-   return Response.json({token:'test-app-token',expires_at:new Date(Date.now()+3600000).toISOString()});
+   return Response.json({token:'test-app-token',expires_at:new Date(Date.now()+3600000).toISOString(),permissions:{contents:'write'}});
  };
  const appEnv={CMS_GITHUB_APP_ID:'123',CMS_GITHUB_INSTALLATION_ID:'987',CMS_GITHUB_PRIVATE_KEY:keys.privateKey.export({type:'pkcs8',format:'pem'})};
  assert.equal(await publishingToken(appEnv),'test-app-token');assert.equal(await publishingToken(appEnv),'test-app-token');assert.equal(minted,1);
@@ -44,6 +44,14 @@ const createDB=()=>{
  assert.equal((await call('/cms/session',{headers})).status,200);
  assert.equal((await call('/cms/api/v3/user',{headers})).status,200);
  assert.equal((await call('/cms/api/v3/user',{headers:{Cookie:cookie,Authorization:'Bearer wrong'}})).status,401);
+ global.fetch=async(url,options)=>{
+   assert.equal(url,'https://api.github.com/repos/mattiabacile/elyexploreworld');
+   assert.equal(options.headers.Authorization,'Bearer test-app-token');
+   return Response.json({full_name:'mattiabacile/elyexploreworld',permissions:{admin:false,push:false,pull:false}});
+ };
+ const appRepository=await handleCMS({env:{...env,CMS_GITHUB_TOKEN:undefined,...appEnv},request:new Request(origin+'/cms/api/v3/repos/mattiabacile/elyexploreworld',{headers})});
+ assert.equal(appRepository.status,200);
+ assert.deepEqual((await appRepository.json()).permissions,{admin:false,push:true,pull:true});
  const forwarded=[];global.fetch=async(url,options)=>{forwarded.push({url,options});return Response.json({data:{createCommitOnBranch:{commit:{oid:'b'.repeat(40)}}}})};
  assert.equal((await call('/cms/api/graphql',{method:'POST',headers,data:mutation})).status,200);
  assert.equal(forwarded[0].url,'https://api.github.com/graphql');assert.equal(forwarded[0].options.headers.Authorization,'Bearer '+env.CMS_GITHUB_TOKEN);
