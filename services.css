@@ -81,7 +81,7 @@
   .travel-service-button { min-height: 48px; padding: 12px 17px; gap: 8px; font-size: 15px; letter-spacing: -.025em; }
   .travel-service-button svg { width: 22px; height: 20px; }
   .travel-service-consultation .travel-service-button { width: 100%; }
-  .travel-service-footer { flex-wrap: wrap; gap: 18px; margin: 0; padding-top: 30px; }
+  .travel-service-footer { flex-wrap: wrap; gap: 18px; margin: 0; }
   .travel-service-price > span { font-size: 12px; }
   .travel-service-price strong { font-size: 50px; gap: 8px; }
   .travel-service-price small { font-size: 20px; }
@@ -89,9 +89,6 @@
   .travel-service-footer .travel-service-button { width: 100%; }
 }
 @media (prefers-reduced-motion: reduce) { .travel-service-button { transition: none; } }
-
-@media (min-width: 901px) { .travel-services-heading { transform: translateX(1.1cqw); } }
-
 
 /* Native disclosure keeps the extra service copy accessible to keyboard and touch. */
 .travel-service-details { margin: 16px 0 0; font-size: clamp(15px, 1.55cqw, 20px); }
@@ -103,9 +100,6 @@
 .travel-service-details > p { margin: 8px 0 16px; color: #52615c; line-height: 1.6; overflow-wrap: anywhere; }
 .travel-service--full .travel-service-consultation { margin-top: auto; }
 .travel-service-details { margin-bottom: 20px; }
-@media (min-width: 901px) {
-  .travel-service-footer { min-height: 13cqw; }
-}
 @media (max-width: 900px) {
   .travel-service-details { font-size: 15px; margin-top: 14px; margin-bottom: 18px; }
   .travel-service--full .travel-service-consultation { margin-top: 6px; }

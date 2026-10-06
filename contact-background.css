@@ -1,10 +1,9 @@
-/* Travel photographs surround a fully opaque, readable contact form. */
+/* The ocean photograph surrounds a fully opaque, readable contact form. */
 .contact-section { position: relative; isolation: isolate; height: auto; min-height: 0; background: #203d2c; overflow: hidden; }
 .contact-section::before { content: ''; position: absolute; z-index: 0; inset: 0; pointer-events: none; background: linear-gradient(90deg, rgb(17 39 29 / .85), rgb(17 39 29 / .72) 46%, rgb(17 39 29 / .28)); }
 .contact-section::after { content: none; }
-.contact-background-slideshow { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
-.contact-background-slide { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 900ms ease; }
-.contact-background-slide.is-active { opacity: 1; }
+.contact-background { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+.contact-background-photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .contact-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(440px, .9fr); align-items: stretch; gap: 64px; width: min(100%, 1400px); height: auto; min-height: 0; margin-inline: auto; padding: 64px 40px; }
 .contact-editorial { display: flex; flex-direction: column; justify-content: center; gap: 48px; min-width: 0; padding: 24px 0; border: 0; color: #fff9ed; }
 .contact-intro { display: block; height: auto; min-height: 0; padding: 0; }
@@ -24,6 +23,7 @@
 .contact-links a:focus-visible { outline-color: #fff9ed; }
 .contact-panel { position: relative; padding: 32px; border: 0; border-radius: 16px; color: #004d73; background: #fbf9f5; --contact-muted: #466575; --contact-line: #a5afb3; }
 .contact-form { color: #004d73; }
+.contact-form .contact-trip-fields { margin-top: 20px; }
 .contact-form input:not([type='date']), .contact-form textarea, .contact-form .contact-date-trigger, .contact-form .contact-travelers-field, .contact-form .mobile-date-display, .contact-form .contact-stepper { background-color: #fbf9f5; }
 .contact-form .contact-privacy { color: #3f544a; font-size: 14px; }
 @media (max-width: 1100px) {
@@ -45,7 +45,6 @@
   .contact-form .contact-option-grid { gap: 6px; }
   .contact-form .contact-option-grid label > span { padding-inline: 4px; overflow-wrap: anywhere; }
 }
-@media (prefers-reduced-motion: reduce) { .contact-background-slide { transition: none; } }
 
 /* Continuous desktop transition from the stories’ sage surface into the photographs. */
 @media (min-width: 768px) and (min-height: 501px), (min-width: 951px), (min-width: 768px) and (hover: hover) {

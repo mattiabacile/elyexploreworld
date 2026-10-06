@@ -5,12 +5,11 @@
 .bio-panel-shadow { fill:#737d6c; }
 .bio-portrait { position:absolute; z-index:-1; left:2%; top:3%; width:39%; height:94%; fill:none; stroke:none; overflow:visible; }
 .bio-placeholder-frame { fill:var(--bio-sage); stroke:#d9c6b3; stroke-width:2; }
-.bio-placeholder-label { fill:#fff9ed; font:400 66px/.95 var(--font-display); letter-spacing:-.025em; }
 .bio-botanical-art { pointer-events:none; }
 .bio-content { grid-column:2; min-width:0; max-width:68ch; padding-left:28px; color:var(--bio-ink); }
 .bio-title { margin:0; color:var(--bio-ink); font:400 clamp(64px,6vw,96px)/.84 var(--font-display); letter-spacing:-.035em; }
 .bio-title span { display:block; }
-.bio-title span:first-child { font-size:.68em; line-height:1; letter-spacing:-.02em; }
+.bio-title span:first-child { font-size:.68em; line-height:1; }
 .bio-title em { color:var(--bio-accent); font-size:1.08em; font-weight:500; }
 .bio-rule { width:72px; height:2px; margin:28px 0 26px; background:var(--bio-accent); opacity:.8; }
 .bio-copy { display:grid; gap:17px; font-size:clamp(15px,1.02vw,16.5px); line-height:1.68; text-wrap:pretty; }

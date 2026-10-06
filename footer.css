@@ -224,5 +224,3 @@
 @media (prefers-reduced-motion: reduce) {
   .site-footer *::after { transition: none !important; }
 }
-
-

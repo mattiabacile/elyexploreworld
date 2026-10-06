@@ -102,9 +102,6 @@
   .content-preview.is-service-preview .content-preview-body > p { margin: 0; color: inherit; font: 400 16px/1.6 var(--font-body); letter-spacing: normal; text-align: left; }
   .content-preview.is-service-preview .content-preview-body > p + p { margin-top: 22px; }
   .content-preview.is-service-preview .content-preview-body > .service-preview-lead { font-size: 17px; font-weight: 500; line-height: 1.55; }
-  .content-preview.is-service-preview .service-preview-sentence { display: block; }
-  .content-preview.is-service-preview .service-preview-sentence + .service-preview-sentence { margin-top: 14px; }
-  .content-preview.is-service-preview .service-preview-ending { padding-top: 16px; border-top: 1px solid #d9c9b8; }
   .content-preview.is-service-preview .service-desktop-break { display: none; }
   .travel-service--full .travel-service-consultation { display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 12px; margin: 0; padding: 20px 0 0; background: transparent; border-radius: 0; }
   .travel-service-consultation > svg { width: 26px; height: 26px; }

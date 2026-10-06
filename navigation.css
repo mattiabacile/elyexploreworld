@@ -254,7 +254,6 @@
   transform: translateY(-2px);
 }
 
-
 /* Social controls are icon buttons, not navigation text links.
    Prevent legacy nav underline pseudo-elements from being inherited here. */
 .site-header .preview-nav .menu-socials a::before,
