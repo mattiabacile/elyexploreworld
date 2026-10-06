@@ -208,5 +208,35 @@
     "intro": "Piccoli gesti per vivere un luogo quotidiano senza sentirsi soltanto di passaggio.",
     "chapters": [],
     "tags": []
+  },
+  {
+    "title": "test",
+    "kind": "racconto",
+    "destination": "ciao",
+    "deck": "test test test",
+    "hero": "https://picsum.photos/id/839/1920/1280.webp",
+    "heroAlt": "test",
+    "heroCaption": "",
+    "intro": "Test",
+    "chapters": [],
+    "travelFacts": null,
+    "gallery": [],
+    "conclusion": "",
+    "appearance": {
+      "theme": "forest",
+      "coverFormat": "panoramic",
+      "coverPosition": "center",
+      "textStyle": "modern",
+      "dropCap": true,
+      "showContents": false
+    },
+    "titleAccent": "",
+    "published": true,
+    "date": "2026-10-06",
+    "preparing": false,
+    "category": "",
+    "tags": [],
+    "slideText": "",
+    "id": "01b3205e-633b-4cef-ac89-5daeaff03920"
   }
 ]
