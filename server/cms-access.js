@@ -213,7 +213,8 @@ export async function handleCMS({request, env}) {
     }
     if (route.startsWith('/cms/api/')) return await proxy(request, env, active);
     return json({message: 'Pagina non trovata.'}, 404);
-  } catch {
-    return json({message: 'Impossibile completare la richiesta. Riprova tra poco.'}, 503);
+  } catch (error) {
+    // Return only the exception type, never credentials or upstream payloads.
+    return json({message: 'Impossibile completare la richiesta. Riprova tra poco.', code: error.name}, 503);
   }
 }
