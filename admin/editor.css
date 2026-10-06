@@ -1,19 +1,242 @@
-/* The editor keeps Sveltia's native controls and focuses on the writing flow. */
-.ely-editor-guide { margin: 12px 0 16px; padding: 16px 18px; background: #f1f4ee; color: #254535; border-radius: 12px; font: 400 14px/1.6 'Plus Jakarta Sans', sans-serif; }
-.ely-editor-guide summary { cursor: pointer; font-weight: 600; min-height: 28px; }
-.ely-editor-guide ol { padding-left: 22px; margin-block: 14px; }
-.ely-editor-guide li + li { margin-top: 10px; }
-.ely-editor-guide p { margin-bottom: 0; }
-.ely-editor-nav { display: flex; gap: 6px; flex-wrap: wrap; position: sticky; top: 0; z-index: 4; padding-block: 8px; margin: 0 0 24px; background: #fafbf8; }
-.ely-editor-nav button { min-height: 44px; flex: 1; padding: 8px 10px; border: 1px solid #b3bfb0; border-radius: 8px; background: #fff; color: #254535; font: 600 13px 'Plus Jakarta Sans', sans-serif; cursor: pointer; }
-.ely-editor-nav button:hover { background: #eef2e9; }
-.ely-editor-nav button:focus-visible, .ely-editor-guide summary:focus-visible { outline: 3px solid #9f4933; outline-offset: 3px; }
-section.field > .ely-editor-section { display: block; width: 100%; margin: 24px 0 18px; padding-top: 24px; border-top: 1px solid #c6d0c1; color: #254535; }
-section.field > .ely-editor-section h2 { margin: 0 0 6px; font: 700 19px/1.3 'Plus Jakarta Sans', sans-serif; }
-section.field > .ely-editor-section p { margin: 0; font: 400 13px/1.6 'Plus Jakarta Sans', sans-serif; color: #50634c; }
-section.field[data-key-path="title"] > section.field > .ely-editor-section { padding-top: 0; margin-top: 0; border: 0; }
-section.field[data-key-path] { scroll-margin-top: 80px; }
-.ely-editor-content { padding-bottom: 80px; }
-@media (prefers-color-scheme: dark) {
-  html[data-theme="dark"] .ely-editor-guide { background: #26382d; color: #f1f4ee; }
+/* Ely's writing studio extends the native CMS, including its accessible controls. */
+html:root {
+  --ely-forest: #254535;
+  --ely-ink: #2d302b;
+  --ely-muted: #586654;
+  --ely-paper: #f7f3e9;
+  --ely-surface: #fffdf8;
+  --ely-soft: #ecefe5;
+  --ely-line: #d5dbce;
+  --ely-clay: #9f4933;
+  --ely-warning: #825623;
+  --ely-warning-bg: #f8edda;
+  --sui-font-family-default: 'Plus Jakarta Sans', sans-serif;
+  --sui-font-size-default: 14px;
+  --sui-line-height-default: 1.4;
+  --sui-primary-accent-color: #254535;
+  --sui-primary-accent-color-inverted: #fffdf8;
+  --sui-focus-ring-color: #9f4933;
+  --sui-control-medium-height: 40px;
+  --sui-control-medium-border-radius: 8px;
+  --sui-control-small-border-radius: 6px;
+  --sui-textbox-singleline-padding: 0 12px;
 }
+html:root[data-theme='light'] {
+  --sui-primary-accent-color: #254535;
+  --sui-primary-accent-color-text: #254535;
+  --sui-primary-accent-color-light: #365d48;
+  --sui-primary-accent-color-dark: #1d382a;
+  --sui-primary-accent-color-inverted: #fffdf8;
+  --sui-primary-accent-color-translucent: #a7b79a99;
+  --sui-primary-accent-color-translucent-light: #a7b79a66;
+  --sui-foreground-color-1-hsl: 146 30% 16%;
+  --sui-foreground-color-2-hsl: 100 5% 18%;
+  --sui-foreground-color-3-hsl: 105 10% 30%;
+  --sui-foreground-color-4-hsl: 105 10% 37%;
+  --sui-background-color-1-hsl: 43 100% 99%;
+  --sui-background-color-2-hsl: 43 47% 95%;
+  --sui-background-color-3-hsl: 87 24% 92%;
+  --sui-background-color-4-hsl: 83 18% 89%;
+  --sui-background-color-5-hsl: 92 19% 78%;
+  --sui-border-color-1-hsl: 90 13% 65%;
+  --sui-border-color-2-hsl: 90 15% 77%;
+  --sui-border-color-3-hsl: 90 14% 84%;
+}
+html:root[data-theme='dark'] {
+  --ely-forest: #d5e5cf;
+  --ely-ink: #edf0e6;
+  --ely-muted: #bdcbb6;
+  --ely-paper: #19271f;
+  --ely-surface: #203127;
+  --ely-soft: #2b3e30;
+  --ely-line: #4c6050;
+  --ely-clay: #efb299;
+  --ely-warning: #f2d5a9;
+  --ely-warning-bg: #3d3322;
+  --sui-primary-accent-color: #b8d0a7;
+  --sui-primary-accent-color-text: #d5e5cf;
+  --sui-primary-accent-color-light: #cce1bc;
+  --sui-primary-accent-color-dark: #a7b79a;
+  --sui-primary-accent-color-translucent: #a7b79a99;
+  --sui-primary-accent-color-translucent-light: #a7b79a66;
+  --sui-primary-accent-color-inverted: #19271f;
+  --sui-focus-ring-color: #efb299;
+  --sui-foreground-color-1-hsl: 90 25% 94%;
+  --sui-foreground-color-2-hsl: 90 18% 90%;
+  --sui-foreground-color-3-hsl: 100 15% 79%;
+  --sui-foreground-color-4-hsl: 100 12% 71%;
+  --sui-background-color-1-hsl: 144 21% 16%;
+  --sui-background-color-2-hsl: 146 22% 13%;
+  --sui-background-color-3-hsl: 145 20% 18%;
+  --sui-background-color-4-hsl: 136 18% 22%;
+  --sui-background-color-5-hsl: 136 16% 32%;
+  --sui-border-color-1-hsl: 134 12% 50%;
+  --sui-border-color-2-hsl: 134 12% 34%;
+  --sui-border-color-3-hsl: 134 12% 28%;
+}
+.ely-editor-content { padding-bottom: 100px; background: var(--ely-surface); color: var(--ely-ink); }
+.ely-editor-content::selection, .ely-editor-content *::selection { background: #dce5d4; color: #254535; }
+.ely-editor-content input, .ely-editor-content textarea, .ely-editor-content [contenteditable] { caret-color: var(--ely-clay); }
+.ely-editor-content svg { width: 18px; height: 18px; flex-shrink: 0; }
+.ely-editor-content > section.field { --field-editor-padding: 28px; padding-inline: 28px; }
+.ely-editor-content section.field[data-key-path] { scroll-margin-top: 72px; }
+.ely-editor-content section.field > header h4 { font-weight: 600; }
+.ely-editor-content .hint { line-height: 1.65; max-width: 70ch; }
+.ely-studio { margin: 0; padding: 28px 28px 20px; background: var(--ely-paper); }
+.ely-studio-brand { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 23px; }
+.ely-studio-brand a { font: 600 25px/1.1 'Cormorant Garamond', serif; color: var(--ely-forest); text-decoration: none; }
+.ely-studio-brand span { font-size: 12px; color: var(--ely-muted); }
+.ely-studio h1 { margin: 0 0 8px; font: 700 25px/1.25 'Plus Jakarta Sans', sans-serif; letter-spacing: -.5px; color: var(--ely-forest); }
+.ely-studio > p { margin: 0 0 14px; max-width: 58ch; font-size: 13px; line-height: 1.65; color: var(--ely-muted); }
+.ely-visibility { display: inline-block; font-size: 12px; font-weight: 600; color: var(--ely-forest); }
+.ely-writing-stats { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 16px; margin: 16px 0; padding: 13px 0; border-block: 1px solid var(--ely-line); font-size: 12px; color: var(--ely-muted); font-variant-numeric: tabular-nums; }
+.ely-word-count { font-weight: 700; color: var(--ely-forest); }
+.ely-studio-actions { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px 12px; }
+.ely-editor-content button:not(.sui), .ely-focus-toggle, .ely-preview-devices button { font-family: 'Plus Jakarta Sans', sans-serif; cursor: pointer; }
+.ely-studio-actions button { display: inline-flex; align-items: center; gap: 8px; padding: 10px 0; border: 0; background: none; font-size: 12px; line-height: 1.5; min-height: 44px; text-align: left; color: var(--ely-forest); }
+.ely-studio-actions .ely-check-jump { color: var(--ely-warning); }
+.ely-studio-actions .ely-check-jump[data-ready='true'] { color: var(--ely-forest); }
+.ely-studio-actions button:hover { text-decoration: underline; text-underline-offset: 4px; }
+.ely-studio-actions button:disabled { opacity: .5; cursor: default; text-decoration: none; }
+.ely-studio > .ely-editor-feedback:empty { display: none; }
+.ely-studio > .ely-editor-feedback { margin: 10px 0 0; font-size: 12px; }
+.ely-editor-nav { position: sticky; top: 0; z-index: 4; display: flex; gap: 4px; margin: 0; padding: 9px 24px; background: var(--ely-paper); border-bottom: 1px solid var(--ely-line); }
+.ely-editor-nav button { flex: 1; min-width: 0; min-height: 44px; padding: 9px 8px; border: 1px solid transparent; border-radius: 8px; color: var(--ely-muted); background: transparent; font-size: 12px; font-weight: 600; transition: background-color 160ms ease-out, color 160ms ease-out; }
+.ely-editor-nav button:hover { color: var(--ely-forest); background: var(--ely-soft); }
+.ely-editor-nav button[aria-current='step'] { color: var(--ely-surface); background: var(--ely-forest); }
+.ely-editor-guide { margin: 14px 28px 0; color: var(--ely-muted); font-size: 12px; line-height: 1.7; }
+.ely-editor-guide summary, .ely-writing-prompts summary { min-height: 44px; align-content: center; cursor: pointer; font-weight: 600; }
+.ely-editor-guide ol { padding-left: 20px; margin: 8px 0; }
+.ely-editor-guide li + li { margin-top: 10px; }
+.ely-editor-guide p { margin: 12px 0; }
+.ely-editor-content button:not(.sui):focus-visible, .ely-editor-content summary:focus-visible, .ely-studio a:focus-visible, .ely-focus-toggle:focus-visible, .ely-preview-devices button:focus-visible { outline: 3px solid var(--ely-clay); outline-offset: 3px; }
+section.field > .ely-editor-section { display: block; width: 100%; margin: 12px 0 24px; padding-top: 28px; border-top: 1px solid var(--ely-line); }
+section.field[data-key-path='title'] > .ely-editor-section { margin-top: 0; padding-top: 12px; border: 0; }
+.ely-editor-section h2 { margin: 0 0 7px; color: var(--ely-forest); font: 700 19px/1.35 'Plus Jakarta Sans', sans-serif; letter-spacing: -.2px; }
+.ely-editor-section > p { margin: 0; color: var(--ely-muted); font: 400 13px/1.65 'Plus Jakarta Sans', sans-serif; }
+.ely-writing-prompts { margin-top: 14px; padding: 4px 14px; border-radius: 12px; background: var(--ely-soft); font-size: 13px; line-height: 1.75; color: var(--ely-ink); }
+.ely-writing-prompts summary { color: var(--ely-forest); }
+.ely-writing-prompts summary svg { margin: 0 8px -4px 3px; }
+.ely-writing-prompts ul { padding-left: 20px; margin: 6px 0 14px; }
+.ely-writing-prompts li + li { margin-top: 10px; }
+.ely-writing-prompts p { margin: 0 0 12px; color: var(--ely-muted); }
+.ely-publish-checks { list-style: none; padding: 0; margin: 20px 0; }
+.ely-publish-checks li { border-bottom: 1px solid var(--ely-line); }
+.ely-publish-checks button { width: 100%; display: flex; align-items: center; gap: 12px; min-height: 62px; padding: 12px 4px; border: 0; background: transparent; color: var(--ely-warning); text-align: left; }
+.ely-publish-checks button > span:nth-child(2) { flex: 1; min-width: 0; }
+.ely-publish-checks button:hover { background: var(--ely-soft); }
+.ely-check-label { display: block; font-size: 13px; font-weight: 600; line-height: 1.5; }
+.ely-check-hint { display: block; margin-top: 3px; color: var(--ely-muted); font-size: 12px; line-height: 1.55; }
+.ely-check-icon { display: flex; }
+.ely-publish-checks [data-done='true'] button { color: var(--ely-forest); }
+.ely-publish-checks [data-done='true'] .ely-check-icon svg:last-child, .ely-publish-checks [data-done='false'] .ely-check-icon svg:first-child { display: none; }
+.ely-editor-section > .ely-publish-status { padding: 14px 16px; border-radius: 12px; background: var(--ely-soft); color: var(--ely-forest); font-weight: 600; }
+.ely-editor-section > .ely-publish-note { margin-top: 14px; font-size: 12px; }
+.ely-focus-toggle { border: 1px solid var(--ely-line); border-radius: 6px; background: var(--ely-surface); color: var(--ely-forest); font-size: 12px; font-weight: 600; padding: 8px 12px; min-height: 36px; }
+.ely-focus-toggle:hover, .ely-preview-devices button:hover { background: var(--ely-soft); }
+.ely-preview-devices { display: flex; gap: 2px; padding: 3px; border: 1px solid var(--ely-line); border-radius: 8px; }
+.ely-preview-devices button { border: 0; border-radius: 5px; background: transparent; color: var(--ely-muted); font-size: 11px; font-weight: 600; padding: 6px 9px; min-height: 30px; }
+.ely-preview-devices button[aria-pressed='true'] { background: var(--ely-forest); color: var(--ely-surface); }
+.content-editor.ely-phone-preview #second-pane-body > .content { background: var(--ely-soft); }
+.content-editor.ely-phone-preview iframe.preview { width: min(100%,390px); margin-inline: auto; }
+.content-editor.ely-writing-mode .content-area .sui.resizable-pane:has(iframe.preview) { display: none; }
+.content-editor.ely-writing-mode .content-area .sui.resizable-pane:has(.ely-editor-content) { flex: 1 1 100% !important; }
+.content-editor.ely-writing-mode .content-area .sui.resizable-handle, .content-editor.ely-writing-mode .swap-button { display: none; }
+.content-editor.ely-writing-mode .ely-editor-content > section.field, .content-editor.ely-writing-mode .ely-editor-guide { max-width: 850px; margin-inline: auto; }
+.content-editor.ely-writing-mode .ely-studio { padding-inline: max(28px,calc((100% - 794px) / 2)); }
+.content-editor.ely-writing-mode .ely-editor-nav { justify-content: center; }
+.content-editor.ely-writing-mode .ely-editor-nav button { max-width: 164px; }
+@media (max-width: 767px) {
+  html:root { --sui-control-medium-height: 44px; --sui-font-size-default: 15px; }
+  .ely-editor-content > section.field { --field-editor-padding: 18px; padding-inline: 18px; }
+  .ely-studio { padding: 22px 18px 14px; }
+  .ely-studio-brand { margin-bottom: 20px; }
+  .ely-studio-brand a { font-size: 23px; }
+  .ely-studio h1 { font-size: 23px; }
+  .ely-writing-stats { gap: 8px 12px; }
+  .ely-editor-nav { padding: 7px 10px; gap: 2px; }
+  .ely-editor-nav button { font-size: 11px; padding-inline: 4px; }
+  .ely-editor-guide { margin-inline: 18px; }
+  .ely-editor-section h2 { font-size: 18px; }
+  .ely-focus-toggle { display: none; }
+  .ely-preview-devices button { min-height: 36px; }
+  .ely-preview-devices { padding: 2px; }
+  .ely-studio-actions { gap: 0 10px; }
+  .ely-studio-actions button { font-size: 12px; }
+}
+@media (prefers-reduced-motion: reduce) { .ely-editor-nav button { transition: none; } }
+
+/* Page authoring: the selected field remains in its native CMS component. */
+.ely-mode-switch, .ely-page-actions { display: flex; gap: 4px; flex-shrink: 0; }
+.ely-mode-switch { padding: 3px; border: 1px solid var(--ely-line); border-radius: 8px; }
+.ely-mode-switch button, .ely-page-actions button, .ely-on-page-toolbar button {
+  min-height: 36px; padding: 6px 12px; border: 0; border-radius: 6px;
+  font: 600 13px/1.3 'Plus Jakarta Sans', sans-serif; cursor: pointer;
+  color: var(--ely-forest); background: transparent;
+}
+.ely-mode-switch button[aria-pressed='true'], .ely-on-page-toolbar button { background: var(--ely-forest); color: var(--ely-surface); }
+.ely-mode-switch button:hover, .ely-page-actions button:hover { background: var(--ely-soft); color: var(--ely-forest); }
+.ely-mode-switch button:focus-visible, .ely-page-actions button:focus-visible, .ely-on-page-toolbar button:focus-visible { outline: 2px solid var(--ely-clay); outline-offset: 2px; }
+.ely-page-feedback { display: none; margin: 0; padding: 12px 24px; background: var(--ely-paper); color: var(--ely-muted); font-size: 14px; line-height: 1.5; }
+.ely-page-actions { display: none; }
+.ely-page-mode .ely-page-actions { display: flex; }
+.ely-page-mode .ely-page-feedback { display: block; }
+.content-editor.ely-page-mode .content-area { position: relative; }
+.content-editor.ely-page-mode .content-area .sui.resizable-pane:has(.ely-editor-content) {
+  position: absolute; top: 0; left: 0; width: min(700px,100%); height: 100%;
+  visibility: hidden; overflow: visible !important;
+}
+.content-editor.ely-page-mode .content-area .sui.resizable-pane:has(iframe.preview) { display: block !important; flex: 1 1 100% !important; width: 100% !important; }
+.content-editor.ely-page-mode .resizable-handle, .content-editor.ely-page-mode .swap-button { display: none; }
+.content-editor.ely-page-mode .pane[data-mode='preview'] { display: flex !important; }
+.content-editor.ely-page-mode .ely-on-page-field {
+  position: fixed !important; left: var(--ely-field-left); top: var(--ely-field-top);
+  width: var(--ely-field-width); max-height: calc(100dvh - var(--ely-field-top) - 24px);
+  box-sizing: border-box; overflow: auto; overscroll-behavior: contain;
+  visibility: visible; z-index: 101; margin: 0 !important; padding: 20px !important;
+  background: var(--ely-surface); color: var(--ely-ink); border-radius: 0 0 12px 12px;
+  box-shadow: 0 12px 32px #16271f33; scrollbar-color: var(--ely-muted) var(--ely-paper);
+}
+.ely-on-page-field > .ely-editor-section { display: none; }
+.ely-on-page-toolbar {
+  position: fixed; z-index: 102; height: 44px; padding: 4px 12px 4px 20px;
+  box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  background: var(--ely-paper); color: var(--ely-forest); border-radius: 12px 12px 0 0;
+  font-size: 14px; font-weight: 600;
+}
+.ely-on-page-toolbar[hidden] { display: none; }
+@media (max-width: 767px) {
+  .content-editor > .primary > .inner { flex-wrap: wrap; }
+  .content-editor > .primary h2 { flex-basis: calc(100% - 80px); }
+  .ely-mode-switch button, .ely-page-actions button, .ely-on-page-toolbar button { min-height: 44px; }
+  .ely-page-feedback { padding: 10px 16px; font-size: 13px; }
+  .ely-on-page-toolbar { height: 48px; }
+  .content-editor.ely-page-mode .ely-on-page-field { padding: 16px !important; }
+}
+.ely-page-mode .ely-page-feedback { position: absolute; top: 56px; left: 0; right: 0; z-index: 1; }
+.content-editor.ely-page-mode .content-area { padding-top: 44px; }
+.content-editor.ely-page-mode #first-pane-body * { visibility: hidden !important; }
+.content-editor.ely-page-mode #first-pane-body .ely-on-page-field,
+.content-editor.ely-page-mode #first-pane-body .ely-on-page-field * { visibility: visible !important; }
+.content-editor.ely-page-mode .swap-button { display: none; }
+@media (max-width: 767px) {
+  .ely-page-mode .ely-page-feedback { top: 112px; }
+  .content-editor.ely-page-mode .content-area { padding-top: 60px; }
+}
+.content-editor.ely-page-mode .pane[data-mode='edit'] { visibility: hidden; }
+.ely-page-mode .ely-page-feedback { top: var(--ely-toolbar-height,56px); }
+.content-editor.ely-page-mode #first-pane-body .ely-on-page-field > .ely-editor-section { display: none; }
+.content-editor.ely-page-mode .pane[data-mode='preview'] #first-pane-body * { visibility: visible !important; }
+@media (max-width: 767px) {
+  .content-editor > .primary { height: auto !important; min-height: 56px; }
+  .content-editor > .primary > .inner { flex-wrap: wrap !important; }
+  .ely-page-mode .ely-page-actions { order: 2; flex-basis: 100%; justify-content: flex-end; }
+}
+.ely-page-backdrop { position: absolute; inset: 60px 0 0; width: 100%; height: calc(100% - 60px); border: 0; pointer-events: none; z-index: 2; }
+.ely-mobile-actions { display: none; }
+.ely-page-mode .ely-mobile-actions { display: flex; gap: 8px; }
+.ely-mobile-actions button { min-height: 44px; padding: 6px 12px; border: 0; border-radius: 6px; font: 600 13px/1.3 'Plus Jakarta Sans',sans-serif; color: var(--ely-forest); background: var(--ely-soft); cursor: pointer; }
+.ely-mobile-actions button:hover { background: var(--ely-line); }
+.ely-mobile-actions button:focus-visible { outline: 2px solid var(--ely-clay); outline-offset: 2px; }
+.ely-page-mode #first-pane-header button[aria-label='Anteprima'] { display: none; }
+@media (max-width: 767px) { .ely-page-mode .ely-page-actions { display: none; } }

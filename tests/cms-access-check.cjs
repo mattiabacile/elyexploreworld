@@ -145,9 +145,10 @@ const createDB=()=>{
     await page.getByLabel('Descrizione della foto',{exact:true}).fill('Una fotografia del viaggio.');
     await page.getByRole('button',{name:'Scrivi',exact:true}).click();
     await page.getByRole('textbox',{name:'Apertura del racconto',exact:true}).fill('Il testo completo della nuova storia.');
-    await page.getByRole('button',{name:'Personalizza',exact:true}).click();
+    await page.getByRole('button',{name:'Aspetto',exact:true}).click();
     const appearance=page.locator('section[data-key-path="appearance"]');
-    await appearance.getByRole('button',{name:'Espandi',exact:true}).first().click();
+    const expandAppearance=appearance.getByRole('button',{name:'Espandi',exact:true}).first();
+    if(await expandAppearance.isVisible())await expandAppearance.click();
     await page.getByRole('radio',{name:'Blu oceano',exact:true}).check();
     await page.getByRole('radio',{name:'Diario di viaggio',exact:true}).check();
     await page.frameLocator('iframe').locator('[data-text-style="journal"]').waitFor();

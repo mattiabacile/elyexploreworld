@@ -40,3 +40,21 @@ aside { padding: 20px; background: #e4e9dc; border-radius: 12px; }
   .preview-gallery > div { grid-template-columns: 1fr; }
   h1 { font-size: 36px; }
 }
+
+.preview-edit-guide, .preview-add { display: none; }
+.ely-editable-page .preview-edit-guide { display: block; font-size: 14px; line-height: 1.5; color: #586654; }
+.ely-editable-page [data-key-path] { cursor: pointer; outline-offset: 5px; border-radius: 4px; }
+.ely-editable-page [data-key-path]:hover { outline: 1px dashed #5f6b51; }
+.ely-editable-page [data-key-path]:focus-visible { outline: 2px solid #9f4933; }
+.ely-editable-page figcaption { min-height: 24px; }
+.ely-editable-page .preview-add {
+  display: inline-flex; align-items: center; min-height: 44px; margin: 12px 12px 12px 0;
+  padding: 10px 14px; border: 1px dashed #5f6b51; border-radius: 8px;
+  background: transparent; color: #254535; font: 500 13px/1.4 'Plus Jakarta Sans', sans-serif;
+}
+.ely-editable-page .preview-add:hover { background: #e4e9dc; }
+.ely-editable-page ::selection { background: #dce5d4; color: #254535; }
+
+.preview-page-settings, .preview-block-tools { display: none; }
+.ely-editable-page .preview-page-settings { display: block; border-top: 1px solid #cad1c4; padding-top: 24px; }
+.ely-editable-page .preview-block-tools { display: flex; flex-wrap: wrap; gap: 4px; grid-column: 1 / -1; }

@@ -47,7 +47,7 @@
       "name": "racconti",
       "label": "Racconti e consigli",
       "label_singular": "Racconto",
-      "description": "Crea un racconto o un consiglio, aggiungi le foto e controlla l’anteprima. Salva come bozza oppure attiva “Visibile sul sito” per pubblicarlo.",
+      "description": "Il tuo taccuino di viaggio: raccogli ricordi, scegli le fotografie e condividi un nuovo racconto.",
       "file": "content/stories.json",
       "format": "json",
       "create": true,
@@ -69,7 +69,7 @@
           "label": "Titolo",
           "widget": "string",
           "maxlength": 180,
-          "hint": "Scegli un titolo che racconti il viaggio. Puoi evidenziarne una parola nelle opzioni Aspetto."
+          "hint": "Scegli un dettaglio che renda il viaggio riconoscibile. Esempio: Giappone, tra templi e piccoli rituali."
         },
         {
           "name": "kind",
@@ -88,6 +88,17 @@
           ]
         },
         {
+          "name": "date",
+          "label": "Data del racconto",
+          "widget": "datetime",
+          "type": "date",
+          "format": "YYYY-MM-DD",
+          "date_format": "DD/MM/YYYY",
+          "time_format": false,
+          "hint": "I racconti sono ordinati dal più recente. La data non programma una pubblicazione futura.",
+          "default": "{{now}}"
+        },
+        {
           "name": "destination",
           "label": "Destinazione",
           "widget": "string",
@@ -98,7 +109,7 @@
           "name": "deck",
           "label": "Introduzione breve",
           "widget": "text",
-          "hint": "Compare nella scheda dell’archivio e sotto il titolo del racconto."
+          "hint": "Due o tre frasi per invitare alla lettura. Compaiono nell’archivio e sotto il titolo: racconta l’atmosfera, senza svelare tutto."
         },
         {
           "name": "hero",
@@ -312,6 +323,27 @@
           ]
         },
         {
+          "name": "category",
+          "label": "Categoria",
+          "widget": "string",
+          "required": false,
+          "hint": "Esempio: Natura e cultura."
+        },
+        {
+          "name": "tags",
+          "label": "Tag",
+          "widget": "list",
+          "required": false,
+          "hint": "Esempio: Bali, Indonesia, Natura.",
+          "field": {
+            "name": "tag",
+            "label": "Tag",
+            "widget": "string"
+          },
+          "collapsed": true,
+          "summary": "{{fields.tag}}"
+        },
+        {
           "name": "gallery",
           "label": "Galleria fotografica",
           "label_singular": "Foto",
@@ -483,22 +515,18 @@
           "hint": "Facoltativo: scrivi una parola o una frase già presente nel titolo."
         },
         {
+          "name": "slideText",
+          "label": "Testo breve dello slideshow",
+          "widget": "text",
+          "required": false,
+          "hint": "Facoltativo: una o due frasi per la homepage. Se lasci il campo vuoto, viene usata l’introduzione breve."
+        },
+        {
           "name": "published",
           "label": "Visibile sul sito",
           "widget": "boolean",
           "default": false,
-          "hint": "Disattivato: salvi una bozza. Attivato: Salva pubblica l’articolo nell’archivio e nello slideshow. L’aggiornamento del sito richiede qualche minuto."
-        },
-        {
-          "name": "date",
-          "label": "Data del racconto",
-          "widget": "datetime",
-          "type": "date",
-          "format": "YYYY-MM-DD",
-          "date_format": "DD/MM/YYYY",
-          "time_format": false,
-          "hint": "I racconti sono ordinati dal più recente. La data non programma una pubblicazione futura.",
-          "default": "{{now}}"
+          "hint": "Attiva per rendere il racconto visibile dopo Salva. Lascia disattivato per salvare una bozza fuori dal sito."
         },
         {
           "name": "preparing",
@@ -506,34 +534,6 @@
           "widget": "boolean",
           "default": false,
           "hint": "Solo per i consigli: pubblica una scheda di anteprima, senza aprire l’articolo completo."
-        },
-        {
-          "name": "category",
-          "label": "Categoria",
-          "widget": "string",
-          "required": false,
-          "hint": "Esempio: Natura e cultura."
-        },
-        {
-          "name": "tags",
-          "label": "Tag",
-          "widget": "list",
-          "required": false,
-          "hint": "Esempio: Bali, Indonesia, Natura.",
-          "field": {
-            "name": "tag",
-            "label": "Tag",
-            "widget": "string"
-          },
-          "collapsed": true,
-          "summary": "{{fields.tag}}"
-        },
-        {
-          "name": "slideText",
-          "label": "Testo breve dello slideshow",
-          "widget": "text",
-          "required": false,
-          "hint": "Una o due frasi brevi. Se vuoto, viene usata l’introduzione breve."
         },
         {
           "name": "id",
@@ -561,6 +561,11 @@
           "label": "Consigli di viaggio",
           "field": "kind",
           "pattern": "consiglio"
+        },
+        {
+          "label": "Consigli in preparazione",
+          "field": "preparing",
+          "pattern": "true"
         }
       ]
     }

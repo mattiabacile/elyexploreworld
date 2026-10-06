@@ -15,7 +15,29 @@ Inserire **nome utente e password** nel pannello. Non serve un account GitHub o 
 5. Controllare l’anteprima. Lasciare **Visibile sul sito** disattivato durante la preparazione.
 6. Quando il contenuto è pronto, attivare **Visibile sul sito**, disattivare **Consiglio in preparazione** e premere **Salva**.
 
-I pulsanti **Inizia**, **Scrivi**, **Personalizza** e **Pubblica** portano alla sezione corrispondente. La guida “Come creare e pubblicare un articolo” è sempre disponibile all’inizio dell’editor. Nell’elenco, i filtri distinguono bozze, pubblicati, racconti e consigli.
+Il **Taccuino di Ely** è lo spazio di lavoro dedicato ai racconti, con colori e caratteri di ElyExploreWorld. I pulsanti **Inizia**, **Copertina**, **Scrivi**, **Aspetto** e **Pubblica** restano raggiungibili durante lo scorrimento e portano alla sezione corrispondente. La data è insieme alle informazioni iniziali. La guida per il primo utilizzo è disponibile all’inizio dell’editor. Nell’elenco, i filtri distinguono bozze, pubblicati, racconti, consigli e consigli in preparazione.
+
+## Modificare sulla pagina
+
+La barra superiore offre due modalità: **Pagina** e **Campi**. Campi mantiene l’editor tradizionale; Pagina mostra il racconto al centro dello spazio di lavoro.
+
+In **Pagina**, cliccare il titolo, un testo, una fotografia o una didascalia: il relativo editor appare sulla pagina. Il testo conserva gli strumenti di formattazione e le fotografie usano la libreria del CMS. È possibile selezionare gli elementi anche con Tab e Invio. **Fine** chiude il controllo e torna all’anteprima; **Salva** conserva tutte le modifiche. Per pubblicare, usare **Pubblica** e scegliere la visibilità prima di salvare.
+
+I controlli per aggiungere o riordinare capitoli e fotografie sono presenti nella pagina. Anche **Aspetto**, **Pubblica**, tipo di contenuto, categoria, etichette e testo della homepage si modificano sopra l’anteprima. Un articolo vuoto offre i controlli per iniziare il testo, aggiungere capitoli e caricare foto; ogni capitolo consente anche citazioni e consigli pratici. Sui telefoni il campo selezionato si apre in un pannello nella parte inferiore; Fine torna alla pagina. Il passaggio tra Pagina e Campi conserva la stessa bozza.
+
+## Strumenti per scrivere e rileggere
+
+- **Statistiche del testo**: parole, tempo di lettura stimato a 200 parole al minuto e numero di capitoli. Il conteggio comprende apertura, testi dei capitoli, citazioni, consigli pratici e conclusione; esclude i titoli e le descrizioni delle fotografie.
+- **Solo scrittura**: su desktop allarga lo spazio per il testo e nasconde l’anteprima. **Mostra anteprima** ripristina i due pannelli. Le modifiche continuano ad aggiornare statistiche e controlli.
+- **Un piccolo aiuto per iniziare**: nella sezione Scrivi, tre spunti facoltativi aiutano a raccontare un ricordo preciso, il proprio ritmo e un consiglio personale, senza inserire testi automaticamente.
+- **Anteprima Desktop / Telefono**: il pulsante Telefono restringe l’anteprima a 390 pixel, quando lo spazio disponibile lo consente, per controllare la leggibilità e le fotografie.
+- **Scarica il testo**: salva una copia Markdown (`.md`) del testo corrente, incluse le modifiche non ancora salvate. Comprende introduzione, capitoli, citazioni, consigli pratici, informazioni del viaggio, galleria e conclusione. Le fotografie sono riferimenti ai file, non immagini incluse nel download. La copia non sostituisce **Salva** e non ripristina le impostazioni grafiche del CMS.
+
+## Controlli prima della pubblicazione
+
+La checklist della sezione **Pubblica** controlla titolo e destinazione, introduzione breve, copertina, descrizioni delle fotografie, testo e data. Ogni voce porta al campo da rivedere. Le descrizioni vengono controllate anche nelle fotografie dei capitoli chiusi e della galleria. Il controllo del testo segnala capitoli incompleti e segnaposto riconoscibili, come “Lorem ipsum”; resta necessaria una rilettura personale.
+
+La checklist è un aiuto e non blocca il salvataggio, anche quando una bozza è incompleta. Lo stato **Dopo Salva** descrive cosa accadrà premendo il pulsante: non certifica che le modifiche siano già salvate o pubblicate. L’opzione **Consiglio in preparazione** compare solo per il tipo Consiglio di viaggio. La data ordina i contenuti, senza programmare la pubblicazione.
 
 ## Personalizzare un articolo
 
@@ -35,6 +57,8 @@ La data serve a ordinare i contenuti, non a programmare la pubblicazione. Per ri
 ## Fotografie
 
 Caricare le immagini dal relativo campo o dalla libreria. Le nuove foto vengono salvate in `assets/uploads`, con nomi univoci, convertite in WebP e ridimensionate entro 2400 pixel di lato con qualità 88. Il limite di caricamento è 25 MB per file. Preferire immagini orizzontali per la copertina; scegliere una foto diversa per ogni capitolo è facoltativo. Le fotografie già utilizzate nei racconti sono disponibili come raccolta in sola lettura.
+
+Le copertine HTTPS già salvate sono supportate anche sul sito pubblico: non fanno scomparire l’articolo dall’archivio. Per i nuovi articoli è preferibile caricare le foto nella libreria del CMS, così restano conservate insieme al sito.
 
 Le varianti mobile preesistenti sono usate solo per le fotografie che le possiedono. Le nuove foto caricate dal CMS funzionano anche su smartphone senza richiedere la creazione manuale di altre versioni.
 
@@ -71,4 +95,4 @@ Per una configurazione tecnica alternativa è supportato `CMS_GITHUB_TOKEN`, un 
 - Marked `18.1.0` e DOMPurify `3.4.16` sono copie locali: rendono il testo formattato e rimuovono codice eseguibile dai contenuti.
 - Il proxy usa il parser GraphQL ufficiale, versione `16.11.0`; licenza in `server/vendor/graphql-LICENSE.txt`.
 - `_routes.json` limita le funzioni alle API riservate del CMS, lasciando statiche tutte le altre richieste.
-- Verifiche: `python3 tests/check-static.py`, `node tests/cms-check.cjs`, `node tests/cms-editor-check.cjs`, `node tests/cms-access-check.cjs`, `node tests/site-check.cjs`, `node tests/mobile-check.cjs`, `node tests/deep-check.cjs`. I controlli Node richiedono Playwright e Chrome.
+- Verifiche: `python3 tests/check-static.py`, `node tests/cms-check.cjs`, `node tests/cms-editor-check.cjs`, `node tests/cms-visual-check.cjs`, `node tests/cms-create-check.cjs`, `node tests/cms-access-check.cjs`, `node tests/site-check.cjs`, `node tests/mobile-check.cjs`, `node tests/deep-check.cjs`. I controlli Node richiedono Playwright e Chrome.

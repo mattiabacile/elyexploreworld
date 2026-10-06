@@ -1,0 +1,104 @@
+const {chromium}=require('playwright'), fs=require('fs'), assert=require('assert/strict');
+const root=require('node:path').resolve(__dirname,'..');
+const stories=JSON.parse(fs.readFileSync(root+'/content/stories.json'));
+stories[0].appearance={theme:'ocean',textStyle:'journal',coverFormat:'natural',showContents:true,dropCap:false};
+stories[0].travelFacts={duration:'Dieci giorni',season:'Primavera'};
+stories[0].gallery=[{image:stories[0].hero,alt:'Foto della galleria',caption:'Il viaggio in immagini'}];
+stories[0].conclusion='Una **riflessione finale**.';
+const files={'content/stories.json':{text:JSON.stringify(stories),type:'application/json'}};
+for(const source of new Set(stories.flatMap(s=>[s.hero,...s.chapters.map(c=>c.image)]).filter(Boolean)))files[source]={base64:fs.readFileSync(root+'/'+source).toString('base64'),type:'image/webp'};
+(async()=>{
+const browser=await chromium.launch({channel:'chrome'}),page=await browser.newPage({viewport:{width:1440,height:1000},reducedMotion:'reduce'});
+const errors=[];page.on('pageerror',error=>errors.push(error.message));
+try {
+await page.addInitScript(({files})=>{
+ window.showDirectoryPicker=async()=>{
+  const root=await navigator.storage.getDirectory();
+  await root.getDirectoryHandle('.git',{create:true});
+  await (await root.getDirectoryHandle('assets',{create:true})).getDirectoryHandle('uploads',{create:true});
+  for(const [path,data] of Object.entries(files)){
+    const parts=path.split('/');const name=parts.pop();let dir=root;
+    for(const part of parts)dir=await dir.getDirectoryHandle(part,{create:true});
+    const file=await dir.getFileHandle(name,{create:true});const stream=await file.createWritable();
+    await stream.write(data.base64?Uint8Array.from(atob(data.base64),c=>c.charCodeAt(0)):data.text);await stream.close();
+  }
+  return root;
+ };
+},{files});
+await page.goto((process.env.SITE_URL || 'http://localhost:4173') + '/admin/?local=1');await page.getByRole('button',{name:/Lavora con Repository Locale/}).click();
+await page.getByText(/Giappone: tra templi/).first().waitFor({timeout:30000});await page.getByText(/Giappone: tra templi/).first().click();
+await page.locator('.ely-word-count').filter({hasText:/\d+ parole/}).waitFor();
+
+await page.getByRole('button',{name:'Pagina',exact:true}).click();
+await page.frameLocator('iframe').getByRole('heading',{name:/Giappone: tra templi/}).click();
+await page.locator('.ely-on-page-field').waitFor({state:'visible'});
+
+await page.getByLabel('Titolo',{exact:true}).fill('Giappone: modifica dalla pagina');
+await page.getByRole('button',{name:'Fine',exact:true}).click();
+await page.frameLocator('iframe').getByRole('heading',{name:'Giappone: modifica dalla pagina'}).waitFor();
+await page.evaluate(async()=>{await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));await Promise.all(document.getAnimations().map(a=>a.finished.catch(()=>{})));});
+await page.screenshot({path:root+'/.impeccable/review/page-desktop.png'});
+await page.frameLocator('iframe').locator('[data-key-path="intro"]').click();
+await page.locator('.ely-on-page-field[data-key-path="intro"]').waitFor({state:'visible'});
+await page.locator('.ely-on-page-field [contenteditable="true"]').fill('Un racconto modificato direttamente dalla pagina.');
+await page.screenshot({path:root+'/.impeccable/review/page-writing.png'});
+await page.getByRole('button',{name:'Fine',exact:true}).click();
+await page.frameLocator('iframe').locator('.preview-intro').filter({hasText:'Un racconto modificato direttamente dalla pagina.'}).waitFor();
+await page.frameLocator('iframe').locator('[data-key-path="chapters.2.title"]').click();
+await page.locator('.ely-on-page-field[data-key-path="chapters.2.title"]').waitFor({state:'visible'});
+await page.locator('.ely-on-page-field input').fill('Un capitolo modificato sulla pagina');
+await page.getByRole('button',{name:'Fine',exact:true}).click();
+await page.frameLocator('iframe').locator('.preview-cover img').click();
+await page.locator('.ely-on-page-field[data-key-path="hero"]').waitFor({state:'visible'});
+assert.ok(await page.locator('.ely-on-page-field button').count()>0);
+await page.getByRole('button',{name:'Fine',exact:true}).click();
+const caption=page.frameLocator('iframe').locator('[data-key-path="gallery.0.caption"]');
+await caption.press('Enter');
+await page.locator('.ely-on-page-field[data-key-path="gallery.0.caption"]').waitFor({state:'visible'});
+await page.locator('.ely-on-page-field input').fill('Una didascalia scelta dalla pagina');
+await page.keyboard.press('Escape');
+await page.locator('.ely-on-page-field').waitFor({state:'detached'});
+await page.getByRole('button',{name:'Campi',exact:true}).click();
+await page.getByLabel('Titolo',{exact:true}).waitFor({state:'visible'});
+assert.equal(await page.getByLabel('Titolo',{exact:true}).inputValue(),'Giappone: modifica dalla pagina');
+await page.getByRole('button',{name:'Pagina',exact:true}).click();
+await page.setViewportSize({width:390,height:844});
+await page.frameLocator('iframe').getByRole('heading',{name:'Giappone: modifica dalla pagina'}).click();
+await page.locator('.ely-on-page-field[data-key-path="title"]').waitFor({state:'visible'});
+await page.getByLabel('Titolo',{exact:true}).fill('Giappone: pagina dal telefono');
+await page.screenshot({path:root+'/.impeccable/review/page-mobile.png'});
+await page.getByRole('button',{name:'Fine',exact:true}).click();
+await page.frameLocator('iframe').locator('.preview-intro [data-key-path="intro"]').click();
+await page.locator('.ely-on-page-field[data-key-path="intro"]').waitFor({state:'visible'});
+await page.locator('.ely-on-page-field [contenteditable="true"]').fill('Una riflessione scritta sulla pagina dal telefono.');
+await page.getByRole('button',{name:'Fine',exact:true}).click();
+await page.frameLocator('iframe').locator('.preview-intro').filter({hasText:'Una riflessione scritta sulla pagina dal telefono.'}).waitFor();
+assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
+await page.getByRole('button',{name:'Salva',exact:true}).click();
+await page.locator('.content-editor').waitFor({state:'detached'});
+const saved=await page.evaluate(async()=>{const dir=await(await navigator.storage.getDirectory()).getDirectoryHandle('content');return JSON.parse(await(await(await dir.getFileHandle('stories.json')).getFile()).text())[0]});
+assert.equal(saved.title,'Giappone: pagina dal telefono');
+assert.equal(saved.intro,'Una riflessione scritta sulla pagina dal telefono.');
+assert.equal(saved.gallery[0].caption,'Una didascalia scelta dalla pagina');
+assert.equal(saved.chapters[2].title,'Un capitolo modificato sulla pagina');
+assert.equal(saved.appearance.theme,'ocean');
+// Opening an entry directly on a phone also exposes the mode choice.
+await page.getByText(/Giappone: pagina dal telefono/).first().click();
+await page.getByRole('button',{name:'Pagina',exact:true}).waitFor();
+assert.equal(await page.locator('.ely-mode-switch').count(),1);
+await page.getByRole('button',{name:'Pagina',exact:true}).click();
+await page.frameLocator('iframe').getByRole('heading',{name:'Giappone: pagina dal telefono'}).waitFor();
+await page.getByRole('button',{name:'Aspetto',exact:true}).click();
+await page.locator('.ely-on-page-field[data-key-path="appearance"]').waitFor({state:'visible'});
+assert.equal(await page.locator('.content-editor.ely-page-mode').count(),1);
+await page.getByRole('button',{name:'Fine',exact:true}).click();
+await page.getByRole('button',{name:'Pagina',exact:true}).click();
+await page.frameLocator('iframe').getByRole('heading',{name:'Giappone: pagina dal telefono'}).waitFor();
+await page.getByRole('button',{name:'Pubblica',exact:true}).click();
+await page.locator('.ely-on-page-field[data-key-path="published"]').waitFor({state:'visible'});
+assert.equal(await page.locator('.content-editor.ely-page-mode').count(),1);
+await page.getByRole('button',{name:'Fine',exact:true}).click();
+assert.deepEqual(errors,[]);
+console.log('PASS: page/field modes, title, rich text on desktop and phone, collapsed chapters, media field selection, keyboard captions, Escape, draft preservation and JSON save in an isolated local repository.');
+} catch(error) {console.error(error);if(await page.locator('.content-editor').count()){console.log(await page.locator('.content-editor').evaluate(e=>({feedback:e.querySelector('.ely-page-feedback')?.textContent,keys:[...e.querySelectorAll('section.field')].map(s=>s.dataset.keyPath),active:e.querySelector('.ely-on-page-field')?.outerHTML.slice(0,400)})));await page.screenshot({path:root+'/.impeccable/review/page-error.png'});}throw error;} finally {await browser.close();}
+})().catch(e=>{console.error(e);process.exitCode=1});

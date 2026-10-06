@@ -73,6 +73,16 @@ const initial = JSON.parse(fs.readFileSync(require('node:path').join(__dirname, 
       assert.equal(await page.locator('#racconto > article').isVisible(), false);
       assert.match(await page.locator('.content-status').innerText(), /non è disponibile/);
     }
+    // Regression: the live CMS saved this cover URL successfully, but the
+    // site's local-only image filter silently discarded the entire article.
+    const external = {...initial[0], id:'copertina-esterna', title:'Articolo con copertina HTTPS', hero:'https://picsum.photos/id/839/1920/1280.webp', date:'2026-10-06'};
+    await context.route('https://picsum.photos/**', route=>route.fulfill({contentType:'image/webp',body:fs.readFileSync(require('node:path').join(__dirname,'../assets/stories/bali-retouched.webp'))}));
+    records = [external];
+    await visit('/racconti.html');assert.equal(await page.locator('.stories-archive .story-card').count(),1);
+    await visit('/');assert.equal(await page.locator('.stories-slide').count(),1);
+    await visit('/racconto.html?story=copertina-esterna');assert.equal(await page.locator('h1').innerText(),external.title);
+    assert.equal(await page.locator('[data-image="hero"]').getAttribute('src'),external.hero);
+    for (const source of ['javascript:alert(1)','data:image/svg+xml,<svg/>','//example.com/pic.webp','https://user:secret@example.com/pic.webp']) assert.equal(await page.evaluate(source=>ElyContent.image(source),source),'');
     records = [];
     await visit('/'); assert.match(await page.locator('.content-status').innerText(), /arriveranno presto/);
     assert.equal(await page.locator('.stories-controls').isVisible(), false);

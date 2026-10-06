@@ -3,7 +3,11 @@
   const date = value => new Intl.DateTimeFormat('it-IT', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }).format(new Date(`${String(value).slice(0, 10)}T12:00:00Z`));
   const image = value => {
     const source = String(value ?? '').trim();
-    // Images belong to this site. Never render arbitrary protocols or executable URLs.
+    // Keep local assets and previously saved HTTPS cover URLs usable.
+    // URL parsing rejects executable schemes, credentials and malformed URLs.
+    if (/^https:\/\//i.test(source)) {
+      try {const url = new URL(source);return url.protocol === 'https:' && !url.username && !url.password ? url.href : '';} catch {return '';}
+    }
     return /^\/?assets\/[\w\-./% ()]+\.(?:webp|png|jpe?g|avif|gif)$/i.test(source) && !source.includes('..') ? source : '';
   };
   const href = story => `racconto.html?story=${encodeURIComponent(story.id)}`;
