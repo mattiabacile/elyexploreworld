@@ -4,7 +4,7 @@ Il pannello è all’indirizzo **https://elyexploreworld.pages.dev/admin/**. Per
 
 ## Entrare
 
-Premere **Accedi con GitHub** e usare l’account autorizzato a modificare il repository `mattiabacile/elyexploreworld`. L’accesso a Cloudflare serve solo a chi configura il sito. Un account GitHub diverso da quello del proprietario deve prima essere aggiunto come collaboratore con permesso di scrittura.
+Inserire **nome utente e password** nel pannello. Non serve un account GitHub o Cloudflare per il lavoro quotidiano. Usare **Esci dal pannello** quando si termina; la sessione scade dopo otto ore. Nome e password vengono scelti durante la prima attivazione. La password deve avere almeno 14 caratteri. Non viene conservata in chiaro: il server memorizza un hash con sale e segreto aggiuntivo.
 
 ## Aggiungere un contenuto
 
@@ -33,29 +33,29 @@ I tre racconti precedenti sono stati trasferiti nel CMS conservando i contenuti.
 
 ## Configurazione iniziale dell’accesso
 
-L’accesso usa l’Authenticator ufficiale Sveltia, adattato a Cloudflare Pages Functions. Il sito pubblica `/auth` e `/callback`; il segreto non deve comparire nei file del sito.
+Questa parte riguarda soltanto chi configura il sito. L’accesso diretto è un’integrazione dedicata per questa installazione di Sveltia: una sessione protetta consente al CMS di pubblicare tramite un proxy sullo stesso dominio. La chiave GitHub rimane sul server. Il proxy consente scritture solo su `content/stories.json` e sulle immagini in `assets/uploads`, sul branch `main` del repository del sito. Non consente di modificare il codice del sito o altri repository.
 
-Registrare una GitHub OAuth App con:
+1. Registrare una GitHub App privata **ElyExploreWorld Editor**, con Homepage `https://elyexploreworld.pages.dev/admin/`, senza OAuth per gli utenti e senza webhook. Concedere **Contents: Read and write**; Metadata viene aggiunto in sola lettura. Installarla **solo** sul repository `mattiabacile/elyexploreworld`.
+2. Generare la chiave privata dell’app e convertirla nel formato PEM PKCS#8. Conservare App ID e Installation ID. Il server genera automaticamente credenziali di pubblicazione di breve durata, limitate al repository.
+3. Creare il database D1 `elyexploreworld-cms`, eseguire `server/cms-schema.sql` e collegarlo al progetto Pages di produzione con il nome `CMS_DB`.
+4. Nelle variabili di produzione impostare `CMS_GITHUB_APP_ID` e `CMS_GITHUB_INSTALLATION_ID`. Nei **Secret** impostare `CMS_GITHUB_PRIVATE_KEY` (PEM PKCS#8) e `CMS_SECRET` (segreto casuale di almeno 32 caratteri). Non salvare questi segreti nel repository. Ripubblicare il progetto dopo la configurazione.
+5. Aprire una sola volta `/admin/#setup=SEGRETO`, usando il valore di `CMS_SECRET`. Il frammento viene rimosso subito dall’indirizzo e non è inviato nei log delle richieste. Il proprietario completa personalmente nome utente, password e conferma. Dopo il primo account, questa procedura non permette di creare altri utenti.
 
-- Nome: `ElyExploreWorld CMS`.
-- Homepage: `https://elyexploreworld.pages.dev/admin/`.
-- Callback: `https://elyexploreworld.pages.dev/callback`.
+L’accesso viene bloccato dopo dieci tentativi per indirizzo in quindici minuti; esiste anche un limite globale. La sessione usa un cookie HttpOnly, Secure e SameSite=Strict; l’uscita la revoca nel database. Non modificare `CMS_SECRET` dopo la creazione dell’account senza una procedura di ripristino: è usato anche nella verifica della password.
 
-In Cloudflare, progetto `elyexploreworld`, impostazioni di produzione, aggiungere:
+Per ripristinare un accesso dimenticato, il gestore deve revocare le sessioni, rimuovere l’account nel database e far ripetere la creazione personale. Questa operazione non va eseguita dal normale editor. Con un dominio diverso aggiornare l’indirizzo dell’app e aprire il pannello sul nuovo dominio; il CMS usa automaticamente il proprio dominio per le API e le anteprime.
 
-- `GITHUB_CLIENT_ID`: Client ID dell’app.
-- `GITHUB_CLIENT_SECRET`: Client Secret, di tipo **Secret**.
-- `ALLOWED_DOMAINS`: `elyexploreworld.pages.dev`.
+Per una configurazione tecnica alternativa è supportato `CMS_GITHUB_TOKEN`, un token dedicato con permesso Contents di lettura/scrittura **solo** sul repository del sito. Si preferisce l’app perché rinnova automaticamente le credenziali temporanee.
 
-Ripubblicare il progetto dopo aver impostato le variabili. Con un nuovo dominio, aggiornare callback, homepage dell’app e `ALLOWED_DOMAINS`. Il pannello usa automaticamente il proprio dominio per l’accesso e le anteprime.
+## Verifica locale
 
-Il CMS richiede lo scope OAuth `public_repo`: GitHub lo applica ai repository pubblici modificabili dall’account che accede, non soltanto a questo repository. L’editor deve avere permesso di scrittura sul branch `main`. Il CMS non può usare la pubblicazione diretta se una protezione del branch impone una pull request.
+`/admin/?local=1` abilita il flusso locale di Sveltia soltanto su `localhost` o `127.0.0.1`; non apre l’accesso al server e non è disponibile sul dominio pubblico. I test usano archivi isolati e simulano GitHub, senza pubblicare articoli di prova.
 
 ## Manutenzione
 
 - Non è necessario un comando di build per i contenuti: `content/stories.json` è la sorgente condivisa da archivio, slideshow e articolo.
 - Sveltia è ospitato nel sito e fissato alla versione `0.229.0`. Gli aggiornamenti si provano prima di sostituire il file.
 - Marked `18.1.0` e DOMPurify `3.4.16` sono copie locali: rendono il testo formattato e rimuovono codice eseguibile dai contenuti.
-- L’Authenticator proviene dal progetto ufficiale `sveltia/sveltia-cms-auth`; la sua licenza è in `server/LICENSE.txt`.
-- `_routes.json` limita le funzioni all’accesso, lasciando statiche tutte le altre richieste.
-- Verifiche: `python3 tests/check-static.py`, `node tests/cms-check.cjs`, `node tests/site-check.cjs`, `node tests/mobile-check.cjs`, `node tests/deep-check.cjs`. I controlli Node richiedono Playwright e Chrome.
+- Il proxy usa il parser GraphQL ufficiale, versione `16.11.0`; licenza in `server/vendor/graphql-LICENSE.txt`.
+- `_routes.json` limita le funzioni alle API riservate del CMS, lasciando statiche tutte le altre richieste.
+- Verifiche: `python3 tests/check-static.py`, `node tests/cms-check.cjs`, `node tests/cms-editor-check.cjs`, `node tests/cms-access-check.cjs`, `node tests/site-check.cjs`, `node tests/mobile-check.cjs`, `node tests/deep-check.cjs`. I controlli Node richiedono Playwright e Chrome.

@@ -102,4 +102,4 @@ Pulizia senza modifiche alle versioni mobile e desktop o alle immagini, comprese
 
 ## CMS Sveltia — 6 ottobre 2026
 
-Pannello `/admin/` con racconti e consigli, editor, capitoli liberi, immagini ottimizzate, anteprima e stato di visibilità. Archivio e homepage leggono lo stesso archivio di contenuti; aggiunte, modifiche e rimozioni si propagano automaticamente dopo la pubblicazione Cloudflare. Le nuove immagini usano il file caricato, senza richiedere varianti mobile inesistenti. Per accesso iniziale, uso quotidiano e manutenzione vedere [CMS.md](CMS.md).
+Pannello `/admin/` con accesso diretto tramite nome utente e password, racconti e consigli, editor, capitoli liberi, immagini ottimizzate, anteprima e stato di visibilità. Archivio e homepage leggono lo stesso archivio di contenuti; aggiunte, modifiche e rimozioni si propagano automaticamente dopo la pubblicazione Cloudflare. Le nuove immagini usano il file caricato, senza richiedere varianti mobile inesistenti. Per accesso iniziale, uso quotidiano e manutenzione vedere [CMS.md](CMS.md).

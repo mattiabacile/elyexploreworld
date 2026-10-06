@@ -7,9 +7,7 @@
     "branch": "main",
     "base_url": "https://elyexploreworld.pages.dev",
     "auth_endpoint": "auth",
-    "auth_scope": "public_repo",
     "auth_methods": [
-      "oauth",
       "token"
     ],
     "commit_messages": {
@@ -18,7 +16,9 @@
       "delete": "Rimuovi racconto: {{slug}}",
       "uploadMedia": "Aggiungi foto: {{path}}",
       "deleteMedia": "Rimuovi foto: {{path}}"
-    }
+    },
+    "api_root": "https://elyexploreworld.pages.dev/cms/api/v3",
+    "graphql_api_root": "https://elyexploreworld.pages.dev/cms/api/graphql"
   },
   "site_url": "https://elyexploreworld.pages.dev",
   "display_url": "https://elyexploreworld.pages.dev",

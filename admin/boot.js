@@ -5,6 +5,9 @@
     const config = await response.json();
     config.backend.base_url = location.origin;
     config.site_url = location.origin;
+    config.display_url = location.origin;
+    config.backend.api_root = location.origin + '/cms/api/v3';
+    config.backend.graphql_api_root = location.origin + '/cms/api/graphql';
     config.load_config_file = false;
     CMS.registerPreviewStyle('/admin/preview.css');
     CMS.registerPreviewTemplate('racconti', ({ entry, widgetFor, widgetsFor, getAsset }) => {

@@ -72,8 +72,10 @@ const initial = JSON.parse(fs.readFileSync(require('node:path').join(__dirname, 
     assert.equal(await page.locator('.stories-archive .story-card').count(), 0);
     assert.deepEqual(errors, []);
     unavailable = false;
+    await context.route('**/cms/status', route => route.fulfill({contentType: 'application/json', body: JSON.stringify({configured: true, hasAccount: true})}));
+    await context.route('**/cms/session', route => route.fulfill({status: 401, contentType: 'application/json', body: JSON.stringify({message: 'Accedi al pannello.'})}));
     await page.goto(base + '/admin/');
-    await page.getByRole('button', { name: /Accedi con.*GitHub/ }).waitFor();
+    await page.getByRole('button', { name: 'Accedi', exact: true }).waitFor();
     assert.doesNotMatch(await page.locator('body').innerText(), /errori nella configurazione|invalid value/i);
     console.log('PASS: add, edit, delete, unpublished stories, homepage rotation, mobile uploads, formatted chapters, XSS, empty/single archives, failures and Sveltia configuration.');
   } finally { await browser.close(); }

@@ -5,11 +5,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex,nofollow">
   <title>Gestione racconti — ElyExploreWorld</title>
+  <link rel="stylesheet" href="login.css?v=909b054184a4">
   <script>window.CMS_MANUAL_INIT = true;</script>
 </head>
 <body>
+  <main id="cms-login" class="cms-login">
+    <a class="cms-brand" href="/">ElyExploreWorld</a>
+    <h1>Il tuo spazio per raccontare.</h1>
+    <p>Gestisci racconti, consigli di viaggio e fotografie.</p>
+    <form id="cms-login-form" hidden>
+      <label for="cms-username">Nome utente</label>
+      <input id="cms-username" name="username" autocomplete="username" required minlength="3" maxlength="50" autocapitalize="none" spellcheck="false">
+      <label for="cms-password">Password</label>
+      <input id="cms-password" name="password" type="password" autocomplete="current-password" required minlength="14" maxlength="256">
+      <div id="cms-confirmation" hidden>
+        <label for="cms-confirm">Conferma password</label>
+        <input id="cms-confirm" name="confirm" type="password" autocomplete="new-password" minlength="14" maxlength="256">
+        <p class="cms-hint">Scegli una password di almeno 14 caratteri. Conservala per i prossimi accessi.</p>
+      </div>
+      <button type="submit">Accedi</button>
+    </form>
+    <p id="cms-login-status" role="status" aria-live="polite">Caricamento del pannello…</p>
+    <a class="cms-home" href="/">Torna al sito</a>
+  </main>
   <noscript>Attiva JavaScript per accedere al pannello dei racconti.</noscript>
-  <script src="vendor/sveltia-cms.js?v=1ef3b0c1ad0b"></script>
-  <script src="boot.js?v=e3c4b4272f44"></script>
+  <script src="access.js?v=ce621b1e16e8"></script>
 </body>
 </html>
