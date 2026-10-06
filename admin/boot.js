@@ -10,6 +10,33 @@
     config.backend.graphql_api_root = location.origin + '/cms/api/graphql';
     config.load_config_file = false;
     const savedArticles=await fetch('../content/stories.json',{cache:'no-cache'}).then(r=>r.ok?r.json():[]).catch(()=>[]);
+
+    // Keep the visual editor self-contained inside /admin. These fallbacks also
+    // prevent a missing helper file from turning the Page preview into a blank iframe.
+    const articleApi = window.ElyArticle || (() => {
+      const choose=(value,choices,fallback)=>choices.includes(value)?value:fallback;
+      const palettes={clay:'#9f4933',forest:'#254535',ocean:'#286274'};
+      return {
+        appearance(value){
+          const input=value&&typeof value==='object'?value:{};
+          const theme=choose(input.theme,Object.keys(palettes),'clay');
+          return {theme,accent:palettes[theme],coverFormat:choose(input.coverFormat,['panoramic','landscape','natural'],'panoramic'),coverPosition:choose(input.coverPosition,['center','top','bottom'],'center'),textStyle:choose(input.textStyle,['modern','journal'],'modern'),dropCap:input.dropCap!==false,showContents:input.showContents===true};
+        },
+        chapter(value={},index=0){
+          return {layout:['right','left','wide'].includes(value.layout)?{right:'opening',left:'closing',wide:'wide'}[value.layout]:['opening','landscape','closing'][index%3],format:choose(value.imageFormat,['landscape','portrait','square','natural'],['portrait','landscape','square'][index%3])};
+        }
+      };
+    })();
+    const linksApi = window.ElyLinks || (() => {
+      const slug=title=>String(title||'').normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,140).replace(/-$/,'')||'articolo';
+      const assign=records=>{
+        const used=new Map(records.map(record=>[record.id,record.id])),addresses=new Map();
+        [...records].sort((a,b)=>String(a.id).localeCompare(String(b.id))).forEach(record=>{const base=slug(record.title);let candidate=base,index=2;while(used.has(candidate)&&used.get(candidate)!==record.id)candidate=base+'-'+index++;used.set(candidate,record.id);addresses.set(record.id,candidate);});
+        return records.map(record=>({...record,publicSlug:addresses.get(record.id)}));
+      };
+      return {slug,assign,href:story=>'racconto.html?story='+encodeURIComponent(story.publicSlug||slug(story.title))};
+    })();
+
     CMS.registerPreviewStyle('/admin/preview.css?v=7822bc60cc74');
     CMS.registerPreviewTemplate('racconti', ({ entry, widgetFor, widgetsFor, getAsset }) => {
       const data = entry.get('data');
@@ -19,7 +46,7 @@
       const accent = data.get('titleAccent');
       const accentIndex = accent ? title.lastIndexOf(accent) : -1;
       const chapters = widgetsFor('chapters') || [];
-      const appearance = ElyArticle.appearance(Object.fromEntries(['theme', 'coverFormat', 'coverPosition', 'textStyle', 'dropCap', 'showContents'].map(key => [key, data.getIn(['appearance', key])])));
+      const appearance = articleApi.appearance(Object.fromEntries(['theme', 'coverFormat', 'coverPosition', 'textStyle', 'dropCap', 'showContents'].map(key => [key, data.getIn(['appearance', key])])));
       const gallery = widgetsFor('gallery') || [];
       const rawTags=data.get('tags');
       const tagLabels=Array.isArray(rawTags)?rawTags:(rawTags?.toJS?.() || []);
@@ -50,7 +77,7 @@
       values.chapters = chapters.map(chapter => Object.fromEntries(['title','body','image','imageAlt','caption','quote','note'].map(key => [key, chapter.get('data').get(key)])));
       values.gallery = gallery.map(photo => Object.fromEntries(['image','alt','caption'].map(key => [key, photo.get('data').get(key)])));
       values.travelFacts = Object.fromEntries(['duration','season','style'].map(key => [key, data.getIn(['travelFacts',key])]));
-      values.publicSlug=ElyLinks.assign([...savedArticles.filter(s=>s&&s.id&&s.title&&s.id!==values.id),{id:values.id || 'new-draft',title:values.title}]).find(s=>s.id===(values.id || 'new-draft')).publicSlug;
+      values.publicSlug=linksApi.assign([...savedArticles.filter(s=>s&&s.id&&s.title&&s.id!==values.id),{id:values.id || 'new-draft',title:values.title}]).find(s=>s.id===(values.id || 'new-draft')).publicSlug;
       window.dispatchEvent(new CustomEvent('ely:article-change', {detail:values}));
 
       const factRows=[['duration','Durata'],['season','Quando partire'],['style','Tipo di viaggio']];
@@ -99,7 +126,7 @@
         h('div',{className:'preview-intro'},data.get('intro') ? widgetFor('intro') : emptyText('intro','Scrivi l’apertura del racconto…')),
         ...chapters.map((chapter,index) => {
           const item=chapter.get('data'), photo=asset(item.get('image'));
-          const {layout,format}=ElyArticle.chapter({layout:item.get('layout'),imageFormat:item.get('imageFormat')},index);
+          const {layout,format}=articleApi.chapter({layout:item.get('layout'),imageFormat:item.get('imageFormat')},index);
           return h('section',{key:index,className:'preview-chapter preview-chapter-'+layout,'data-photo-format':format,'data-chapter-index':index},
             chapterTools(index,chapters.length),
             h('div',{className:'preview-copy'},
