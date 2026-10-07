@@ -5,7 +5,7 @@ stories[0].appearance={theme:'ocean',textStyle:'journal',coverFormat:'natural',s
 stories[0].travelFacts={duration:'Dieci giorni',season:'Primavera'};
 stories[0].gallery=[{image:stories[0].hero,alt:'Foto della galleria',caption:'Il viaggio in immagini'}];
 stories[0].conclusion='Una **riflessione finale**.';
-const files={'content/stories.json':{text:JSON.stringify(stories),type:'application/json'}};
+const files={'content/tags.json':{text:fs.readFileSync(root+'/content/tags.json','utf8'),type:'application/json'},'content/stories.json':{text:JSON.stringify(stories),type:'application/json'}};
 for(const source of new Set(stories.flatMap(s=>[s.hero,...s.chapters.map(c=>c.image)]).filter(source=>source && !/^https?:\/\//.test(source))))files[source]={base64:fs.readFileSync(root+'/'+source).toString('base64'),type:'image/webp'};
 (async()=>{
 const browser=await chromium.launch({channel:'chrome'}),page=await browser.newPage({viewport:{width:1440,height:1000},reducedMotion:'reduce'});
@@ -17,7 +17,7 @@ await page.addInitScript(({files})=>{
   await root.getDirectoryHandle('.git',{create:true});
   await (await root.getDirectoryHandle('assets',{create:true})).getDirectoryHandle('uploads',{create:true});
   for(const [path,data] of Object.entries(files)){
-    const parts=path.split('/');const name=parts.pop();let dir=root;
+    const parts=path.replace(/^\//,'').split('/');const name=parts.pop();let dir=root;
     for(const part of parts)dir=await dir.getDirectoryHandle(part,{create:true});
     const file=await dir.getFileHandle(name,{create:true});const stream=await file.createWritable();
     await stream.write(data.base64?Uint8Array.from(atob(data.base64),c=>c.charCodeAt(0)):data.text);await stream.close();
@@ -101,7 +101,7 @@ await page.locator('.ely-on-page-field [contenteditable=true]').waitFor({state:'
 await page.keyboard.press('Escape');
 await page.locator('.ely-on-page-field').waitFor({state:'detached'});
 // A failed save points back to the article, even with the native sidebar removed.
-await preview().locator('[data-key-path="title"]').click();await page.waitForFunction(()=>document.querySelector('.content-editor')?.getAttribute('aria-busy')!=='true');
+await preview().locator('.preview-story [data-key-path="title"]').click();await page.waitForFunction(()=>document.querySelector('.content-editor')?.getAttribute('aria-busy')!=='true');
 await page.locator('.ely-on-page-field [contenteditable=true]').fill('');await finish();
 await page.getByRole('button',{name:'Salva',exact:true}).click();await page.waitForFunction(()=>document.querySelector('.content-editor')?.getAttribute('aria-busy')!=='true');
 await page.getByRole('button',{name:'Mostra cosa manca',exact:true}).click();await page.waitForFunction(()=>document.querySelector('.content-editor')?.getAttribute('aria-busy')!=='true');
@@ -120,5 +120,5 @@ assert.equal(saved.gallery[0].caption,'La foto aggiunta direttamente alla galler
 assert.match(saved.gallery[0].image,/assets\/uploads/);
 assert.deepEqual(errors,[]);
 console.log('PASS: direct chapter creation, inline writing, direct gallery creation, reorder, inline delete confirmation/cancel, keyboard return, validation recovery and saved ordering at '+width+'px.');
-} catch(error){await page.screenshot({path:root+'/.impeccable/review/page-actions-error-'+(process.env.CMS_WIDTH||1440)+'.png'});console.error(await page.locator('.ely-action-status').textContent());console.error(await page.evaluate(()=>[...document.querySelectorAll('[role=dialog], [role=menu]')].filter(e=>e.getClientRects().length&&getComputedStyle(e).visibility==='visible').map(e=>({role:e.getAttribute('role'),hidden:e.getAttribute('aria-hidden'),label:e.getAttribute('aria-label'),class:e.className}))));throw error;}finally{await browser.close();}
+} catch(error){await page.screenshot({path:root+'/.impeccable/review/page-actions-error-'+(process.env.CMS_WIDTH||1440)+'.png'});if(await page.locator('.ely-action-status').count())console.error(await page.locator('.ely-action-status').textContent());console.error(await page.evaluate(()=>[...document.querySelectorAll('[role=dialog], [role=menu]')].filter(e=>e.getClientRects().length&&getComputedStyle(e).visibility==='visible').map(e=>({role:e.getAttribute('role'),hidden:e.getAttribute('aria-hidden'),label:e.getAttribute('aria-label'),class:e.className}))));throw error;}finally{await browser.close();}
 })().catch(e=>{console.error(e);process.exitCode=1});

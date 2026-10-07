@@ -206,3 +206,6 @@ html { scroll-behavior: auto; }
   .stories-intro-detail { margin-top: 12px; font-size: 15px; }
   .archive-layout .stories-archive { padding-top: 30px; }
 }
+
+.archive-tag-filter{margin-top:24px;color:var(--forest);font-weight:600}
+.archive-tag-filter a{margin-left:16px;text-decoration:underline;text-underline-offset:4px}

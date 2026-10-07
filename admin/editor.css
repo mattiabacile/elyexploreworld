@@ -90,7 +90,7 @@ html:root[data-theme='dark'] {
 .ely-preview-devices button { border: 0; border-radius: 5px; background: transparent; color: var(--ely-muted); font-size: 11px; font-weight: 600; padding: 6px 9px; min-height: 30px; }
 .ely-preview-devices button[aria-pressed='true'] { background: var(--ely-forest); color: var(--ely-surface); }
 .content-editor.ely-phone-preview #second-pane-body > .content { background: var(--ely-soft); }
-.content-editor.ely-phone-preview iframe.preview { width: min(100%,390px); margin-inline: auto; }
+.content-editor.ely-phone-preview iframe.preview { width:min(100%,390px)!important;min-width:0!important;max-width:390px!important;margin-inline:auto; }
 .content-editor.ely-writing-mode .content-area .sui.resizable-pane:has(iframe.preview) { display: none; }
 .content-editor.ely-writing-mode .content-area .sui.resizable-pane:has(.ely-editor-content) { flex: 1 1 100% !important; }
 .content-editor.ely-writing-mode .content-area .sui.resizable-handle, .content-editor.ely-writing-mode .swap-button { display: none; }
@@ -209,3 +209,29 @@ html:root[data-theme='dark'] {
 .ely-compact-richtext button[aria-label="Mostra Opzioni Stile Testo"]{display:none!important}
 .ely-compact-richtext [contenteditable="true"]{min-height:72px!important}
 .ely-mode-switch[hidden]{display:none!important}
+
+/* Two explicit surfaces share the native draft and save button. */
+.ely-workspace-switch{display:flex;gap:4px;margin-left:12px;border-bottom:1px solid var(--ely-line)}
+.ely-workspace-switch button{min-height:44px;padding:8px 14px;border:0;border-bottom:2px solid transparent;background:transparent;color:var(--ely-muted);font:600 13px 'Plus Jakarta Sans',sans-serif;cursor:pointer}
+.ely-workspace-switch button[aria-pressed=true]{border-bottom-color:var(--ely-forest);color:var(--ely-forest)}
+.ely-workspace-switch button:focus-visible{outline:2px solid var(--ely-clay);outline-offset:2px}
+.content-editor:not(.ely-page-mode) .ely-other-workspace,.content-editor:not(.ely-page-mode) .ely-unused-photo{display:none!important}
+section.field[data-key-path=chapters] > .field-wrapper .item-list{max-height:none!important;height:auto!important;overflow:visible!important;border:0!important;background:transparent!important}
+section.field[data-key-path=chapters] .item-wrapper,section.field[data-key-path=chapters] .item{border:0!important;box-shadow:none!important;border-radius:0!important;background:transparent!important}
+section.field[data-key-path=chapters] .item > .header{border:0!important;border-top:1px solid var(--ely-line)!important;border-radius:0!important;background:transparent!important;min-height:60px;padding:12px 0!important;display:flex;align-items:center}
+section.field[data-key-path=chapters] .item > .header button[aria-controls],section.field[data-key-path=chapters] > .field-wrapper .toolbar button[aria-controls],section.field[data-key-path=chapters] > .field-wrapper .toolbar button[data-action=expand-all],section.field[data-key-path=chapters] > .field-wrapper .toolbar button[data-action=collapse-all]{display:none!important}
+section.field[data-key-path=chapters] .item-body{border:0!important;padding:0!important;background:transparent!important}
+section.field[data-key-path=chapters] .toolbar.add{position:static!important;background:transparent!important}
+.ely-chapter-label{font:600 15px 'Plus Jakarta Sans',sans-serif;color:var(--ely-forest);margin-right:auto;white-space:nowrap}
+section.field[data-key-path=appearance] > .field-wrapper{border:0!important;box-shadow:none!important;background:transparent!important}
+section.field[data-key-path=appearance] > .field-wrapper button[aria-controls]{display:none!important}
+@media(max-width:767px){.ely-workspace-switch{margin-left:0}.ely-workspace-switch button{padding:8px 10px}.content-editor > .primary .toolbar > .inner{flex-wrap:wrap}}
+
+section.field[data-key-path=chapters] > .field-wrapper .sui.group,section.field[data-key-path=appearance] > .field-wrapper .sui.group{border:0!important;border-radius:0!important;background:transparent!important}
+section.field[data-key-path=chapters] .toolbar.top{position:static!important;background:transparent!important}
+section.field[data-key-path=chapters] button[hidden]{display:none!important}
+
+.ely-chapter-moves{display:flex;gap:4px;margin-left:12px}.ely-chapter-moves button{width:44px;height:44px;border:1px solid var(--ely-line);border-radius:6px;background:var(--ely-surface);color:var(--ely-forest);font-size:20px;cursor:pointer}.ely-chapter-moves button:disabled{opacity:.35;cursor:default}.ely-chapter-moves button:focus-visible{outline:2px solid var(--ely-clay);outline-offset:2px}
+section.field[data-key-path=chapters] .item > .header button[data-action],section.field[data-key-path=chapters] .item > .header button[aria-label="List Item Options"]{display:none!important}
+
+.ely-page-mode[data-workspace=cover] .ely-page-settings .ely-settings-fields{display:none}

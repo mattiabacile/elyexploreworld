@@ -41,5 +41,7 @@
     }
     return inline(source,{links:false});
   };
-  window.ElyArticle = {appearance, chapter, inline, plain, heading};
+  const openingPhoto = story => ({image:story.reuseCover === 'no' ? story.articleHero : story.hero, alt:story.reuseCover === 'no' ? story.articleHeroAlt : story.heroAlt, caption:story.heroCaption});
+  const tagKey = value => String(value ?? '').trim().normalize('NFC').toLocaleLowerCase('it');
+  window.ElyArticle = {appearance, chapter, inline, plain, heading, openingPhoto, tagKey};
 })();

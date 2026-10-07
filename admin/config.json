@@ -145,8 +145,40 @@
           "hint": "Descrivi cosa si vede: aiuta chi utilizza un lettore dello schermo."
         },
         {
+          "name": "reuseCover",
+          "label": "Usare la copertina anche come prima foto nell’articolo?",
+          "widget": "select",
+          "options": [
+            {
+              "label": "Sì",
+              "value": "yes"
+            },
+            {
+              "label": "No, scegli una foto diversa",
+              "value": "no"
+            }
+          ],
+          "default": "yes"
+        },
+        {
+          "name": "articleHero",
+          "label": "Prima foto dell’articolo",
+          "widget": "image",
+          "choose_url": false,
+          "accept": "image/jpeg,image/png,image/webp,image/avif,image/heic",
+          "hint": "Usata solo quando scegli No. Puoi anche lasciare l’articolo senza una prima foto.",
+          "required": false
+        },
+        {
+          "name": "articleHeroAlt",
+          "label": "Descrizione della prima foto",
+          "widget": "string",
+          "hint": "Descrivi cosa si vede: aiuta chi utilizza un lettore dello schermo.",
+          "required": false
+        },
+        {
           "name": "heroCaption",
-          "label": "Didascalia della copertina",
+          "label": "Didascalia della prima foto",
           "widget": "richtext",
           "required": false,
           "minimal": true,
@@ -415,16 +447,18 @@
         {
           "name": "tags",
           "label": "Tag",
-          "widget": "list",
+          "widget": "relation",
+          "collection": "tag",
+          "value_field": "{{name}}",
+          "display_fields": [
+            "name"
+          ],
+          "search_fields": [
+            "name"
+          ],
+          "multiple": true,
           "required": false,
-          "hint": "Esempio: Bali, Indonesia, Natura.",
-          "field": {
-            "name": "tag",
-            "label": "Tag",
-            "widget": "string"
-          },
-          "collapsed": true,
-          "summary": "{{fields.tag}}"
+          "hint": "Scegli i tag esistenti o aggiungine uno. I tag salvati restano disponibili per tutti gli articoli."
         },
         {
           "name": "gallery",
@@ -497,8 +531,8 @@
           "label": "Aspetto dell’articolo",
           "widget": "object",
           "required": true,
-          "collapsed": true,
-          "summary": "Colori, copertina e lettura",
+          "collapsed": false,
+          "summary": "Colori e lettura",
           "fields": [
             {
               "name": "theme",
@@ -522,7 +556,7 @@
             },
             {
               "name": "coverFormat",
-              "label": "Formato della copertina",
+              "label": "Formato della prima foto",
               "widget": "select",
               "options": [
                 {
@@ -559,7 +593,7 @@
                 }
               ],
               "default": "center",
-              "hint": "Agisce sulla copertina dell’articolo."
+              "hint": "Agisce sulla prima foto dentro l’articolo."
             },
             {
               "name": "textStyle",
@@ -671,6 +705,30 @@
           "pattern": "true"
         }
       ]
+    },
+    {
+      "name": "tag",
+      "label": "Tag",
+      "label_singular": "Tag",
+      "file": "content/tags.json",
+      "format": "json",
+      "create": true,
+      "delete": false,
+      "duplicate": false,
+      "identifier_field": "name",
+      "summary": "{{name}}",
+      "fields": [
+        {
+          "name": "name",
+          "label": "Nome del tag",
+          "widget": "string",
+          "pattern": [
+            "^[^,\\n]{1,50}$",
+            "Usa un nome da 1 a 50 caratteri, senza virgole."
+          ]
+        }
+      ],
+      "hide": true
     }
   ],
   "asset_collections": [

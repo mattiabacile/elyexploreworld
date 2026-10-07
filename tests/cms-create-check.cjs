@@ -5,7 +5,7 @@ stories[0].appearance={theme:'ocean',textStyle:'journal',coverFormat:'natural',s
 stories[0].travelFacts={duration:'Dieci giorni',season:'Primavera'};
 stories[0].gallery=[{image:stories[0].hero,alt:'Foto della galleria',caption:'Il viaggio in immagini'}];
 stories[0].conclusion='Una **riflessione finale**.';
-const files={'content/stories.json':{text:JSON.stringify(stories),type:'application/json'}};
+const files={'content/tags.json':{text:fs.readFileSync(root+'/content/tags.json','utf8'),type:'application/json'},'content/stories.json':{text:JSON.stringify(stories),type:'application/json'}};
 for(const source of new Set(stories.flatMap(s=>[s.hero,...s.chapters.map(c=>c.image)]).filter(source=>source && !/^https?:\/\//.test(source))))files[source]={base64:fs.readFileSync(root+'/'+source).toString('base64'),type:'image/webp'};
 (async()=>{
 const browser=await chromium.launch({channel:'chrome'}),page=await browser.newPage({viewport:{width:1440,height:1000},reducedMotion:'reduce'});
@@ -17,7 +17,7 @@ await page.addInitScript(({files})=>{
   await root.getDirectoryHandle('.git',{create:true});
   await (await root.getDirectoryHandle('assets',{create:true})).getDirectoryHandle('uploads',{create:true});
   for(const [path,data] of Object.entries(files)){
-    const parts=path.split('/');const name=parts.pop();let dir=root;
+    const parts=path.replace(/^\//,'').split('/');const name=parts.pop();let dir=root;
     for(const part of parts)dir=await dir.getDirectoryHandle(part,{create:true});
     const file=await dir.getFileHandle(name,{create:true});const stream=await file.createWritable();
     await stream.write(data.base64?Uint8Array.from(atob(data.base64),c=>c.charCodeAt(0)):data.text);await stream.close();
@@ -34,8 +34,8 @@ assert.equal(await page.getByRole('button',{name:'Organizza',exact:true}).count(
 assert.equal(await page.frameLocator('iframe').getByRole('button',{name:'Aspetto',exact:true}).count(),0);
 assert.equal(await page.getByRole('radio',{name:'Bozza',exact:true}).isChecked(),true);
 const slot=await page.frameLocator('iframe').locator('.preview-cover .preview-photo-slot').boundingBox();assert.ok(slot.height>100 && slot.width>slot.height);
-const pick=async key=>{
- const target=page.frameLocator('iframe.preview').locator(`[data-key-path="${key}"]`).first();
+const pick=async key=>{await page.evaluate(key=>window.elyWorkspace?.show(window.elyWorkspace.forKey(key)),key);
+ const target=page.frameLocator('iframe.preview').locator(`${['hero','heroAlt','slideText'].includes(key)?'.preview-cover-workspace':'.preview-story'} [data-key-path="${key}"]`).first();
  if(await target.count())await target.evaluate(element=>{for(let parent=element.parentElement;parent;parent=parent.parentElement)if(parent.tagName==='DETAILS')parent.open=true;});
  if(await target.count())await target.click();
  else {const button=page.locator(`[data-setting-key="${key}"]`);await button.evaluate(e=>e.parentElement.open=true);await button.click();}

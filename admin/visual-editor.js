@@ -18,17 +18,17 @@
     settings.setAttribute('aria-label','Impostazioni dell’articolo');
     settings.innerHTML='<h2>Pubblicazione</h2><fieldset><legend>Salva come</legend><label><input type="radio" name="ely-publication" value="draft"> Bozza</label><label><input type="radio" name="ely-publication" value="visible"> Visibile sul sito</label></fieldset><p class="ely-publication-note" role="status"></p><details class="ely-settings-fields"><summary>Informazioni dell’articolo</summary></details>';
     for(const [key,label] of [
-      ['kind','Racconto o consiglio'],['date','Data'],['category','Categoria'],['tags','Etichette'],
-      ['travelFacts','Informazioni del viaggio'],['slideText','Testo per lo slideshow'],
+      ['kind','Racconto o consiglio'],['date','Data'],['category','Categoria'],['tags','Tag'],
+      ['travelFacts','Informazioni del viaggio'],
       ['preparing','Consiglio in preparazione']
     ])settings.querySelector('.ely-settings-fields').append(settingButton(label,key));
-    const style=document.createElement('details');style.className='ely-settings-fields';style.innerHTML='<summary>Stile dell’articolo</summary>';
+    const style=document.createElement('section');style.className='ely-settings-fields';style.innerHTML='<h2>Aspetto dell’articolo</h2>';
     for(const [key,label] of [['appearance.theme','Colore dei dettagli'],['appearance.textStyle','Stile di lettura'],['appearance.dropCap','Iniziale grande'],['appearance.showContents','Sommario dei capitoli']])style.append(settingButton(label,key));
     settings.append(style);
     settings.addEventListener('change',event=>{
       if(event.target.name==='ely-publication')setBoolean('published',event.target.value==='visible');
     });
-    settings.querySelector('details').open=false;
+    settings.querySelector('details').open=true;
     editor.append(settings);updateSettings();
   };
   const say=text=>{const value=visual()?text:'';if(liveHint && liveHint.textContent!==value)liveHint.textContent=value;};
@@ -43,7 +43,7 @@
   const field=key=>editor?.querySelector(`section.field[data-key-path="${CSS.escape(key)}"]`);
   const inlineHeight=key=>/(?:intro|body|note|conclusion)$/.test(key)?340:/(?:^title$|^deck$|heroCaption$|slideText$|\.(title|caption|quote)$)/.test(key)?280:key==='tags'?300:/(?:^title$|^destination$|heroAlt$|\.(alt|imageAlt)$)/.test(key)?220:180;
   const visual=()=>editor?.classList.contains('ely-page-mode');
-  const roots=['title','kind','date','destination','deck','hero','heroAlt','heroCaption','intro','chapters','travelFacts','category','tags','gallery','conclusion','appearance','titleAccent','slideText','published','preparing'];
+  const roots=['title','kind','date','destination','deck','hero','heroAlt','reuseCover','articleHero','articleHeroAlt','heroCaption','intro','chapters','travelFacts','category','tags','gallery','conclusion','appearance','titleAccent','slideText','published','preparing'];
   const valueAt=(value,key)=>key.split('.').reduce((current,part)=>current?.[part],value);
   const clearSelection=()=>frame?.contentDocument?.querySelectorAll('.ely-selected-block').forEach(e=>e.classList.remove('ely-selected-block'));
   const lockFields=()=>{
@@ -101,9 +101,10 @@
     // Flush the native rich editor before changing the selected control.
     if(active?.querySelector('[contenteditable="true"]') && performance.now()-lastInput<250){const owner=editor;setTimeout(()=>{if(owner===editor)select(key,element);},250-(performance.now()-lastInput));return;}
     if(working)return;
+    if(window.elyWorkspace){const surface=element?.closest('.preview-cover-workspace')?'cover':element?.closest('.preview-story')?'article':!['hero','heroAlt'].includes(key)?window.elyWorkspace.forKey(key):null;if(surface)window.elyWorkspace.show(surface);}
     const scroll=frame?.contentWindow?.scrollY ?? selection?.scroll ?? 0;
     close(false);validationRefs=[];frame?.contentDocument?.querySelector('.preview-validation')?.remove();panel.querySelector('.ely-inspector-error').textContent='';
-    element=element || frame?.contentDocument?.querySelector(`[data-key-path="${CSS.escape(key)}"]`);
+    element=element || [...(frame?.contentDocument?.querySelectorAll(`[data-key-path="${CSS.escape(key)}"]`) || [])].find(node=>node.getClientRects().length);
     if(element?.tagName==='BUTTON'&&/^chapters\.\d+\.(quote|note)$/.test(key)){
       const chapter=element.closest('.preview-chapter');
       const placeholder=element.ownerDocument.createElement(key.endsWith('quote')?'blockquote':'aside');
@@ -422,6 +423,7 @@
       }
     }
   };
+  window.addEventListener('ely:workspace-change',()=>{if(active)close(false);});
   window.addEventListener('ely:article-change',event=>{article=event.detail;draw();updateSettings();});
   window.addEventListener('keydown',saveShortcut,true);
   compactScreen.addEventListener('change',()=>{if(compactScreen.matches&&visual())setMode('fields');enhance();});
