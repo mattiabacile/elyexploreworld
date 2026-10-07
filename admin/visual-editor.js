@@ -3,7 +3,7 @@
   let backdrop, editor, frame, active, selection, panel, toolbar, selecting=false, previewSwitch=false, pending=0, lastInput=0, finishTimer, statusTimer, saveRequested=false, nativeErrorForwarding=false, nativeValidationReceiver, working=false, actionStatus, validationRefs=[], article={}, group='content';
   const boundFrames=new WeakSet();
   let liveHint;
-  const say=text=>{if(liveHint)liveHint.textContent=visual()?text:'';};
+  const say=text=>{const value=visual()?text:'';if(liveHint && liveHint.textContent!==value)liveHint.textContent=value;};
   const labelOf=el=>(el?.getAttribute?.('title')||'').replace(/^Modifica\s+/,'');
   // Ctrl/Cmd+S saves through the CMS's own Salva button, so its safeguards still apply.
   const saveShortcut=event=>{
@@ -22,7 +22,7 @@
   const button=(label,key)=>{const b=document.createElement('button');b.type='button';b.textContent=label;b.dataset.key=key;b.addEventListener('click',()=>['chapters','gallery'].includes(key)?changeList(key,'add'):select(key));return b;};
   const clearSelection=()=>frame?.contentDocument?.querySelectorAll('.ely-selected-block').forEach(e=>e.classList.remove('ely-selected-block'));
   const lockFields=()=>{
-    if(!editor)return;
+    if(!editor || working)return;
     // Native controls set their own visibility; explicitly hide their branches
     // and remove them from keyboard navigation unless they own the selection.
     for(const root of editor.querySelectorAll('.pane[data-mode="edit"] #first-pane-body > .content > section.field')){
@@ -213,7 +213,7 @@
     try{
       const root=await mountNative(key);
       if(currentEditor!==editor)return;
-      root.inert=false;root.querySelector('button[aria-controls$="-item-list"][aria-expanded="false"]')?.click();
+      root.inert=false;root.querySelectorAll('[inert]').forEach(node=>node.inert=false);root.querySelector('button[aria-controls$="-item-list"][aria-expanded="false"]')?.click();
       await pause(100);
       const items=listItems(root),before=items.length;
       if(operation==='add'){
@@ -234,7 +234,7 @@
         }else{
           const move=item.querySelector(`[data-action="move-${operation}"]`);
           const reorder=item.querySelector('[data-action="reorder"]');
-          if(move)move.click();else if(reorder)reorder.dispatchEvent(new KeyboardEvent('keydown',{key:operation==='up'?'ArrowUp':'ArrowDown',bubbles:true}));
+          if(move)move.click();else if(reorder){reorder.focus({preventScroll:true});reorder.dispatchEvent(new KeyboardEvent('keydown',{key:operation==='up'?'ArrowUp':'ArrowDown',bubbles:true,cancelable:true,composed:true}));}
           else throw new Error('Non riesco a spostare questo elemento. Riprova dalla pagina.');
           targetIndex=index+(operation==='up'?-1:1);await pause(150);
         }
@@ -306,7 +306,7 @@
   };
   const bind=()=>{
     const doc=frame?.contentDocument;if(!doc)return;
-    doc.body?.classList.toggle('ely-editable-page',visual());if(visual())renderValidation(doc);
+    if(!doc.body)return;doc.body.classList.toggle('ely-editable-page',visual());if(visual())renderValidation(doc);
     if(boundFrames.has(doc))return;boundFrames.add(doc);
     const activate=event=>{
       if(event.type==='keydown'&&event.key==='Escape'&&visual()&&(active||editor.classList.contains('ely-inspector-open'))){
