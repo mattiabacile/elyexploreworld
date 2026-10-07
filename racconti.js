@@ -11,22 +11,22 @@
   const tipsHost = document.querySelector('.tips-grid');
   try {
     let records = await ElyContent.load();
-    const tag=new URLSearchParams(location.search).get('tag')?.trim();
-    if(tag){
-      records=records.filter(story=>(Array.isArray(story.tags)?story.tags:[]).some(value=>ElyArticle.tagKey(value)===ElyArticle.tagKey(tag)));
+    const query=new URLSearchParams(location.search),tag=query.get('tag')?.trim(),category=query.get('category')?.trim();
+    if(tag || category){
+      records=records.filter(story=>(!tag||(Array.isArray(story.tags)?story.tags:[]).some(value=>ElyArticle.tagKey(value)===ElyArticle.tagKey(tag)))&&(!category||ElyArticle.tagKey(story.category)===ElyArticle.tagKey(category)));
       const filter=document.createElement('p');filter.className='archive-tag-filter';filter.setAttribute('role','status');
-      filter.append(document.createTextNode('Tag: '+tag+' · '+records.length+' articoli '));
+      filter.append(document.createTextNode([category?'Categoria: '+category:'',tag?'Tag: '+tag:''].filter(Boolean).join(' · ')+' · '+records.length+' articoli '));
       const clear=document.createElement('a');clear.href='racconti.html';clear.textContent='Mostra tutti';filter.append(clear);
       document.querySelector('.stories-intro-copy').append(filter);
     }
     const stories = records.filter(story => story.kind !== 'consiglio');
-    if (!stories.length) ElyContent.status(host, tag?'Nessun racconto con questo tag.':'I primi racconti arriveranno presto.');
+    if (!stories.length) ElyContent.status(host, (tag||category)?'Nessun racconto con questo filtro.':'I primi racconti arriveranno presto.');
     else {
       host.innerHTML = stories.map(ElyContent.card).join('');
       ElyContent.responsive(host);
     }
     const tips = records.filter(story => story.kind === 'consiglio');
-    if (!tips.length) ElyContent.status(tipsHost, tag?'Nessun consiglio con questo tag.':'Nuovi consigli di viaggio arriveranno presto.');
+    if (!tips.length) ElyContent.status(tipsHost, (tag||category)?'Nessun consiglio con questo filtro.':'Nuovi consigli di viaggio arriveranno presto.');
     else {
       tipsHost.innerHTML = tips.map(story => {
         if (!story.preparing) return ElyContent.card(story);

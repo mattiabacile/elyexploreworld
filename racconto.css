@@ -301,3 +301,5 @@ html { scroll-behavior: auto; }
 .tag-list a:hover{background:var(--forest);color:var(--cream,#f7f3e9)}
 .tag-list a:focus-visible{outline:2px solid var(--clay);outline-offset:3px}
 .hero-figure[hidden]{display:none}
+
+.article-meta [data-field=category] a{color:inherit;text-underline-offset:4px}.article-meta [data-field=category] a:hover{text-decoration:underline}
