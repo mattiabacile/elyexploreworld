@@ -50,7 +50,8 @@ button { font: inherit; }
 
 h1 { max-width: 13ch; margin: 0; color: var(--forest); font: 500 clamp(56px, 6vw, 92px)/.9 var(--display); letter-spacing: -.045em; text-wrap: balance; }
 
-h1 em { color: var(--clay); font-weight: 400; }
+h1 em { color: inherit; font-weight: inherit; }
+h1 em.ely-legacy-title-accent { color: var(--clay); font-weight: 400; }
 
 .masthead-summary { padding-bottom: 4px; }
 
