@@ -29,6 +29,7 @@ I controlli per aggiungere o riordinare capitoli e fotografie sono presenti nell
 
 - **Solo scrittura**: su desktop allarga lo spazio per il testo e nasconde l’anteprima. **Mostra anteprima** ripristina i due pannelli.
 - **Icone schermo / telefono**: l’icona telefono restringe l’anteprima a 390 pixel, quando lo spazio disponibile lo consente.
+- **Ctrl+S / Cmd+S**: salva la bozza sia in Pagina sia in Campi, aspettando la conclusione del testo in corso di inserimento.
 
 Per salvare una bozza, lasciare **Visibile sul sito** disattivato. Per pubblicare, attivarlo e premere **Salva**. **Consiglio in preparazione** compare solo per i consigli e pubblica la scheda nell’archivio. La data ordina i contenuti, senza programmare la pubblicazione.
 
@@ -98,4 +99,4 @@ Se il pannello non si carica, **Riprova ad aprire il pannello** ripete il carica
 - Marked `18.1.0` e DOMPurify `3.4.16` sono copie locali: rendono il testo formattato e rimuovono codice eseguibile dai contenuti.
 - Il proxy usa il parser GraphQL ufficiale, versione `16.11.0`; licenza in `server/vendor/graphql-LICENSE.txt`.
 - `_routes.json` limita le funzioni alle API riservate del CMS, lasciando statiche tutte le altre richieste.
-- Verifiche: `python3 tests/check-static.py`, `node tests/cms-check.cjs`, `node tests/cms-editor-check.cjs`, `node tests/cms-chapters-check.cjs`, `node tests/cms-visual-check.cjs`, `node tests/cms-page-actions-check.cjs`, `node tests/cms-create-check.cjs`, `node tests/cms-access-check.cjs`, `node tests/cms-resilience-check.cjs`, `node tests/site-check.cjs`, `node tests/mobile-check.cjs`, `node tests/deep-check.cjs`. I controlli Node richiedono Playwright e Chrome.
+- Verifiche: `python3 tests/check-static.py`, `node tests/cms-check.cjs`, `node tests/cms-editor-check.cjs`, `node tests/cms-chapters-check.cjs`, `node tests/cms-visual-check.cjs`, `node tests/cms-page-actions-check.cjs`, `node tests/cms-create-check.cjs`, `node tests/cms-access-check.cjs`, `node tests/cms-resilience-check.cjs`, `node tests/cms-regression-check.cjs`, `node tests/cms-interactions-check.cjs`, `node tests/site-check.cjs`, `node tests/mobile-check.cjs`, `node tests/deep-check.cjs`. I controlli Node richiedono Playwright e Chrome.
