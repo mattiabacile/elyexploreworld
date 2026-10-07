@@ -104,23 +104,21 @@ html:root[data-theme='dark'] {
 }
 
 /* Article authoring: full canvas, native text controls on the article, focused settings on demand. */
-.ely-mode-switch,.ely-page-actions{display:flex;gap:4px;flex-shrink:0}
-.ely-mode-switch{padding:3px;border:1px solid var(--ely-line);border-radius:8px}
-.ely-mode-switch button,.ely-page-actions button,.ely-inspector button{min-height:44px;padding:8px 12px;border:0;border-radius:6px;font:500 13px/1.4 'Plus Jakarta Sans',sans-serif;color:var(--ely-forest);background:transparent;cursor:pointer}
+.ely-mode-switch{display:flex;gap:4px;flex-shrink:0;padding:3px;border:1px solid var(--ely-line);border-radius:8px}
+.ely-mode-switch button,.ely-inspector button{min-height:44px;padding:8px 12px;border:0;border-radius:6px;font:500 13px/1.4 'Plus Jakarta Sans',sans-serif;color:var(--ely-forest);background:transparent;cursor:pointer}
 .ely-mode-switch button[aria-pressed='true']{background:var(--ely-forest);color:var(--ely-surface)}
-.ely-mode-switch button:not([aria-pressed='true']):hover,.ely-page-actions button:hover,.ely-inspector button:hover{background:var(--ely-soft)}
-.ely-mode-switch button:focus-visible,.ely-page-actions button:focus-visible,.ely-inspector button:focus-visible,.ely-on-page-toolbar button:focus-visible{outline:2px solid var(--ely-clay);outline-offset:-2px}
-.ely-page-actions,.ely-inspector{display:none}
-.ely-page-mode .ely-page-actions{display:flex}
+.ely-mode-switch button:not([aria-pressed='true']):hover,.ely-inspector button:hover{background:var(--ely-soft)}
+.ely-mode-switch button:focus-visible,.ely-inspector button:focus-visible,.ely-on-page-toolbar button:focus-visible{outline:2px solid var(--ely-clay);outline-offset:-2px}
+.ely-inspector{display:none}
 .content-editor.ely-page-mode .content-area{position:relative;padding-right:0;box-sizing:border-box}
 .content-editor.ely-page-mode .content-area .sui.resizable-pane:has(.ely-editor-content){position:absolute;top:0;left:0;width:420px;height:100%;visibility:hidden;overflow:visible!important;pointer-events:none}
 .content-editor.ely-page-mode .pane[data-mode='edit'] *{visibility:hidden!important}
 .content-editor.ely-page-mode .content-area .sui.resizable-pane:has(iframe.preview){display:block!important;flex:1 1 100%!important;width:100%!important}
-.content-editor.ely-page-mode .resizable-handle,.content-editor.ely-page-mode .swap-button,.ely-page-feedback,.ely-mobile-actions{display:none!important}
+.content-editor.ely-page-mode .resizable-handle,.content-editor.ely-page-mode .swap-button{display:none!important}
 .content-editor.ely-page-mode .pane[data-mode='preview']{display:flex!important}
 .ely-page-mode .ely-inspector{position:fixed;z-index:80;max-width:calc(100vw - 32px);max-height:calc(100dvh - 96px);box-sizing:border-box;flex-direction:column;background:var(--ely-paper);color:var(--ely-ink);border-radius:12px;box-shadow:0 16px 48px #16271f33;overflow:hidden}
 .ely-page-mode.ely-inspector-open .ely-inspector{display:flex}
-.ely-inspector>header{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 20px 8px}
+.ely-inspector>header{padding:16px 20px;border-bottom:1px solid var(--ely-line)}
 .ely-inspector h2{margin:0;font:600 18px/1.4 'Plus Jakarta Sans',sans-serif}
 .ely-inspector-error{font-size:14px;line-height:1.5;margin:0 20px;color:var(--ely-clay)}
 .ely-inspector-error:empty{display:none}
@@ -128,25 +126,23 @@ html:root[data-theme='dark'] {
 .ely-inspecting .ely-inspector-detail{display:flex}
 
 
-.ely-inspector-title{margin:0!important;padding:12px 20px;border-bottom:1px solid var(--ely-line)}
+.ely-inspector-title{margin:0!important}
 .ely-inspector-slot{flex:1;min-height:0;width:100%}
 .content-editor.ely-page-mode .pane[data-mode='edit'] .ely-on-page-field,.content-editor.ely-page-mode .pane[data-mode='edit'] .ely-on-page-field *{visibility:visible!important;pointer-events:auto}
 .content-editor.ely-page-mode .ely-on-page-field{position:fixed!important;z-index:81;left:var(--ely-field-left)!important;top:var(--ely-field-top)!important;width:var(--ely-field-width)!important;height:var(--ely-field-height)!important;max-height:var(--ely-field-height)!important;min-height:0!important;min-width:0!important;box-sizing:border-box;overflow:auto;overscroll-behavior:contain;margin:0!important;padding:20px!important;border:0!important;border-radius:0;background:var(--ely-paper);box-shadow:none;color:var(--ely-ink)}
 .ely-on-page-field .field-wrapper{min-width:0}
-.ely-on-page-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;z-index:82;padding:8px 16px;border-top:1px solid var(--ely-line);background:var(--ely-paper);font-size:12px;color:var(--ely-muted)}
+.ely-on-page-toolbar{display:flex;align-items:center;justify-content:flex-end;gap:12px;z-index:82;padding:8px 16px;border-top:1px solid var(--ely-line);background:var(--ely-paper);font-size:12px;color:var(--ely-muted)}
 .ely-on-page-toolbar[hidden]{display:none}
 .ely-on-page-toolbar button{background:var(--ely-forest);color:var(--ely-surface);border:0;border-radius:6px;min-height:44px;min-width:88px;font:600 13px 'Plus Jakarta Sans',sans-serif;cursor:pointer}
 .ely-page-mode .ely-inspector.ely-inline-edit{border-radius:0;box-shadow:none;overflow:visible}
-.ely-inline-edit>header,.ely-inline-edit .ely-inspector-title{display:none}
+.ely-inline-edit>header{display:none}
 .ely-article-backdrop{position:fixed;z-index:70;border:0;pointer-events:none;background:var(--ely-paper)}
 .ely-action-status{position:fixed;z-index:83;bottom:16px;left:16px;max-width:min(480px,calc(100vw - 64px));margin:0;padding:12px 16px;border-radius:8px;background:var(--ely-forest);color:var(--ely-surface);font-size:13px;line-height:1.5;pointer-events:none}
 .ely-action-status:empty{display:none}
 @media(max-width:767px){
  .ely-page-mode .ely-inspector{max-height:calc(100dvh - 112px)}
  .ely-inspector>header{padding:12px 16px 8px;flex-wrap:wrap}
- .ely-inspector-menu{padding-inline:16px}
  .ely-mode-switch button{padding-inline:10px}
- .ely-page-actions button{padding-inline:8px;font-size:12px}
  .content-editor.ely-page-mode .ely-on-page-field{padding:16px!important}
  .ely-action-status{bottom:8px;font-size:12px;padding:8px 12px}
 }
@@ -157,9 +153,10 @@ html:root[data-theme='dark'] {
 
 @media(max-width:767px){.ely-on-page-field input,.ely-on-page-field textarea{font-size:16px}}
 
-/* Indicazione sempre visibile di cosa si sta facendo in modalità Pagina */
+/* Page hints stay available to assistive technology while a field is open. */
 .ely-live-hint{display:none;position:fixed;z-index:83;bottom:16px;left:50%;transform:translateX(-50%);max-width:min(560px,calc(100vw - 32px));margin:0;padding:10px 16px;border-radius:999px;background:var(--ely-surface);color:var(--ely-forest);border:1px solid var(--ely-line);box-shadow:0 4px 18px #16271f26;font:600 13px/1.4 'Plus Jakarta Sans',sans-serif;text-align:center;pointer-events:none}
-.ely-page-mode .ely-live-hint:not(:empty){display:block}
+.ely-page-mode:not(.ely-inspector-open) .ely-live-hint:not(:empty){display:block}
+.ely-inspector-open .ely-live-hint{display:block;position:absolute;width:1px;height:1px;margin:-1px;padding:0;border:0;clip-path:inset(50%);overflow:hidden;white-space:nowrap;box-shadow:none}
 @media(max-width:767px){.ely-live-hint{bottom:64px;font-size:12px}}
 
 /* Integrated publishing controls and a compact, uninterrupted article canvas. */

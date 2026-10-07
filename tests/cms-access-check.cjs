@@ -76,7 +76,7 @@ const createDB=()=>{
  assert.equal((await call('/cms/login',{method:'POST',data:account})).status,429);
   env.CMS_DB.db.prepare('DELETE FROM cms_attempts').run();
   const {parse,valueFromASTUntyped}=await import(pathToFileURL(path.join(temp,'server/vendor/graphql.js')));
-  let records=JSON.parse(fs.readFileSync(path.join(root,'content/stories.json'))),head='a'.repeat(40);
+  let records=require('./cms-fields-helper.cjs').readStories(),head='a'.repeat(40);
   const sources=new Map([['content/categories.json',fs.readFileSync(path.join(root,'content/categories.json'))],['content/tags.json',fs.readFileSync(path.join(root,'content/tags.json'))]]);
   for(const image of new Set(records.flatMap(s=>[s.hero,...s.chapters.map(c=>c.image)]).filter(source=>source && !/^https?:\/\//.test(source)))) sources.set(image.replace(/^\//,''),fs.readFileSync(path.join(root,image)));
   const source=()=>{sources.set('content/stories.json',Buffer.from(JSON.stringify(records)));return sources};
