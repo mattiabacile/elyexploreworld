@@ -105,3 +105,19 @@ aside { padding: 20px; background: #e4e9dc; border-radius: 12px; }
 .ely-editable-page .preview-chapter{padding-block:24px;border-top:1px solid #cad1c4}
 .ely-editable-page .preview-chapter:hover{background:#25453505}
 @media (prefers-reduced-motion:reduce){.ely-editable-page [data-key-path]{transition:none}}
+
+.preview-photo-slot{display:flex;align-items:center;justify-content:center;width:100%;aspect-ratio:16/9;box-sizing:border-box;background:#ecefe5;border:1px dashed #9aa58f;border-radius:12px}
+.preview-cover .preview-photo-slot[data-photo-format='panoramic']{aspect-ratio:2/1}
+.preview-photo-slot[data-photo-format='portrait']{aspect-ratio:3/4}
+.preview-photo-slot[data-photo-format='square']{aspect-ratio:1}
+.preview-photo-slot button{min-height:44px;padding:10px 20px;border:1px solid #cad1c4;border-radius:8px;color:#254535;background:#fffdf8;font:500 14px/1.4 'Plus Jakarta Sans',sans-serif;cursor:pointer}
+.preview-chapter-tools{display:none}
+.ely-editable-page .preview-chapter-tools{display:flex;grid-column:1/-1;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;font:500 13px/1.4 'Plus Jakarta Sans',sans-serif;color:#586654}
+.ely-editable-page .preview-chapter-tools .preview-local-tools{margin:0}
+.ely-editable-page .preview-local-tools button[data-toggle-key][aria-pressed='true']{background:#254535;color:#fffdf8}
+.ely-field-highlight{outline:2px solid #9f4933;outline-offset:4px;scroll-margin-top:20px}
+.ely-editable-page .preview-editor-header{position:static;box-shadow:none;padding-block:12px;margin-bottom:24px}
+.ely-editable-page .preview-draft-status{display:none}
+.ely-editable-page .preview-chapter-tools button{min-height:44px}
+.ely-editable-page .preview-add[data-key-path='titleAccent']{width:auto;background:transparent;border-style:solid;padding:8px 12px;font-style:italic}
+.ely-editable-page .preview-local-tools:has([data-key-path='titleAccent']){margin-block:8px 16px}

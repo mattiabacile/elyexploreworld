@@ -72,7 +72,7 @@ const createDB=()=>{
   const {parse,valueFromASTUntyped}=await import(pathToFileURL(path.join(temp,'server/vendor/graphql.js')));
   let records=JSON.parse(fs.readFileSync(path.join(root,'content/stories.json'))),head='a'.repeat(40);
   const sources=new Map();
-  for(const image of new Set(records.flatMap(s=>[s.hero,...s.chapters.map(c=>c.image)]).filter(Boolean))) sources.set(image.replace(/^\//,''),fs.readFileSync(path.join(root,image)));
+  for(const image of new Set(records.flatMap(s=>[s.hero,...s.chapters.map(c=>c.image)]).filter(source=>source && !/^https?:\/\//.test(source)))) sources.set(image.replace(/^\//,''),fs.readFileSync(path.join(root,image)));
   const source=()=>{sources.set('content/stories.json',Buffer.from(JSON.stringify(records)));return sources};
   const sha=value=>require('node:crypto').createHash('sha1').update(value).digest('hex');
   const blob=key=>{const data=source().get(key);return data?{__typename:'Blob',oid:sha(data),text:data.toString(),isBinary:key!=='content/stories.json',byteSize:data.length}:null};

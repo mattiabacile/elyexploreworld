@@ -238,3 +238,46 @@ section.field[data-key-path='title'] > .ely-editor-section { margin-top: 0; padd
 .ely-live-hint{display:none;position:fixed;z-index:83;bottom:16px;left:50%;transform:translateX(-50%);max-width:min(560px,calc(100vw - 32px));margin:0;padding:10px 16px;border-radius:999px;background:var(--ely-surface);color:var(--ely-forest);border:1px solid var(--ely-line);box-shadow:0 4px 18px #16271f26;font:600 13px/1.4 'Plus Jakarta Sans',sans-serif;text-align:center;pointer-events:none}
 .ely-page-mode .ely-live-hint:not(:empty){display:block}
 @media(max-width:767px){.ely-live-hint{bottom:64px;font-size:12px}}
+
+/* Integrated publishing controls and a compact, uninterrupted article canvas. */
+.ely-page-settings{display:none}
+.ely-page-mode .ely-page-settings{display:block;position:fixed;right:0;top:var(--ely-toolbar-height,64px);bottom:0;width:248px;box-sizing:border-box;padding:22px 20px;background:var(--ely-surface);border-left:1px solid var(--ely-line);overflow:auto;overscroll-behavior:contain;color:var(--ely-ink);font:13px/1.6 'Plus Jakarta Sans',sans-serif}
+.content-editor.ely-page-mode .content-area{padding-right:248px}
+.ely-page-settings h2{font:600 15px/1.4 'Plus Jakarta Sans',sans-serif;margin:24px 0 10px;color:var(--ely-forest)}
+.ely-page-settings h2:first-child{margin-top:0}
+.ely-page-settings fieldset{border:0;padding:0;margin:0}
+.ely-page-settings legend{font-size:12px;color:var(--ely-muted);margin-bottom:8px}
+.ely-page-settings label{display:flex;align-items:center;gap:8px;min-height:44px;cursor:pointer}
+.ely-page-settings input{accent-color:var(--ely-forest);width:18px;height:18px}
+.ely-page-settings button{display:block;width:100%;min-height:44px;padding:10px 0;border:0;border-bottom:1px solid var(--ely-line);background:transparent;color:var(--ely-forest);font:inherit;text-align:left;cursor:pointer}
+.ely-page-settings button:hover{background:var(--ely-soft)}
+.ely-page-settings :focus-visible{outline:2px solid var(--ely-clay);outline-offset:3px}
+.ely-page-settings [hidden]{display:none!important}
+.ely-publication-note{color:var(--ely-forest);font-weight:600;margin:12px 0}
+.ely-save-reminder{font-size:12px;color:var(--ely-muted);margin:0}
+.ely-preview-devices button{width:40px;height:40px;padding:8px;display:grid;place-items:center}
+.ely-preview-devices svg{width:22px;height:22px}
+@media(max-width:900px){
+ .ely-page-mode .ely-page-settings{position:static;width:100%;padding:12px 18px;border-left:0;border-bottom:1px solid var(--ely-line);max-height:180px;order:1;flex-shrink:0}
+ .content-editor.ely-page-mode > .body{display:flex;flex-direction:column;min-height:0}
+ .content-editor.ely-page-mode .content-area{padding-right:0}
+ .ely-page-mode .ely-page-settings{position:fixed;top:auto;bottom:0;max-height:130px;z-index:30;display:flex;flex-wrap:wrap;align-items:center;gap:4px 12px;box-shadow:0 -4px 16px #16271f12}
+ .ely-page-settings h2,.ely-page-settings legend,.ely-page-settings .ely-save-reminder{display:none}
+ .ely-page-settings fieldset{display:flex;gap:12px}
+ .ely-page-settings .ely-publication-note{margin:0;font-size:12px}
+ .ely-page-settings button{width:auto;min-height:36px;padding:6px 8px;border:1px solid var(--ely-line);border-radius:6px;font-size:12px}
+ .content-editor.ely-page-mode .content-area{padding-bottom:130px}
+ .ely-page-mode.ely-inspector-open .ely-page-settings{visibility:hidden}
+}
+.ely-settings-fields{margin-top:24px}
+.ely-settings-fields>summary{display:none}
+@media(max-width:900px){
+ .ely-page-mode .ely-page-settings{display:block;max-height:50dvh;padding:8px 18px 12px}
+ .ely-page-settings fieldset{display:flex;justify-content:flex-start;gap:20px}
+ .ely-page-settings .ely-publication-note{margin:2px 0;font-size:12px}
+ .ely-settings-fields{margin-top:2px}
+ .ely-settings-fields>summary{display:block;min-height:32px;padding:4px 0;font-size:12px;font-weight:600;color:var(--ely-forest);cursor:pointer}
+ .ely-settings-fields button{display:inline-block;margin:4px 4px 4px 0;max-width:100%}
+ .ely-page-mode #first-pane-header button[aria-label='Anteprima']{display:none}
+ .ely-action-status{bottom:140px!important}
+}

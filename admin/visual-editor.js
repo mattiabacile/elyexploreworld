@@ -1,8 +1,33 @@
 /* Contextual article editing. Native fields stay mounted in their CMS owner. */
 (() => {
-  let backdrop, editor, frame, active, selection, panel, toolbar, selecting=false, previewSwitch=false, pending=0, lastInput=0, finishTimer, statusTimer, saveRequested=false, nativeErrorForwarding=false, nativeValidationReceiver, working=false, actionStatus, validationRefs=[], article={}, group='content';
+  let backdrop, editor, frame, active, selection, panel, toolbar, selecting=false, previewSwitch=false, pending=0, lastInput=0, finishTimer, statusTimer, saveRequested=false, nativeErrorForwarding=false, nativeValidationReceiver, working=false, actionStatus, validationRefs=[], article={};
   const boundFrames=new WeakSet();
-  let liveHint;
+  let liveHint,settings,pendingPublication=null;
+  const settingButton=(label,key)=>{const b=document.createElement('button');b.type='button';b.textContent=label;b.dataset.settingKey=key;b.addEventListener('click',()=>select(key));return b;};
+  const updateSettings=()=>{
+    if(!settings)return;
+    settings.querySelectorAll('input[name=ely-publication]').forEach(input=>input.checked=(input.value==='visible')===(pendingPublication ?? !!article.published));
+    const status=settings.querySelector('.ely-publication-note');
+    const message=article.published?'Dopo Salva: visibile sul sito.':'Dopo Salva: bozza, fuori dal sito.';
+    if(status.textContent!==message)status.textContent=message;
+    settings.querySelector('[data-setting-key=preparing]').hidden=article.kind!=='consiglio';
+  };
+  const createSettings=()=>{
+    settings=document.createElement('aside');settings.className='ely-page-settings';
+    settings.setAttribute('aria-label','Impostazioni dell’articolo');
+    settings.innerHTML='<h2>Pubblicazione</h2><fieldset><legend>Dopo il salvataggio</legend><label><input type="radio" name="ely-publication" value="draft"> Bozza</label><label><input type="radio" name="ely-publication" value="visible"> Visibile sul sito</label></fieldset><p class="ely-publication-note" role="status"></p><p class="ely-save-reminder">Premi Salva per conservare le modifiche.</p><details class="ely-settings-fields" open><summary>Impostazioni dell’articolo</summary><h2>Articolo</h2></details>';
+    for(const [key,label] of [
+      ['kind','Racconto o consiglio'],['date','Data'],['category','Categoria'],['tags','Etichette'],
+      ['slideText','Testo per lo slideshow'],['appearance.theme','Colore dei dettagli'],
+      ['appearance.textStyle','Stile di lettura'],['appearance.showContents','Sommario dei capitoli'],
+      ['preparing','Consiglio in preparazione']
+    ])settings.querySelector('.ely-settings-fields').append(settingButton(label,key));
+    settings.addEventListener('change',event=>{
+      if(event.target.name==='ely-publication')setBoolean('published',event.target.value==='visible');
+    });
+    if(innerWidth<=900)settings.querySelector('details').open=false;
+    editor.append(settings);updateSettings();
+  };
   const say=text=>{const value=visual()?text:'';if(liveHint && liveHint.textContent!==value)liveHint.textContent=value;};
   const labelOf=el=>(el?.getAttribute?.('title')||'').replace(/^Modifica\s+/,'');
   // Ctrl/Cmd+S saves through the CMS's own Salva button, so its safeguards still apply.
@@ -15,11 +40,8 @@
   const field=key=>editor?.querySelector(`section.field[data-key-path="${CSS.escape(key)}"]`);
   const inlineHeight=key=>/(?:intro|body|note|conclusion)$/.test(key)?340:key==='deck'?260:key==='tags'?300:/(?:^title$|^destination$|heroAlt$|\.(alt|imageAlt)$)/.test(key)?220:180;
   const visual=()=>editor?.classList.contains('ely-page-mode');
-  const groups={content:'Contenuto',details:'Dettagli',appearance:'Aspetto',publish:'Visibilità'};
   const roots=['title','kind','date','destination','deck','hero','heroAlt','heroCaption','intro','chapters','travelFacts','category','tags','gallery','conclusion','appearance','titleAccent','slideText','published','preparing'];
   const valueAt=(value,key)=>key.split('.').reduce((current,part)=>current?.[part],value);
-  const category=key=>['appearance','titleAccent'].includes(key.split('.')[0])?'appearance':['published','preparing'].includes(key)?'publish':['kind','date','destination','category','tags','slideText','travelFacts'].includes(key.split('.')[0])?'details':'content';
-  const button=(label,key)=>{const b=document.createElement('button');b.type='button';b.textContent=label;b.dataset.key=key;b.addEventListener('click',()=>['chapters','gallery'].includes(key)?changeList(key,'add'):select(key));return b;};
   const clearSelection=()=>frame?.contentDocument?.querySelectorAll('.ely-selected-block').forEach(e=>e.classList.remove('ely-selected-block'));
   const lockFields=()=>{
     if(!editor || working)return;
@@ -30,42 +52,7 @@
       for(const child of root.querySelectorAll('section.field'))child.inert=visual() && !(child===active || child.contains(active) || active?.contains(child));
     }
   };
-  const draw=()=>{
-    if(!panel)return;
-    panel.querySelectorAll('[data-group]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.group===group)));
-    panel.classList.toggle('ely-inspecting',!!active || selecting);
-    const body=panel.querySelector('.ely-inspector-menu');
-    const signature=JSON.stringify([group,article.title,article.id,article.chapters?.map(c=>c.title),article.gallery?.map(p=>[p.alt,p.caption]),article.publicSlug,article.published,article.kind,article.preparing]);
-    if(body.dataset.signature===signature)return;
-    body.dataset.signature=signature;body.replaceChildren();
-    const section=(title,rows)=>{const s=document.createElement('section');const h=document.createElement('h3');h.textContent=title;s.append(h);for(const [key,label] of rows)s.append(button(label,key));body.append(s);};
-    const chapterSection=(title,rows)=>{const d=document.createElement('details');d.className='ely-chapter-outline';const summary=document.createElement('summary');summary.textContent=title;d.append(summary);for(const [key,label] of rows)d.append(button(label,key));body.append(d);};
-    const note=text=>{const p=document.createElement('p');p.className='ely-inspector-note';p.textContent=text;body.append(p);};
-    if(group==='content'){
-      section('L’inizio',[['title','Titolo'],['deck','Introduzione breve'],['hero','Foto di copertina'],['heroAlt','Descrizione della copertina'],['heroCaption','Didascalia della copertina'],['intro','Apertura del racconto']]);
-      section('Capitoli',[['chapters','Aggiungi capitolo']]);
-      if(!article.chapters?.length)note('Nessun capitolo. Per un racconto breve puoi scrivere soltanto l’apertura.');
-      (article.chapters||[]).forEach((chapter,index)=>chapterSection(`${index+1}. ${chapter.title || 'Capitolo senza titolo'}`,[['title','Titolo'],['body','Testo'],['image','Fotografia'],['imageAlt','Descrizione della foto'],['caption','Didascalia'],['quote','Citazione'],['note','Consiglio pratico'],['layout','Disposizione'],['imageFormat','Formato della foto']].map(([k,l])=>[`chapters.${index}.${k}`,l])));
-      section('Galleria',[['gallery','Aggiungi foto alla galleria']]);
-      (article.gallery||[]).forEach((photo,index)=>chapterSection(`Foto ${index+1}${photo.caption?' · '+photo.caption:''}`,[['image','Fotografia'],['alt','Descrizione'],['caption','Didascalia']].map(([k,l])=>[`gallery.${index}.${k}`,l])));
-      section('Conclusione',[['conclusion','Testo finale']]);
-    }else if(group==='details'){
-      note('Queste informazioni aiutano a organizzare e presentare il racconto.');
-      section('Informazioni dell’articolo',[['kind','Racconto o consiglio'],['destination','Destinazione'],['date','Data'],['category','Categoria'],['tags','Tag / etichette']]);
-      section('Informazioni del viaggio',[['travelFacts','Durata, periodo e tipo di viaggio']]);
-      section('Homepage',[['slideText','Testo della diapositiva']]);
-    }else if(group==='appearance'){
-      section('Stile dell’articolo',[['appearance','Colori, copertina e lettura'],['titleAccent','Parola del titolo in corsivo']]);
-      note('La disposizione e il formato delle foto di ciascun capitolo si trovano in Contenuto.');
-    }else{
-      section('Visibilità',[['published','Visibile sul sito dopo Salva'],...(article.kind==='consiglio'?[['preparing','Consiglio in preparazione']]:[])]);
-      note(!article.published?'La bozza resta fuori dal sito.':article.kind==='consiglio'&&article.preparing?'Dopo Salva comparirà una scheda in preparazione.':'Dopo Salva il racconto sarà visibile sul sito.');
-      const label=document.createElement('h3');label.textContent='Indirizzo dell’articolo';body.append(label);
-      const url=document.createElement('p');url.className='ely-article-address';url.textContent=article.title?location.origin+'/racconto?story='+(article.publicSlug || window.ElyLinks.slug(article.title)):'Scrivi il titolo per vedere l’indirizzo.';body.append(url);
-      note('Il titolo determina l’indirizzo. I collegamenti precedenti con l’identificativo continuano a funzionare.');
-      note('Fine chiude il campo. Salva, nella barra superiore, conserva e pubblica le modifiche secondo la visibilità scelta.');
-    }
-  };
+  const draw=()=>panel?.classList.toggle('ely-inspecting',!!active || selecting);
   const place=()=>{
     if(!active || !panel)return;
     const inline=panel.classList.contains('ely-inline-edit');
@@ -112,7 +99,7 @@
     if(active?.querySelector('[contenteditable="true"]') && performance.now()-lastInput<250){setTimeout(()=>select(key,element),250-(performance.now()-lastInput));return;}
     if(working)return;
     const scroll=frame?.contentWindow?.scrollY ?? selection?.scroll ?? 0;
-    close(false);validationRefs=[];frame?.contentDocument?.querySelector('.preview-validation')?.remove();panel.querySelector('.ely-inspector-error').textContent='';group=category(key);
+    close(false);validationRefs=[];frame?.contentDocument?.querySelector('.preview-validation')?.remove();panel.querySelector('.ely-inspector-error').textContent='';
     element=element || frame?.contentDocument?.querySelector(`[data-key-path="${CSS.escape(key)}"]`);
     if(element?.tagName==='BUTTON'&&/^chapters\.\d+\.(quote|note)$/.test(key)){
       const chapter=element.closest('.preview-chapter');
@@ -199,6 +186,23 @@
       if(content)content.scrollTop+=(roots.indexOf(key)<roots.indexOf(mounted?.dataset.keyPath)?-1:1)*content.clientHeight*.7;
       return null;
     });
+  };
+  const setBoolean=async(key,value)=>{
+    if(working)return;
+    const owner=editor;if(key==='published')pendingPublication=value;close(false);working=true;editor.setAttribute('aria-busy','true');settings?.querySelectorAll('input').forEach(input=>input.disabled=true);
+    preservePreview(frame?.contentWindow?.scrollY||0);
+    try{
+      const parts=key.split('.');const root=await mountNative(parts[0]);root.inert=false;root.querySelectorAll('[inert]').forEach(node=>node.inert=false);
+      root.querySelector(':scope > .field-wrapper button[aria-controls^="object-"][aria-expanded="false"]')?.click();
+      const control=await ready(()=>field(key)?.querySelector('[role="switch"],input[type="checkbox"]'));
+      const checked=control.getAttribute('aria-checked')==='true'||control.checked===true;
+      if(checked!==value)control.click();
+      await pause(280);
+      if(key==='published')article.published=value;
+      else if(key==='appearance.dropCap')article.appearance={...article.appearance,dropCap:value};
+      announce('Modifica pronta. Premi Salva per conservarla.');
+    }catch(error){announce(error.message);}
+    finally{pendingPublication=null;working=false;owner?.setAttribute('aria-busy','false');settings?.querySelectorAll('input').forEach(input=>input.disabled=false);backdrop?.remove();backdrop=null;lockFields();enhance();updateSettings();}
   };
   const listItems = root => [...(root?.querySelector(':scope > .field-wrapper .item-list')?.children || [])];
   const announce = message => {clearTimeout(statusTimer);if(actionStatus)actionStatus.textContent=message;if(message&&!working)statusTimer=setTimeout(()=>{if(actionStatus)actionStatus.textContent='';},4000);};
@@ -312,8 +316,9 @@
       if(event.type==='keydown'&&event.key==='Escape'&&visual()&&(active||editor.classList.contains('ely-inspector-open'))){
         event.preventDefault();event.stopPropagation();close();return;
       }
+      if(!visual()&&event.type==='click'){const target=event.target.closest('[data-key-path]');if(target){event.preventDefault();const locale=editor.querySelector('.pane[data-locale]')?.dataset.locale;window.postMessage({type:'highlight-editor-field',payload:{locale,keyPath:target.dataset.keyPath}},location.origin);}return;}
       if(working || !visual() || event.type==='keydown'&&!['Enter',' '].includes(event.key))return;
-      const element=event.target.closest('[data-key-path], [data-group], [data-operation]');
+      const element=event.target.closest('[data-key-path], [data-toggle-key], [data-operation]');
       if(!element){
         // Links inside the article must never navigate the editor away; a click on empty page ends the edit.
         if(event.type==='click'){
@@ -323,10 +328,11 @@
         return;
       }
             event.preventDefault();event.stopPropagation();
-      if(element.dataset.operation){
+      if(element.dataset.toggleKey){setBoolean(element.dataset.toggleKey,!valueAt(article,element.dataset.toggleKey));}
+      else if(element.dataset.operation){
         if(element.dataset.operation==='remove')confirmRemoval(element);
         else changeList(element.dataset.list,element.dataset.operation==='confirm-remove'?'remove':element.dataset.operation,Number(element.dataset.index));
-      }else if(element.dataset.group)openGroup(element.dataset.group);
+      }
       else select(element.dataset.keyPath,element);
     };
     doc.addEventListener('scroll',()=>{if(active)place();},true);
@@ -344,30 +350,23 @@
     editor.querySelectorAll('.ely-mode-switch button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mode===mode)));
     bind();lockFields();draw();
   };
-  const openGroup=(value,key)=>{
-    if(active?.querySelector('[contenteditable="true"]') && performance.now()-lastInput<250){setTimeout(()=>openGroup(value,key),250-(performance.now()-lastInput));return;}
-    if(!visual())setMode('page');close(false);selection=null;group=value;editor.classList.add('ely-inspector-open');draw();panel.style.left=Math.max(16,(innerWidth-Math.min(680,innerWidth-32))/2)+'px';panel.style.top=(parseFloat(editor.style.getPropertyValue('--ely-toolbar-height'))||64)+24+'px';panel.style.width=Math.min(680,innerWidth-32)+'px';panel.style.height=Math.min(560,innerHeight-120)+'px';panel.setAttribute('role','dialog');panel.querySelector('nav button[aria-pressed="true"]')?.focus();
-    if(key)select(key);
-  };
   const createPanel=()=>{
     panel=document.createElement('div');panel.className='ely-inspector';panel.setAttribute('role','dialog');panel.setAttribute('aria-label','Modifica nell’articolo');
-    panel.innerHTML='<header><h2>Articolo</h2><button type="button" class="ely-inspector-dismiss">Torna alla pagina</button></header><nav aria-label="Sezioni dell’articolo"></nav><p class="ely-inspector-error" role="status"></p><div class="ely-inspector-menu"></div><div class="ely-inspector-detail"><button type="button" class="ely-inspector-back">Torna all’elenco</button><h3 class="ely-inspector-title"></h3><div class="ely-inspector-slot"></div></div>';
-    for(const [key,label] of Object.entries(groups)){const b=document.createElement('button');b.type='button';b.dataset.group=key;b.textContent=label;b.setAttribute('aria-pressed',String(key===group));b.addEventListener('click',()=>openGroup(key));panel.querySelector('nav').append(b);}
-    panel.querySelector('.ely-inspector-back').addEventListener('click',()=>{openGroup(group);panel.querySelector('.ely-inspector-menu button')?.focus();});
+    panel.innerHTML='<header><h2>Articolo</h2><button type="button" class="ely-inspector-dismiss">Torna alla pagina</button></header><p class="ely-inspector-error" role="status"></p><div class="ely-inspector-detail"><h3 class="ely-inspector-title"></h3><div class="ely-inspector-slot"></div></div>';
     panel.querySelector('.ely-inspector-dismiss').addEventListener('click',()=>{close();editor.classList.remove('ely-inspector-open');editor.querySelector('.ely-page-actions button')?.focus();});
     toolbar=document.createElement('footer');toolbar.className='ely-on-page-toolbar';toolbar.hidden=true;toolbar.innerHTML='<span>Modifiche nella bozza</span><button type="button">Fine</button>';toolbar.querySelector('button').addEventListener('click',()=>close());editor.append(panel,toolbar);draw();
   };
   const enhance=()=>{
     const next=document.querySelector('.content-editor');
-    if(next!==editor){if(nativeValidationReceiver){window.removeEventListener('message',nativeValidationReceiver,true);nativeValidationReceiver=null;}close(false);panel?.remove();toolbar?.remove();panel=null;toolbar=null;editor=next;selection=null;frame=null;previewSwitch=false;group='content';validationRefs=[];article={};}
+    if(next!==editor){if(nativeValidationReceiver){window.removeEventListener('message',nativeValidationReceiver,true);nativeValidationReceiver=null;}close(false);panel?.remove();toolbar?.remove();settings?.remove();settings=null;panel=null;toolbar=null;editor=next;selection=null;frame=null;previewSwitch=false;validationRefs=[];article={};}
     if(!editor)return;
     const header=editor.querySelector(':scope > .primary > .inner');
     if(header&&!header.querySelector('.ely-mode-switch')){
       const choices=document.createElement('div');choices.className='ely-mode-switch';choices.setAttribute('role','group');choices.setAttribute('aria-label','Modalità di modifica');
       for(const [mode,label] of [['page','Pagina'],['fields','Campi']]){const b=document.createElement('button');b.type='button';b.textContent=label;b.dataset.mode=mode;b.setAttribute('aria-pressed',String(mode==='fields'));b.addEventListener('click',()=>setMode(mode));choices.append(b);}
-      const actions=document.createElement('div');actions.className='ely-page-actions';const organize=document.createElement('button');organize.type='button';organize.textContent='Organizza';organize.addEventListener('click',()=>openGroup('content'));actions.append(organize);
-      const anchor=header.querySelector('h2')||header.firstElementChild;if(anchor)anchor.after(choices,actions);else header.append(choices,actions);
-      createPanel();
+
+      const anchor=header.querySelector('h2')||header.firstElementChild;if(anchor)anchor.after(choices);else header.append(choices);
+      createPanel();createSettings();
       actionStatus=document.createElement('p');actionStatus.className='ely-action-status';actionStatus.setAttribute('role','status');actionStatus.setAttribute('aria-live','polite');editor.append(actionStatus);
       liveHint=document.createElement('p');liveHint.className='ely-live-hint';liveHint.setAttribute('role','status');liveHint.setAttribute('aria-live','polite');editor.append(liveHint);
     }
@@ -376,7 +375,8 @@
     if(frame)previewSwitch=false;
     if(visual()&&!working&&!frame&&!active&&!selecting&&!previewSwitch){const toggle=editor.querySelector('#first-pane-header button[aria-label="Anteprima"][aria-pressed="false"]');if(toggle){previewSwitch=true;toggle.click();}}
     editor.style.setProperty('--ely-toolbar-height',editor.querySelector(':scope > .primary')?.getBoundingClientRect().height+'px');
-    lockFields();place();
+    lockFields();place();updateSettings();
+    for(const button of document.querySelectorAll('button,[role=menuitem]'))if(/cronologia|history/i.test(button.getAttribute('aria-label')||button.dataset.label||'') || /^(Mostra |Show |View )?(Cronologia|History)$/i.test(button.textContent.trim()))button.hidden=true;
     if(visual())for(const button of document.querySelectorAll('button[data-label="Show Errors"]')){
       const label=button.querySelector('.label .truncated-text');if(label&&label.textContent!=='Mostra cosa manca')label.textContent='Mostra cosa manca';
     }
@@ -388,7 +388,7 @@
       }
     }
   };
-  window.addEventListener('ely:article-change',event=>{article=event.detail;draw();});
+  window.addEventListener('ely:article-change',event=>{article=event.detail;draw();updateSettings();});
   window.addEventListener('keydown',saveShortcut,true);
   window.addEventListener('resize',()=>{place();});window.visualViewport?.addEventListener('resize',()=>place());
   document.addEventListener('input',event=>{if(active?.contains(event.target))lastInput=performance.now();},true);

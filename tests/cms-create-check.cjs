@@ -25,10 +25,15 @@ await page.addInitScript(({files})=>{
   return root;
  };
 },{files});
+await page.route('https://picsum.photos/**',route=>route.fulfill({contentType:'image/webp',body:fs.readFileSync(root+'/'+stories[0].hero)}));
 await page.goto((process.env.SITE_URL || 'http://localhost:4173') + '/admin/?local=1');await page.getByRole('button',{name:/Lavora con Repository Locale/}).click();
-await page.getByRole('button',{name:'Crea Nuova Voce',exact:true}).click();
+await page.getByRole('button',{name:'Crea Nuova Voce',exact:true}).click({noWaitAfter:true});
 await page.setViewportSize({width:Number(process.env.CMS_WIDTH || 1440),height:Number(process.env.CMS_WIDTH || 1440)<768?844:1000});
 await page.getByRole('button',{name:'Pagina',exact:true}).click();
+assert.equal(await page.getByRole('button',{name:'Organizza',exact:true}).count(),0);
+assert.equal(await page.frameLocator('iframe').getByRole('button',{name:'Aspetto',exact:true}).count(),0);
+assert.equal(await page.getByRole('radio',{name:'Bozza',exact:true}).isChecked(),true);
+const slot=await page.frameLocator('iframe').locator('.preview-cover .preview-photo-slot').boundingBox();assert.ok(slot.height>100 && slot.width>slot.height);
 const pick=async key=>{
  const target=page.frameLocator('iframe.preview').locator(`[data-key-path="${key}"]`).first();
  await target.evaluate(element=>{for(let parent=element.parentElement;parent;parent=parent.parentElement)if(parent.tagName==='DETAILS')parent.open=true;});
@@ -45,6 +50,7 @@ await fill('date','2026-10-06');
 await pick('hero');await page.locator('.ely-on-page-field input[type="file"]').first().setInputFiles(root+'/'+stories[0].hero);
 await page.locator('.ely-on-page-field [role="textbox"]').filter({hasText:/assets\/uploads/}).waitFor();await done();
 await fill('heroAlt','La copertina del viaggio');await fill('heroCaption','Un nuovo inizio');
+await page.frameLocator('iframe.preview').getByRole('button',{name:'Lettera iniziale grande',exact:true}).click();await page.locator('.content-editor[aria-busy="false"]').waitFor();
 await rich('intro','L’apertura del racconto creata direttamente sulla pagina.');
 await page.frameLocator('iframe.preview').getByRole('button',{name:'Aggiungi capitolo',exact:true}).click();
 await page.locator('.ely-on-page-field[data-key-path="chapters.0.title"]').waitFor({state:'visible'});await done();
@@ -60,10 +66,11 @@ await pick('gallery.0.image');await page.locator('.ely-on-page-field input[type=
 await page.locator('.ely-on-page-field [role="textbox"]').filter({hasText:/assets\/uploads/}).waitFor();await done();
 await fill('gallery.0.alt','Foto della galleria');await fill('gallery.0.caption','La prima tappa');
 await rich('conclusion','La conclusione scritta in anteprima.');
-await page.frameLocator('iframe').getByRole('button',{name:'Aspetto',exact:true}).click();await page.getByRole('button',{name:'Colori, copertina e lettura',exact:true}).click();await page.locator('.ely-on-page-field[data-key-path="appearance"]').waitFor();
+if(Number(process.env.CMS_WIDTH || 1440)<=900)await page.locator('.ely-settings-fields summary').click();
+await page.getByRole('button',{name:'Colore dei dettagli',exact:true}).click();await page.locator('.ely-on-page-field[data-key-path="appearance.theme"]').waitFor();
 await page.getByRole('radio',{name:'Blu oceano',exact:true}).check();await done();
-await page.frameLocator('iframe').getByRole('button',{name:'Visibilità',exact:true}).click();await page.getByRole('button',{name:'Visibile sul sito dopo Salva',exact:true}).click();await page.locator('.ely-on-page-field[data-key-path="published"]').waitFor();
-await page.locator('.ely-on-page-field').getByRole('switch').check();await done();
+if(Number(process.env.CMS_WIDTH || 1440)<=900)await page.locator('.ely-settings-fields summary').click();
+await page.getByRole('radio',{name:'Visibile sul sito',exact:true}).check();await page.locator('.content-editor[aria-busy="false"]').waitFor();await page.locator('iframe.preview').waitFor();
 assert.equal(await page.getByRole('button',{name:'Pagina',exact:true}).getAttribute('aria-pressed'),'true');
 await page.frameLocator('iframe.preview').getByRole('heading',{name:'Un articolo nato nell’anteprima',exact:true}).scrollIntoViewIfNeeded();
 await page.screenshot({path:root+'/.impeccable/review/page-created-'+(process.env.CMS_WIDTH || '1440')+'.png'});
@@ -71,7 +78,15 @@ await page.screenshot({path:root+'/.impeccable/review/page-created-'+(process.en
 await pick('intro');await page.locator('.ely-on-page-field [contenteditable="true"]').fill('Anche l’ultima frase viene salvata dalla pagina.');
 await page.getByRole('button',{name:'Salva',exact:true}).click();await page.locator('.content-editor').waitFor({state:'detached'});
 const saved=await page.evaluate(async()=>{const dir=await(await navigator.storage.getDirectory()).getDirectoryHandle('content');return JSON.parse(await(await(await dir.getFileHandle('stories.json')).getFile()).text()).find(s=>s.title==='Un articolo nato nell’anteprima')});
-assert.equal(saved.intro,'Anche l’ultima frase viene salvata dalla pagina.');assert.equal(saved.published,true);assert.equal(saved.appearance.theme,'ocean');assert.equal(saved.chapters[0].title,'Una nuova tappa');assert.equal(saved.chapters[0].body,'Il capitolo nasce qui.');assert.equal(saved.chapters[0].quote,'Un ricordo da conservare');assert.equal(saved.chapters[0].note,'Un consiglio pratico.');assert.equal(saved.gallery[0].caption,'La prima tappa');assert.equal(saved.travelFacts.duration,'Una settimana');assert.match(saved.hero,/assets\/uploads/);assert.match(saved.chapters[0].image,/assets\/uploads/);assert.equal(saved.conclusion,'La conclusione scritta in anteprima.');assert.deepEqual(errors,[]);
+assert.equal(saved.intro,'Anche l’ultima frase viene salvata dalla pagina.');assert.equal(saved.published,true);assert.equal(saved.appearance.theme,'ocean');assert.equal(saved.appearance.dropCap,false);assert.equal(saved.chapters[0].title,'Una nuova tappa');assert.equal(saved.chapters[0].body,'Il capitolo nasce qui.');assert.equal(saved.chapters[0].quote,'Un ricordo da conservare');assert.equal(saved.chapters[0].note,'Un consiglio pratico.');assert.equal(saved.gallery[0].caption,'La prima tappa');assert.equal(saved.travelFacts.duration,'Una settimana');assert.match(saved.hero,/assets\/uploads/);assert.match(saved.chapters[0].image,/assets\/uploads/);assert.equal(saved.conclusion,'La conclusione scritta in anteprima.');assert.deepEqual(errors,[]);
+const base=process.env.SITE_URL || 'http://localhost:4173';
+const publishedRecords=await page.evaluate(async()=>{const dir=await(await navigator.storage.getDirectory()).getDirectoryHandle('content');return await(await(await dir.getFileHandle('stories.json')).getFile()).text()});
+await page.route('**/content/stories.json',route=>route.fulfill({contentType:'application/json',body:publishedRecords}));
+await page.route('**/assets/uploads/**',route=>route.fulfill({contentType:'image/webp',body:fs.readFileSync(root+'/'+stories[0].hero)}));
+await page.goto(base+'/');await page.waitForFunction(()=>document.documentElement.dataset.contentReady==='true');await page.locator('#story-'+saved.id).waitFor({state:'attached'});
+await page.goto(base+'/racconti.html');await page.locator('.stories-archive .story-card').filter({hasText:saved.title}).waitFor();assert.equal(await page.locator('.tips-grid .story-card').filter({hasText:saved.title}).count(),0);
+await page.goto(base+'/racconto.html?story='+saved.id);await page.getByRole('heading',{name:saved.title,exact:true,level:1}).waitFor();
+console.log('PASS: saved CMS article appears in slideshow, correct archive section and full article.');
 console.log('PASS: complete article created exclusively in page mode, new uploads, chapters, gallery, optional fields, appearance, visibility and saved JSON.');
 } catch(error) {console.error(await page.locator('.content-editor').evaluate(e=>({feedback:e.querySelector('.ely-page-feedback')?.textContent,keys:[...e.querySelectorAll('section.field')].map(s=>s.dataset.keyPath),gallery:e.querySelector('section.field[data-key-path="gallery"]')?.outerHTML.slice(0,14000)})).catch(()=>''));throw error;} finally {await browser.close();}
 })().catch(e=>{console.error(e);process.exitCode=1});

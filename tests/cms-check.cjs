@@ -2,7 +2,7 @@ const { chromium } = require('playwright');
 const fs = require('node:fs');
 const assert = require('node:assert/strict');
 const base = process.env.SITE_URL || 'http://localhost:4173';
-const initial = JSON.parse(fs.readFileSync(require('node:path').join(__dirname, '../content/stories.json'))).filter(story => !story.preparing);
+const initial = JSON.parse(fs.readFileSync(require('node:path').join(__dirname, '../content/stories.json'))).filter(story => ['japan','bali','singapore'].includes(story.id));
 
 (async () => {
   const browser = await chromium.launch({ channel: 'chrome', headless: true });
@@ -82,7 +82,8 @@ const initial = JSON.parse(fs.readFileSync(require('node:path').join(__dirname, 
     await visit('/');assert.equal(await page.locator('.stories-slide').count(),1);
     await visit('/racconto.html?story=copertina-esterna');assert.equal(await page.locator('h1').innerText(),external.title);
     assert.equal(await page.locator('[data-image="hero"]').getAttribute('src'),external.hero);
-    for (const source of ['javascript:alert(1)','data:image/svg+xml,<svg/>','//example.com/pic.webp','https://user:secret@example.com/pic.webp']) assert.equal(await page.evaluate(source=>ElyContent.image(source),source),'');
+    for (const source of ['javascript:alert(1)','data:image/svg+xml,<svg/>','//example.com/pic.webp','https://user:secret@example.com/pic.webp','assets/../private.webp','assets/%2e%2e/private.webp','assets/%5cprivate.webp']) assert.equal(await page.evaluate(source=>ElyContent.image(source),source),'');
+    for (const source of ['assets/uploads/un-articolo-nell’anteprima.webp','assets/uploads/città-di-lisbona.webp']) assert.equal(await page.evaluate(source=>ElyContent.image(source),source),source);
     records = [];
     await visit('/'); assert.match(await page.locator('.content-status').innerText(), /arriveranno presto/);
     assert.equal(await page.locator('.stories-controls').isVisible(), false);

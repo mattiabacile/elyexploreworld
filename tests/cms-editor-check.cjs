@@ -56,6 +56,8 @@ await page.getByRole('button',{name:'Solo scrittura',exact:true}).click();
 assert.equal(await page.locator('iframe').isVisible(),false);
 await page.getByRole('button',{name:'Scrivi',exact:true}).click();
 const introduction=page.locator('section.field[data-key-path="intro"] [contenteditable="true"]');
+await introduction.click();
+await page.waitForFunction(()=>document.querySelector('iframe.preview')?.contentDocument?.querySelector('[data-key-path="intro"]')?.classList.contains('ely-field-highlight'));
 await introduction.fill('Una giornata tra templi e piccoli rituali. Il viaggio comincia qui.');
 await page.waitForFunction(()=>document.querySelector('.ely-word-count')?.textContent!=='— parole');
 await page.screenshot({path:root+'/.impeccable/review/writing.png'});

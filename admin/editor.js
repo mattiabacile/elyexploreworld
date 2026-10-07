@@ -15,6 +15,15 @@
     const paths = {check:'m5 12 4 4L19 6', arrow:'M5 12h14m-5-5 5 5-5 5', download:'M12 3v12m-5-5 5 5 5-5M5 16v5h14v-5', book:'M4 4h6a2 2 0 0 1 2 2v14a3 3 0 0 0-3-2H4V4Zm16 0h-6a2 2 0 0 0-2 2v14a3 3 0 0 1 3-2h5V4Z', circle:'M12 8v5m0 3h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z'};
     return `<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="${paths[name]}"/></svg>`;
   };
+  let previewKey='',syncUntil=0,syncPending=false;
+  const syncPreview=key=>{
+    const editor=document.querySelector('.content-editor');if(!key || editor?.classList.contains('ely-page-mode'))return;
+    previewKey=key;const doc=editor?.querySelector('iframe.preview')?.contentDocument;
+    const target=doc?.querySelector(`[data-key-path="${CSS.escape(key)}"]`) || (key==='hero'?doc?.querySelector('.preview-cover'):null);
+    if(target){syncUntil=performance.now()+350;target.scrollIntoView({block:'start'});doc.querySelectorAll('.ely-field-highlight').forEach(node=>node.classList.remove('ely-field-highlight'));target.classList.add('ely-field-highlight');}
+  };
+  document.addEventListener('focusin',event=>{const key=event.target.closest?.('section.field')?.dataset.keyPath;if(key)syncPreview(key);});
+  document.addEventListener('scroll',event=>{const host=event.target;if(!host.matches?.('.ely-editor-content') || performance.now()<syncUntil || syncPending)return;syncPending=true;requestAnimationFrame(()=>{syncPending=false;const top=host.getBoundingClientRect().top+120;const candidates=[...host.querySelectorAll('section.field[data-key-path]')].filter(node=>node.getBoundingClientRect().bottom>top);syncPreview(candidates[0]?.dataset.keyPath);});},true);
   let article = null, scheduled = false, jumpToken = 0, currentContent = null, currentEditor = null;
   const editedText = new Set();
   const setText = (element, value) => {if (element && element.textContent !== value) element.textContent = value;};
@@ -221,11 +230,11 @@
         heading.append(list,status,note);
       }
     }
-    const previewHeader = editor.querySelector('#second-pane-header .sui.toolbar > .inner');
+    const previewHeader = editor.querySelector('#second-pane-header .sui.toolbar > .inner') || editor.querySelector('.pane[data-mode="preview"] #first-pane-header .sui.toolbar > .inner');
     if (previewHeader && !previewHeader.querySelector('.ely-preview-devices')) {
       const controls = document.createElement('div');controls.className = 'ely-preview-devices';controls.setAttribute('role','group');controls.setAttribute('aria-label','Formato dell’anteprima');
       for (const [mode,label] of [['desktop','Desktop'],['phone','Telefono']]) {
-        const button = document.createElement('button');button.type = 'button';button.textContent = label;button.setAttribute('aria-pressed',String(mode === 'desktop'));
+        const button = document.createElement('button');button.type = 'button';button.setAttribute('aria-label',label);button.title=label;button.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">'+(mode==='desktop'?'<rect x="3" y="3" width="18" height="13" rx="2"/><path d="M12 16v5m-5 0h10"/>':'<rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/>')+'</svg>';button.setAttribute('aria-pressed',String(mode === 'desktop'));
         button.addEventListener('click',() => {editor.classList.toggle('ely-phone-preview',mode === 'phone');for (const item of controls.children) item.setAttribute('aria-pressed',String(item === button));});controls.append(button);
       }
       previewHeader.append(controls);
@@ -236,8 +245,9 @@
       button.addEventListener('click',() => {const focus = editor.classList.toggle('ely-writing-mode');button.setAttribute('aria-pressed',String(focus));button.textContent = focus ? 'Mostra anteprima' : 'Solo scrittura';});firstHeader.append(button);
     }
     syncControls();update();
+    const frame=editor.querySelector('iframe.preview');if(frame && !frame.dataset.elySync){frame.dataset.elySync='true';frame.addEventListener('load',()=>syncPreview(previewKey));}
   };
-  window.addEventListener('ely:article-change',event => {article = {...event.detail,editor:document.querySelector('.content-editor')};update();});
+  window.addEventListener('ely:article-change',event => {article = {...event.detail,editor:document.querySelector('.content-editor')};update();if(previewKey)requestAnimationFrame(()=>syncPreview(previewKey));});
   const readInput = event => {
     if (!event.target.closest('.content-editor')) return;
     const rich = event.target.closest('[contenteditable="true"]');
