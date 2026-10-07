@@ -1,7 +1,36 @@
 (() => {
   const field = key => document.querySelector(`.content-editor section.field[data-key-path="${key}"]`);
-  let currentEditor=null, kind=null, scheduled=false;
+  let currentEditor=null, draftOwner=null, kind=null, scheduled=false;
   let previewKey='',syncUntil=0,syncPending=false,workspace='article',reuse=true;
+  let lastInput=-Infinity,composing=null;
+  const deferred=new Map();
+  // Native rich text serializes shortly after input. Wait before unmounting
+  // its field or saving, and keep delayed actions on their originating draft.
+  const defer=(action,channel='selection')=>{
+    clearTimeout(deferred.get(channel));deferred.delete(channel);
+    const owner=document.querySelector('.content-editor');
+    const remaining=250-(performance.now()-lastInput);
+    if(!owner || (remaining<=0&&!composing?.isConnected))return false;
+    const resume=()=>{
+      if(!owner.isConnected||owner!==document.querySelector('.content-editor')){deferred.delete(channel);return;}
+      const delay=250-(performance.now()-lastInput);
+      if(composing?.isConnected||delay>0){deferred.set(channel,setTimeout(resume,Math.max(50,delay)));return;}
+      deferred.delete(channel);action();
+    };
+    deferred.set(channel,setTimeout(resume,Math.max(50,remaining)));return true;
+  };
+  const editable=target=>target.closest?.('section.field')&&target.closest?.('[contenteditable="true"]');
+  document.addEventListener('input',event=>{if(editable(event.target))lastInput=performance.now();},true);
+  document.addEventListener('beforeinput',event=>{if(editable(event.target))lastInput=performance.now();},true);
+  document.addEventListener('compositionstart',event=>{if(editable(event.target))composing=event.target;},true);
+  document.addEventListener('compositionend',event=>{if(composing===event.target){composing=null;lastInput=performance.now();}},true);
+  const writing=focus=>{
+    if(!currentEditor)return;
+    currentEditor.classList.toggle('ely-writing-mode',focus);
+    const button=currentEditor.querySelector('.ely-focus-toggle');
+    if(button){button.setAttribute('aria-pressed',String(focus));button.textContent=focus?'Mostra anteprima':'Solo scrittura';}
+  };
+  window.elyEditor={defer,writing};
   const coverKeys=new Set(['hero','heroAlt','slideText']);
   const applyWorkspace=()=>{
     const editor=currentEditor;if(!editor)return;
@@ -14,7 +43,13 @@
       node.classList.toggle('ely-unused-photo',reuse&&['articleHero','articleHeroAlt'].includes(key));
     }
   };
-  window.elyWorkspace={show:mode=>{if(!['cover','article'].includes(mode))return;workspace=mode;applyWorkspace();window.dispatchEvent(new CustomEvent('ely:workspace-change',{detail:mode}));},forKey:key=>coverKeys.has(key.split('.')[0])?'cover':'article'};
+  const showWorkspace=mode=>{
+    if(!['cover','article'].includes(mode)||mode===workspace)return;
+    if(defer(()=>showWorkspace(mode)))return;
+    workspace=mode;applyWorkspace();window.dispatchEvent(new CustomEvent('ely:workspace-change',{detail:mode}));
+    const content=currentEditor?.querySelector('.ely-editor-content');if(content)content.scrollTop=0;
+  };
+  window.elyWorkspace={show:showWorkspace,forKey:key=>coverKeys.has(key.split('.')[0])?'cover':'article'};
 
   const syncPreview=key=>{
     const editor=document.querySelector('.content-editor');if(!key || editor?.classList.contains('ely-page-mode'))return;
@@ -23,7 +58,7 @@
     if(target){syncUntil=performance.now()+350;target.scrollIntoView({block:'start'});doc.querySelectorAll('.ely-field-highlight').forEach(node=>node.classList.remove('ely-field-highlight'));target.classList.add('ely-field-highlight');}
   };
   document.addEventListener('focusin',event=>{const key=event.target.closest?.('section.field')?.dataset.keyPath;if(key)syncPreview(key);});
-  document.addEventListener('scroll',event=>{const host=event.target;if(!host.matches?.('.ely-editor-content') || performance.now()<syncUntil || syncPending)return;syncPending=true;requestAnimationFrame(()=>{syncPending=false;const top=host.getBoundingClientRect().top+120;const candidates=[...host.querySelectorAll('section.field[data-key-path]')].filter(node=>node.getBoundingClientRect().bottom>top);syncPreview(candidates[0]?.dataset.keyPath);});},true);
+  document.addEventListener('scroll',event=>{const host=event.target;if(!host.matches?.('.ely-editor-content') || performance.now()<syncUntil || syncPending)return;syncPending=true;requestAnimationFrame(()=>{syncPending=false;if(!host.isConnected)return;const top=host.getBoundingClientRect().top+120;const target=[...host.querySelectorAll('section.field[data-key-path]')].find(node=>node.getClientRects().length&&node.getBoundingClientRect().bottom>top);syncPreview(target?.dataset.keyPath);});},true);
   const updateKind = () => {
     const selected=field('kind')?.querySelector('[role="radio"][aria-checked="true"]');
     if(selected)kind=selected.value;
@@ -33,7 +68,7 @@
     scheduled=false;
     const editor=document.querySelector('.content-editor');
     if(!editor){currentEditor=null;kind=null;previewKey='';return;}
-    if(editor!==currentEditor){currentEditor=editor;kind=null;previewKey='';workspace='article';reuse=true;}
+    if(editor!==currentEditor){currentEditor=editor;previewKey='';workspace='article';if(draftOwner!==editor){kind=null;reuse=true;}}
     const content=editor.querySelector('.pane[data-mode="edit"] #first-pane-body > .content');
     const preview=editor.querySelector('.pane[data-mode="preview"] #first-pane-body > .content');
     preview?.classList.remove('ely-editor-content');
@@ -50,12 +85,12 @@
     const firstHeader = editor.querySelector('#first-pane-header .sui.toolbar > .inner');
     if (firstHeader && !firstHeader.querySelector('.ely-focus-toggle')) {
       const button = document.createElement('button');button.type = 'button';button.className = 'ely-focus-toggle';button.textContent = 'Solo scrittura';button.setAttribute('aria-pressed','false');
-      button.addEventListener('click',() => {const focus = editor.classList.toggle('ely-writing-mode');button.setAttribute('aria-pressed',String(focus));button.textContent = focus ? 'Mostra anteprima' : 'Solo scrittura';});firstHeader.append(button);
+      button.addEventListener('click',() => writing(!editor.classList.contains('ely-writing-mode')));firstHeader.append(button);writing(editor.classList.contains('ely-writing-mode'));
     }
     const header=editor.querySelector(':scope > .primary > .inner');
     if(header&&!header.querySelector('.ely-workspace-switch')&&editor.querySelector('section.field[data-key-path="title"]')){
       const choices=document.createElement('div');choices.className='ely-workspace-switch';choices.setAttribute('role','group');choices.setAttribute('aria-label','Sezione da modificare');
-      for(const [mode,label] of [['cover','Copertina'],['article','Articolo']]){const button=document.createElement('button');button.type='button';button.textContent=label;button.dataset.workspace=mode;button.addEventListener('click',()=>{window.elyWorkspace.show(mode);if(content)content.scrollTop=0;});choices.append(button);}header.append(choices);
+      for(const [mode,label] of [['cover','Copertina'],['article','Articolo']]){const button=document.createElement('button');button.type='button';button.textContent=label;button.dataset.workspace=mode;button.addEventListener('click',()=>window.elyWorkspace.show(mode));choices.append(button);}header.append(choices);
     }
     // Chapters and appearance remain native fields, presented without disclosure boxes.
     for(const root of editor.querySelectorAll('section.field[data-key-path="chapters"], section.field[data-key-path="appearance"]')){
@@ -79,7 +114,7 @@
     applyWorkspace();updateKind();
     const frame=editor.querySelector('iframe.preview');if(frame && !frame.dataset.elySync){frame.dataset.elySync='true';frame.addEventListener('load',()=>{applyWorkspace();syncPreview(previewKey);});}
   };
-  window.addEventListener('ely:article-change',event=>{kind=event.detail.kind;reuse=event.detail.reuseCover!=='no';applyWorkspace();updateKind();if(previewKey)requestAnimationFrame(()=>syncPreview(previewKey));});
+  window.addEventListener('ely:article-change',event=>{draftOwner=document.querySelector('.content-editor');kind=event.detail.kind;reuse=event.detail.reuseCover!=='no';applyWorkspace();updateKind();if(previewKey)requestAnimationFrame(()=>syncPreview(previewKey));});
   document.addEventListener('click',event=>{if(event.target.closest?.('section.field[data-key-path="kind"]'))requestAnimationFrame(updateKind);});
   new MutationObserver(records=>{
     if(records.every(record=>record.target.closest?.('[class^="ely-"]')))return;

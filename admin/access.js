@@ -13,17 +13,22 @@
     for (const key of [USER_KEY, 'netlify-cms-user', 'decap-cms-user']) localStorage.removeItem(key);
   };
   const request = async (path, options = {}) => {
-    const response = await fetch('/cms/' + path, {cache: 'no-store', credentials: 'same-origin', ...options});
-    const data = await response.json();
-    if (!response.ok) throw new Error(data.message || 'Il pannello non è disponibile. Riprova tra poco.');
+    let response;
+    try{response=await fetch('/cms/' + path, {cache: 'no-store', credentials: 'same-origin', signal:AbortSignal.timeout(15000), ...options});}
+    catch(error){throw new Error(['TimeoutError','AbortError'].includes(error.name)?'La richiesta impiega troppo tempo. Riprova.':'Non riesco a collegarmi al pannello. Controlla la connessione e riprova.');}
+    const data = await response.json().catch(()=>null);
+    if (!response.ok || !data || typeof data!=='object') throw new Error(data?.message || 'Il pannello non è disponibile. Riprova tra poco.');
     return data;
   };
   const script = path => new Promise((resolve, reject) => {
-    const node = document.createElement('script');node.src = path;node.onload = resolve;node.onerror = () => reject(new Error('Caricamento dell’editor non riuscito.'));document.body.append(node);
+    const node = document.createElement('script');
+    const fail=()=>{clearTimeout(timer);node.remove();reject(new Error('Caricamento dell’editor non riuscito.'));};
+    const timer=setTimeout(fail,30000);node.src=path;node.onload=()=>{clearTimeout(timer);resolve();};node.onerror=fail;document.body.append(node);
   });
+  const loadEditor=async()=>{await script('vendor/sveltia-cms.js');await script('boot.js?v=c12444f25442');await window.elyCMSReady;};
   if (['localhost', '127.0.0.1'].includes(location.hostname) && new URLSearchParams(location.search).get('local') === '1') {
     panel.hidden = true;clear();
-    try{await script('vendor/sveltia-cms.js');await script('boot.js?v=e3250a871c2f');}
+    try{await loadEditor();}
     catch{panel.hidden=false;form.hidden=true;retry.hidden=false;status.textContent='Non riesco a caricare l’editor. Riprova ad aprire il pannello.';retry.focus();return;}return;
   }
   const logout = async () => {
@@ -34,11 +39,12 @@
     clear();location.reload();
   };
   const open = async data => {
+    if(typeof data.token!=='string'||!data.token||!Number.isFinite(data.expiresAt)||data.expiresAt<=Date.now()/1000)throw new Error('Sessione non disponibile. Accedi di nuovo.');
     active = data;
     localStorage.setItem(USER_KEY, JSON.stringify({backendName: 'github', token: data.token}));
     panel.hidden = true;
     document.documentElement.dataset.cmsAccess = 'authenticated';
-    try{await script('vendor/sveltia-cms.js');await script('boot.js?v=e3250a871c2f');}
+    try{await loadEditor();}
     catch{panel.hidden=false;form.hidden=true;retry.hidden=false;status.textContent='Non riesco a caricare l’editor. Riprova ad aprire il pannello.';retry.focus();return;}
     exit = document.createElement('button');exit.setAttribute('aria-live','polite');exit.className = 'cms-session';exit.textContent = 'Esci dal pannello';exit.addEventListener('click', logout);document.body.append(exit);
     // Sveltia's own sign-out also revokes the server session.
