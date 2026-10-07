@@ -27,10 +27,11 @@
   const words = [story.intro, story.conclusion, ...chapters.map(chapter => chapter.body)].join(' ').split(/\s+/).filter(Boolean).length;
   const view = { ...story, date: c.date(story.date), readingTime: `${Math.max(1, Math.ceil(words / 200))} min di lettura` };
   document.documentElement.dataset.story = story.id;
-  document.title = `${story.title} — ElyExploreWorld`;
-  document.querySelector('meta[name="description"]').content = story.deck || story.title;
+  document.title = `${ElyArticle.plain(story.title)} — ElyExploreWorld`;
+  document.querySelector('meta[name="description"]').content = ElyArticle.plain(story.deck || story.title);
   document.querySelectorAll('[data-field]').forEach(node => {
     if (node.dataset.field === 'title') node.innerHTML = c.title(story);
+    else if(['deck','heroCaption'].includes(node.dataset.field))node.innerHTML=ElyArticle.inline(view[node.dataset.field]);
     else node.textContent = view[node.dataset.field] || '';
   });
   const hero = document.querySelector('[data-image="hero"]');
@@ -48,19 +49,19 @@
   }
   if (appearance.showContents && chapters.filter(item => item?.title).length > 1) {
     const contents = document.createElement('nav');contents.className = 'story-contents';contents.setAttribute('aria-label', 'Sommario dell’articolo');
-    contents.innerHTML = '<h2>In questo racconto</h2><ol>' + chapters.map((item, index) => item?.title ? `<li><a href="#chapter-${index + 1}-title">${c.escape(item.title)}</a></li>` : '').join('') + '</ol>';
+    contents.innerHTML = '<h2>In questo racconto</h2><ol>' + chapters.map((item, index) => item?.title ? `<li><a href="#chapter-${index + 1}-title">${ElyArticle.inline(item.title,{links:false})}</a></li>` : '').join('') + '</ol>';
     intro.before(contents);
   }
   const host = document.querySelector('[data-content="chapters"]');
   host.innerHTML = chapters.filter(item => item && typeof item === 'object').map((chapter, index) => {
     const {layout, format} = ElyArticle.chapter(chapter, index);
     const photo = c.image(chapter.image);
-    const figure = photo ? `<figure class="chapter-photo chapter-photo-${['tall', 'wide', 'square'][index % 3]}"${chapter.imageFormat && chapter.imageFormat !== 'auto' ? ` data-photo-format="${format}"` : ''}><img src="${c.escape(photo)}" data-content-image="${c.escape(photo)}" alt="${c.escape(chapter.imageAlt || chapter.caption || '')}" loading="lazy" width="1600" height="900" decoding="async">${chapter.caption ? `<figcaption>${c.escape(chapter.caption)}</figcaption>` : ''}</figure>` : '';
-    const copy = `<div class="chapter-copy"><h2 id="chapter-${index + 1}-title">${c.escape(chapter.title)}</h2>${c.markdown(chapter.body)}${chapter.note ? `<aside class="travel-note"><span>Da sapere</span>${c.markdown(chapter.note)}</aside>` : ''}</div>`;
-    return `<section class="chapter chapter-${layout}" aria-labelledby="chapter-${index + 1}-title">${layout === 'closing' ? figure + copy : copy + figure}${chapter.quote ? `<blockquote>${c.escape(chapter.quote)}</blockquote>` : ''}</section>`;
+    const figure = photo ? `<figure class="chapter-photo chapter-photo-${['tall', 'wide', 'square'][index % 3]}"${chapter.imageFormat && chapter.imageFormat !== 'auto' ? ` data-photo-format="${format}"` : ''}><img src="${c.escape(photo)}" data-content-image="${c.escape(photo)}" alt="${c.escape(chapter.imageAlt || ElyArticle.plain(chapter.caption) || '')}" loading="lazy" width="1600" height="900" decoding="async">${chapter.caption ? `<figcaption>${ElyArticle.inline(chapter.caption)}</figcaption>` : ''}</figure>` : '';
+    const copy = `<div class="chapter-copy"><h2 id="chapter-${index + 1}-title">${ElyArticle.inline(chapter.title)}</h2>${c.markdown(chapter.body)}${chapter.note ? `<aside class="travel-note"><span>Da sapere</span>${c.markdown(chapter.note)}</aside>` : ''}</div>`;
+    return `<section class="chapter chapter-${layout}" aria-labelledby="chapter-${index + 1}-title">${layout === 'closing' ? figure + copy : copy + figure}${chapter.quote ? `<blockquote>${ElyArticle.inline(chapter.quote)}</blockquote>` : ''}</section>`;
   }).join('');
   const gallery = (Array.isArray(story.gallery) ? story.gallery : []).filter(item => item && c.image(item.image));
-  if (gallery.length) host.insertAdjacentHTML('beforeend', `<section class="story-gallery" aria-labelledby="gallery-title"><h2 id="gallery-title">Il viaggio, in immagini</h2><div class="story-gallery-grid">${gallery.map((item, index) => `<figure><button type="button" data-gallery-index="${index}" aria-label="Apri foto: ${c.escape(item.alt || item.caption || `foto ${index + 1}`)}"><img src="${c.escape(c.image(item.image))}" data-content-image="${c.escape(c.image(item.image))}" alt="${c.escape(item.alt || '')}" loading="lazy" decoding="async" width="1600" height="1200"></button>${item.caption ? `<figcaption>${c.escape(item.caption)}</figcaption>` : ''}</figure>`).join('')}</div></section>`);
+  if (gallery.length) host.insertAdjacentHTML('beforeend', `<section class="story-gallery" aria-labelledby="gallery-title"><h2 id="gallery-title">Il viaggio, in immagini</h2><div class="story-gallery-grid">${gallery.map((item, index) => `<figure><button type="button" data-gallery-index="${index}" aria-label="Apri foto: ${c.escape(item.alt || ElyArticle.plain(item.caption) || `foto ${index + 1}`)}"><img src="${c.escape(c.image(item.image))}" data-content-image="${c.escape(c.image(item.image))}" alt="${c.escape(item.alt || '')}" loading="lazy" decoding="async" width="1600" height="1200"></button>${item.caption ? `<figcaption>${ElyArticle.inline(item.caption)}</figcaption>` : ''}</figure>`).join('')}</div></section>`);
   if (story.conclusion) host.insertAdjacentHTML('beforeend', `<section class="story-conclusion"><h2>Prima di ripartire</h2>${c.markdown(story.conclusion)}</section>`);
   c.responsive(host);
   if (gallery.length) {
@@ -71,7 +72,7 @@
       current = (index + gallery.length) % gallery.length;
       const item = gallery[current], image = dialog.querySelector('img');
       image.src = c.image(item.image);image.alt = item.alt || '';
-      dialog.querySelector('figcaption').textContent = item.caption || '';
+      dialog.querySelector('figcaption').innerHTML = ElyArticle.inline(item.caption);
       dialog.querySelector('[aria-live]').textContent = `${current + 1} di ${gallery.length}`;
     };
     host.querySelectorAll('[data-gallery-index]').forEach(button => button.addEventListener('click', () => {trigger = button;show(Number(button.dataset.galleryIndex));dialog.showModal();}));
@@ -99,7 +100,7 @@
     const current = related.id === story.id;
     const card = document.createElement('article');
     card.className = `related-card${current ? ' is-current' : ''}`;
-    card.innerHTML = `<a href="${c.href(related)}"${current ? ' aria-current="page"' : ''}><img src="${c.escape(c.image(related.hero))}" data-content-image="${c.escape(c.image(related.hero))}" alt="" loading="lazy" decoding="async" width="1600" height="900"><p>${c.date(related.date)} · ${c.escape(related.destination)}</p><h3>${c.escape(related.title)}</h3><span>${current ? 'Stai leggendo' : 'Leggi il racconto →'}</span></a>`;
+    card.innerHTML = `<a href="${c.href(related)}"${current ? ' aria-current="page"' : ''}><img src="${c.escape(c.image(related.hero))}" data-content-image="${c.escape(c.image(related.hero))}" alt="" loading="lazy" decoding="async" width="1600" height="900"><p>${c.date(related.date)} · ${c.escape(related.destination)}</p><h3>${c.title(related)}</h3><span>${current ? 'Stai leggendo' : 'Leggi il racconto →'}</span></a>`;
     relatedHost.append(card);
   });
   c.responsive(relatedHost);

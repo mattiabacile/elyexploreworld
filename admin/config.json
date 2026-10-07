@@ -67,9 +67,18 @@
         {
           "name": "title",
           "label": "Titolo",
-          "widget": "string",
-          "maxlength": 180,
-          "hint": "Scegli un dettaglio che renda il viaggio riconoscibile. Esempio: Giappone, tra templi e piccoli rituali."
+          "widget": "richtext",
+          "hint": "Scegli un dettaglio che renda il viaggio riconoscibile. Esempio: Giappone, tra templi e piccoli rituali.",
+          "minimal": true,
+          "modes": [
+            "rich_text"
+          ],
+          "buttons": [
+            "bold",
+            "italic"
+          ],
+          "editor_components": [],
+          "use_emoji_autocomplete": false
         },
         {
           "name": "kind",
@@ -108,8 +117,19 @@
         {
           "name": "deck",
           "label": "Introduzione breve",
-          "widget": "text",
-          "hint": "Due o tre frasi per invitare alla lettura. Compaiono nell’archivio e sotto il titolo: racconta l’atmosfera, senza svelare tutto."
+          "widget": "richtext",
+          "hint": "Due o tre frasi per invitare alla lettura. Compaiono nell’archivio e sotto il titolo: racconta l’atmosfera, senza svelare tutto.",
+          "minimal": true,
+          "modes": [
+            "rich_text"
+          ],
+          "buttons": [
+            "bold",
+            "italic",
+            "link"
+          ],
+          "editor_components": [],
+          "use_emoji_autocomplete": false
         },
         {
           "name": "hero",
@@ -128,8 +148,18 @@
         {
           "name": "heroCaption",
           "label": "Didascalia della copertina",
-          "widget": "string",
-          "required": false
+          "widget": "richtext",
+          "required": false,
+          "minimal": true,
+          "modes": [
+            "rich_text"
+          ],
+          "buttons": [
+            "bold",
+            "italic"
+          ],
+          "editor_components": [],
+          "use_emoji_autocomplete": false
         },
         {
           "name": "intro",
@@ -166,7 +196,17 @@
             {
               "name": "title",
               "label": "Titolo del capitolo",
-              "widget": "string"
+              "widget": "richtext",
+              "minimal": true,
+              "modes": [
+                "rich_text"
+              ],
+              "buttons": [
+                "bold",
+                "italic"
+              ],
+              "editor_components": [],
+              "use_emoji_autocomplete": false
             },
             {
               "name": "body",
@@ -258,14 +298,36 @@
             {
               "name": "caption",
               "label": "Didascalia",
-              "widget": "string",
-              "required": false
+              "widget": "richtext",
+              "required": false,
+              "minimal": true,
+              "modes": [
+                "rich_text"
+              ],
+              "buttons": [
+                "bold",
+                "italic",
+                "link"
+              ],
+              "editor_components": [],
+              "use_emoji_autocomplete": false
             },
             {
               "name": "quote",
               "label": "Citazione",
-              "widget": "text",
-              "required": false
+              "widget": "richtext",
+              "required": false,
+              "minimal": true,
+              "modes": [
+                "rich_text"
+              ],
+              "buttons": [
+                "bold",
+                "italic",
+                "link"
+              ],
+              "editor_components": [],
+              "use_emoji_autocomplete": false
             },
             {
               "name": "note",
@@ -370,8 +432,19 @@
             {
               "name": "caption",
               "label": "Didascalia",
-              "widget": "string",
-              "required": false
+              "widget": "richtext",
+              "required": false,
+              "minimal": true,
+              "modes": [
+                "rich_text"
+              ],
+              "buttons": [
+                "bold",
+                "italic",
+                "link"
+              ],
+              "editor_components": [],
+              "use_emoji_autocomplete": false
             }
           ]
         },
@@ -510,16 +583,26 @@
         {
           "name": "titleAccent",
           "label": "Parola del titolo in corsivo",
-          "widget": "string",
-          "required": false,
-          "hint": "Facoltativo: scrivi una parola o una frase già presente nel titolo."
+          "widget": "hidden",
+          "required": false
         },
         {
           "name": "slideText",
           "label": "Testo breve dello slideshow",
-          "widget": "text",
+          "widget": "richtext",
           "required": false,
-          "hint": "Facoltativo: una o due frasi per la homepage. Se lasci il campo vuoto, viene usata l’introduzione breve."
+          "hint": "Facoltativo: una o due frasi per la homepage. Se lasci il campo vuoto, viene usata l’introduzione breve.",
+          "minimal": true,
+          "modes": [
+            "rich_text"
+          ],
+          "buttons": [
+            "bold",
+            "italic",
+            "link"
+          ],
+          "editor_components": [],
+          "use_emoji_autocomplete": false
         },
         {
           "name": "published",

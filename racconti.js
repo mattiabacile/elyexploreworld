@@ -23,7 +23,7 @@
       tipsHost.innerHTML = tips.map(story => {
         if (!story.preparing) return ElyContent.card(story);
         const e = ElyContent.escape;
-        return `<article class="story-card tip-card"><div class="story-card-link"><figure class="story-card-media"><img src="${e(ElyContent.image(story.hero))}" data-content-image="${e(ElyContent.image(story.hero))}" alt="${e(story.heroAlt)}" width="1600" height="900" loading="lazy" decoding="async"></figure><div class="story-card-body"><p class="story-card-meta">${e(story.category || story.destination)}</p><h3>${e(story.title)}</h3><p class="story-card-description">${e(story.deck)}</p><span class="story-card-cta">Articolo in preparazione</span></div></div></article>`;
+        return `<article class="story-card tip-card"><div class="story-card-link"><figure class="story-card-media"><img src="${e(ElyContent.image(story.hero))}" data-content-image="${e(ElyContent.image(story.hero))}" alt="${e(story.heroAlt)}" width="1600" height="900" loading="lazy" decoding="async"></figure><div class="story-card-body"><p class="story-card-meta">${e(story.category || story.destination)}</p><h3>${ElyContent.title(story)}</h3><p class="story-card-description">${ElyArticle.inline(story.deck)}</p><span class="story-card-cta">Articolo in preparazione</span></div></div></article>`;
       }).join('');
       ElyContent.responsive(tipsHost);
     }

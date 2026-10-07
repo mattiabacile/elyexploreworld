@@ -14,5 +14,32 @@
     layout: ['right', 'left', 'wide'].includes(value.layout) ? {right: 'opening', left: 'closing', wide: 'wide'}[value.layout] : ['opening', 'landscape', 'closing'][index % 3],
     format: choose(value.imageFormat, ['landscape', 'portrait', 'square', 'natural'], ['portrait', 'landscape', 'square'][index % 3])
   });
-  window.ElyArticle = {appearance, chapter};
+  // Short editorial fields use the same safe inline Markdown on every surface.
+  const inline = (value, {links=true}={}) => {
+    const clean=DOMPurify.sanitize(marked.parseInline(String(value ?? ''), {breaks:true}), {
+      ALLOWED_TAGS:['strong','em','s','br','code',...(links?['a']:[])],ALLOWED_ATTR:['href','title'],ALLOW_DATA_ATTR:false
+    });
+    if(!links)return clean;
+    const template=document.createElement('template');template.innerHTML=clean;
+    template.content.querySelectorAll('a').forEach(node=>{
+      const target=node.getAttribute('href') ?? '';
+      if(!/^(?:https?:\/\/|mailto:|#|\/?[\w.-]+(?:[/?#]|$))/i.test(target)||target.startsWith('//'))node.removeAttribute('href');
+      if(/^https?:\/\//i.test(target))node.rel='noreferrer noopener';
+    });
+    return template.innerHTML;
+  };
+  const plain = value => {
+    const template=document.createElement('template');template.innerHTML=inline(value,{links:false});
+    return template.content.textContent.replace(/\s+/g,' ').trim();
+  };
+  const heading = (value, accent) => {
+    const source=String(value ?? '');
+    // Older articles keep their title accent until the author edits the title.
+    if(accent && source===plain(source) && source.includes(accent)){
+      const index=source.lastIndexOf(accent);
+      return inline(source.slice(0,index),{links:false})+'<em>'+inline(accent,{links:false})+'</em>'+inline(source.slice(index+accent.length),{links:false});
+    }
+    return inline(source,{links:false});
+  };
+  window.ElyArticle = {appearance, chapter, inline, plain, heading};
 })();

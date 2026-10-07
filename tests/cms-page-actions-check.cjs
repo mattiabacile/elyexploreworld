@@ -40,7 +40,7 @@ const addChapter=async title=>{
  await page.locator('.ely-on-page-field[data-key-path$=".title"]').waitFor({state:'visible'});
  assert.equal(await page.locator('.ely-inspector').getAttribute('role'),'region');
  assert.equal(await page.locator('.ely-on-page-field[data-key-path="chapters"]').count(),0);
- await page.locator('.ely-on-page-field input').fill(title);await finish();
+ await page.locator('.ely-on-page-field [contenteditable=true]').fill(title);await finish();
  await preview().getByRole('heading',{name:title,exact:true}).waitFor();
 };
 await addChapter('Un capitolo aggiunto sul posto');
@@ -82,7 +82,7 @@ await page.locator('.ely-on-page-field').waitFor({state:'detached'});await page.
 await preview().locator('[data-key-path="gallery.1.alt"]').click();await page.waitForFunction(()=>document.querySelector('.content-editor')?.getAttribute('aria-busy')!=='true');
 await page.locator('.ely-on-page-field input').fill('Il Monte Fuji con i ciliegi');await finish();
 await preview().locator('[data-key-path="gallery.1.caption"]').click();await page.waitForFunction(()=>document.querySelector('.content-editor')?.getAttribute('aria-busy')!=='true');
-await page.locator('.ely-on-page-field input').fill('La foto aggiunta direttamente alla galleria');await finish();
+await page.locator('.ely-on-page-field [contenteditable=true]').fill('La foto aggiunta direttamente alla galleria');await finish();
 const photo=index=>preview().locator(`[data-gallery-index="${index}"]`);
 await options(photo(1),'Opzioni della foto');
 await photo(1).getByRole('button',{name:'Sposta prima',exact:true}).click();await page.waitForFunction(()=>document.querySelector('.content-editor')?.getAttribute('aria-busy')!=='true');
@@ -97,17 +97,17 @@ assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWid
 await page.waitForFunction(()=>document.querySelector('.content-editor')?.getAttribute('aria-busy')==='false');
 // Keyboard editing returns to the article without trapping focus in an invisible dialog.
 await preview().locator('[data-key-path="chapters.3.title"]').press('Enter');
-await page.locator('.ely-on-page-field input').waitFor({state:'visible'});
+await page.locator('.ely-on-page-field [contenteditable=true]').waitFor({state:'visible'});
 await page.keyboard.press('Escape');
 await page.locator('.ely-on-page-field').waitFor({state:'detached'});
 // A failed save points back to the article, even with the native sidebar removed.
 await preview().locator('[data-key-path="title"]').click();await page.waitForFunction(()=>document.querySelector('.content-editor')?.getAttribute('aria-busy')!=='true');
-await page.locator('.ely-on-page-field input').fill('');await finish();
+await page.locator('.ely-on-page-field [contenteditable=true]').fill('');await finish();
 await page.getByRole('button',{name:'Salva',exact:true}).click();await page.waitForFunction(()=>document.querySelector('.content-editor')?.getAttribute('aria-busy')!=='true');
 await page.getByRole('button',{name:'Mostra cosa manca',exact:true}).click();await page.waitForFunction(()=>document.querySelector('.content-editor')?.getAttribute('aria-busy')!=='true');
 if(width<768){await page.locator('.entry-sidebar-sheet button.ref').filter({hasText:'Titolo'}).click();}
 else {await preview().locator('.preview-validation').getByRole('button',{name:'Titolo',exact:true}).click();}
-await page.locator('.ely-on-page-field[data-key-path="title"] input').fill('Giappone: verifica dei comandi in pagina');
+await page.locator('.ely-on-page-field[data-key-path="title"] [contenteditable=true]').fill('Giappone: verifica dei comandi in pagina');
 assert.equal(await page.locator('.ely-inspector').getAttribute('role'),'region');await finish();
 await page.getByRole('button',{name:'Salva',exact:true}).click();await page.waitForFunction(()=>document.querySelector('.content-editor')?.getAttribute('aria-busy')!=='true');
 await page.locator('.content-editor').waitFor({state:'detached'});
