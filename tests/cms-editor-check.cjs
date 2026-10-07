@@ -6,7 +6,7 @@ stories[0].appearance={theme:'ocean',textStyle:'journal',coverFormat:'natural',s
 stories[0].travelFacts={duration:'Dieci giorni',season:'Primavera'};
 stories[0].gallery=[{image:stories[0].hero,alt:'Foto della galleria',caption:'Il viaggio in immagini'}];
 stories[0].conclusion='Una **riflessione finale**.';
-const files={'content/stories.json':{text:JSON.stringify(stories),type:'application/json'}};
+const files={'content/categories.json':{text:fs.readFileSync(root+'/content/categories.json','utf8'),type:'application/json'},'content/tags.json':{text:fs.readFileSync(root+'/content/tags.json','utf8'),type:'application/json'},'content/stories.json':{text:JSON.stringify(stories),type:'application/json'}};
 for(const source of new Set(stories.flatMap(s=>[s.hero,...s.chapters.map(c=>c.image)]).filter(source=>source && !/^https?:\/\//.test(source))))files[source]={base64:fs.readFileSync(root+'/'+source).toString('base64'),type:'image/webp'};
 (async()=>{
 const browser=await chromium.launch({channel:'chrome'}),page=await browser.newPage({viewport:{width:1440,height:1000},reducedMotion:'reduce'});
@@ -18,7 +18,7 @@ await page.addInitScript(({files})=>{
   await root.getDirectoryHandle('.git',{create:true});
   await (await root.getDirectoryHandle('assets',{create:true})).getDirectoryHandle('uploads',{create:true});
   for(const [path,data] of Object.entries(files)){
-    const parts=path.split('/');const name=parts.pop();let dir=root;
+    const parts=path.replace(/^\//,'').split('/');const name=parts.pop();let dir=root;
     for(const part of parts)dir=await dir.getDirectoryHandle(part,{create:true});
     const file=await dir.getFileHandle(name,{create:true});const stream=await file.createWritable();
     await stream.write(data.base64?Uint8Array.from(atob(data.base64),c=>c.charCodeAt(0)):data.text);await stream.close();
@@ -27,11 +27,11 @@ await page.addInitScript(({files})=>{
  };
 },{files});
 await page.goto((process.env.SITE_URL || 'http://localhost:4173') + '/admin/?local=1');await page.getByRole('button',{name:/Lavora con Repository Locale/}).click();
-await page.getByText(/Giappone: tra templi/).first().waitFor({timeout:30000});await page.getByText(/Giappone: tra templi/).first().click();
+try{await page.getByText(/Giappone: tra templi/).first().waitFor({timeout:10000})}catch(e){console.log(await page.locator('body').innerText());throw e}await page.getByText(/Giappone: tra templi/).first().click();
 await page.locator('.ely-editor-content section.field[data-key-path=title]').waitFor();
 const noExtras=async()=>{
  assert.equal(await page.locator('.ely-studio, .ely-editor-nav, .ely-editor-guide, .ely-editor-section, .ely-writing-prompts, .ely-publish-checks').count(),0);
- for(const name of ['Inizia','Copertina','Scrivi','Aspetto','Pubblica'])assert.equal(await page.getByRole('button',{name,exact:true}).count(),0);
+ for(const name of ['Inizia','Scrivi','Aspetto','Pubblica'])assert.equal(await page.getByRole('button',{name,exact:true}).count(),0);
 };
 await noExtras();
 assert.equal(await page.getByRole('button',{name:'Salva',exact:true}).isEnabled(),false);

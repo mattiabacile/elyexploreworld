@@ -6,7 +6,7 @@ stories[0].appearance={theme:'ocean',textStyle:'journal',coverFormat:'natural',s
 stories[0].travelFacts={duration:'Dieci giorni',season:'Primavera'};
 stories[0].gallery=[{image:stories[0].hero,alt:'Foto della galleria',caption:'Il viaggio in immagini'}];
 stories[0].conclusion='Una **riflessione finale**.';
-const files={'content/stories.json':{text:JSON.stringify(stories),type:'application/json'}};
+const files={'content/categories.json':{text:fs.readFileSync(root+'/content/categories.json','utf8'),type:'application/json'},'content/tags.json':{text:fs.readFileSync(root+'/content/tags.json','utf8'),type:'application/json'},'content/stories.json':{text:JSON.stringify(stories),type:'application/json'}};
 for(const source of new Set(stories.flatMap(s=>[s.hero,...s.chapters.map(c=>c.image)]).filter(source=>source && !/^https?:\/\//.test(source))))files[source]={base64:fs.readFileSync(root+'/'+source).toString('base64'),type:'image/webp'};
 (async()=>{
 const browser=await chromium.launch({channel:'chrome'}),page=await browser.newPage({viewport:{width:1440,height:1000},reducedMotion:'reduce'});
@@ -18,7 +18,7 @@ await page.addInitScript(({files})=>{
   await root.getDirectoryHandle('.git',{create:true});
   await (await root.getDirectoryHandle('assets',{create:true})).getDirectoryHandle('uploads',{create:true});
   for(const [path,data] of Object.entries(files)){
-    const parts=path.split('/');const name=parts.pop();let dir=root;
+    const parts=path.replace(/^\//,'').split('/');const name=parts.pop();let dir=root;
     for(const part of parts)dir=await dir.getDirectoryHandle(part,{create:true});
     const file=await dir.getFileHandle(name,{create:true});const stream=await file.createWritable();
     await stream.write(data.base64?Uint8Array.from(atob(data.base64),c=>c.charCodeAt(0)):data.text);await stream.close();
@@ -106,14 +106,12 @@ await page.setViewportSize({width:844,height:390});
 assert.equal(await page.locator('.ely-mode-switch').isVisible(),false);
 await page.setViewportSize({width:1440,height:1000});
 await page.getByRole('button',{name:'Pagina',exact:true}).click();
-await page.getByText('Stile dell’articolo',{exact:true}).click();
-await page.getByRole('button',{name:'Colore dei dettagli',exact:true}).click();
-await page.locator('.ely-on-page-field[data-key-path="appearance.theme"]').waitFor({state:'visible'});
-await page.getByRole('button',{name:'Fine',exact:true}).click();
+await page.getByRole('heading',{name:'Aspetto dell’articolo',exact:true}).waitFor();
+assert.equal(await page.getByRole('button',{name:'Colore dei dettagli',exact:true}).count(),0);
 await page.getByRole('radio',{name:'Bozza',exact:true}).check();
 await page.locator('.content-editor[aria-busy="false"]').waitFor();
 assert.match(await page.locator('.ely-publication-note').innerText(),/bozza/);
 assert.deepEqual(errors,[]);
-console.log('PASS: page/field modes, title, rich text on desktop and phone, collapsed chapters, media field selection, keyboard captions, Escape, draft preservation and JSON save in an isolated local repository.');
+console.log('PASS: page/field modes, title, rich text on desktop and phone, flat chapters, media field selection, keyboard captions, Escape, draft preservation and JSON save in an isolated local repository.');
 } catch(error) {console.error(error);if(await page.locator('.content-editor').count()){console.log(await page.locator('.content-editor').evaluate(e=>({feedback:e.querySelector('.ely-page-feedback')?.textContent,keys:[...e.querySelectorAll('section.field')].map(s=>s.dataset.keyPath),active:e.querySelector('.ely-on-page-field')?.outerHTML.slice(0,400)})));await page.screenshot({path:root+'/.impeccable/review/page-error.png'});}throw error;} finally {await browser.close();}
 })().catch(e=>{console.error(e);process.exitCode=1});

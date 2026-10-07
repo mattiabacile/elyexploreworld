@@ -6,7 +6,7 @@ stories[0].travelFacts={duration:'Dieci giorni',season:'Primavera'};
 stories[0].gallery=[{image:stories[0].hero,alt:'Foto della galleria',caption:'Il viaggio in immagini'}];
 stories[0].conclusion='Una **riflessione finale**.';
 while(stories[0].chapters.length<16){const number=stories[0].chapters.length+1;stories[0].chapters.push({...stories[0].chapters[0],title:'Tappa '+number,body:'Un capitolo aggiuntivo del viaggio.'});}
-const files={'content/stories.json':{text:JSON.stringify(stories),type:'application/json'}};
+const files={'content/categories.json':{text:fs.readFileSync(root+'/content/categories.json','utf8'),type:'application/json'},'content/tags.json':{text:fs.readFileSync(root+'/content/tags.json','utf8'),type:'application/json'},'content/stories.json':{text:JSON.stringify(stories),type:'application/json'}};
 for(const source of new Set(stories.flatMap(s=>[s.hero,...s.chapters.map(c=>c.image)]).filter(source=>source && !/^https?:\/\//.test(source))))files[source]={base64:fs.readFileSync(root+'/'+source).toString('base64'),type:'image/webp'};
 (async()=>{
 const browser=await chromium.launch({channel:'chrome'}),page=await browser.newPage({viewport:{width:1440,height:1000},reducedMotion:'reduce'});
@@ -18,7 +18,7 @@ await page.addInitScript(({files})=>{
   await root.getDirectoryHandle('.git',{create:true});
   await (await root.getDirectoryHandle('assets',{create:true})).getDirectoryHandle('uploads',{create:true});
   for(const [path,data] of Object.entries(files)){
-    const parts=path.split('/');const name=parts.pop();let dir=root;
+    const parts=path.replace(/^\//,'').split('/');const name=parts.pop();let dir=root;
     for(const part of parts)dir=await dir.getDirectoryHandle(part,{create:true});
     const file=await dir.getFileHandle(name,{create:true});const stream=await file.createWritable();
     await stream.write(data.base64?Uint8Array.from(atob(data.base64),c=>c.charCodeAt(0)):data.text);await stream.close();
@@ -38,7 +38,7 @@ await preview.locator('.preview-contents a').first().click();
 await page.waitForFunction(()=>{const doc=document.querySelector('iframe.preview')?.contentDocument,target=doc?.getElementById('preview-chapter-0');return target===doc?.activeElement&&target.getBoundingClientRect().top<100;});
 await preview.locator('.preview-contents a').nth(1).press('Enter');
 await page.waitForFunction(()=>document.querySelector('iframe.preview')?.contentDocument?.activeElement?.id==='preview-chapter-1');
-await preview.locator('[data-key-path="deck"]').click();await page.locator('.ely-on-page-field[data-key-path="deck"]').waitFor({state:'visible'});
+await preview.locator('.preview-story [data-key-path="deck"]').click();await page.locator('.ely-on-page-field[data-key-path="deck"]').waitFor({state:'visible'});
 const rich=page.locator('.ely-on-page-field [contenteditable=true]');await rich.fill('Un link nel racconto');await rich.press('ControlOrMeta+a');
 await page.locator('.ely-on-page-field').getByRole('button',{name:'Link',exact:true}).click();
 await page.getByRole('dialog',{name:'Inserisci Link',exact:true}).getByRole('textbox',{name:'URL',exact:true}).fill('https://example.com/viaggio');
@@ -58,7 +58,7 @@ await preview.locator('[data-key-path="chapters.15.title"]').press('Enter');
 await page.locator('.ely-on-page-field [contenteditable=true]').fill(longTitle);await page.getByRole('button',{name:'Fine',exact:true}).click();
 await preview.locator('[data-key-path="chapters.15.title"]').filter({hasText:'Una tappa molto lontana'}).waitFor();
 assert.ok(await preview.locator('html').evaluate(e=>e.scrollWidth<=e.clientWidth+1));
-await page.getByText('Informazioni dell’articolo',{exact:true}).click();
+await page.getByRole('button',{name:'Racconto o consiglio',exact:true}).waitFor({state:'visible'});
 await page.getByRole('button',{name:'Racconto o consiglio',exact:true}).click();
 await page.locator('.ely-on-page-field').getByRole('radio',{name:'Consiglio di viaggio',exact:true}).check();
 await page.getByRole('button',{name:'Fine',exact:true}).click();

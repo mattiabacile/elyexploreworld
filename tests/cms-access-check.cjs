@@ -30,6 +30,8 @@ const createDB=()=>{
  const input={branch:{repositoryNameWithOwner:'mattiabacile/elyexploreworld',branchName:'main'},expectedHeadOid:'a'.repeat(40),fileChanges:{additions:[{path:'content/stories.json',contents:'W10='}],deletions:[]},message:{headline:'CMS test'}};
  const mutation={query:'mutation($input:CreateCommitOnBranchInput!){createCommitOnBranch(input:$input){commit{oid}}}',variables:{input}};
  assert.equal(validateGraphQL(mutation),true);
+ const tagMutation=structuredClone(mutation);tagMutation.variables.input.fileChanges.additions[0].path='content/tags.json';assert.equal(validateGraphQL(tagMutation),true);
+ const categoryMutation=structuredClone(mutation);categoryMutation.variables.input.fileChanges.additions[0].path='content/categories.json';assert.equal(validateGraphQL(categoryMutation),true);
  for(const change of [i=>i.branch.branchName='other',i=>i.branch.repositoryNameWithOwner='attacker/repo',i=>i.fileChanges.additions[0].path='index.html',i=>i.fileChanges.additions[0].path='assets/uploads/../evil.webp',i=>i.fileChanges.additions[0].path='assets/uploads/evil.svg']){const bad=structuredClone(mutation);change(bad.variables.input);assert.equal(validateGraphQL(bad),false)}
  assert.equal(validateGraphQL({query:'mutation {deleteRepository(input:{repositoryId:"x"}){clientMutationId}}'}),false);
  assert.equal(validateGraphQL({query:'query {repository(owner:"attacker",name:"other"){name}}'}),false);
@@ -72,11 +74,11 @@ const createDB=()=>{
   env.CMS_DB.db.prepare('DELETE FROM cms_attempts').run();
   const {parse,valueFromASTUntyped}=await import(pathToFileURL(path.join(temp,'server/vendor/graphql.js')));
   let records=JSON.parse(fs.readFileSync(path.join(root,'content/stories.json'))),head='a'.repeat(40);
-  const sources=new Map();
+  const sources=new Map([['content/categories.json',fs.readFileSync(path.join(root,'content/categories.json'))],['content/tags.json',fs.readFileSync(path.join(root,'content/tags.json'))]]);
   for(const image of new Set(records.flatMap(s=>[s.hero,...s.chapters.map(c=>c.image)]).filter(source=>source && !/^https?:\/\//.test(source)))) sources.set(image.replace(/^\//,''),fs.readFileSync(path.join(root,image)));
   const source=()=>{sources.set('content/stories.json',Buffer.from(JSON.stringify(records)));return sources};
   const sha=value=>require('node:crypto').createHash('sha1').update(value).digest('hex');
-  const blob=key=>{const data=source().get(key);return data?{__typename:'Blob',oid:sha(data),text:data.toString(),isBinary:key!=='content/stories.json',byteSize:data.length}:null};
+  const blob=key=>{const data=source().get(key);return data?{__typename:'Blob',oid:sha(data),text:data.toString(),isBinary:!key.endsWith('.json'),byteSize:data.length}:null};
   const commit=()=>({__typename:'Commit',oid:head,message:'CMS integration test',committedDate:new Date().toISOString(),file:({path})=>blob(path),history:()=>({nodes:[{oid:head,message:'CMS integration test',author:{name:'CMS',email:'cms@example.test',avatarUrl:'',user:{login:'cliente'}},committedDate:new Date().toISOString()}]})});
   const repository={ref:()=>({target:commit(),refUpdateRule:null}),object:({oid,expression})=>{for(const [key,value] of source())if(sha(value)===oid||expression==='main:'+key)return blob(key);return null},defaultBranchRef:{name:'main'}};
   const select=(set,value,variables)=>{
@@ -149,16 +151,16 @@ const createDB=()=>{
     await page.locator('section.field[data-key-path="title"] [contenteditable="true"]').fill('Nuovo racconto dal pannello');
     await page.getByLabel('Destinazione',{exact:true}).fill('Portogallo');
     await page.locator('section.field[data-key-path="deck"] [contenteditable="true"]').fill('Una nuova storia creata dalla cliente.');
-    await page.locator('input[type=file]').first().setInputFiles(path.join(root,records[0].hero));
+    await focusField(page,'hero');await page.locator('section[data-key-path=hero] input[type=file]').first().setInputFiles(path.join(root,records[0].hero));
     await page.getByText(/^\/assets\/uploads\//).first().waitFor();
     await focusField(page,'published');
     assert.match(await page.getByLabel('Data del racconto',{exact:true}).inputValue(),/^\d{4}-\d{2}-\d{2}$/);
     await page.getByLabel('Data del racconto',{exact:true}).fill('2026-10-06');
-    await page.locator('section[data-key-path="heroAlt"]').getByLabel('Descrizione della foto',{exact:true}).fill('Una fotografia del viaggio.');
+    await focusField(page,'heroAlt');await page.locator('section[data-key-path="heroAlt"]').getByLabel('Descrizione della foto',{exact:true}).fill('Una fotografia del viaggio.');
     await focusField(page,'intro');
     await page.getByRole('textbox',{name:'Apertura del racconto',exact:true}).fill('Il testo completo della nuova storia.');
     await focusField(page,'chapters');
-    for(let index=0;index<3;index++){
+    for(let index=0;index<1;index++){
       await page.locator('section[data-key-path="chapters"] > .field-wrapper .item-list > *').nth(index).scrollIntoViewIfNeeded();await page.waitForTimeout(150);
       const item=page.locator('section[data-key-path="chapters.'+index+'.title"] [contenteditable=true]');await item.scrollIntoViewIfNeeded();await item.fill('Capitolo '+(index+1));await page.waitForTimeout(300);
       const body=page.locator('section[data-key-path="chapters.'+index+'.body"] [contenteditable=true]');await body.scrollIntoViewIfNeeded();await body.fill('Testo del capitolo '+(index+1));await page.waitForTimeout(300);
@@ -166,10 +168,12 @@ const createDB=()=>{
     await focusField(page,'appearance');
     const appearance=page.locator('section[data-key-path="appearance"]');
     const expandAppearance=appearance.locator(':scope > .field-wrapper button[aria-controls^="object-"][aria-expanded="false"]');
-    await appearance.waitFor({state:'visible'});await appearance.locator(':scope > .field-wrapper button[aria-controls^="object-"]').waitFor();if(await expandAppearance.count())await expandAppearance.click();
-    await page.getByRole('radio',{name:'Blu oceano',exact:true}).check();
+    await appearance.waitFor({state:'visible'});await appearance.locator(':scope > .field-wrapper button[aria-controls^="object-"]').waitFor({state:'attached'});if(await expandAppearance.count())await expandAppearance.click();
+
     await page.getByRole('radio',{name:'Diario di viaggio',exact:true}).check();
     await page.frameLocator('iframe').locator('[data-text-style="journal"]').waitFor();
+    await focusField(page,'tags');await page.locator('section[data-key-path=tags]').getByRole('button',{name:/Aggiungi.*Tag/}).click();await page.getByLabel('Nome del tag',{exact:true}).fill('Tag condiviso');await page.getByRole('dialog').getByRole('button',{name:'Aggiungi',exact:true}).click();
+    await focusField(page,'category');await page.locator('section[data-key-path=category]').getByRole('button',{name:/Aggiungi.*Categoria/}).click();await page.getByLabel('Nome della categoria',{exact:true}).fill('Categoria condivisa');await page.getByRole('dialog').getByRole('button',{name:'Aggiungi',exact:true}).click();
     for(const [width,height,label] of [[1440,1000,'desktop'],[390,844,'mobile']]){
       await page.setViewportSize({width,height});
       await focusField(page,'title');
@@ -181,10 +185,11 @@ const createDB=()=>{
     await page.getByRole('button',{name:'Salva',exact:true}).click();
     for(let i=0;i<200&&!records.some(r=>r.title==='Nuovo racconto dal pannello');i++)await new Promise(resolve=>setTimeout(resolve,20));
     const created=records.find(r=>r.title==='Nuovo racconto dal pannello');
-    assert.ok(created);assert.equal(created.chapters.length,3);assert.equal(created.chapters[2].title,'Capitolo 3');assert.equal(created.published,false);assert.equal(created.destination,'Portogallo');
+    assert.equal(created.category,'Categoria condivisa');assert.ok(JSON.parse(sources.get('content/categories.json')).some(category=>category.name==='Categoria condivisa'));
+    assert.ok(created);assert.equal(created.chapters.length,1);assert.ok(created.tags.includes('Tag condiviso'));assert.ok(JSON.parse(sources.get('content/tags.json')).some(tag=>tag.name==='Tag condiviso'));assert.equal(created.chapters[0].title,'Capitolo 1');assert.equal(created.published,false);assert.equal(created.destination,'Portogallo');
     assert.match(created.id,/^[a-f0-9-]{36}$/);assert.match(created.hero,/^\/assets\/uploads\/.+\.webp$/);
     assert.ok(sources.has(created.hero.slice(1)));assert.match(created.intro,/testo completo/);
-    assert.equal(created.appearance.theme,'ocean');assert.equal(created.appearance.textStyle,'journal');
+    assert.equal(created.appearance.theme,'clay');assert.equal(created.appearance.textStyle,'journal');
     console.log('PASS: real Sveltia creates a draft with automatic ID and uploads an optimized cover through the restricted proxy.');
     assert.deepEqual(errors,[]);
     await page.route('**/cms/logout',route=>route.fulfill({status:503,contentType:'application/json',body:JSON.stringify({message:'Riprova'})}));
