@@ -41,306 +41,67 @@ aside { padding: 20px; background: #e4e9dc; border-radius: 12px; }
   h1 { font-size: 36px; }
 }
 
-/* Pagina mode is the editor: controls stay beside the content they affect. */
-.preview-editor-header,
-.preview-local-tools,
-.preview-editor-settings,
-.preview-fact-empty,
-.preview-placeholder { display: none; }
+/* Authoring controls only appear in Pagina, beside the content they affect. */
+.preview-editor-header,.preview-editor-footer,.preview-local-tools,.preview-options,.preview-add,.preview-action,.preview-empty-text{display:none}
+.ely-editable-page .preview-editor-header,.ely-editable-page .preview-editor-footer{display:block;padding-block:16px;border-block:1px solid #cad1c4;margin-block:20px}
+.ely-editable-page .preview-edit-guide{font-size:14px;line-height:1.6;color:#586654;margin:0 0 10px}
+.ely-editable-page [data-key-path]{cursor:text;outline-offset:5px;border-radius:4px}
+.ely-editable-page img[data-key-path],.ely-editable-page button[data-key-path]{cursor:pointer}
+.ely-editable-page [data-key-path]:hover{outline:1px dashed #5f6b51}
+.ely-editable-page [data-key-path]:focus-visible{outline:2px solid #9f4933}
+.ely-editable-page figcaption{min-height:24px}
+.ely-editable-page .preview-empty-text{display:block;min-height:80px;padding:20px 0;color:#586654;border-block:1px dashed #cad1c4;box-sizing:border-box;font:inherit}
+.ely-editable-page .preview-local-tools{display:flex;align-items:center;flex-wrap:wrap;gap:8px;grid-column:1 / -1;margin-block:12px}
+.ely-editable-page .preview-local-tools .preview-local-tools{margin:0}
+.ely-editable-page .preview-add,.ely-editable-page .preview-action,.ely-editable-page .preview-local-tools button{
+ display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 14px;margin:0;
+ border:1px solid #cad1c4;border-radius:8px;background:#f7f3e9;color:#254535;font:500 13px/1.4 'Plus Jakarta Sans',sans-serif;cursor:pointer;
+}
+.ely-editable-page .preview-add{margin-block:12px}
+.ely-editable-page .preview-action[data-operation="add"]{background:#254535;color:#fffdf8;border-color:#254535}
+.ely-editable-page button:hover{background:#e4e9dc}
+.ely-editable-page .preview-action[data-operation="add"]:hover{background:#365d48}
+.ely-editable-page button:disabled{opacity:.5;cursor:default}
+.ely-editable-page button:focus-visible,.ely-editable-page summary:focus-visible{outline:2px solid #9f4933;outline-offset:3px}
+.ely-editable-page .preview-options{display:block;grid-column:1 / -1;margin-block:12px;font:500 13px/1.5 'Plus Jakarta Sans',sans-serif}
+.ely-editable-page .preview-options summary{width:fit-content;min-height:44px;box-sizing:border-box;padding:12px 0;cursor:pointer;color:#586654}
+.ely-editable-page .preview-draft-status{font-size:13px;color:#586654;margin-right:auto}
+.ely-editable-page .preview-tags,.ely-editable-page .preview-editor-footer{font-size:13px;color:#586654}
+.ely-editable-page .preview-remove-confirm{display:flex;flex-wrap:wrap;gap:8px;align-items:center;width:100%;padding-block:12px}
+.ely-editable-page .preview-remove-confirm>span{width:100%;font-size:14px}
+.ely-editable-page .preview-remove-confirm button[data-operation="confirm-remove"]{color:#9f4933}
+.ely-editable-page [hidden]{display:none!important}
+.ely-editable-page ::selection{background:#dce5d4;color:#254535}
+.ely-editable-page .ely-selected-block{outline:2px solid #9f4933}
+@media(max-width:500px){.ely-editable-page .preview-draft-status{width:100%}.ely-editable-page .preview-local-tools{gap:6px}}
 
-.ely-editable-page .preview-story { padding-top: 16px; }
-.ely-editable-page .preview-editor-header {
-  display: block;
-  margin: 0 0 24px;
-  border-bottom: 1px solid #cad1c4;
-}
-.ely-editable-page .preview-editor-bar {
-  display: grid;
-  grid-template-columns: minmax(190px,.72fr) minmax(0,1.5fr);
-  gap: 14px 24px;
-  align-items: center;
-  padding: 12px 0 10px;
-}
-.ely-editable-page .preview-editor-intro { min-width: 0; }
-.ely-editable-page .preview-editor-kicker {
-  display: block;
-  margin-bottom: 2px;
-  color: #254535;
-  font: 700 10px/1.4 'Plus Jakarta Sans', sans-serif;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-}
-.ely-editable-page .preview-edit-guide {
-  margin: 0;
-  color: #667260;
-  font: 400 12px/1.45 'Plus Jakarta Sans', sans-serif;
-}
-.ely-editable-page .preview-editor-fields,
-.ely-editable-page .preview-settings-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  gap: 6px;
-}
-.ely-editable-page .preview-field-chip {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 5px;
-  min-height: 34px;
-  max-width: 100%;
-  padding: 6px 9px;
-  border: 1px solid #cad1c4;
-  border-radius: 999px;
-  background: #fffdf8;
-  color: #254535;
-  font: 500 11px/1.3 'Plus Jakarta Sans', sans-serif;
-  cursor: pointer;
-}
-.ely-editable-page .preview-field-chip-label { color: #75806f; font-size: 9px; text-transform: uppercase; letter-spacing: .05em; }
-.ely-editable-page .preview-field-chip strong { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 650; }
-.ely-editable-page .preview-field-chip.is-wide { max-width: 300px; }
-.ely-editable-page .preview-field-chip.is-live { border-color: #91a688; background: #edf2e9; }
-.ely-editable-page .preview-field-chip.is-draft { border-style: dashed; }
+.preview-image-description{display:none}
+.ely-editable-page .preview-image-description{display:block;font:400 13px/1.6 'Plus Jakarta Sans',sans-serif;color:#586654;margin:8px 0;min-height:24px}
 
-.ely-editable-page .preview-editor-settings {
-  display: block;
-  margin: 0;
-  border-top: 1px solid #e0e4da;
-  font: 500 11px/1.45 'Plus Jakarta Sans', sans-serif;
-}
-.ely-editable-page .preview-editor-settings summary {
-  width: fit-content;
-  min-height: 36px;
-  padding: 8px 0;
-  color: #667260;
-  cursor: pointer;
-  font-weight: 650;
-}
-.ely-editable-page .preview-settings-grid { justify-content: flex-start; padding: 0 0 12px; }
+.preview-validation{padding:16px 0;border-block:1px solid #9f4933;margin-block:16px;font:400 14px/1.6 'Plus Jakarta Sans',sans-serif;color:#254535}
+.preview-validation p{margin:0 0 12px}
+.preview-validation button{min-height:44px;padding:10px 14px;margin:0 8px 8px 0;border:1px solid #cad1c4;border-radius:8px;background:#f7f3e9;color:#9f4933;font:500 13px/1.4 'Plus Jakarta Sans',sans-serif;cursor:pointer}
+.preview-validation button:focus-visible{outline:2px solid #9f4933;outline-offset:3px}
 
-.ely-editable-page [data-key-path] {
-  cursor: text;
-  outline-offset: 3px;
-  border-radius: 3px;
-  transition: background-color 100ms ease-out, outline-color 100ms ease-out;
-}
-.ely-editable-page img[data-key-path],
-.ely-editable-page button[data-key-path],
-.ely-editable-page .preview-field-chip[data-key-path] { cursor: pointer; }
-.ely-editable-page [data-key-path]:not(img):not(button):hover { background: #ecefe54f; outline: 1px solid #c6cfbf; }
-.ely-editable-page [data-key-path]:focus-visible { outline: 2px solid #9f4933; }
-.ely-editable-page ::selection { background: #dce5d4; color: #254535; }
-.ely-editable-page .ely-selected-block { outline: 1px solid #b56b57 !important; outline-offset: 4px; background: transparent; }
-.ely-editable-page figcaption { min-height: 22px; margin-top: 7px; }
-.ely-editable-page .preview-placeholder {
-  display: block;
-  color: #778171;
-  font-style: italic;
-}
+.preview-conclusion:has(.preview-empty-text),.preview-gallery-section:not(:has(.preview-gallery)){display:none}
+.ely-editable-page .preview-conclusion,.ely-editable-page .preview-gallery-section{display:block}
 
-.ely-editable-page .preview-empty-text {
-  display: block;
-  min-height: 72px;
-  box-sizing: border-box;
-  padding: 14px 16px;
-  color: #6b7666;
-  border: 1px dashed #bac4b5;
-  border-radius: 8px;
-  background: #fffdf84d;
-  font: inherit;
-}
-.ely-editable-page .preview-add {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 38px;
-  padding: 7px 11px;
-  border: 1px dashed #9eaa99;
-  border-radius: 7px;
-  background: #fffdf899;
-  color: #254535;
-  font: 600 11px/1.35 'Plus Jakarta Sans',sans-serif;
-  cursor: pointer;
-}
-.ely-editable-page .preview-add-photo { min-width: 160px; margin-block: 10px; }
-.ely-editable-page .preview-add-cover {
-  width: 100%;
-  min-height: 220px;
-  margin: 0;
-  border-radius: 14px;
-  background: #ecefe5;
-}
-.ely-editable-page .preview-add-chapter-photo { width: 100%; min-height: 170px; margin: 0; }
-
-.ely-editable-page .preview-local-tools { display: flex; align-items: center; flex-wrap: wrap; gap: 5px; }
-.ely-editable-page .preview-action,
-.ely-editable-page .preview-local-tools button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 32px;
-  padding: 6px 9px;
-  margin: 0;
-  border: 1px solid #cbd2c6;
-  border-radius: 7px;
-  background: #fffdf8e8;
-  color: #254535;
-  font: 600 10px/1.25 'Plus Jakarta Sans',sans-serif;
-  cursor: pointer;
-}
-.ely-editable-page .preview-local-tools button:hover,
-.ely-editable-page .preview-field-chip:hover,
-.ely-editable-page .preview-add:hover { background: #e8ece2; }
-.ely-editable-page button:disabled { opacity: .32; cursor: default; }
-.ely-editable-page button:focus-visible,
-.ely-editable-page summary:focus-visible { outline: 2px solid #9f4933; outline-offset: 2px; }
-.ely-editable-page [hidden] { display: none !important; }
-
-.ely-editable-page .preview-editable-figure { position: relative; }
-.ely-editable-page .preview-photo-controls {
-  position: absolute;
-  z-index: 5;
-  top: 10px;
-  right: 10px;
-  max-width: calc(100% - 20px);
-  padding: 3px;
-  border: 1px solid #ffffff80;
-  border-radius: 9px;
-  background: #f7f3e9dc;
-  box-shadow: 0 4px 14px #16271f17;
-  backdrop-filter: blur(8px);
-  opacity: .68;
-  transition: opacity 100ms ease-out;
-}
-.ely-editable-page .preview-editable-figure:hover .preview-photo-controls,
-.ely-editable-page .preview-editable-figure:focus-within .preview-photo-controls { opacity: 1; }
-.ely-editable-page .preview-photo-controls .preview-action { min-height: 30px; background: transparent; border-color: transparent; }
-.ely-editable-page .preview-photo-controls .preview-action:hover { background: #fffdf8; border-color: #cad1c4; }
-.ely-editable-page .preview-photo-controls .preview-meta-action { color: #667260; }
-
-.ely-editable-page .preview-facts.preview-all-empty { display: flex; border-style: dashed; }
-.ely-editable-page .preview-fact-empty { display: block; }
-.ely-editable-page .preview-fact-empty dd { color: #7b8476; font-style: italic; }
-
-.ely-editable-page .preview-chapter { position: relative; }
-.ely-editable-page .preview-chapter:hover,
-.ely-editable-page .preview-chapter:focus-within { box-shadow: inset 0 1px #d5dbce; }
-.ely-editable-page .preview-block-toolbar {
-  position: absolute;
-  z-index: 6;
-  top: -34px;
-  left: 0;
-  right: 0;
-  justify-content: flex-end;
-  opacity: .38;
-  transition: opacity 100ms ease-out;
-}
-.ely-editable-page .preview-chapter:hover > .preview-block-toolbar,
-.ely-editable-page .preview-chapter:focus-within > .preview-block-toolbar { opacity: 1; }
-.ely-editable-page .preview-block-label {
-  margin-right: auto;
-  color: #7a8474;
-  font: 700 9px/1.4 'Plus Jakarta Sans', sans-serif;
-  letter-spacing: .07em;
-  text-transform: uppercase;
-}
-.ely-editable-page .preview-block-toolbar .preview-action[aria-label^='Sposta'] { width: 32px; padding-inline: 0; font-size: 14px; }
-.ely-editable-page .preview-content-inserts { margin-top: 10px; }
-.ely-editable-page .preview-content-inserts:empty { display: none; }
-.ely-editable-page .preview-content-inserts .preview-action { border-style: dashed; background: transparent; color: #667260; }
-.ely-editable-page .preview-add-row { justify-content: center; margin: 10px 0 36px; }
-.ely-editable-page .preview-add-row .preview-action {
-  min-height: 40px;
-  padding-inline: 14px;
-  border-style: dashed;
-  border-color: #8e9b89;
-  background: transparent;
-  color: #365d48;
-}
-.ely-editable-page .preview-add-row .preview-action:hover { background: #e8ece2; }
-
-.ely-editable-page .preview-gallery figure { position: relative; padding-top: 30px; }
-.ely-editable-page .preview-gallery .preview-photo-toolbar {
-  position: absolute;
-  z-index: 6;
-  top: 0;
-  left: 0;
-  right: 0;
-  justify-content: flex-end;
-  opacity: .42;
-}
-.ely-editable-page .preview-gallery figure:hover .preview-photo-toolbar,
-.ely-editable-page .preview-gallery figure:focus-within .preview-photo-toolbar { opacity: 1; }
-.ely-editable-page .preview-gallery .preview-photo-toolbar .preview-action[aria-label^='Sposta'] { width: 32px; padding-inline: 0; font-size: 14px; }
-.ely-editable-page .preview-gallery .preview-photo-controls { top: 40px; }
-
-.ely-editable-page .preview-remove-confirm {
-  display: grid;
-  grid-template-columns: minmax(180px,1fr) auto auto;
-  align-items: center;
-  gap: 6px;
-  width: 100%;
-  padding: 4px 0;
-}
-.ely-editable-page .preview-remove-confirm > span { color: #586654; font-size: 11px; }
-.ely-editable-page .preview-remove-confirm button[data-operation='confirm-remove'] { border-color: #9f4933; color: #9f4933; }
-
-.preview-validation {
-  padding: 14px;
-  border: 1px solid #9f4933;
-  border-radius: 9px;
-  margin: 0 0 18px;
-  background: #fffdf8;
-  color: #254535;
-  font: 400 12px/1.55 'Plus Jakarta Sans',sans-serif;
-}
-.preview-validation p { margin: 0 0 8px; }
-.preview-validation button { min-height: 36px; padding: 7px 10px; margin: 0 5px 5px 0; border: 1px solid #cad1c4; border-radius: 7px; background: #f7f3e9; color: #9f4933; font: 600 11px/1.4 'Plus Jakarta Sans',sans-serif; cursor: pointer; }
-
-.preview-conclusion:has(.preview-empty-text),
-.preview-gallery-section:not(:has(.preview-gallery)) { display: none; }
-.ely-editable-page .preview-conclusion,
-.ely-editable-page .preview-gallery-section { display: block; }
-
-@media (max-width: 700px) {
-  .preview-story { padding-inline: 18px; }
-  .ely-editable-page .preview-editor-bar { grid-template-columns: 1fr; gap: 9px; padding-top: 8px; }
-  .ely-editable-page .preview-editor-fields {
-    flex-wrap: nowrap;
-    justify-content: flex-start;
-    overflow-x: auto;
-    padding: 1px 1px 5px;
-    scrollbar-width: none;
-  }
-  .ely-editable-page .preview-editor-fields::-webkit-scrollbar { display: none; }
-  .ely-editable-page .preview-field-chip { flex: 0 0 auto; max-width: 230px; }
-  .ely-editable-page .preview-settings-grid { justify-content: flex-start; }
-  .ely-editable-page .preview-block-toolbar {
-    position: static;
-    margin: 0 0 8px;
-    opacity: 1;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    scrollbar-width: none;
-  }
-  .ely-editable-page .preview-block-toolbar::-webkit-scrollbar { display:none; }
-  .ely-editable-page .preview-block-label { flex: 0 0 auto; }
-  .ely-editable-page .preview-photo-controls { top: 7px; right: 7px; max-width: calc(100% - 14px); overflow-x: auto; flex-wrap: nowrap; opacity: .92; }
-  .ely-editable-page .preview-photo-controls .preview-action { flex: 0 0 auto; padding-inline: 7px; }
-  .ely-editable-page .preview-gallery .preview-photo-toolbar { opacity: 1; }
-  .ely-editable-page .preview-remove-confirm { grid-template-columns: 1fr auto auto; }
-  .ely-editable-page .preview-remove-confirm > span { grid-column: 1 / -1; }
-  .ely-editable-page .preview-add-cover { min-height: 180px; }
-}
-
-@media (hover: none) {
-  .ely-editable-page .preview-photo-controls,
-  .ely-editable-page .preview-block-toolbar,
-  .ely-editable-page .preview-gallery .preview-photo-toolbar { opacity: 1; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .ely-editable-page [data-key-path],
-  .ely-editable-page .preview-block-toolbar,
-  .ely-editable-page .preview-photo-controls { transition: none; }
-}
+/* ---- Pagina: editing chiaro e diretto ---- */
+/* Barra di stato sempre visibile mentre si scorre l'articolo */
+.ely-editable-page .preview-editor-header{position:sticky;top:0;z-index:20;margin-top:0;background:#f7f3e9;box-shadow:0 1px 0 #cad1c4}
+/* Ogni elemento modificabile reagisce al passaggio e alla selezione */
+.ely-editable-page [data-key-path]{transition:background-color .15s ease-out,outline-color .15s ease-out}
+.ely-editable-page [data-key-path]:not(img):not(button):hover{background:#2545350d}
+.ely-editable-page .ely-selected-block{outline:2px solid #9f4933;outline-offset:5px;background:#9f49330f}
+/* Testi segnaposto: si capisce subito cosa manca */
+.ely-editable-page .preview-empty-text{border:1px dashed #9aa58f;border-radius:8px;padding:20px 16px;background:#25453508}
+.ely-editable-page .preview-empty-text:hover{border-color:#254535}
+/* Pulsanti "Aggiungi" come blocchi evidenti a tutta larghezza */
+.ely-editable-page .preview-add{width:100%;border-style:dashed;color:#586654;background:transparent}
+.ely-editable-page .preview-add:hover{border-color:#254535;color:#254535}
+.ely-editable-page .preview-action[data-operation="add"]{width:100%;background:transparent;color:#254535;border:1px dashed #254535}
+.ely-editable-page .preview-action[data-operation="add"]:hover{background:#254535;color:#fffdf8}
+/* Capitolo in modifica: separatore leggero per capire dove inizia e finisce */
+.ely-editable-page .preview-chapter{padding-block:24px;border-top:1px solid #cad1c4}
+.ely-editable-page .preview-chapter:hover{background:#25453505}
+@media (prefers-reduced-motion:reduce){.ely-editable-page [data-key-path]{transition:none}}

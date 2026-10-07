@@ -166,95 +166,75 @@ section.field[data-key-path='title'] > .ely-editor-section { margin-top: 0; padd
 }
 @media (prefers-reduced-motion: reduce) { .ely-editor-nav button { transition: none; } }
 
-/* Article authoring: the preview is the editor. Only media selection is modal. */
-.ely-mode-switch{display:flex;gap:4px;flex-shrink:0;padding:3px;border:1px solid var(--ely-line);border-radius:8px;background:var(--ely-surface)}
-.ely-mode-switch button,.ely-inspector button{min-height:42px;padding:8px 12px;border:0;border-radius:6px;font:600 12px/1.4 'Plus Jakarta Sans',sans-serif;color:var(--ely-forest);background:transparent;cursor:pointer}
+/* Article authoring: full canvas, native text controls on the article, focused settings on demand. */
+.ely-mode-switch,.ely-page-actions{display:flex;gap:4px;flex-shrink:0}
+.ely-mode-switch{padding:3px;border:1px solid var(--ely-line);border-radius:8px}
+.ely-mode-switch button,.ely-page-actions button,.ely-inspector button{min-height:44px;padding:8px 12px;border:0;border-radius:6px;font:500 13px/1.4 'Plus Jakarta Sans',sans-serif;color:var(--ely-forest);background:transparent;cursor:pointer}
 .ely-mode-switch button[aria-pressed='true']{background:var(--ely-forest);color:var(--ely-surface)}
-.ely-mode-switch button:hover,.ely-inspector button:hover{background:var(--ely-soft)}
-.ely-mode-switch button:focus-visible,.ely-inspector button:focus-visible,.ely-on-page-toolbar button:focus-visible{outline:2px solid var(--ely-clay);outline-offset:2px}
-
-.content-editor.ely-page-mode .content-area{position:relative;padding-right:0;box-sizing:border-box;background:var(--ely-paper)}
+.ely-mode-switch button:hover,.ely-page-actions button:hover,.ely-inspector button:hover{background:var(--ely-soft)}
+.ely-mode-switch button:focus-visible,.ely-page-actions button:focus-visible,.ely-inspector button:focus-visible,.ely-on-page-toolbar button:focus-visible{outline:2px solid var(--ely-clay);outline-offset:-2px}
+.ely-page-actions,.ely-inspector{display:none}
+.ely-page-mode .ely-page-actions{display:flex}
+.content-editor.ely-page-mode .content-area{position:relative;padding-right:0;box-sizing:border-box}
 .content-editor.ely-page-mode .content-area .sui.resizable-pane:has(.ely-editor-content){position:absolute;top:0;left:0;width:420px;height:100%;visibility:hidden;overflow:visible!important;pointer-events:none}
 .content-editor.ely-page-mode .pane[data-mode='edit'] *{visibility:hidden!important}
 .content-editor.ely-page-mode .content-area .sui.resizable-pane:has(iframe.preview){display:block!important;flex:1 1 100%!important;width:100%!important}
-.content-editor.ely-page-mode .resizable-handle,.content-editor.ely-page-mode .swap-button,.content-editor.ely-page-mode .ely-focus-toggle,.ely-page-feedback,.ely-mobile-actions{display:none!important}
+.content-editor.ely-page-mode .resizable-handle,.content-editor.ely-page-mode .swap-button,.ely-page-feedback,.ely-mobile-actions{display:none!important}
 .content-editor.ely-page-mode .pane[data-mode='preview']{display:flex!important}
-.content-editor.ely-page-mode > .body > .sidebar{display:none!important}
-
-/* Hidden field host. Text controls are visually placed on their article block. */
-.ely-inspector{display:none}
-.ely-page-mode .ely-inspector{position:fixed;z-index:80;box-sizing:border-box;flex-direction:column;color:var(--ely-ink);overflow:hidden}
+.ely-page-mode .ely-inspector{position:fixed;z-index:80;max-width:calc(100vw - 32px);max-height:calc(100dvh - 96px);box-sizing:border-box;flex-direction:column;background:var(--ely-paper);color:var(--ely-ink);border-radius:12px;box-shadow:0 16px 48px #16271f33;overflow:hidden}
 .ely-page-mode.ely-inspector-open .ely-inspector{display:flex}
-.ely-page-mode .ely-inspector.ely-inline-edit{background:var(--ely-paper);border-radius:0;box-shadow:none;overflow:visible;pointer-events:none}
-.ely-inline-edit>header,.ely-inline-edit>nav,.ely-inline-edit>.ely-inspector-menu,.ely-inline-edit .ely-inspector-title,.ely-inline-edit .ely-inspector-back,.ely-inline-edit .ely-inspector-error{display:none!important}
-.ely-inline-edit .ely-inspector-detail{display:block!important;flex:1;min-height:0;pointer-events:none}
-.ely-inline-edit .ely-inspector-slot{height:100%}
-
-/* Image fields are the sole intentional popup in Pagina mode. */
-.ely-page-mode .ely-inspector:not(.ely-inline-edit){max-width:calc(100vw - 32px);max-height:calc(100dvh - 96px);background:var(--ely-paper);border:1px solid var(--ely-line);border-radius:12px;box-shadow:0 18px 52px #16271f33}
-.ely-inspector>header{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 18px 10px;border-bottom:1px solid var(--ely-line)}
-.ely-inspector>header h2{margin:0;font:700 15px/1.4 'Plus Jakarta Sans',sans-serif;color:var(--ely-forest)}
-.ely-inspector>nav,.ely-inspector-menu{display:none!important}
-.ely-inspector-error{font-size:13px;line-height:1.5;margin:10px 18px 0;color:var(--ely-clay)}
+.ely-inspector>header{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 20px 8px}
+.ely-inspector h2{margin:0;font:600 18px/1.4 'Plus Jakarta Sans',sans-serif}
+.ely-inspector>nav{display:flex;flex-wrap:wrap;padding:0 12px 12px;gap:2px;border-bottom:1px solid var(--ely-line)}
+.ely-inspector>nav button{flex:1;padding-inline:8px;white-space:nowrap}
+.ely-inspector>nav button[aria-pressed='true']{background:var(--ely-forest);color:var(--ely-surface);font-weight:600}
+.ely-inspector-menu{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;padding:8px 20px 24px}
+.ely-inspector-menu section{margin:24px 0 0}
+.ely-inspector h3{font:600 14px/1.5 'Plus Jakarta Sans',sans-serif;color:var(--ely-forest);margin:0 0 8px}
+.ely-inspector-menu section>button{display:block;width:100%;text-align:left;border-bottom:1px solid var(--ely-line);border-radius:0;padding:10px 8px;overflow-wrap:anywhere}
+.ely-inspector-note{font-size:13px;line-height:1.65;color:var(--ely-muted);margin:16px 0}
+.ely-article-address{font-size:13px;line-height:1.65;overflow-wrap:anywhere;background:var(--ely-surface);padding:12px;border-radius:6px}
+.ely-inspector-error{font-size:14px;line-height:1.5;margin:0 20px;color:var(--ely-clay)}
 .ely-inspector-error:empty{display:none}
 .ely-inspector-detail{display:none;flex:1;min-height:0;flex-direction:column}
 .ely-inspecting .ely-inspector-detail{display:flex}
-.ely-inspector-back{display:none!important}
-.ely-inspector-title{margin:0!important;padding:12px 18px 0;font:600 12px/1.4 'Plus Jakarta Sans',sans-serif;color:var(--ely-muted)}
+.ely-inspecting .ely-inspector-menu,.ely-inspecting>nav,.ely-inspecting .ely-inspector-back{display:none}
+.ely-inspector-back{align-self:flex-start;margin:8px 12px;color:var(--ely-muted)!important}
+.ely-inspector-title{margin:0!important;padding:12px 20px;border-bottom:1px solid var(--ely-line)}
 .ely-inspector-slot{flex:1;min-height:0;width:100%}
-
-.content-editor.ely-page-mode .pane[data-mode='edit'] .ely-on-page-field,
-.content-editor.ely-page-mode .pane[data-mode='edit'] .ely-on-page-field *{visibility:visible!important;pointer-events:auto}
-.content-editor.ely-page-mode .ely-on-page-field{position:fixed!important;z-index:81;left:var(--ely-field-left)!important;top:var(--ely-field-top)!important;width:var(--ely-field-width)!important;height:var(--ely-field-height)!important;max-height:var(--ely-field-height)!important;min-height:0!important;min-width:0!important;box-sizing:border-box;overflow:auto;overscroll-behavior:contain;margin:0!important;padding:4px 5px!important;border:0!important;border-radius:5px;background:var(--ely-paper);box-shadow:0 0 0 1px #9f493352;color:var(--ely-ink)}
+.content-editor.ely-page-mode .pane[data-mode='edit'] .ely-on-page-field,.content-editor.ely-page-mode .pane[data-mode='edit'] .ely-on-page-field *{visibility:visible!important;pointer-events:auto}
+.content-editor.ely-page-mode .ely-on-page-field{position:fixed!important;z-index:81;left:var(--ely-field-left)!important;top:var(--ely-field-top)!important;width:var(--ely-field-width)!important;height:var(--ely-field-height)!important;max-height:var(--ely-field-height)!important;min-height:0!important;min-width:0!important;box-sizing:border-box;overflow:auto;overscroll-behavior:contain;margin:0!important;padding:20px!important;border:0!important;border-radius:0;background:var(--ely-paper);box-shadow:none;color:var(--ely-ink)}
 .ely-on-page-field>header,.ely-on-page-field>.ely-editor-section{display:none!important}
-.ely-on-page-field>.footer .hint{display:none!important}
-.ely-on-page-field>.footer{min-height:16px!important;margin:2px 2px 0!important;padding:0!important;justify-content:flex-end!important;color:var(--ely-muted)!important;font-size:10px!important;line-height:1.2!important}
-.ely-on-page-field>.footer:empty{display:none!important}
 .ely-on-page-field .field-wrapper{min-width:0}
-
-/* Strip CMS form chrome so strings and rich text read as part of the article. */
-.ely-on-page-field input:not([type='file']),
-.ely-on-page-field textarea{width:100%!important;max-width:none!important;box-sizing:border-box!important;padding:4px 2px!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;color:var(--ely-forest)!important;outline:none!important}
-.ely-on-page-field input:not([type='file']):focus,
-.ely-on-page-field textarea:focus{box-shadow:inset 0 -2px 0 var(--ely-clay)!important}
-.ely-inline-title input{font:400 44px/1.08 'Cormorant Garamond',Georgia,serif!important;letter-spacing:-.02em}
-.ely-inline-heading input{font:400 30px/1.12 'Cormorant Garamond',Georgia,serif!important}
-.ely-inline-deck textarea,.ely-inline-deck input{font:500 20px/1.55 'Plus Jakarta Sans',sans-serif!important}
-.ely-inline-caption input,.ely-inline-caption textarea{font:400 13px/1.55 'Plus Jakarta Sans',sans-serif!important;color:var(--ely-muted)!important}
-.ely-inline-control input,.ely-inline-control textarea{font:500 15px/1.5 'Plus Jakarta Sans',sans-serif!important}
-
-.ely-inline-copy .field-wrapper{height:100%;display:flex;flex-direction:column}
-.ely-inline-copy [contenteditable='true']{min-height:140px!important;padding:10px 2px!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;color:var(--ely-forest)!important;font:400 17px/1.72 'Plus Jakarta Sans',sans-serif!important}
-.ely-inline-copy [contenteditable='true']:focus{outline:none!important;box-shadow:inset 0 -2px 0 var(--ely-clay)!important}
-.ely-inline-copy .field-wrapper [role='toolbar'],
-.ely-inline-copy .field-wrapper .toolbar{position:sticky;top:0;z-index:2;margin:0 0 8px!important;padding:4px!important;border:1px solid var(--ely-line)!important;border-radius:8px!important;background:var(--ely-soft)!important;box-shadow:none!important}
-
-/* Selects, toggles and tag lists remain inline instead of becoming a dialog. */
-.ely-inline-control .field-wrapper{padding:2px 0!important}
-.ely-inline-control .field-wrapper [role='radiogroup'],
-.ely-inline-control .field-wrapper .item-list{display:flex!important;flex-wrap:wrap!important;gap:7px!important;align-items:flex-start!important}
-.ely-inline-control .field-wrapper [role='radio'],
-.ely-inline-control .field-wrapper [role='switch'],
-.ely-inline-control .field-wrapper [role='checkbox']{min-height:40px!important}
-.ely-inline-control .field-wrapper .item-list>li,
-.ely-inline-control .field-wrapper .item-list>*{max-width:100%!important}
-
-.ely-on-page-toolbar{display:flex;align-items:center;justify-content:flex-end;z-index:84;padding:0;border:0;background:transparent;pointer-events:auto}
+.ely-on-page-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;z-index:82;padding:8px 16px;border-top:1px solid var(--ely-line);background:var(--ely-paper);font-size:12px;color:var(--ely-muted)}
 .ely-on-page-toolbar[hidden]{display:none}
-.ely-on-page-toolbar button{width:70px;height:36px;min-height:36px;padding:6px 12px;border:1px solid #25453547;border-radius:999px;background:var(--ely-forest);box-shadow:0 4px 14px #16271f1a;color:var(--ely-surface);font:700 11px 'Plus Jakarta Sans',sans-serif;cursor:pointer}
-
-.ely-article-backdrop{position:fixed;z-index:70;border:0;pointer-events:none;background:var(--ely-paper);opacity:1!important;filter:none!important}
-.ely-action-status{position:fixed;z-index:83;bottom:14px;left:14px;max-width:min(480px,calc(100vw - 64px));margin:0;padding:10px 13px;border-radius:8px;background:var(--ely-forest);color:var(--ely-surface);font-size:12px;line-height:1.5;pointer-events:none}
+.ely-on-page-toolbar button{background:var(--ely-forest);color:var(--ely-surface);border:0;border-radius:6px;min-height:44px;min-width:88px;font:600 13px 'Plus Jakarta Sans',sans-serif;cursor:pointer}
+.ely-page-mode .ely-inspector.ely-inline-edit{border-radius:0;box-shadow:none;overflow:visible}
+.ely-inline-edit>header,.ely-inline-edit .ely-inspector-title{display:none}
+.ely-chapter-outline{border-bottom:1px solid var(--ely-line)}
+.ely-chapter-outline summary{min-height:44px;padding:12px 8px;box-sizing:border-box;font-size:14px;line-height:1.5;font-weight:600;color:var(--ely-forest);cursor:pointer;overflow-wrap:anywhere}
+.ely-chapter-outline summary:focus-visible{outline:2px solid var(--ely-clay);outline-offset:-2px}
+.ely-chapter-outline>button{display:block;width:100%;text-align:left;border-radius:0;padding-left:24px}
+.ely-article-backdrop{position:fixed;z-index:70;border:0;pointer-events:none;background:var(--ely-paper)}
+.ely-action-status{position:fixed;z-index:83;bottom:16px;left:16px;max-width:min(480px,calc(100vw - 64px));margin:0;padding:12px 16px;border-radius:8px;background:var(--ely-forest);color:var(--ely-surface);font-size:13px;line-height:1.5;pointer-events:none}
 .ely-action-status:empty{display:none}
-
 @media(max-width:767px){
+ .ely-page-mode .ely-inspector{max-height:calc(100dvh - 112px)}
+ .ely-inspector>header{padding:12px 16px 8px;flex-wrap:wrap}
+ .ely-inspector-menu{padding-inline:16px}
  .ely-mode-switch button{padding-inline:10px}
- .content-editor.ely-page-mode .ely-on-page-field{padding:4px 5px!important}
- .ely-inline-title input{font-size:36px!important}
- .ely-inline-heading input{font-size:28px!important}
- .ely-on-page-field input,.ely-on-page-field textarea{font-size:16px}
- .ely-page-mode .ely-inspector:not(.ely-inline-edit){max-height:calc(100dvh - 92px)}
- .ely-inspector>header{padding:12px 14px 9px}
- .ely-action-status{bottom:8px;font-size:12px;padding:8px 11px}
+ .ely-page-actions button{padding-inline:8px;font-size:12px}
+ .content-editor.ely-page-mode .ely-on-page-field{padding:16px!important}
+ .ely-action-status{bottom:8px;font-size:12px;padding:8px 12px}
 }
-.ely-inline-copy textarea{font:400 17px/1.72 'Plus Jakarta Sans',sans-serif!important;color:var(--ely-forest)!important}
+
+.content-editor.ely-page-mode > .body > .sidebar{display:none!important}
+
+.ely-article-backdrop{opacity:1!important;filter:none!important}
+
+@media(max-width:767px){.ely-on-page-field input,.ely-on-page-field textarea{font-size:16px}}
+
+/* Indicazione sempre visibile di cosa si sta facendo in modalità Pagina */
+.ely-live-hint{display:none;position:fixed;z-index:83;bottom:16px;left:50%;transform:translateX(-50%);max-width:min(560px,calc(100vw - 32px));margin:0;padding:10px 16px;border-radius:999px;background:var(--ely-surface);color:var(--ely-forest);border:1px solid var(--ely-line);box-shadow:0 4px 18px #16271f26;font:600 13px/1.4 'Plus Jakarta Sans',sans-serif;text-align:center;pointer-events:none}
+.ely-page-mode .ely-live-hint:not(:empty){display:block}
+@media(max-width:767px){.ely-live-hint{bottom:64px;font-size:12px}}
