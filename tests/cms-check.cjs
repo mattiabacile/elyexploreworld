@@ -60,6 +60,17 @@ const initial = JSON.parse(fs.readFileSync(require('node:path').join(__dirname, 
       assert.equal(await photo.evaluate(e=>e===document.activeElement),true);
       assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
     }
+    Object.assign(added,{title:'Un **nuovo** _racconto_',deck:'Un viaggio **speciale** con [link](https://example.com).',heroCaption:'La foto _preferita_.',slideText:'Una **nuova** avventura.'});
+    Object.assign(added.chapters[0],{title:'Un **capitolo** nuovo',quote:'Un _ricordo_ da conservare',image:added.hero,caption:'Una **didascalia** con [link](https://example.com)'});
+    added.gallery[0].caption='La **prima** tappa';
+    await visit('/');assert.equal(await page.locator('.stories-slide.is-active .stories-deck strong').innerText(),'nuova');
+    await visit('/racconti.html');const card=page.locator('.stories-archive .story-card').first();assert.equal(await card.locator('strong').first().innerText(),'nuovo');assert.doesNotMatch(await card.locator('a.story-card-link').getAttribute('aria-label'),/\*/);assert.equal(await card.locator('a').count(),1);
+    await visit('/racconto.html?story=nuovo-racconto');
+    assert.equal(await page.locator('h1 strong').innerText(),'nuovo');assert.equal(await page.locator('h1 em').innerText(),'racconto');assert.equal(await page.title(),'Un nuovo racconto — ElyExploreWorld');
+    assert.equal(await page.locator('[data-field="deck"] strong').innerText(),'speciale');assert.equal(await page.locator('[data-field="heroCaption"] em').innerText(),'preferita');
+    assert.equal(await page.locator('.chapter h2 strong').first().innerText(),'capitolo');assert.equal(await page.locator('.chapter blockquote em').innerText(),'ricordo');assert.equal(await page.locator('.chapter figcaption strong').innerText(),'didascalia');
+    await page.getByRole('button',{name:'Apri foto: Foto uno',exact:true}).click();assert.equal(await page.locator('dialog figcaption strong').innerText(),'prima');await page.keyboard.press('Escape');
+    assert.equal(await page.evaluate(()=>ElyArticle.inline('[bad](javascript:alert(1))<img src=x onerror=alert(1)><script>alert(1)</script>')), '<a>bad</a>');
     records.find(item => item.id === added.id).title = 'Titolo aggiornato dalla cliente';
     await visit('/racconti.html');
     assert.match(await page.locator('.stories-archive .story-card').first().innerText(), /Titolo aggiornato/);

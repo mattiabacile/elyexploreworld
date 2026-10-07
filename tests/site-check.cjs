@@ -69,11 +69,13 @@ const base = process.env.SITE_URL || 'http://localhost:4173';
     await page.locator('#primary-nav a[href="#servizi"]').click();
     assert.equal(new URL(page.url()).hash, '#servizi');
     assert.equal(await page.locator('#servizi').evaluate(e => e === document.activeElement), true);
+    const slideIds=await page.locator('.stories-slide').evaluateAll(nodes=>nodes.map(node=>node.id));
+    const current=slideIds.indexOf(await page.locator('.stories-slide.is-active').getAttribute('id'));
     await page.locator('.stories-next').click();
-    assert.equal(await page.locator('.stories-slide.is-active').getAttribute('id'), 'story-bali');
+    assert.equal(await page.locator('.stories-slide.is-active').getAttribute('id'), slideIds[(current+1)%slideIds.length]);
     await page.waitForFunction(() => { const link = document.querySelector('.stories-slide.is-active a'); link.focus(); return document.activeElement === link; });
     await page.keyboard.press('ArrowRight');
-    assert.equal(await page.locator('.stories-slide.is-active').getAttribute('id'), 'story-singapore');
+    assert.equal(await page.locator('.stories-slide.is-active').getAttribute('id'), slideIds[(current+2)%slideIds.length]);
     assert.equal(await page.locator('#stories-track').evaluate(e => e === document.activeElement), true);
     assert.equal(await page.locator('.stories-pause').count(), 0);
     // Clipboard denial must report a fallback, never falsely claim success.

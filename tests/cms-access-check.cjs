@@ -126,7 +126,7 @@ const createDB=()=>{
     await page.getByText(/Giappone: tra templi/).first().waitFor({timeout:30000});
     assert.equal(await page.getByRole('button',{name:/Accedi con.*GitHub/}).count(),0);
     await page.screenshot({path:'/tmp/ely-direct-editor.png'});
-    await page.getByText(/Giappone: tra templi/).first().click();await page.getByLabel('Titolo',{exact:true}).fill('Giappone: accesso diretto verificato');
+    await page.getByText(/Giappone: tra templi/).first().click();await page.locator('section.field[data-key-path="title"] [contenteditable="true"]').fill('Giappone: accesso diretto verificato');
     await page.getByRole('button',{name:'Salva',exact:true}).click();
     for(let i=0;i<200&&records[0].title!=='Giappone: accesso diretto verificato';i++)await new Promise(resolve=>setTimeout(resolve,20));
     assert.equal(records[0].title,'Giappone: accesso diretto verificato');
@@ -134,9 +134,9 @@ const createDB=()=>{
     await page.waitForTimeout(500);
     await page.goto('http://localhost:'+server.address().port+'/admin/');
     await page.getByRole('button',{name:'Crea Nuova Voce',exact:true}).click();
-    await page.getByLabel('Titolo',{exact:true}).fill('Nuovo racconto dal pannello');
+    await page.locator('section.field[data-key-path="title"] [contenteditable="true"]').fill('Nuovo racconto dal pannello');
     await page.getByLabel('Destinazione',{exact:true}).fill('Portogallo');
-    await page.getByLabel('Introduzione breve',{exact:true}).fill('Una nuova storia creata dalla cliente.');
+    await page.locator('section.field[data-key-path="deck"] [contenteditable="true"]').fill('Una nuova storia creata dalla cliente.');
     await page.locator('input[type=file]').first().setInputFiles(path.join(root,records[0].hero));
     await page.getByText(/^\/assets\/uploads\//).first().waitFor();
     await page.getByRole('button',{name:'Pubblica',exact:true}).click();
@@ -147,8 +147,8 @@ const createDB=()=>{
     await page.getByRole('textbox',{name:'Apertura del racconto',exact:true}).fill('Il testo completo della nuova storia.');
     await page.getByRole('button',{name:'Aspetto',exact:true}).click();
     const appearance=page.locator('section[data-key-path="appearance"]');
-    const expandAppearance=appearance.getByRole('button',{name:'Espandi',exact:true}).first();
-    if(await expandAppearance.isVisible())await expandAppearance.click();
+    const expandAppearance=appearance.locator(':scope > .field-wrapper button[aria-controls^="object-"][aria-expanded="false"]');
+    await appearance.waitFor({state:'visible'});await appearance.locator(':scope > .field-wrapper button[aria-controls^="object-"]').waitFor();if(await expandAppearance.count())await expandAppearance.click();
     await page.getByRole('radio',{name:'Blu oceano',exact:true}).check();
     await page.getByRole('radio',{name:'Diario di viaggio',exact:true}).check();
     await page.frameLocator('iframe').locator('[data-text-style="journal"]').waitFor();

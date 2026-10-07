@@ -45,7 +45,7 @@ await page.locator('section.field[data-key-path="published"] [role="switch"]').c
 await page.waitForFunction(()=>document.querySelector('.ely-visibility')?.textContent==='Dopo Salva: bozza');
 assert.match(await page.locator('.ely-publish-status').innerText(),/fuori dall’archivio/);
 await page.getByRole('button',{name:'Inizia',exact:true}).click();
-await page.getByLabel('Titolo', {exact:true}).fill('Giappone: verifica editor');
+await page.locator('section.field[data-key-path="title"] [contenteditable="true"]').fill('Giappone: verifica editor');
 await page.frameLocator('iframe').getByRole('heading', {name:'Giappone: verifica editor', exact:true}).waitFor({timeout:15000});
 assert.equal(await page.frameLocator('iframe').locator('[data-text-style="journal"]').count(),1);
 assert.equal(await page.frameLocator('iframe').locator('.preview-gallery img').count(),1);
@@ -94,7 +94,7 @@ assert.equal(saved.gallery.length,1);
 
 await page.locator('.content-editor').waitFor({state:'detached'});
 await page.getByText(/Giappone: verifica editor/).first().click();
-await page.getByLabel('Titolo',{exact:true}).waitFor();
+await page.locator('section.field[data-key-path="title"] [contenteditable="true"]').waitFor();
 // The same authoring tools stay usable at a phone width, with live draft statistics.
 await page.setViewportSize({width:390,height:844});
 await page.locator('.ely-editor-content').evaluate(e=>e.scrollTop=0);
@@ -105,7 +105,7 @@ assert.equal(await page.locator('.ely-download').isVisible(),true);
 await page.getByRole('button',{name:'Pubblica',exact:true}).click();
 await page.locator('.ely-publish-checks').waitFor({state:'visible'});
 await page.getByRole('button',{name:'Inizia',exact:true}).click();
-await page.getByLabel('Titolo',{exact:true}).fill('Giappone: editor mobile');
+await page.locator('section.field[data-key-path="title"] [contenteditable="true"]').fill('Giappone: editor mobile');
 await page.getByRole('button',{name:'Scrivi',exact:true}).click();
 await page.locator('section.field[data-key-path="intro"] [contenteditable="true"]').fill('Un nuovo ricordo scritto dal telefono.');
 await page.getByRole('button',{name:'Inizia',exact:true}).click();

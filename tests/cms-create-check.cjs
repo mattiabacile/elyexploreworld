@@ -36,21 +36,22 @@ assert.equal(await page.getByRole('radio',{name:'Bozza',exact:true}).isChecked()
 const slot=await page.frameLocator('iframe').locator('.preview-cover .preview-photo-slot').boundingBox();assert.ok(slot.height>100 && slot.width>slot.height);
 const pick=async key=>{
  const target=page.frameLocator('iframe.preview').locator(`[data-key-path="${key}"]`).first();
- await target.evaluate(element=>{for(let parent=element.parentElement;parent;parent=parent.parentElement)if(parent.tagName==='DETAILS')parent.open=true;});
- await target.click();
+ if(await target.count())await target.evaluate(element=>{for(let parent=element.parentElement;parent;parent=parent.parentElement)if(parent.tagName==='DETAILS')parent.open=true;});
+ if(await target.count())await target.click();
+ else {const button=page.locator(`[data-setting-key="${key}"]`);await button.evaluate(e=>e.parentElement.open=true);await button.click();}
  await page.locator(`.ely-on-page-field[data-key-path="${key}"]`).waitFor({state:'visible'});
  assert.equal(await page.locator('.content-editor.ely-page-mode').count(),1);
 };
 const done=async()=>{await page.getByRole('button',{name:'Fine',exact:true}).click();await page.locator('iframe.preview').waitFor();};
-const fill=async(key,value)=>{await pick(key);await page.locator('.ely-on-page-field input, .ely-on-page-field textarea').first().fill(value);await done();};
+const fill=async(key,value)=>{await pick(key);await page.locator('.ely-on-page-field input:not([type=file]), .ely-on-page-field textarea, .ely-on-page-field [contenteditable=true]').first().fill(value);await done();};
 const rich=async(key,value)=>{await pick(key);await page.locator('.ely-on-page-field [contenteditable="true"]').fill(value);await done();};
-await fill('title','Un articolo nato nell’anteprima');
+await pick('title');const titleEditor=page.locator('.ely-on-page-field [contenteditable=true]');await titleEditor.fill('Un articolo nato nell’anteprima');await titleEditor.press('ControlOrMeta+a');await titleEditor.press('ControlOrMeta+b');await done();
 await fill('destination','Portogallo');await fill('deck','Un viaggio scritto interamente sulla pagina.');
 await fill('date','2026-10-06');
 await pick('hero');await page.locator('.ely-on-page-field input[type="file"]').first().setInputFiles(root+'/'+stories[0].hero);
-await page.locator('.ely-on-page-field [role="textbox"]').filter({hasText:/assets\/uploads/}).waitFor();await done();
+await page.locator('.ely-on-page-field').waitFor({state:'detached'});await page.locator('iframe.preview').waitFor();
 await fill('heroAlt','La copertina del viaggio');await fill('heroCaption','Un nuovo inizio');
-await page.frameLocator('iframe.preview').getByRole('button',{name:'Lettera iniziale grande',exact:true}).click();await page.locator('.content-editor[aria-busy="false"]').waitFor();
+await pick('appearance.dropCap');await page.locator('.ely-on-page-field [role=switch]').click();await done();
 await rich('intro','L’apertura del racconto creata direttamente sulla pagina.');
 await page.frameLocator('iframe.preview').getByRole('button',{name:'Aggiungi capitolo',exact:true}).click();
 await page.locator('.ely-on-page-field[data-key-path="chapters.0.title"]').waitFor({state:'visible'});await done();
@@ -60,32 +61,34 @@ await pick('travelFacts');await page.locator('.ely-on-page-field').getByText(/Ag
 await page.frameLocator('iframe.preview').getByRole('button',{name:'Aggiungi foto alla galleria',exact:true}).click();
 await page.locator('.ely-on-page-field[data-key-path="gallery.0.image"]').waitFor({state:'visible'});await done();
 await pick('chapters.0.image');await page.locator('.ely-on-page-field input[type="file"]').first().setInputFiles(root+'/'+stories[0].hero);
-await page.locator('.ely-on-page-field [role="textbox"]').filter({hasText:/assets\/uploads/}).waitFor();await done();
+await page.locator('.ely-on-page-field').waitFor({state:'detached'});await page.locator('iframe.preview').waitFor();
 await fill('chapters.0.imageAlt','La foto del capitolo');await fill('chapters.0.caption','La prima tappa del viaggio');
 await pick('gallery.0.image');await page.locator('.ely-on-page-field input[type="file"]').first().setInputFiles(root+'/'+stories[0].hero);
-await page.locator('.ely-on-page-field [role="textbox"]').filter({hasText:/assets\/uploads/}).waitFor();await done();
+await page.locator('.ely-on-page-field').waitFor({state:'detached'});await page.locator('iframe.preview').waitFor();
 await fill('gallery.0.alt','Foto della galleria');await fill('gallery.0.caption','La prima tappa');
 await rich('conclusion','La conclusione scritta in anteprima.');
-if(Number(process.env.CMS_WIDTH || 1440)<=900)await page.locator('.ely-settings-fields summary').click();
+await page.locator('[data-setting-key="appearance.theme"]').evaluate(e=>e.parentElement.open=true);
 await page.getByRole('button',{name:'Colore dei dettagli',exact:true}).click();await page.locator('.ely-on-page-field[data-key-path="appearance.theme"]').waitFor();
 await page.getByRole('radio',{name:'Blu oceano',exact:true}).check();await done();
-if(Number(process.env.CMS_WIDTH || 1440)<=900)await page.locator('.ely-settings-fields summary').click();
+
 await page.getByRole('radio',{name:'Visibile sul sito',exact:true}).check();await page.locator('.content-editor[aria-busy="false"]').waitFor();await page.locator('iframe.preview').waitFor();
 assert.equal(await page.getByRole('button',{name:'Pagina',exact:true}).getAttribute('aria-pressed'),'true');
 await page.frameLocator('iframe.preview').getByRole('heading',{name:'Un articolo nato nell’anteprima',exact:true}).scrollIntoViewIfNeeded();
 await page.screenshot({path:root+'/.impeccable/review/page-created-'+(process.env.CMS_WIDTH || '1440')+'.png'});
-// Save straight from the open rich editor, immediately after typing.
+await page.getByRole('radio',{name:'Bozza',exact:true}).check();await page.locator('.content-editor[aria-busy="false"]').waitFor();
+// Publication changes and immediate Save must retain the last typed rich text.
 await pick('intro');await page.locator('.ely-on-page-field [contenteditable="true"]').fill('Anche l’ultima frase viene salvata dalla pagina.');
-await page.getByRole('button',{name:'Salva',exact:true}).click();await page.locator('.content-editor').waitFor({state:'detached'});
-const saved=await page.evaluate(async()=>{const dir=await(await navigator.storage.getDirectory()).getDirectoryHandle('content');return JSON.parse(await(await(await dir.getFileHandle('stories.json')).getFile()).text()).find(s=>s.title==='Un articolo nato nell’anteprima')});
+await page.getByRole('radio',{name:'Visibile sul sito',exact:true}).check();await page.getByRole('button',{name:'Salva',exact:true}).click();await page.locator('.content-editor').waitFor({state:'detached'});
+const saved=await page.evaluate(async()=>{const dir=await(await navigator.storage.getDirectory()).getDirectoryHandle('content');return JSON.parse(await(await(await dir.getFileHandle('stories.json')).getFile()).text()).find(s=>s.title==='**Un articolo nato nell’anteprima**')});
 assert.equal(saved.intro,'Anche l’ultima frase viene salvata dalla pagina.');assert.equal(saved.published,true);assert.equal(saved.appearance.theme,'ocean');assert.equal(saved.appearance.dropCap,false);assert.equal(saved.chapters[0].title,'Una nuova tappa');assert.equal(saved.chapters[0].body,'Il capitolo nasce qui.');assert.equal(saved.chapters[0].quote,'Un ricordo da conservare');assert.equal(saved.chapters[0].note,'Un consiglio pratico.');assert.equal(saved.gallery[0].caption,'La prima tappa');assert.equal(saved.travelFacts.duration,'Una settimana');assert.match(saved.hero,/assets\/uploads/);assert.match(saved.chapters[0].image,/assets\/uploads/);assert.equal(saved.conclusion,'La conclusione scritta in anteprima.');assert.deepEqual(errors,[]);
 const base=process.env.SITE_URL || 'http://localhost:4173';
 const publishedRecords=await page.evaluate(async()=>{const dir=await(await navigator.storage.getDirectory()).getDirectoryHandle('content');return await(await(await dir.getFileHandle('stories.json')).getFile()).text()});
 await page.route('**/content/stories.json',route=>route.fulfill({contentType:'application/json',body:publishedRecords}));
 await page.route('**/assets/uploads/**',route=>route.fulfill({contentType:'image/webp',body:fs.readFileSync(root+'/'+stories[0].hero)}));
 await page.goto(base+'/');await page.waitForFunction(()=>document.documentElement.dataset.contentReady==='true');await page.locator('#story-'+saved.id).waitFor({state:'attached'});
-await page.goto(base+'/racconti.html');await page.locator('.stories-archive .story-card').filter({hasText:saved.title}).waitFor();assert.equal(await page.locator('.tips-grid .story-card').filter({hasText:saved.title}).count(),0);
-await page.goto(base+'/racconto.html?story='+saved.id);await page.getByRole('heading',{name:saved.title,exact:true,level:1}).waitFor();
+await page.goto(base+'/racconti.html');await page.locator('.stories-archive .story-card').filter({hasText:'Un articolo nato nell’anteprima'}).waitFor();assert.equal(await page.locator('.tips-grid .story-card').filter({hasText:'Un articolo nato nell’anteprima'}).count(),0);
+await page.goto(base+'/racconto.html?story='+saved.id);await page.getByRole('heading',{name:'Un articolo nato nell’anteprima',exact:true,level:1}).waitFor();
+assert.equal(await page.locator('h1 strong').innerText(),'Un articolo nato nell’anteprima');
 console.log('PASS: saved CMS article appears in slideshow, correct archive section and full article.');
 console.log('PASS: complete article created exclusively in page mode, new uploads, chapters, gallery, optional fields, appearance, visibility and saved JSON.');
 } catch(error) {console.error(await page.locator('.content-editor').evaluate(e=>({feedback:e.querySelector('.ely-page-feedback')?.textContent,keys:[...e.querySelectorAll('section.field')].map(s=>s.dataset.keyPath),gallery:e.querySelector('section.field[data-key-path="gallery"]')?.outerHTML.slice(0,14000)})).catch(()=>''));throw error;} finally {await browser.close();}
