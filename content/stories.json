@@ -226,34 +226,5 @@
     "intro": "Piccoli gesti per vivere un luogo quotidiano senza sentirsi soltanto di passaggio.",
     "chapters": [],
     "tags": []
-  },
-  {
-    "title": "test",
-    "kind": "racconto",
-    "date": "2026-10-07",
-    "destination": "test",
-    "deck": "test",
-    "hero": "/assets/stories/bali-detail-retouched-1440.webp",
-    "heroAlt": "test",
-    "heroCaption": "test",
-    "intro": "test",
-    "chapters": [],
-    "travelFacts": null,
-    "category": "",
-    "tags": [],
-    "gallery": [],
-    "conclusion": "",
-    "appearance": {
-      "theme": "clay",
-      "coverFormat": "panoramic",
-      "coverPosition": "center",
-      "textStyle": "modern",
-      "dropCap": true,
-      "showContents": false
-    },
-    "slideText": "",
-    "published": true,
-    "preparing": false,
-    "id": "c8988f95-ae97-4cbe-81d6-d3ece112141e"
   }
 ]
