@@ -188,10 +188,10 @@
           "label": "Capitoli",
           "widget": "list",
           "required": false,
-          "collapsed": true,
+          "collapsed": false,
           "summary": "{{fields.title}}",
           "label_singular": "Capitolo",
-          "hint": "Per un articolo lungo, aggiungi sezioni con testo e foto. Trascinale per cambiare l’ordine.",
+          "hint": "Aggiungi o elimina i capitoli liberamente. Trascinali per cambiare l’ordine.",
           "fields": [
             {
               "name": "title",
@@ -350,6 +350,27 @@
                 "image"
               ],
               "required": false
+            }
+          ],
+          "minimize_collapsed": false,
+          "default": [
+            {
+              "title": "",
+              "body": "",
+              "layout": "auto",
+              "imageFormat": "auto"
+            },
+            {
+              "title": "",
+              "body": "",
+              "layout": "auto",
+              "imageFormat": "auto"
+            },
+            {
+              "title": "",
+              "body": "",
+              "layout": "auto",
+              "imageFormat": "auto"
             }
           ]
         },
