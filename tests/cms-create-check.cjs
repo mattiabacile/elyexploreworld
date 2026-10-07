@@ -5,7 +5,7 @@ stories[0].appearance={theme:'ocean',textStyle:'journal',coverFormat:'natural',s
 stories[0].travelFacts={duration:'Dieci giorni',season:'Primavera'};
 stories[0].gallery=[{image:stories[0].hero,alt:'Foto della galleria',caption:'Il viaggio in immagini'}];
 stories[0].conclusion='Una **riflessione finale**.';
-const files={'content/tags.json':{text:fs.readFileSync(root+'/content/tags.json','utf8'),type:'application/json'},'content/stories.json':{text:JSON.stringify(stories),type:'application/json'}};
+const files={'content/categories.json':{text:fs.readFileSync(root+'/content/categories.json','utf8'),type:'application/json'},'content/tags.json':{text:fs.readFileSync(root+'/content/tags.json','utf8'),type:'application/json'},'content/stories.json':{text:JSON.stringify(stories),type:'application/json'}};
 for(const source of new Set(stories.flatMap(s=>[s.hero,...s.chapters.map(c=>c.image)]).filter(source=>source && !/^https?:\/\//.test(source))))files[source]={base64:fs.readFileSync(root+'/'+source).toString('base64'),type:'image/webp'};
 (async()=>{
 const browser=await chromium.launch({channel:'chrome'}),page=await browser.newPage({viewport:{width:1440,height:1000},reducedMotion:'reduce'});
@@ -53,9 +53,7 @@ await page.locator('.ely-on-page-field').waitFor({state:'detached'});await page.
 await fill('heroAlt','La copertina del viaggio');await fill('heroCaption','Un nuovo inizio');
 await pick('appearance.dropCap');await page.locator('.ely-on-page-field [role=switch]').click();await done();
 await rich('intro','L’apertura del racconto creata direttamente sulla pagina.');
-assert.equal(await page.frameLocator('iframe.preview').locator('.preview-chapter').count(),3);
-// Retain one default chapter; the author removes the two unused ones directly.
-for(let i=0;i<2;i++){await page.frameLocator('iframe.preview').getByRole('button',{name:'Elimina capitolo',exact:true}).last().click();await page.frameLocator('iframe.preview').getByRole('button',{name:'Elimina',exact:true}).click();await page.locator('.content-editor[aria-busy="false"]').waitFor();}
+assert.equal(await page.frameLocator('iframe.preview').locator('.preview-chapter').count(),1);
 await fill('chapters.0.title','Una nuova tappa');await rich('chapters.0.body','Il capitolo nasce qui.');
 await fill('chapters.0.quote','Un ricordo da conservare');await rich('chapters.0.note','Un consiglio pratico.');
 await pick('travelFacts');await page.locator('.ely-on-page-field').getByText(/Aggiungi/).click();await page.getByLabel('Durata',{exact:true}).fill('Una settimana');await done();
@@ -68,10 +66,6 @@ await pick('gallery.0.image');await page.locator('.ely-on-page-field input[type=
 await page.locator('.ely-on-page-field').waitFor({state:'detached'});await page.locator('iframe.preview').waitFor();
 await fill('gallery.0.alt','Foto della galleria');await fill('gallery.0.caption','La prima tappa');
 await rich('conclusion','La conclusione scritta in anteprima.');
-await page.locator('[data-setting-key="appearance.theme"]').evaluate(e=>e.parentElement.open=true);
-await page.getByRole('button',{name:'Colore dei dettagli',exact:true}).click();await page.locator('.ely-on-page-field[data-key-path="appearance.theme"]').waitFor();
-await page.getByRole('radio',{name:'Blu oceano',exact:true}).check();await done();
-
 await page.getByRole('radio',{name:'Visibile sul sito',exact:true}).check();await page.locator('.content-editor[aria-busy="false"]').waitFor();await page.locator('iframe.preview').waitFor();
 assert.equal(await page.getByRole('button',{name:'Pagina',exact:true}).getAttribute('aria-pressed'),'true');
 await page.frameLocator('iframe.preview').getByRole('heading',{name:'Un articolo nato nell’anteprima',exact:true}).scrollIntoViewIfNeeded();
@@ -80,8 +74,8 @@ await page.getByRole('radio',{name:'Bozza',exact:true}).check();await page.locat
 // Publication changes and immediate Save must retain the last typed rich text.
 await pick('intro');await page.locator('.ely-on-page-field [contenteditable="true"]').fill('Anche l’ultima frase viene salvata dalla pagina.');
 await page.getByRole('radio',{name:'Visibile sul sito',exact:true}).check();await page.getByRole('button',{name:'Salva',exact:true}).click();await page.locator('.content-editor').waitFor({state:'detached'});
-const saved=await page.evaluate(async()=>{const dir=await(await navigator.storage.getDirectory()).getDirectoryHandle('content');return JSON.parse(await(await(await dir.getFileHandle('stories.json')).getFile()).text()).find(s=>s.title==='**Un articolo nato nell’anteprima**')});
-assert.equal(saved.intro,'Anche l’ultima frase viene salvata dalla pagina.');assert.equal(saved.published,true);assert.equal(saved.appearance.theme,'ocean');assert.equal(saved.appearance.dropCap,false);assert.equal(saved.chapters[0].title,'Una nuova tappa');assert.equal(saved.chapters[0].body,'Il capitolo nasce qui.');assert.equal(saved.chapters[0].quote,'Un ricordo da conservare');assert.equal(saved.chapters[0].note,'Un consiglio pratico.');assert.equal(saved.gallery[0].caption,'La prima tappa');assert.equal(saved.travelFacts.duration,'Una settimana');assert.match(saved.hero,/assets\/uploads/);assert.match(saved.chapters[0].image,/assets\/uploads/);assert.equal(saved.conclusion,'La conclusione scritta in anteprima.');assert.deepEqual(errors,[]);
+const saved=await page.evaluate(async()=>{const dir=await(await navigator.storage.getDirectory()).getDirectoryHandle('content');return JSON.parse(await(await(await dir.getFileHandle('stories.json')).getFile()).text()).find(s=>s.title.includes('Un articolo nato nell’anteprima'))});
+assert.equal(saved.intro,'Anche l’ultima frase viene salvata dalla pagina.');assert.equal(saved.published,true);assert.equal(saved.appearance.theme,'clay');assert.equal(saved.appearance.dropCap,false);assert.equal(saved.chapters[0].title,'Una nuova tappa');assert.equal(saved.chapters[0].body,'Il capitolo nasce qui.');assert.equal(saved.chapters[0].quote,'Un ricordo da conservare');assert.equal(saved.chapters[0].note,'Un consiglio pratico.');assert.equal(saved.gallery[0].caption,'La prima tappa');assert.equal(saved.travelFacts.duration,'Una settimana');assert.match(saved.hero,/assets\/uploads/);assert.match(saved.chapters[0].image,/assets\/uploads/);assert.equal(saved.conclusion,'La conclusione scritta in anteprima.');assert.deepEqual(errors,[]);
 const base=process.env.SITE_URL || 'http://localhost:4173';
 const publishedRecords=await page.evaluate(async()=>{const dir=await(await navigator.storage.getDirectory()).getDirectoryHandle('content');return await(await(await dir.getFileHandle('stories.json')).getFile()).text()});
 await page.route('**/content/stories.json',route=>route.fulfill({contentType:'application/json',body:publishedRecords}));

@@ -16,7 +16,7 @@
   const e = ElyContent.escape;
   track.innerHTML = stories.map((story, index) => `<article id="story-${e(story.id)}" class="stories-slide${index ? '' : ' is-active'}" aria-labelledby="title-${e(story.id)}" data-destination="${e(story.destination)}">
     <figure class="stories-photo"><img src="${e(ElyContent.image(story.hero))}" data-content-image="${e(ElyContent.image(story.hero))}" alt="${e(story.heroAlt)}" width="1600" height="900" loading="lazy" decoding="async"></figure>
-    <div class="stories-copy"><div class="stories-heading"><time datetime="${e(story.date)}">${ElyContent.date(story.date)}</time><h3 id="title-${e(story.id)}">${e(story.destination)}</h3></div>
+    <div class="stories-copy"><div class="stories-heading"><time datetime="${e(story.date)}">${ElyContent.date(story.date)}</time><h3 id="title-${e(story.id)}">${ElyContent.title(story)}</h3></div>
     <p class="stories-deck">${ElyArticle.inline(story.slideText || story.deck)}</p>
     <a class="stories-read" href="${ElyContent.href(story)}" data-story="${e(story.id)}">Leggi il racconto <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h17m-7-7 7 7-7 7"/></svg></a></div></article>`).join('');
   ElyContent.responsive(track);

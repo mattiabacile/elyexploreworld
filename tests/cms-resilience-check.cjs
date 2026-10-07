@@ -6,7 +6,7 @@ stories[0].travelFacts={duration:'Dieci giorni',season:'Primavera'};
 stories[0].gallery=[{image:stories[0].hero,alt:'Foto della galleria',caption:'Il viaggio in immagini'}];
 stories[0].conclusion='Una **riflessione finale**.';
 while(stories[0].chapters.length<16){const number=stories[0].chapters.length+1;stories[0].chapters.push({...stories[0].chapters[0],title:'Tappa '+number,body:'Un capitolo aggiuntivo del viaggio.'});}
-const files={'content/tags.json':{text:fs.readFileSync(root+'/content/tags.json','utf8'),type:'application/json'},'content/stories.json':{text:JSON.stringify(stories),type:'application/json'}};
+const files={'content/categories.json':{text:fs.readFileSync(root+'/content/categories.json','utf8'),type:'application/json'},'content/tags.json':{text:fs.readFileSync(root+'/content/tags.json','utf8'),type:'application/json'},'content/stories.json':{text:JSON.stringify(stories),type:'application/json'}};
 for(const source of new Set(stories.flatMap(s=>[s.hero,...s.chapters.map(c=>c.image)]).filter(source=>source && !/^https?:\/\//.test(source))))files[source]={base64:fs.readFileSync(root+'/'+source).toString('base64'),type:'image/webp'};
 (async()=>{
 const browser=await chromium.launch({channel:'chrome'}),page=await browser.newPage({viewport:{width:1440,height:1000},reducedMotion:'reduce'});
@@ -58,7 +58,7 @@ await preview.locator('[data-key-path="chapters.15.title"]').press('Enter');
 await page.locator('.ely-on-page-field [contenteditable=true]').fill(longTitle);await page.getByRole('button',{name:'Fine',exact:true}).click();
 await preview.locator('[data-key-path="chapters.15.title"]').filter({hasText:'Una tappa molto lontana'}).waitFor();
 assert.ok(await preview.locator('html').evaluate(e=>e.scrollWidth<=e.clientWidth+1));
-await page.getByText('Informazioni dell’articolo',{exact:true}).click();
+await page.getByRole('button',{name:'Racconto o consiglio',exact:true}).waitFor({state:'visible'});
 await page.getByRole('button',{name:'Racconto o consiglio',exact:true}).click();
 await page.locator('.ely-on-page-field').getByRole('radio',{name:'Consiglio di viaggio',exact:true}).check();
 await page.getByRole('button',{name:'Fine',exact:true}).click();

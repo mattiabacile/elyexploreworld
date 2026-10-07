@@ -6,7 +6,7 @@ stories[0].appearance={theme:'ocean',textStyle:'journal',coverFormat:'natural',s
 stories[0].travelFacts={duration:'Dieci giorni',season:'Primavera'};
 stories[0].gallery=[{image:stories[0].hero,alt:'Foto della galleria',caption:'Il viaggio in immagini'}];
 stories[0].conclusion='Una **riflessione finale**.';
-const files={'content/tags.json':{text:fs.readFileSync(root+'/content/tags.json','utf8'),type:'application/json'},'content/stories.json':{text:JSON.stringify(stories),type:'application/json'}};
+const files={'content/categories.json':{text:fs.readFileSync(root+'/content/categories.json','utf8'),type:'application/json'},'content/tags.json':{text:fs.readFileSync(root+'/content/tags.json','utf8'),type:'application/json'},'content/stories.json':{text:JSON.stringify(stories),type:'application/json'}};
 for(const source of new Set(stories.flatMap(s=>[s.hero,...s.chapters.map(c=>c.image)]).filter(source=>source && !/^https?:\/\//.test(source))))files[source]={base64:fs.readFileSync(root+'/'+source).toString('base64'),type:'image/webp'};
 (async()=>{
 const browser=await chromium.launch({channel:'chrome'}),page=await browser.newPage({viewport:{width:1440,height:1000},reducedMotion:'reduce'});
@@ -43,19 +43,19 @@ assert.equal(await page.getByRole('button',{name:'Salva',exact:true}).isEnabled(
 await (await openItem(0)).getByRole('button',{name:'Sposta capitolo dopo',exact:true}).click();await page.waitForTimeout(300);await openItem(0);assert.equal((await page.locator('section[data-key-path="chapters.0.title"] [contenteditable=true]').innerText()).trim(),stories[0].chapters[1].title);
 await page.getByRole('button',{name:'Annulla Modifica',exact:true}).click();
 await page.getByRole('button',{name:'Crea Nuova Voce',exact:true}).click();await focusField(page,'chapters');
-assert.equal(await list().locator(':scope > *').count(),3);
-for(let index=0;index<3;index++){
+assert.equal(await list().locator(':scope > *').count(),1);
+for(let index=0;index<1;index++){
  await openItem(index);
  assert.equal((await page.locator('section[data-key-path="chapters.'+index+'.title"] [contenteditable=true]').innerText()).trim(),'');
 }
 await (await openItem(0)).evaluate(node=>node.scrollIntoView({block:'start'}));await page.waitForTimeout(150);await page.screenshot({path:root+'/.impeccable/review/chapters-open-'+(process.env.CMS_WIDTH||1440)+'.png'});
 await page.locator('section[data-key-path="chapters"] > .field-wrapper .toolbar.add button').click();
-await page.waitForFunction(()=>document.querySelector('section[data-key-path=chapters] .item-list')?.children.length===4);
-const fourth=await openItem(3);await fourth.getByRole('button',{name:'Rimuovi',exact:true}).click();
-await page.waitForFunction(()=>document.querySelector('section[data-key-path=chapters] .item-list')?.children.length===3);
-for(let index=2;index>=0;index--){const item=await openItem(index);await item.getByRole('button',{name:'Rimuovi',exact:true}).click();}
+await page.waitForFunction(()=>document.querySelector('section[data-key-path=chapters] .item-list')?.children.length===2);
+const fourth=await openItem(1);await fourth.getByRole('button',{name:'Rimuovi',exact:true}).click();
+await page.waitForFunction(()=>document.querySelector('section[data-key-path=chapters] .item-list')?.children.length===1);
+for(let index=0;index>=0;index--){const item=await openItem(index);await item.getByRole('button',{name:'Rimuovi',exact:true}).click();}
 await page.waitForFunction(()=>!document.querySelector('section[data-key-path=chapters] .item-list')?.children.length);
 assert.deepEqual(errors,[]);
-console.log('PASS: flat chapters have no visible collapse controls, reorder with direct arrows, start with three empty chapters, and allow free addition/removal, at '+(process.env.CMS_WIDTH||1440)+'px.');
+console.log('PASS: flat chapters have no visible collapse controls, reorder with direct arrows, start with one empty chapter, and allow free addition/removal, at '+(process.env.CMS_WIDTH||1440)+'px.');
 } finally {await browser.close();}
 })().catch(e=>{console.error(e);process.exitCode=1});

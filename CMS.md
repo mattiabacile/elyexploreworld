@@ -11,7 +11,7 @@ Inserire **nome utente e password** nel pannello. Non serve un account GitHub o 
 1. Aprire **Racconti e consigli** e creare un nuovo racconto.
 2. Scegliere **Racconto di viaggio** oppure **Consiglio di viaggio**.
 3. Inserire titolo, data, destinazione, introduzione breve e foto di copertina. Descrivere la foto nel campo dedicato.
-4. Scrivere l’apertura con l’editor. Ogni nuovo articolo parte con tre capitoli vuoti. Aggiungerli o eliminarli secondo necessità: ognuno può avere testo, foto, didascalia, citazione e un consiglio pratico.
+4. Scrivere l’apertura con l’editor. Ogni nuovo articolo parte con un capitolo vuoto. Aggiungerli o eliminarli secondo necessità: ognuno può avere testo, foto, didascalia, citazione e un consiglio pratico.
 5. Controllare l’anteprima. Lasciare **Visibile sul sito** disattivato durante la preparazione.
 6. Quando il contenuto è pronto, attivare **Visibile sul sito**, disattivare **Consiglio in preparazione** e premere **Salva**.
 
@@ -23,7 +23,7 @@ Su desktop la barra superiore offre due modalità: **Pagina** e **Campi**. Campi
 
 In **Pagina**, cliccare il titolo, un testo, una fotografia o una didascalia: il relativo editor appare sulla pagina. Il testo conserva gli strumenti di formattazione e le fotografie usano la libreria del CMS. È possibile selezionare gli elementi anche con Tab e Invio. **Fine** chiude il controllo e torna all’anteprima; **Salva** conserva tutte le modifiche. Per pubblicare, scegliere **Visibile sul sito** nel pannello laterale e premere **Salva**. **Bozza** conserva l’articolo senza mostrarlo sul sito. Per un consiglio in preparazione, il pannello specifica che viene pubblicata soltanto la scheda nell’archivio; articolo completo e slideshow restano esclusi.
 
-I controlli per aggiungere o riordinare capitoli e fotografie sono presenti nella pagina. Il sommario porta al capitolo scelto, anche da tastiera e negli articoli lunghi. La visibilità è sempre a lato; informazioni, tag e aspetto sono nelle impostazioni laterali. Le sezioni **Copertina** e **Articolo** sono disponibili anche in Pagina, con anteprime distinte. Titoli, introduzione breve, didascalie e citazioni si formattano direttamente nei rispettivi campi con grassetto e corsivo. I testi lunghi offrono anche gli altri strumenti di scrittura. La lettera iniziale grande si sceglie in **Aspetto dell’articolo**. Un articolo vuoto offre spazi fotografici proporzionati con **Aggiungi foto**, oltre ai controlli per iniziare il testo e aggiungere capitoli; ogni capitolo consente anche citazioni e consigli pratici. Sui telefoni si usa **Campi** con il pulsante dell’anteprima: **Pagina** è disabilitata per evitare controlli sovrapposti in uno spazio troppo piccolo. Il passaggio tra Pagina e Campi conserva la stessa bozza.
+I controlli per aggiungere o riordinare capitoli e fotografie sono presenti nella pagina. Il sommario porta al capitolo scelto, anche da tastiera e negli articoli lunghi. La visibilità è sempre a lato; informazioni, tag e aspetto sono nelle impostazioni laterali. Le sezioni **Copertina** e **Articolo** sono disponibili anche in Pagina, con anteprime distinte. Nel **Titolo**, selezionare una parola o una frase e usare un colore della barra o il selettore **Colore**. Grassetto e corsivo si applicano dalla stessa barra; **Cancella formato** ripristina il testo selezionato. Il colore scelto resta con il titolo dopo il salvataggio e compare nell’anteprima, nell’archivio, nell’articolo e nello slideshow. Titoli, introduzione breve, didascalie e citazioni si formattano direttamente nei rispettivi campi con grassetto e corsivo. I testi lunghi offrono anche gli altri strumenti di scrittura. La lettera iniziale grande si sceglie in **Aspetto dell’articolo**. Un articolo vuoto offre spazi fotografici proporzionati con **Aggiungi foto**, oltre ai controlli per iniziare il testo e aggiungere capitoli; ogni capitolo consente anche citazioni e consigli pratici. Sui telefoni si usa **Campi** con il pulsante dell’anteprima: **Pagina** è disabilitata per evitare controlli sovrapposti in uno spazio troppo piccolo. Il passaggio tra Pagina e Campi conserva la stessa bozza.
 
 ## Strumenti per scrivere e rileggere
 
@@ -32,15 +32,17 @@ I controlli per aggiungere o riordinare capitoli e fotografie sono presenti nell
 
 Per salvare una bozza, lasciare **Visibile sul sito** disattivato. Per pubblicare, attivarlo e premere **Salva**. **Consiglio in preparazione** compare solo per i consigli e pubblica la scheda nell’archivio. La data ordina i contenuti, senza programmare la pubblicazione.
 
-## Copertina, fotografie interne e tag
+## Copertina, fotografie interne, categorie e tag
 
 La foto di **Copertina** appare nello slideshow e nelle schede dell’archivio. In **Articolo**, la scelta **Usare la copertina anche come prima foto nell’articolo?** offre **Sì** o **No**. Sì mantiene le fotografie collegate; No permette una prima foto diversa, oppure nessuna prima foto. La didascalia e il formato della prima foto appartengono all’articolo. Gli articoli esistenti mantengono la foto precedente finché non si sceglie No.
 
 **Tag** permette di cercare e scegliere tag già salvati, oppure di aggiungerne uno. Un nuovo tag viene salvato insieme all’articolo in `content/tags.json` e resta disponibile negli articoli successivi, anche se viene tolto da un articolo. L’elenco iniziale contiene tutti i tag già utilizzati. Cliccare un tag nel sito apre l’archivio filtrato per quel tag, comprendendo racconti e consigli pubblicati. **Mostra tutti** rimuove il filtro.
 
+**Categoria** funziona come Tag, con una sola categoria per articolo. Si può scegliere una categoria salvata o aggiungerne una dal campo; il registro condiviso `content/categories.json` conserva le categorie per gli articoli successivi. Cliccare la categoria nella pagina di lettura apre l’archivio dei racconti e consigli della stessa categoria.
+
 ## Personalizzare un articolo
 
-- **Aspetto dell’articolo**: scegliere colore dei dettagli, formato e ritaglio della prima foto interna, testo contemporaneo o da diario, iniziale grande e sommario con link ai capitoli. L’anteprima mostra il risultato mentre si modifica.
+- **Aspetto dell’articolo**: scegliere formato e ritaglio della prima foto interna, testo contemporaneo o da diario, iniziale grande e sommario con link ai capitoli. L’anteprima mostra il risultato mentre si modifica.
 - **Formattazione**: selezionare il testo nel campo e usare gli strumenti inline di grassetto e corsivo.
 - In ogni **Capitolo**, scegliere foto a destra, a sinistra o grande sotto il testo. Il formato può essere orizzontale, verticale, quadrato o senza ritaglio. “Alternanza automatica” conserva la composizione originale.
 - **Informazioni del viaggio**: aggiungere durata, periodo consigliato e tipo di viaggio. I campi vuoti non compaiono sul sito.
@@ -69,7 +71,7 @@ I tre racconti precedenti sono stati trasferiti nel CMS conservando i contenuti.
 
 ## Configurazione iniziale dell’accesso
 
-Questa parte riguarda soltanto chi configura il sito. L’accesso diretto è un’integrazione dedicata per questa installazione di Sveltia: una sessione protetta consente al CMS di pubblicare tramite un proxy sullo stesso dominio. La chiave GitHub rimane sul server. Il proxy consente scritture solo su `content/stories.json`, sul registro `content/tags.json` e sulle immagini in `assets/uploads`, sul branch `main` del repository del sito. Non consente di modificare il codice del sito o altri repository.
+Questa parte riguarda soltanto chi configura il sito. L’accesso diretto è un’integrazione dedicata per questa installazione di Sveltia: una sessione protetta consente al CMS di pubblicare tramite un proxy sullo stesso dominio. La chiave GitHub rimane sul server. Il proxy consente scritture solo su `content/stories.json`, sui registri `content/tags.json` e `content/categories.json` e sulle immagini in `assets/uploads`, sul branch `main` del repository del sito. Non consente di modificare il codice del sito o altri repository.
 
 1. Registrare una GitHub App privata **ElyExploreWorld Editor**, con Homepage `https://elyexploreworld.pages.dev/admin/`, senza OAuth per gli utenti e senza webhook. Concedere **Contents: Read and write**; Metadata viene aggiunto in sola lettura. Installarla **solo** sul repository `mattiabacile/elyexploreworld`.
 2. Generare la chiave privata dell’app e convertirla nel formato PEM PKCS#8. Conservare App ID e Installation ID. Il server genera automaticamente credenziali di pubblicazione di breve durata, limitate al repository.

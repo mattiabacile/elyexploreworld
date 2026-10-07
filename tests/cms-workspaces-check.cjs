@@ -6,7 +6,7 @@ stories[0].appearance={theme:'ocean',textStyle:'journal',coverFormat:'natural',s
 stories[0].travelFacts={duration:'Dieci giorni',season:'Primavera'};
 stories[0].gallery=[{image:stories[0].hero,alt:'Foto della galleria',caption:'Il viaggio in immagini'}];
 stories[0].conclusion='Una **riflessione finale**.';
-const files={'content/tags.json':{text:fs.readFileSync(root+'/content/tags.json','utf8'),type:'application/json'},'content/stories.json':{text:JSON.stringify(stories),type:'application/json'}};
+const files={'content/categories.json':{text:fs.readFileSync(root+'/content/categories.json','utf8'),type:'application/json'},'content/tags.json':{text:fs.readFileSync(root+'/content/tags.json','utf8'),type:'application/json'},'content/stories.json':{text:JSON.stringify(stories),type:'application/json'}};
 for(const source of new Set(stories.flatMap(s=>[s.hero,...s.chapters.map(c=>c.image)]).filter(source=>source && !/^https?:\/\//.test(source))))files[source]={base64:fs.readFileSync(root+'/'+source).toString('base64'),type:'image/webp'};
 (async()=>{
 const browser=await chromium.launch({channel:'chrome'}),page=await browser.newPage({viewport:{width:1440,height:1000},reducedMotion:'reduce'});
@@ -58,7 +58,7 @@ assert.ok(saved.tags.some(t=>t.name==='Prova persistente'));assert.ok(saved.stor
 await page.getByText(/Giappone: tra templi/).first().click();await focusField(page,'tags');assert.match(await page.locator('section[data-key-path=tags] [role=grid]').innerText(),/Prova persistente/);
 await page.getByRole('button',{name:'Pagina',exact:true}).click();await page.getByRole('button',{name:'Copertina',exact:true}).click();await preview.locator('.preview-cover-card img').waitFor();await preview.locator('.preview-cover-card h2').click();await page.locator('.ely-on-page-field[data-key-path=title] [contenteditable=true]').fill('Titolo modificato dalla copertina');await page.getByRole('button',{name:'Fine',exact:true}).click();assert.equal(await page.locator('.content-editor').getAttribute('data-workspace'),'cover');
 await page.getByRole('button',{name:'Articolo',exact:true}).click();await preview.locator('.preview-cover img').waitFor();assert.equal(await preview.locator('.preview-cover img').getAttribute('alt'),'Prima foto indipendente');
-await page.getByRole('button',{name:'Campi',exact:true}).click();await page.getByRole('button',{name:'Annulla Modifica',exact:true}).click();await page.getByRole('button',{name:'Crea Nuova Voce',exact:true}).click();await focusField(page,'tags');await page.getByRole('combobox').click();await page.getByRole('option',{name:'Prova persistente',exact:true}).waitFor({state:'visible'});
+await page.getByRole('button',{name:'Campi',exact:true}).click();await page.getByRole('button',{name:'Annulla Modifica',exact:true}).click();await page.getByRole('button',{name:'Crea Nuova Voce',exact:true}).click();await focusField(page,'tags');await page.getByRole('combobox',{name:'Tag',exact:true}).click();await page.getByRole('option',{name:'Prova persistente',exact:true}).waitFor({state:'visible'});
 assert.deepEqual(errors,[]);
 console.log('PASS: native persistent tag creation saved with article, reusable tags, independent opening photo and separate cover/article previews in both modes.');
 } finally {await browser.close();}

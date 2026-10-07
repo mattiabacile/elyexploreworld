@@ -6,7 +6,7 @@ stories[0].appearance={theme:'ocean',textStyle:'journal',coverFormat:'natural',s
 stories[0].travelFacts={duration:'Dieci giorni',season:'Primavera'};
 stories[0].gallery=[{image:stories[0].hero,alt:'Foto della galleria',caption:'Il viaggio in immagini'}];
 stories[0].conclusion='Una **riflessione finale**.';
-const files={'content/tags.json':{text:fs.readFileSync(root+'/content/tags.json','utf8'),type:'application/json'},'content/stories.json':{text:JSON.stringify(stories),type:'application/json'}};
+const files={'content/categories.json':{text:fs.readFileSync(root+'/content/categories.json','utf8'),type:'application/json'},'content/tags.json':{text:fs.readFileSync(root+'/content/tags.json','utf8'),type:'application/json'},'content/stories.json':{text:JSON.stringify(stories),type:'application/json'}};
 for(const source of new Set(stories.flatMap(s=>[s.hero,...s.chapters.map(c=>c.image)]).filter(source=>source && !/^https?:\/\//.test(source))))files[source]={base64:fs.readFileSync(root+'/'+source).toString('base64'),type:'image/webp'};
 (async()=>{
 const browser=await chromium.launch({channel:'chrome'}),page=await browser.newPage({viewport:{width:1440,height:1000},reducedMotion:'reduce'});
@@ -107,9 +107,7 @@ assert.equal(await page.locator('.ely-mode-switch').isVisible(),false);
 await page.setViewportSize({width:1440,height:1000});
 await page.getByRole('button',{name:'Pagina',exact:true}).click();
 await page.getByRole('heading',{name:'Aspetto dell’articolo',exact:true}).waitFor();
-await page.getByRole('button',{name:'Colore dei dettagli',exact:true}).click();
-await page.locator('.ely-on-page-field[data-key-path="appearance.theme"]').waitFor({state:'visible'});
-await page.getByRole('button',{name:'Fine',exact:true}).click();
+assert.equal(await page.getByRole('button',{name:'Colore dei dettagli',exact:true}).count(),0);
 await page.getByRole('radio',{name:'Bozza',exact:true}).check();
 await page.locator('.content-editor[aria-busy="false"]').waitFor();
 assert.match(await page.locator('.ely-publication-note').innerText(),/bozza/);

@@ -89,6 +89,10 @@
     const node = document.createElement('a'); node.textContent = tag.trim(); node.href='racconti.html?tag='+encodeURIComponent(tag.trim()); tagHost.append(node);
   });
   document.querySelector('.tag-list').hidden = !tagHost.children.length;
+  const categoryNode=document.querySelector('[data-field=category]');
+  if(categoryNode && typeof story.category==='string' && story.category.trim()){
+    const link=document.createElement('a');link.href='racconti.html?category='+encodeURIComponent(story.category.trim());link.textContent=story.category.trim();categoryNode.replaceChildren(link);
+  }
   const currentIndex = stories.indexOf(story);
   for (const [direction, offset] of [['previous', -1], ['next', 1]]) {
     const target = stories[(currentIndex + offset + stories.length) % stories.length];

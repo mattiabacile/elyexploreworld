@@ -15,12 +15,12 @@
     format: choose(value.imageFormat, ['landscape', 'portrait', 'square', 'natural'], ['portrait', 'landscape', 'square'][index % 3])
   });
   // Short editorial fields use the same safe inline Markdown on every surface.
-  const inline = (value, {links=true}={}) => {
+  const inline = (value, {links=true,colors=false}={}) => {
     const clean=DOMPurify.sanitize(marked.parseInline(String(value ?? ''), {breaks:true}), {
-      ALLOWED_TAGS:['strong','em','s','br','code',...(links?['a']:[])],ALLOWED_ATTR:['href','title'],ALLOW_DATA_ATTR:false
+      ALLOWED_TAGS:['strong','em','s','br','code',...(links?['a']:[]),...(colors?['span']:[])],ALLOWED_ATTR:['href','title',...(colors?['data-title-color']:[])],ALLOW_DATA_ATTR:false
     });
-    if(!links)return clean;
     const template=document.createElement('template');template.innerHTML=clean;
+    template.content.querySelectorAll('span').forEach(node=>{const color=node.getAttribute('data-title-color');if(/^#[0-9a-f]{6}$/i.test(color || ''))node.style.color=color;else node.removeAttribute('data-title-color');});
     template.content.querySelectorAll('a').forEach(node=>{
       const target=node.getAttribute('href') ?? '';
       if(!/^(?:https?:\/\/|mailto:|#|\/?[\w.-]+(?:[/?#]|$))/i.test(target)||target.startsWith('//'))node.removeAttribute('href');
@@ -39,7 +39,7 @@
       const index=source.lastIndexOf(accent);
       return inline(source.slice(0,index),{links:false})+'<em>'+inline(accent,{links:false})+'</em>'+inline(source.slice(index+accent.length),{links:false});
     }
-    return inline(source,{links:false});
+    return inline(source,{links:false,colors:true});
   };
   const openingPhoto = story => ({image:story.reuseCover === 'no' ? story.articleHero : story.hero, alt:story.reuseCover === 'no' ? story.articleHeroAlt : story.heroAlt, caption:story.heroCaption});
   const tagKey = value => String(value ?? '').trim().normalize('NFC').toLocaleLowerCase('it');

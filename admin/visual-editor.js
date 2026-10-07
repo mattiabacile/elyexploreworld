@@ -23,7 +23,7 @@
       ['preparing','Consiglio in preparazione']
     ])settings.querySelector('.ely-settings-fields').append(settingButton(label,key));
     const style=document.createElement('section');style.className='ely-settings-fields';style.innerHTML='<h2>Aspetto dell’articolo</h2>';
-    for(const [key,label] of [['appearance.theme','Colore dei dettagli'],['appearance.textStyle','Stile di lettura'],['appearance.dropCap','Iniziale grande'],['appearance.showContents','Sommario dei capitoli']])style.append(settingButton(label,key));
+    for(const [key,label] of [['appearance.textStyle','Stile di lettura'],['appearance.dropCap','Iniziale grande'],['appearance.showContents','Sommario dei capitoli']])style.append(settingButton(label,key));
     settings.append(style);
     settings.addEventListener('change',event=>{
       if(event.target.name==='ely-publication')setBoolean('published',event.target.value==='visible');
