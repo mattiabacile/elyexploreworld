@@ -7,7 +7,7 @@
   const labelOf=el=>(el?.getAttribute?.('title')||'').replace(/^Modifica\s+/,'');
   // Ctrl/Cmd+S saves through the CMS's own Salva button, so its safeguards still apply.
   const saveShortcut=event=>{
-    if(!visual()||!(event.metaKey||event.ctrlKey)||event.key.toLowerCase()!=='s')return;
+    if(!visual()||!(event.metaKey||event.ctrlKey)||(event.key||'').toLowerCase()!=='s')return;
     event.preventDefault();
     const save=[...document.querySelectorAll('button')].find(b=>b.textContent.trim()==='Salva'&&!b.disabled);
     if(save){announce('Salvataggio in corso…');save.click();}

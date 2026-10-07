@@ -10,7 +10,7 @@
     config.backend.graphql_api_root = location.origin + '/cms/api/graphql';
     config.load_config_file = false;
     const savedArticles=await fetch('../content/stories.json',{cache:'no-cache'}).then(r=>r.ok?r.json():[]).catch(()=>[]);
-    CMS.registerPreviewStyle('/admin/preview.css?v=pg2a1');
+    CMS.registerPreviewStyle('/admin/preview.css?v=ff1d300ea755');
     CMS.registerPreviewTemplate('racconti', ({ entry, widgetFor, widgetsFor, getAsset }) => {
       const data = entry.get('data');
       const asset = path => path ? getAsset(path)?.url || path : '';
@@ -64,15 +64,15 @@
         facts.length > 0 && h('dl',{className:'preview-facts'},...facts.map(([key,label]) => h('div',{key},h('dt',{},label),h('dd',editable('travelFacts.'+key,label),data.getIn(['travelFacts',key]))))),
         options('Informazioni del viaggio',add('travelFacts','Durata, periodo e tipo di viaggio')),
         appearance.showContents && chapters.length > 1 && h('nav',{className:'preview-contents'},h('h2',{},'In questo racconto'),h('ol',{},...chapters.map((chapter,index) => h('li',{key:index},h('a',{href:'#preview-chapter-'+index},chapter.get('data').get('title') || `Capitolo ${index+1}`))))),
-        h('div',{className:'preview-intro',...(data.get('intro') ? editable('intro','apertura del racconto') : {})},data.get('intro') ? widgetFor('intro') : emptyText('intro','Scrivi l’apertura del racconto…')),
+        h('div',{className:'preview-intro'},data.get('intro') ? widgetFor('intro') : emptyText('intro','Scrivi l’apertura del racconto…')),
         ...chapters.map((chapter,index) => {
           const item=chapter.get('data'), photo=asset(item.get('image'));
           const {layout,format}=ElyArticle.chapter({layout:item.get('layout'),imageFormat:item.get('imageFormat')},index);
           return h('section',{key:index,className:'preview-chapter preview-chapter-'+layout,'data-photo-format':format,'data-chapter-index':index},
             h('div',{className:'preview-copy'},
               h('h2',{id:'preview-chapter-'+index,...editable(`chapters.${index}.title`,'titolo del capitolo')},item.get('title') || 'Titolo del capitolo…'),
-              item.get('body') ? h('div',editable(`chapters.${index}.body`,'testo del capitolo'),chapter.getIn(['widgets','body'])) : emptyText(`chapters.${index}.body`,'Scrivi il testo del capitolo…'),
-              item.get('note') && h('aside',{},h('strong',{},'Da sapere'),h('div',editable(`chapters.${index}.note`,'consiglio pratico'),chapter.getIn(['widgets','note'])))
+              item.get('body') ? chapter.getIn(['widgets','body']) : emptyText(`chapters.${index}.body`,'Scrivi il testo del capitolo…'),
+              item.get('note') && h('aside',{},h('strong',{},'Da sapere'),chapter.getIn(['widgets','note']))
             ),
             photo ? h('figure',{},
               h('img',{...editable(`chapters.${index}.image`,'foto del capitolo'),src:photo,alt:item.get('imageAlt') || ''}),
@@ -103,7 +103,7 @@
           }))),
           tools(action('gallery','add','Aggiungi foto alla galleria'))
         ),
-        h('section',{className:'preview-conclusion'},h('h2',{},'Prima di ripartire'),data.get('conclusion') ? h('div',editable('conclusion','conclusione'),widgetFor('conclusion')) : emptyText('conclusion','Scrivi una conclusione…')),
+        h('section',{className:'preview-conclusion'},h('h2',{},'Prima di ripartire'),data.get('conclusion') ? widgetFor('conclusion') : emptyText('conclusion','Scrivi una conclusione…')),
         h('footer',{className:'preview-editor-footer'},
           tools(h('span',{},'Categoria: '+(data.get('category') || 'da scegliere')),add('category','Modifica categoria'),add('tags','Etichette')),
           h('p',{className:'preview-tags'},tagLabels.join(' · ') || 'Aggiungi le etichette per organizzare questo articolo.')
