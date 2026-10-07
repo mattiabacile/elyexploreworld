@@ -10,11 +10,12 @@
     config.backend.graphql_api_root = location.origin + '/cms/api/graphql';
     config.load_config_file = false;
     const savedArticles=await fetch('../content/stories.json',{cache:'no-cache'}).then(r=>r.ok?r.json():[]).catch(()=>[]);
-    CMS.registerPreviewStyle('/admin/preview.css?v=d52da3008022');
+    CMS.registerPreviewStyle('/admin/preview.css?v=2a5b110797c4');
     const renderStory = ({ entry, widgetFor, widgetsFor, getAsset }) => {
       const data = entry.get('data');
       const asset = path => path ? getAsset(path)?.url || path : '';
       const hero = asset(data.get('hero'));
+      const reuse=data.get('reuseCover') !== 'no', opening=asset(data.get(reuse?'hero':'articleHero')), openingKey=reuse?'hero':'articleHero', altKey=reuse?'heroAlt':'articleHeroAlt';
       const title = data.get('title') || 'Il titolo del tuo racconto';
       const accent = data.get('titleAccent');
       const chapters = widgetsFor('chapters') || [];
@@ -36,7 +37,7 @@
         action(list,'remove',`Elimina ${label}`,index)
       );
       // Send the actual draft to the writing tools, including unmounted chapter fields.
-      const values = Object.fromEntries(['id','title','kind','destination','date','deck','hero','heroAlt','heroCaption','intro','conclusion','published','preparing','category','tags','slideText'].map(key => [key, data.get(key)]));
+      const values = Object.fromEntries(['id','title','kind','destination','date','deck','hero','heroAlt','heroCaption','reuseCover','articleHero','articleHeroAlt','intro','conclusion','published','preparing','category','tags','slideText'].map(key => [key, data.get(key)]));
       values.chapters = chapters.map(chapter => Object.fromEntries(['title','body','image','imageAlt','caption','quote','note'].map(key => [key, chapter.get('data').get(key)])));
       values.gallery = gallery.map(photo => Object.fromEntries(['image','alt','caption'].map(key => [key, photo.get('data').get(key)])));
       values.appearance=appearance;
@@ -45,7 +46,13 @@
 
       window.dispatchEvent(new CustomEvent('ely:article-change', {detail:values}));
       const facts = [['duration', 'Durata'], ['season', 'Quando partire'], ['style', 'Tipo di viaggio']].filter(([key]) => data.getIn(['travelFacts', key]));
-      return h('article', { className:'preview-story', style:{'--article-accent':appearance.accent}, 'data-text-style':appearance.textStyle, 'data-drop-cap':String(appearance.dropCap), 'data-cover-format':appearance.coverFormat },
+      return h('div', {className:'preview-workspaces'},
+        h('section',{className:'preview-cover-workspace','aria-label':'Anteprima della copertina'},
+          h('p',{className:'preview-surface-label'},'Copertina · slideshow e archivio'),
+          h('figure',{className:'preview-cover-card'},hero?h('img',{...editable('hero','foto di copertina'),src:hero,alt:data.get('heroAlt') || ''}):photoSlot('hero','landscape'),
+          h('figcaption',{},h('p',editable('destination','destinazione'),data.get('destination') || 'Destinazione'),formatted('h2','title','titolo',title),formatted('p','slideText','testo dello slideshow',data.get('slideText') || data.get('deck'),'Testo dello slideshow…'))),
+          tools(add('hero','Cambia foto'),add('heroAlt','Descrizione della copertina'),add('deck','Testo dell’archivio'))),
+        h('article', { className:'preview-story', style:{'--article-accent':appearance.accent}, 'data-text-style':appearance.textStyle, 'data-drop-cap':String(appearance.dropCap), 'data-cover-format':appearance.coverFormat },
         h('header', {className:'preview-editor-header'},
           h('p', {className:'preview-edit-guide'}, 'Clicca un testo o una foto per modificarli.'),
           null
@@ -53,11 +60,12 @@
         h('p', {className:'preview-meta'}, h('span',editable('destination','destinazione'),data.get('destination') || 'Aggiungi la destinazione'), ' · ', h('span',editable('date','data'),data.get('date') || 'Scegli la data')),
         h('h1',{...editable('title','titolo'),dangerouslySetInnerHTML:{__html:ElyArticle.heading(title,accent)}}),
         h('p',{className:'preview-deck',...editable('deck','introduzione breve'),dangerouslySetInnerHTML:{__html:ElyArticle.inline(data.get('deck') || 'Presenta il viaggio in poche righe…')}}),
+        tools(add('reuseCover','Usare la copertina come prima foto? '+(reuse?'Sì':'No'))),
         h('figure', {className:'preview-cover'},
-          hero ? h('img', {...editable('hero','foto di copertina'),src:hero,alt:data.get('heroAlt') || '',style:{objectPosition:appearance.coverPosition}}) : photoSlot('hero',appearance.coverFormat),
-          hero && formatted('figcaption','heroCaption','didascalia della copertina',data.get('heroCaption'),'Aggiungi una didascalia'),
-          hero && h('p',{className:'preview-image-description',...editable('heroAlt','descrizione della copertina')},'Descrizione della foto: '+(data.get('heroAlt') || 'aggiungi una descrizione…')),
-          hero && options('Opzioni della copertina',add('hero','Cambia foto'),add('appearance.coverFormat','Formato'),add('appearance.coverPosition','Ritaglio'))
+          opening ? h('img', {...editable(openingKey,'prima foto dell’articolo'),src:opening,alt:data.get(altKey) || '',style:{objectPosition:appearance.coverPosition}}) : photoSlot(openingKey,appearance.coverFormat),
+          opening && formatted('figcaption','heroCaption','didascalia della prima foto',data.get('heroCaption'),'Aggiungi una didascalia'),
+          opening && h('p',{className:'preview-image-description',...editable(altKey,'descrizione della prima foto')},'Descrizione della foto: '+(data.get(altKey) || 'aggiungi una descrizione…')),
+          options('Opzioni della prima foto',add(openingKey,'Cambia foto'),add('appearance.coverFormat','Formato'),add('appearance.coverPosition','Ritaglio'))
         ),
         facts.length > 0 && h('dl',{className:'preview-facts'},...facts.map(([key,label]) => h('div',{key},h('dt',{},label),h('dd',editable('travelFacts.'+key,label),data.getIn(['travelFacts',key]))))),
         appearance.showContents && chapters.length > 1 && h('nav',{className:'preview-contents'},h('h2',{},'In questo racconto'),h('ol',{},...chapters.map((chapter,index) => h('li',{key:index},h('a',{href:'#preview-chapter-'+index,dangerouslySetInnerHTML:{__html:ElyArticle.inline(chapter.get('data').get('title') || `Capitolo ${index+1}`,{links:false})}}))))),
@@ -102,7 +110,7 @@
         ),
         h('section',{className:'preview-conclusion'},h('h2',{},'Prima di ripartire'),data.get('conclusion') ? widgetFor('conclusion') : emptyText('conclusion','Scrivi una conclusione…'))
 
-      );
+      ));
     };
     // Se il template fallisce, l'errore compare nell'anteprima invece di lasciarla vuota.
     CMS.registerPreviewTemplate('racconti', props => {
