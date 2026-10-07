@@ -82,56 +82,8 @@ html:root[data-theme='dark'] {
 .ely-editor-content section.field[data-key-path] { scroll-margin-top: 72px; }
 .ely-editor-content section.field > header h4 { font-weight: 600; }
 .ely-editor-content .hint { line-height: 1.65; max-width: 70ch; }
-.ely-studio { margin: 0; padding: 28px 28px 20px; background: var(--ely-paper); }
-.ely-studio-brand { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 23px; }
-.ely-studio-brand a { font: 600 25px/1.1 'Cormorant Garamond', serif; color: var(--ely-forest); text-decoration: none; }
-.ely-studio-brand span { font-size: 12px; color: var(--ely-muted); }
-.ely-studio h1 { margin: 0 0 8px; font: 700 25px/1.25 'Plus Jakarta Sans', sans-serif; letter-spacing: -.5px; color: var(--ely-forest); }
-.ely-studio > p { margin: 0 0 14px; max-width: 58ch; font-size: 13px; line-height: 1.65; color: var(--ely-muted); }
-.ely-visibility { display: inline-block; font-size: 12px; font-weight: 600; color: var(--ely-forest); }
-.ely-writing-stats { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 16px; margin: 16px 0; padding: 13px 0; border-block: 1px solid var(--ely-line); font-size: 12px; color: var(--ely-muted); font-variant-numeric: tabular-nums; }
-.ely-word-count { font-weight: 700; color: var(--ely-forest); }
-.ely-studio-actions { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px 12px; }
 .ely-editor-content button:not(.sui), .ely-focus-toggle, .ely-preview-devices button { font-family: 'Plus Jakarta Sans', sans-serif; cursor: pointer; }
-.ely-studio-actions button { display: inline-flex; align-items: center; gap: 8px; padding: 10px 0; border: 0; background: none; font-size: 12px; line-height: 1.5; min-height: 44px; text-align: left; color: var(--ely-forest); }
-.ely-studio-actions .ely-check-jump { color: var(--ely-warning); }
-.ely-studio-actions .ely-check-jump[data-ready='true'] { color: var(--ely-forest); }
-.ely-studio-actions button:hover { text-decoration: underline; text-underline-offset: 4px; }
-.ely-studio-actions button:disabled { opacity: .5; cursor: default; text-decoration: none; }
-.ely-studio > .ely-editor-feedback:empty { display: none; }
-.ely-studio > .ely-editor-feedback { margin: 10px 0 0; font-size: 12px; }
-.ely-editor-nav { position: sticky; top: 0; z-index: 4; display: flex; gap: 4px; margin: 0; padding: 9px 24px; background: var(--ely-paper); border-bottom: 1px solid var(--ely-line); }
-.ely-editor-nav button { flex: 1; min-width: 0; min-height: 44px; padding: 9px 8px; border: 1px solid transparent; border-radius: 8px; color: var(--ely-muted); background: transparent; font-size: 12px; font-weight: 600; transition: background-color 160ms ease-out, color 160ms ease-out; }
-.ely-editor-nav button:hover { color: var(--ely-forest); background: var(--ely-soft); }
-.ely-editor-nav button[aria-current='step'] { color: var(--ely-surface); background: var(--ely-forest); }
-.ely-editor-guide { margin: 14px 28px 0; color: var(--ely-muted); font-size: 12px; line-height: 1.7; }
-.ely-editor-guide summary, .ely-writing-prompts summary { min-height: 44px; align-content: center; cursor: pointer; font-weight: 600; }
-.ely-editor-guide ol { padding-left: 20px; margin: 8px 0; }
-.ely-editor-guide li + li { margin-top: 10px; }
-.ely-editor-guide p { margin: 12px 0; }
-.ely-editor-content button:not(.sui):focus-visible, .ely-editor-content summary:focus-visible, .ely-studio a:focus-visible, .ely-focus-toggle:focus-visible, .ely-preview-devices button:focus-visible { outline: 3px solid var(--ely-clay); outline-offset: 3px; }
-section.field > .ely-editor-section { display: block; width: 100%; margin: 12px 0 24px; padding-top: 28px; border-top: 1px solid var(--ely-line); }
-section.field[data-key-path='title'] > .ely-editor-section { margin-top: 0; padding-top: 12px; border: 0; }
-.ely-editor-section h2 { margin: 0 0 7px; color: var(--ely-forest); font: 700 19px/1.35 'Plus Jakarta Sans', sans-serif; letter-spacing: -.2px; }
-.ely-editor-section > p { margin: 0; color: var(--ely-muted); font: 400 13px/1.65 'Plus Jakarta Sans', sans-serif; }
-.ely-writing-prompts { margin-top: 14px; padding: 4px 14px; border-radius: 12px; background: var(--ely-soft); font-size: 13px; line-height: 1.75; color: var(--ely-ink); }
-.ely-writing-prompts summary { color: var(--ely-forest); }
-.ely-writing-prompts summary svg { margin: 0 8px -4px 3px; }
-.ely-writing-prompts ul { padding-left: 20px; margin: 6px 0 14px; }
-.ely-writing-prompts li + li { margin-top: 10px; }
-.ely-writing-prompts p { margin: 0 0 12px; color: var(--ely-muted); }
-.ely-publish-checks { list-style: none; padding: 0; margin: 20px 0; }
-.ely-publish-checks li { border-bottom: 1px solid var(--ely-line); }
-.ely-publish-checks button { width: 100%; display: flex; align-items: center; gap: 12px; min-height: 62px; padding: 12px 4px; border: 0; background: transparent; color: var(--ely-warning); text-align: left; }
-.ely-publish-checks button > span:nth-child(2) { flex: 1; min-width: 0; }
-.ely-publish-checks button:hover { background: var(--ely-soft); }
-.ely-check-label { display: block; font-size: 13px; font-weight: 600; line-height: 1.5; }
-.ely-check-hint { display: block; margin-top: 3px; color: var(--ely-muted); font-size: 12px; line-height: 1.55; }
-.ely-check-icon { display: flex; }
-.ely-publish-checks [data-done='true'] button { color: var(--ely-forest); }
-.ely-publish-checks [data-done='true'] .ely-check-icon svg:last-child, .ely-publish-checks [data-done='false'] .ely-check-icon svg:first-child { display: none; }
-.ely-editor-section > .ely-publish-status { padding: 14px 16px; border-radius: 12px; background: var(--ely-soft); color: var(--ely-forest); font-weight: 600; }
-.ely-editor-section > .ely-publish-note { margin-top: 14px; font-size: 12px; }
+.ely-editor-content button:not(.sui):focus-visible, .ely-editor-content summary:focus-visible, .ely-focus-toggle:focus-visible, .ely-preview-devices button:focus-visible { outline: 3px solid var(--ely-clay); outline-offset: 3px; }
 .ely-focus-toggle { border: 1px solid var(--ely-line); border-radius: 6px; background: var(--ely-surface); color: var(--ely-forest); font-size: 12px; font-weight: 600; padding: 8px 12px; min-height: 36px; }
 .ely-focus-toggle:hover, .ely-preview-devices button:hover { background: var(--ely-soft); }
 .ely-preview-devices { display: flex; gap: 2px; padding: 3px; border: 1px solid var(--ely-line); border-radius: 8px; }
@@ -142,29 +94,14 @@ section.field[data-key-path='title'] > .ely-editor-section { margin-top: 0; padd
 .content-editor.ely-writing-mode .content-area .sui.resizable-pane:has(iframe.preview) { display: none; }
 .content-editor.ely-writing-mode .content-area .sui.resizable-pane:has(.ely-editor-content) { flex: 1 1 100% !important; }
 .content-editor.ely-writing-mode .content-area .sui.resizable-handle, .content-editor.ely-writing-mode .swap-button { display: none; }
-.content-editor.ely-writing-mode .ely-editor-content > section.field, .content-editor.ely-writing-mode .ely-editor-guide { max-width: 850px; margin-inline: auto; }
-.content-editor.ely-writing-mode .ely-studio { padding-inline: max(28px,calc((100% - 794px) / 2)); }
-.content-editor.ely-writing-mode .ely-editor-nav { justify-content: center; }
-.content-editor.ely-writing-mode .ely-editor-nav button { max-width: 164px; }
+.content-editor.ely-writing-mode .ely-editor-content > section.field { max-width: 850px; margin-inline: auto; }
 @media (max-width: 767px) {
   html:root { --sui-control-medium-height: 44px; --sui-font-size-default: 15px; }
   .ely-editor-content > section.field { --field-editor-padding: 18px; padding-inline: 18px; }
-  .ely-studio { padding: 22px 18px 14px; }
-  .ely-studio-brand { margin-bottom: 20px; }
-  .ely-studio-brand a { font-size: 23px; }
-  .ely-studio h1 { font-size: 23px; }
-  .ely-writing-stats { gap: 8px 12px; }
-  .ely-editor-nav { padding: 7px 10px; gap: 2px; }
-  .ely-editor-nav button { font-size: 11px; padding-inline: 4px; }
-  .ely-editor-guide { margin-inline: 18px; }
-  .ely-editor-section h2 { font-size: 18px; }
   .ely-focus-toggle { display: none; }
   .ely-preview-devices button { min-height: 36px; }
   .ely-preview-devices { padding: 2px; }
-  .ely-studio-actions { gap: 0 10px; }
-  .ely-studio-actions button { font-size: 12px; }
 }
-@media (prefers-reduced-motion: reduce) { .ely-editor-nav button { transition: none; } }
 
 /* Article authoring: full canvas, native text controls on the article, focused settings on demand. */
 .ely-mode-switch,.ely-page-actions{display:flex;gap:4px;flex-shrink:0}
@@ -195,7 +132,6 @@ section.field[data-key-path='title'] > .ely-editor-section { margin-top: 0; padd
 .ely-inspector-slot{flex:1;min-height:0;width:100%}
 .content-editor.ely-page-mode .pane[data-mode='edit'] .ely-on-page-field,.content-editor.ely-page-mode .pane[data-mode='edit'] .ely-on-page-field *{visibility:visible!important;pointer-events:auto}
 .content-editor.ely-page-mode .ely-on-page-field{position:fixed!important;z-index:81;left:var(--ely-field-left)!important;top:var(--ely-field-top)!important;width:var(--ely-field-width)!important;height:var(--ely-field-height)!important;max-height:var(--ely-field-height)!important;min-height:0!important;min-width:0!important;box-sizing:border-box;overflow:auto;overscroll-behavior:contain;margin:0!important;padding:20px!important;border:0!important;border-radius:0;background:var(--ely-paper);box-shadow:none;color:var(--ely-ink)}
-.ely-on-page-field>header,.ely-on-page-field>.ely-editor-section{display:none!important}
 .ely-on-page-field .field-wrapper{min-width:0}
 .ely-on-page-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;z-index:82;padding:8px 16px;border-top:1px solid var(--ely-line);background:var(--ely-paper);font-size:12px;color:var(--ely-muted)}
 .ely-on-page-toolbar[hidden]{display:none}
@@ -273,10 +209,3 @@ section.field[data-key-path='title'] > .ely-editor-section { margin-top: 0; padd
 .ely-compact-richtext button[aria-label="Mostra Opzioni Stile Testo"]{display:none!important}
 .ely-compact-richtext [contenteditable="true"]{min-height:72px!important}
 .ely-mode-switch[hidden]{display:none!important}
-@media(max-width:900px){
- .ely-studio-brand,.ely-writing-stats,.ely-studio>.ely-check-jump{display:none}
- .ely-studio{padding-block:16px}
- .ely-studio h1{font-size:20px}
- .ely-studio>p{display:none}
- .ely-editor-section>p{font-size:13px}
-}

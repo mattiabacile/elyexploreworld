@@ -68,7 +68,6 @@
           "name": "title",
           "label": "Titolo",
           "widget": "richtext",
-          "hint": "Scegli un dettaglio che renda il viaggio riconoscibile. Esempio: Giappone, tra templi e piccoli rituali.",
           "minimal": true,
           "modes": [
             "rich_text"
@@ -112,13 +111,13 @@
           "label": "Destinazione",
           "widget": "string",
           "maxlength": 70,
-          "hint": "Esempio: Bali. È il titolo breve della diapositiva in homepage."
+          "hint": "Nome del luogo mostrato nello slideshow della homepage."
         },
         {
           "name": "deck",
           "label": "Introduzione breve",
           "widget": "richtext",
-          "hint": "Due o tre frasi per invitare alla lettura. Compaiono nell’archivio e sotto il titolo: racconta l’atmosfera, senza svelare tutto.",
+          "hint": "Testo mostrato sotto il titolo e nelle schede dell’archivio.",
           "minimal": true,
           "modes": [
             "rich_text"
@@ -182,7 +181,7 @@
           "editor_components": [
             "image"
           ],
-          "hint": "Inizia qui il tuo articolo. Usa la barra per titoli, grassetto, elenchi, citazioni e immagini. Non servono capitoli per un testo breve."
+          "hint": "Testo iniziale dell’articolo. I capitoli sono facoltativi."
         },
         {
           "name": "chapters",
@@ -469,7 +468,7 @@
           "editor_components": [
             "image"
           ],
-          "hint": "Facoltativa: una riflessione finale o un consiglio prima di salutare chi legge.",
+          "hint": "Testo mostrato alla fine dell’articolo.",
           "required": false
         },
         {
@@ -479,7 +478,6 @@
           "required": true,
           "collapsed": true,
           "summary": "Colori, copertina e lettura",
-          "hint": "Controlla il risultato nell’anteprima mentre scegli.",
           "fields": [
             {
               "name": "theme",
