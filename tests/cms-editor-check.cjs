@@ -62,6 +62,8 @@ await introduction.fill('Una giornata tra templi e piccoli rituali. Il viaggio c
 await page.waitForFunction(()=>document.querySelector('.ely-word-count')?.textContent!=='— parole');
 await page.screenshot({path:root+'/.impeccable/review/writing.png'});
 await page.getByRole('button',{name:'Mostra anteprima',exact:true}).click();
+await page.getByRole('button',{name:'Scrivi',exact:true}).click();await introduction.click();
+await page.waitForFunction(()=>{const frame=document.querySelector('iframe.preview');return frame?.contentWindow?.scrollY>0 && frame.contentDocument.querySelector('[data-key-path="intro"]')?.getBoundingClientRect().top<50;});
 await page.getByRole('button',{name:'Telefono',exact:true}).click();
 await page.waitForFunction(()=>document.querySelector('iframe')?.getBoundingClientRect().width<=390,{},{timeout:15000});
 assert.ok((await page.locator('iframe').boundingBox()).width<=390);
