@@ -43,120 +43,155 @@ aside { padding: 20px; background: #e4e9dc; border-radius: 12px; }
 
 /* Pagina mode is the editor: controls stay beside the content they affect. */
 .preview-editor-header,
-.preview-editor-footer,
 .preview-local-tools,
 .preview-editor-settings,
-.preview-image-description,
-.preview-fact-empty { display: none; }
+.preview-fact-empty,
+.preview-placeholder { display: none; }
 
-.ely-editable-page .preview-story { padding-top: 20px; }
+.ely-editable-page .preview-story { padding-top: 16px; }
 .ely-editable-page .preview-editor-header {
-  display: grid;
-  grid-template-columns: minmax(220px, .85fr) minmax(0, 1.6fr);
-  gap: 20px 28px;
-  align-items: start;
-  padding: 18px 0 22px;
-  margin: 0 0 26px;
+  display: block;
+  margin: 0 0 24px;
   border-bottom: 1px solid #cad1c4;
+}
+.ely-editable-page .preview-editor-bar {
+  display: grid;
+  grid-template-columns: minmax(190px,.72fr) minmax(0,1.5fr);
+  gap: 14px 24px;
+  align-items: center;
+  padding: 12px 0 10px;
 }
 .ely-editable-page .preview-editor-intro { min-width: 0; }
 .ely-editable-page .preview-editor-kicker {
   display: block;
-  margin-bottom: 5px;
+  margin-bottom: 2px;
   color: #254535;
-  font: 700 11px/1.4 'Plus Jakarta Sans', sans-serif;
+  font: 700 10px/1.4 'Plus Jakarta Sans', sans-serif;
   letter-spacing: .08em;
   text-transform: uppercase;
 }
 .ely-editable-page .preview-edit-guide {
   margin: 0;
-  max-width: 42ch;
-  color: #586654;
-  font: 400 13px/1.55 'Plus Jakarta Sans', sans-serif;
+  color: #667260;
+  font: 400 12px/1.45 'Plus Jakarta Sans', sans-serif;
 }
 .ely-editable-page .preview-editor-fields,
 .ely-editable-page .preview-settings-grid {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
-  gap: 7px;
+  gap: 6px;
 }
 .ely-editable-page .preview-field-chip {
   display: inline-flex;
   align-items: baseline;
-  gap: 6px;
-  min-height: 38px;
+  gap: 5px;
+  min-height: 34px;
   max-width: 100%;
-  padding: 8px 10px;
+  padding: 6px 9px;
   border: 1px solid #cad1c4;
   border-radius: 999px;
   background: #fffdf8;
   color: #254535;
-  font: 500 12px/1.35 'Plus Jakarta Sans', sans-serif;
+  font: 500 11px/1.3 'Plus Jakarta Sans', sans-serif;
   cursor: pointer;
 }
-.ely-editable-page .preview-field-chip-label { color: #6d7768; font-size: 10px; text-transform: uppercase; letter-spacing: .05em; }
+.ely-editable-page .preview-field-chip-label { color: #75806f; font-size: 9px; text-transform: uppercase; letter-spacing: .05em; }
 .ely-editable-page .preview-field-chip strong { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 650; }
-.ely-editable-page .preview-field-chip.is-wide { max-width: 320px; }
+.ely-editable-page .preview-field-chip.is-wide { max-width: 300px; }
 .ely-editable-page .preview-field-chip.is-live { border-color: #91a688; background: #edf2e9; }
 .ely-editable-page .preview-field-chip.is-draft { border-style: dashed; }
 
-.ely-editable-page [data-key-path] { cursor: text; outline-offset: 4px; border-radius: 4px; transition: background-color 120ms ease-out, outline-color 120ms ease-out; }
+.ely-editable-page .preview-editor-settings {
+  display: block;
+  margin: 0;
+  border-top: 1px solid #e0e4da;
+  font: 500 11px/1.45 'Plus Jakarta Sans', sans-serif;
+}
+.ely-editable-page .preview-editor-settings summary {
+  width: fit-content;
+  min-height: 36px;
+  padding: 8px 0;
+  color: #667260;
+  cursor: pointer;
+  font-weight: 650;
+}
+.ely-editable-page .preview-settings-grid { justify-content: flex-start; padding: 0 0 12px; }
+
+.ely-editable-page [data-key-path] {
+  cursor: text;
+  outline-offset: 3px;
+  border-radius: 3px;
+  transition: background-color 100ms ease-out, outline-color 100ms ease-out;
+}
 .ely-editable-page img[data-key-path],
 .ely-editable-page button[data-key-path],
 .ely-editable-page .preview-field-chip[data-key-path] { cursor: pointer; }
-.ely-editable-page [data-key-path]:not(img):not(button):hover { background: #ecefe588; outline: 1px solid #c6cfbf; }
+.ely-editable-page [data-key-path]:not(img):not(button):hover { background: #ecefe54f; outline: 1px solid #c6cfbf; }
 .ely-editable-page [data-key-path]:focus-visible { outline: 2px solid #9f4933; }
 .ely-editable-page ::selection { background: #dce5d4; color: #254535; }
-.ely-editable-page .ely-selected-block { outline: 2px solid #9f4933 !important; background: #fffdf8; }
-.ely-editable-page figcaption { min-height: 24px; }
+.ely-editable-page .ely-selected-block { outline: 1px solid #b56b57 !important; outline-offset: 4px; background: transparent; }
+.ely-editable-page figcaption { min-height: 22px; margin-top: 7px; }
+.ely-editable-page .preview-placeholder {
+  display: block;
+  color: #778171;
+  font-style: italic;
+}
 
 .ely-editable-page .preview-empty-text {
   display: block;
-  min-height: 86px;
+  min-height: 72px;
   box-sizing: border-box;
-  padding: 20px;
-  color: #667260;
+  padding: 14px 16px;
+  color: #6b7666;
   border: 1px dashed #bac4b5;
-  border-radius: 10px;
-  background: #fffdf866;
+  border-radius: 8px;
+  background: #fffdf84d;
   font: inherit;
 }
 .ely-editable-page .preview-add {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 42px;
-  padding: 9px 13px;
+  min-height: 38px;
+  padding: 7px 11px;
   border: 1px dashed #9eaa99;
-  border-radius: 8px;
-  background: transparent;
+  border-radius: 7px;
+  background: #fffdf899;
   color: #254535;
-  font: 600 12px/1.4 'Plus Jakarta Sans',sans-serif;
+  font: 600 11px/1.35 'Plus Jakarta Sans',sans-serif;
   cursor: pointer;
 }
-.ely-editable-page .preview-add-photo { min-width: 180px; margin-block: 14px; }
+.ely-editable-page .preview-add-photo { min-width: 160px; margin-block: 10px; }
+.ely-editable-page .preview-add-cover {
+  width: 100%;
+  min-height: 220px;
+  margin: 0;
+  border-radius: 14px;
+  background: #ecefe5;
+}
+.ely-editable-page .preview-add-chapter-photo { width: 100%; min-height: 170px; margin: 0; }
 
-.ely-editable-page .preview-local-tools { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }
+.ely-editable-page .preview-local-tools { display: flex; align-items: center; flex-wrap: wrap; gap: 5px; }
 .ely-editable-page .preview-action,
 .ely-editable-page .preview-local-tools button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 36px;
-  padding: 7px 10px;
+  min-height: 32px;
+  padding: 6px 9px;
   margin: 0;
-  border: 1px solid #cad1c4;
+  border: 1px solid #cbd2c6;
   border-radius: 7px;
-  background: #fffdf8;
+  background: #fffdf8e8;
   color: #254535;
-  font: 600 11px/1.35 'Plus Jakarta Sans',sans-serif;
+  font: 600 10px/1.25 'Plus Jakarta Sans',sans-serif;
   cursor: pointer;
 }
 .ely-editable-page .preview-local-tools button:hover,
 .ely-editable-page .preview-field-chip:hover,
 .ely-editable-page .preview-add:hover { background: #e8ece2; }
-.ely-editable-page button:disabled { opacity: .38; cursor: default; }
+.ely-editable-page button:disabled { opacity: .32; cursor: default; }
 .ely-editable-page button:focus-visible,
 .ely-editable-page summary:focus-visible { outline: 2px solid #9f4933; outline-offset: 2px; }
 .ely-editable-page [hidden] { display: none !important; }
@@ -165,91 +200,79 @@ aside { padding: 20px; background: #e4e9dc; border-radius: 12px; }
 .ely-editable-page .preview-photo-controls {
   position: absolute;
   z-index: 5;
-  top: 12px;
-  right: 12px;
-  padding: 4px;
+  top: 10px;
+  right: 10px;
+  max-width: calc(100% - 20px);
+  padding: 3px;
+  border: 1px solid #ffffff80;
   border-radius: 9px;
-  background: #f7f3e9e8;
-  box-shadow: 0 5px 18px #16271f1f;
+  background: #f7f3e9dc;
+  box-shadow: 0 4px 14px #16271f17;
   backdrop-filter: blur(8px);
+  opacity: .68;
+  transition: opacity 100ms ease-out;
 }
-.ely-editable-page .preview-photo-controls .preview-action { min-height: 34px; background: transparent; border-color: transparent; }
+.ely-editable-page .preview-editable-figure:hover .preview-photo-controls,
+.ely-editable-page .preview-editable-figure:focus-within .preview-photo-controls { opacity: 1; }
+.ely-editable-page .preview-photo-controls .preview-action { min-height: 30px; background: transparent; border-color: transparent; }
 .ely-editable-page .preview-photo-controls .preview-action:hover { background: #fffdf8; border-color: #cad1c4; }
-.ely-editable-page .preview-image-description {
-  display: block;
-  min-height: 24px;
-  margin: 8px 0 0;
-  color: #667260;
-  font: 400 12px/1.55 'Plus Jakarta Sans', sans-serif;
-}
-.ely-editable-page .preview-image-description::before { content: 'Alt · '; font-weight: 700; color: #254535; }
+.ely-editable-page .preview-photo-controls .preview-meta-action { color: #667260; }
 
-.ely-editable-page .preview-facts.preview-all-empty { display: flex; }
+.ely-editable-page .preview-facts.preview-all-empty { display: flex; border-style: dashed; }
 .ely-editable-page .preview-fact-empty { display: block; }
-.ely-editable-page .preview-fact-empty dd { color: #6d7768; font-style: italic; }
+.ely-editable-page .preview-fact-empty dd { color: #7b8476; font-style: italic; }
 
-.ely-editable-page .preview-editor-settings {
-  display: block;
-  margin: 14px 0 36px;
-  padding: 0;
-  border-bottom: 1px solid #d5dbce;
-  font: 500 12px/1.5 'Plus Jakarta Sans', sans-serif;
-}
-.ely-editable-page .preview-editor-settings summary {
-  width: fit-content;
-  min-height: 42px;
-  padding: 10px 0;
-  color: #586654;
-  cursor: pointer;
-  font-weight: 650;
-}
-.ely-editable-page .preview-settings-grid { justify-content: flex-start; padding: 2px 0 18px; }
-
-.ely-editable-page .preview-chapter { position: relative; padding-top: 18px; border-top: 1px solid transparent; }
+.ely-editable-page .preview-chapter { position: relative; }
 .ely-editable-page .preview-chapter:hover,
-.ely-editable-page .preview-chapter:focus-within { border-top-color: #d5dbce; }
+.ely-editable-page .preview-chapter:focus-within { box-shadow: inset 0 1px #d5dbce; }
 .ely-editable-page .preview-block-toolbar {
-  grid-column: 1 / -1;
+  position: absolute;
+  z-index: 6;
+  top: -34px;
+  left: 0;
+  right: 0;
   justify-content: flex-end;
-  margin: -6px 0 8px;
-  opacity: .52;
-  transition: opacity 120ms ease-out;
+  opacity: .38;
+  transition: opacity 100ms ease-out;
 }
 .ely-editable-page .preview-chapter:hover > .preview-block-toolbar,
 .ely-editable-page .preview-chapter:focus-within > .preview-block-toolbar { opacity: 1; }
 .ely-editable-page .preview-block-label {
   margin-right: auto;
-  color: #6d7768;
-  font: 700 10px/1.4 'Plus Jakarta Sans', sans-serif;
+  color: #7a8474;
+  font: 700 9px/1.4 'Plus Jakarta Sans', sans-serif;
   letter-spacing: .07em;
   text-transform: uppercase;
 }
-.ely-editable-page .preview-content-inserts { margin-top: 14px; }
+.ely-editable-page .preview-block-toolbar .preview-action[aria-label^='Sposta'] { width: 32px; padding-inline: 0; font-size: 14px; }
+.ely-editable-page .preview-content-inserts { margin-top: 10px; }
 .ely-editable-page .preview-content-inserts:empty { display: none; }
-.ely-editable-page .preview-content-inserts .preview-action { border-style: dashed; background: transparent; color: #586654; }
-.ely-editable-page .preview-add-row { justify-content: center; margin: 12px 0 42px; }
+.ely-editable-page .preview-content-inserts .preview-action { border-style: dashed; background: transparent; color: #667260; }
+.ely-editable-page .preview-add-row { justify-content: center; margin: 10px 0 36px; }
 .ely-editable-page .preview-add-row .preview-action {
-  min-height: 44px;
-  padding-inline: 16px;
-  border-color: #254535;
-  background: #254535;
-  color: #fffdf8;
+  min-height: 40px;
+  padding-inline: 14px;
+  border-style: dashed;
+  border-color: #8e9b89;
+  background: transparent;
+  color: #365d48;
 }
-.ely-editable-page .preview-add-row .preview-action:hover { background: #365d48; }
+.ely-editable-page .preview-add-row .preview-action:hover { background: #e8ece2; }
 
-.ely-editable-page .preview-gallery figure { position: relative; padding-top: 38px; }
+.ely-editable-page .preview-gallery figure { position: relative; padding-top: 30px; }
 .ely-editable-page .preview-gallery .preview-photo-toolbar {
   position: absolute;
-  z-index: 4;
+  z-index: 6;
   top: 0;
   left: 0;
   right: 0;
   justify-content: flex-end;
-  opacity: .58;
+  opacity: .42;
 }
 .ely-editable-page .preview-gallery figure:hover .preview-photo-toolbar,
 .ely-editable-page .preview-gallery figure:focus-within .preview-photo-toolbar { opacity: 1; }
-.ely-editable-page .preview-gallery .preview-photo-controls { top: 42px; }
+.ely-editable-page .preview-gallery .preview-photo-toolbar .preview-action[aria-label^='Sposta'] { width: 32px; padding-inline: 0; font-size: 14px; }
+.ely-editable-page .preview-gallery .preview-photo-controls { top: 40px; }
 
 .ely-editable-page .preview-remove-confirm {
   display: grid;
@@ -257,35 +280,22 @@ aside { padding: 20px; background: #e4e9dc; border-radius: 12px; }
   align-items: center;
   gap: 6px;
   width: 100%;
-  padding: 8px 0;
+  padding: 4px 0;
 }
-.ely-editable-page .preview-remove-confirm > span { color: #586654; font-size: 12px; }
+.ely-editable-page .preview-remove-confirm > span { color: #586654; font-size: 11px; }
 .ely-editable-page .preview-remove-confirm button[data-operation='confirm-remove'] { border-color: #9f4933; color: #9f4933; }
 
-.ely-editable-page .preview-editor-footer {
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
-  margin-top: 52px;
-  padding: 20px 0 6px;
-  border-top: 1px solid #cad1c4;
-  color: #667260;
-  font: 400 12px/1.6 'Plus Jakarta Sans', sans-serif;
-}
-.ely-editable-page .preview-editor-footer p { margin: 0; }
-.ely-editable-page .preview-tags { text-align: right; }
-
 .preview-validation {
-  padding: 16px;
+  padding: 14px;
   border: 1px solid #9f4933;
-  border-radius: 10px;
-  margin: 0 0 20px;
+  border-radius: 9px;
+  margin: 0 0 18px;
   background: #fffdf8;
   color: #254535;
-  font: 400 13px/1.6 'Plus Jakarta Sans',sans-serif;
+  font: 400 12px/1.55 'Plus Jakarta Sans',sans-serif;
 }
-.preview-validation p { margin: 0 0 10px; }
-.preview-validation button { min-height: 38px; padding: 8px 11px; margin: 0 6px 6px 0; border: 1px solid #cad1c4; border-radius: 7px; background: #f7f3e9; color: #9f4933; font: 600 12px/1.4 'Plus Jakarta Sans',sans-serif; cursor: pointer; }
+.preview-validation p { margin: 0 0 8px; }
+.preview-validation button { min-height: 36px; padding: 7px 10px; margin: 0 5px 5px 0; border: 1px solid #cad1c4; border-radius: 7px; background: #f7f3e9; color: #9f4933; font: 600 11px/1.4 'Plus Jakarta Sans',sans-serif; cursor: pointer; }
 
 .preview-conclusion:has(.preview-empty-text),
 .preview-gallery-section:not(:has(.preview-gallery)) { display: none; }
@@ -293,20 +303,44 @@ aside { padding: 20px; background: #e4e9dc; border-radius: 12px; }
 .ely-editable-page .preview-gallery-section { display: block; }
 
 @media (max-width: 700px) {
-  .ely-editable-page .preview-editor-header { grid-template-columns: 1fr; gap: 12px; }
-  .ely-editable-page .preview-editor-fields { justify-content: flex-start; }
-  .ely-editable-page .preview-field-chip { max-width: 100%; }
-  .ely-editable-page .preview-block-toolbar,
+  .preview-story { padding-inline: 18px; }
+  .ely-editable-page .preview-editor-bar { grid-template-columns: 1fr; gap: 9px; padding-top: 8px; }
+  .ely-editable-page .preview-editor-fields {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding: 1px 1px 5px;
+    scrollbar-width: none;
+  }
+  .ely-editable-page .preview-editor-fields::-webkit-scrollbar { display: none; }
+  .ely-editable-page .preview-field-chip { flex: 0 0 auto; max-width: 230px; }
+  .ely-editable-page .preview-settings-grid { justify-content: flex-start; }
+  .ely-editable-page .preview-block-toolbar {
+    position: static;
+    margin: 0 0 8px;
+    opacity: 1;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .ely-editable-page .preview-block-toolbar::-webkit-scrollbar { display:none; }
+  .ely-editable-page .preview-block-label { flex: 0 0 auto; }
+  .ely-editable-page .preview-photo-controls { top: 7px; right: 7px; max-width: calc(100% - 14px); overflow-x: auto; flex-wrap: nowrap; opacity: .92; }
+  .ely-editable-page .preview-photo-controls .preview-action { flex: 0 0 auto; padding-inline: 7px; }
   .ely-editable-page .preview-gallery .preview-photo-toolbar { opacity: 1; }
-  .ely-editable-page .preview-photo-controls { top: 8px; right: 8px; max-width: calc(100% - 16px); }
-  .ely-editable-page .preview-photo-controls .preview-action { padding-inline: 8px; }
   .ely-editable-page .preview-remove-confirm { grid-template-columns: 1fr auto auto; }
   .ely-editable-page .preview-remove-confirm > span { grid-column: 1 / -1; }
-  .ely-editable-page .preview-editor-footer { display: block; }
-  .ely-editable-page .preview-tags { margin-top: 8px !important; text-align: left; }
+  .ely-editable-page .preview-add-cover { min-height: 180px; }
+}
+
+@media (hover: none) {
+  .ely-editable-page .preview-photo-controls,
+  .ely-editable-page .preview-block-toolbar,
+  .ely-editable-page .preview-gallery .preview-photo-toolbar { opacity: 1; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .ely-editable-page [data-key-path],
-  .ely-editable-page .preview-block-toolbar { transition: none; }
+  .ely-editable-page .preview-block-toolbar,
+  .ely-editable-page .preview-photo-controls { transition: none; }
 }

@@ -3,7 +3,16 @@
   let backdrop, editor, frame, active, selection, panel, toolbar, selecting=false, previewSwitch=false, pending=0, lastInput=0, finishTimer, statusTimer, saveRequested=false, nativeErrorForwarding=false, nativeValidationReceiver, working=false, actionStatus, validationRefs=[], article={};
   const boundFrames=new WeakSet();
   const field=key=>editor?.querySelector(`section.field[data-key-path="${CSS.escape(key)}"]`);
-  const inlineHeight=key=>/(?:intro|body|note|conclusion)$/.test(key)?360:key==='deck'||key==='slideText'?240:key==='tags'?280:/(?:^title$|\.title$)/.test(key)?150:/(?:caption|heroAlt|\.(alt|imageAlt)$)/.test(key)?150:120;
+  const isRichKey=key=>/(?:intro|body|note|conclusion|quote)$/.test(key);
+  const inlineHeight=(key,anchorHeight=0)=>{
+    const base=Math.max(0,anchorHeight);
+    if(isRichKey(key))return Math.min(Math.max(base+86,220),440);
+    if(key==='deck'||key==='slideText')return Math.min(Math.max(base+22,96),180);
+    if(key==='tags')return Math.min(Math.max(base+18,82),190);
+    if(/(?:^title$|\.title$)/.test(key))return Math.max(base+14,72);
+    if(/(?:caption|heroAlt|\.(alt|imageAlt)$)/.test(key))return Math.max(base+12,64);
+    return Math.min(Math.max(base+14,64),170);
+  };
   const isImageField=key=>key==='hero'||/^chapters\.\d+\.image$/.test(key)||/^gallery\.\d+\.image$/.test(key);
   const inlineTone=key=>key==='title'?'ely-inline-title':/chapters\.\d+\.title$/.test(key)?'ely-inline-heading':key==='deck'?'ely-inline-deck':/(?:intro|body|note|conclusion|quote)$/.test(key)?'ely-inline-copy':/(?:heroCaption|caption|heroAlt|\.(?:alt|imageAlt)$)/.test(key)?'ely-inline-caption':'ely-inline-control';
   const inlineTones=['ely-inline-title','ely-inline-heading','ely-inline-deck','ely-inline-copy','ely-inline-caption','ely-inline-control'];
@@ -27,22 +36,30 @@
     if(selection&&!selection.element?.isConnected && frame?.contentDocument){
       selection.element=frame.contentDocument.querySelector(`[data-key-path="${CSS.escape(selection.key)}"]`);
     }
-    if(inline&&selection?.element?.isConnected){selection.element.style.minHeight=inlineHeight(selection.key)+'px';}
     const anchor=selection?.element?.isConnected?selection.element.getBoundingClientRect():selection?.anchor;
     const frameRect=frame?.isConnected?frame.getBoundingClientRect():selection?.frameBounds;
-    if(inline&&anchor)anchor.height=Math.max(anchor.height,inlineHeight(selection.key));
     const viewportHeight=window.visualViewport?.height || innerHeight;
     const topbar=editor.querySelector(':scope > .primary')?.getBoundingClientRect().bottom || 64;
-    const minInlineWidth=selection?.key==='tags'||selection?.key==='slideText'?Math.min(560,innerWidth-32):280;
-    const width=inline&&anchor?Math.min(Math.max(anchor.width,minInlineWidth),innerWidth-32):Math.min(680,innerWidth-32);
-    const height=Math.min(inline&&anchor?Math.max(anchor.height,180):560,viewportHeight-topbar-32);
-    const left=anchor&&frameRect?Math.max(16,Math.min(frameRect.left+anchor.left,innerWidth-width-16)):(innerWidth-width)/2;
-    const top=anchor&&frameRect?Math.max(topbar+16,Math.min(frameRect.top+(inline?anchor.top:anchor.bottom+12),viewportHeight-height-16)):topbar+24;
+    const minInlineWidth=selection?.key==='tags'||selection?.key==='slideText'?Math.min(520,innerWidth-24):Math.min(280,innerWidth-24);
+    const width=inline&&anchor?Math.min(Math.max(anchor.width,minInlineWidth),innerWidth-24):Math.min(680,innerWidth-24);
+    const desired=inline&&anchor?inlineHeight(selection.key,anchor.height):560;
+    const inlineBottomSpace=inline?56:12;
+    const height=Math.max(56,Math.min(desired,viewportHeight-topbar-inlineBottomSpace-16));
+    const left=anchor&&frameRect?Math.max(12,Math.min(frameRect.left+anchor.left,innerWidth-width-12)):(innerWidth-width)/2;
+    const targetTop=anchor&&frameRect?frameRect.top+(inline?anchor.top:anchor.bottom+12):topbar+20;
+    const top=Math.max(topbar+12,Math.min(targetTop,viewportHeight-height-inlineBottomSpace));
     panel.style.left=left+'px';panel.style.top=top+'px';panel.style.width=width+'px';panel.style.height=height+'px';
-    Object.assign(toolbar.style,{position:'fixed',left:left+'px',top:(top+height-48)+'px',width:width+'px',height:'48px',boxSizing:'border-box'});
+    if(toolbar){
+      if(inline&&!toolbar.hidden){
+        const buttonWidth=70,toolbarTop=Math.min(top+height+8,viewportHeight-44);
+        Object.assign(toolbar.style,{position:'fixed',left:Math.max(12,Math.min(left+width-buttonWidth,innerWidth-buttonWidth-12))+'px',top:toolbarTop+'px',width:buttonWidth+'px',height:'36px',boxSizing:'border-box'});
+      } else {
+        toolbar.removeAttribute('style');
+      }
+    }
     const nativeSlot=panel.querySelector('.ely-inspector-slot').getBoundingClientRect();
-    const slot={left,top:nativeSlot.top,width,height:Math.max(80,top+height-48-nativeSlot.top)};
-    const rect=inline?{left,top,width,height:Math.max(80,height-(toolbar?.getBoundingClientRect().height||48))}:slot;
+    const slot={left,top:nativeSlot.top,width,height:Math.max(90,top+height-nativeSlot.top)};
+    const rect=inline?{left,top,width,height}:slot;
     active.style.setProperty('--ely-field-left',rect.left+'px');
     active.style.setProperty('--ely-field-top',rect.top+'px');
     active.style.setProperty('--ely-field-width',rect.width+'px');
@@ -74,13 +91,15 @@
       const chapter=element.closest('.preview-chapter');
       const placeholder=element.ownerDocument.createElement(key.endsWith('quote')?'blockquote':'aside');
       placeholder.dataset.keyPath=key;placeholder.tabIndex=0;placeholder.textContent=key.endsWith('quote')?'Scrivi la citazione…':'Scrivi un consiglio pratico…';
-      chapter.insertBefore(placeholder,chapter.querySelector(':scope > .preview-options'));element=placeholder;
+      if(key.endsWith('note')){const copy=chapter.querySelector('.preview-copy');copy?.insertBefore(placeholder,copy.querySelector('.preview-content-inserts'));}
+      else chapter.append(placeholder);
+      element=placeholder;
     }
     element?.scrollIntoView({block:'nearest'});
     selection={element,scroll:frame?.contentWindow?.scrollY ?? scroll,key,initialValue:valueAt(article,key),anchor:element?.getBoundingClientRect().toJSON(),frameBounds:frame?.getBoundingClientRect().toJSON()};element?.classList.add('ely-selected-block');
     const inline=!!element&&!isImageField(key);
     if(inline){
-      element.style.minHeight=inlineHeight(key)+'px';element.scrollIntoView({block:'nearest'});
+      element.scrollIntoView({block:'nearest'});
       selection.anchor=element.getBoundingClientRect().toJSON();selection.scroll=frame?.contentWindow?.scrollY ?? scroll;
     }
     panel.classList.toggle('ely-inline-edit',inline);panel.setAttribute('role',inline?'region':'dialog');
@@ -107,7 +126,7 @@
       const label=section.querySelector(':scope > header h4')?.textContent || 'Modifica';
       const chapter=key.match(/^chapters\.(\d+)\./);
       panel.querySelector('.ely-inspector-title').textContent=chapter?`Capitolo ${Number(chapter[1])+1} · ${label}`:label;
-      toolbar.hidden=false;draw();place();lockFields();
+      toolbar.hidden=!inline;draw();place();lockFields();
       active.querySelector('[contenteditable="true"], input:not([type="file"]), textarea, .field-wrapper button')?.focus({preventScroll:true});
       for(const delay of [0,200])setTimeout(()=>{if(token===pending && frame?.isConnected)frame.contentWindow.scrollTo(0,selection?.scroll ?? scroll);},delay);
     };
@@ -286,9 +305,9 @@
   };
   const createPanel=()=>{
     panel=document.createElement('div');panel.className='ely-inspector';panel.setAttribute('role','dialog');panel.setAttribute('aria-label','Modifica nell’articolo');
-    panel.innerHTML='<header><h2>Fotografia</h2><button type="button" class="ely-inspector-dismiss">Torna alla pagina</button></header><p class="ely-inspector-error" role="status"></p><div class="ely-inspector-detail"><h3 class="ely-inspector-title"></h3><div class="ely-inspector-slot"></div></div>';
+    panel.innerHTML='<header><h2>Fotografia</h2><button type="button" class="ely-inspector-dismiss">Fine</button></header><p class="ely-inspector-error" role="status"></p><div class="ely-inspector-detail"><h3 class="ely-inspector-title"></h3><div class="ely-inspector-slot"></div></div>';
     panel.querySelector('.ely-inspector-dismiss').addEventListener('click',()=>close());
-    toolbar=document.createElement('footer');toolbar.className='ely-on-page-toolbar';toolbar.hidden=true;toolbar.innerHTML='<span>Modifiche nella bozza</span><button type="button">Fine</button>';toolbar.querySelector('button').addEventListener('click',()=>close());editor.append(panel,toolbar);draw();
+    toolbar=document.createElement('div');toolbar.className='ely-on-page-toolbar';toolbar.hidden=true;toolbar.innerHTML='<button type="button">Fine</button>';toolbar.querySelector('button').addEventListener('click',()=>close());editor.append(panel,toolbar);draw();
   };
   const enhance=()=>{
     const next=document.querySelector('.content-editor');

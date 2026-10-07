@@ -177,7 +177,7 @@ section.field[data-key-path='title'] > .ely-editor-section { margin-top: 0; padd
 .content-editor.ely-page-mode .content-area .sui.resizable-pane:has(.ely-editor-content){position:absolute;top:0;left:0;width:420px;height:100%;visibility:hidden;overflow:visible!important;pointer-events:none}
 .content-editor.ely-page-mode .pane[data-mode='edit'] *{visibility:hidden!important}
 .content-editor.ely-page-mode .content-area .sui.resizable-pane:has(iframe.preview){display:block!important;flex:1 1 100%!important;width:100%!important}
-.content-editor.ely-page-mode .resizable-handle,.content-editor.ely-page-mode .swap-button,.ely-page-feedback,.ely-mobile-actions{display:none!important}
+.content-editor.ely-page-mode .resizable-handle,.content-editor.ely-page-mode .swap-button,.content-editor.ely-page-mode .ely-focus-toggle,.ely-page-feedback,.ely-mobile-actions{display:none!important}
 .content-editor.ely-page-mode .pane[data-mode='preview']{display:flex!important}
 .content-editor.ely-page-mode > .body > .sidebar{display:none!important}
 
@@ -205,8 +205,11 @@ section.field[data-key-path='title'] > .ely-editor-section { margin-top: 0; padd
 
 .content-editor.ely-page-mode .pane[data-mode='edit'] .ely-on-page-field,
 .content-editor.ely-page-mode .pane[data-mode='edit'] .ely-on-page-field *{visibility:visible!important;pointer-events:auto}
-.content-editor.ely-page-mode .ely-on-page-field{position:fixed!important;z-index:81;left:var(--ely-field-left)!important;top:var(--ely-field-top)!important;width:var(--ely-field-width)!important;height:var(--ely-field-height)!important;max-height:var(--ely-field-height)!important;min-height:0!important;min-width:0!important;box-sizing:border-box;overflow:auto;overscroll-behavior:contain;margin:0!important;padding:12px 14px 54px!important;border:0!important;border-radius:0;background:var(--ely-paper);box-shadow:none;color:var(--ely-ink)}
+.content-editor.ely-page-mode .ely-on-page-field{position:fixed!important;z-index:81;left:var(--ely-field-left)!important;top:var(--ely-field-top)!important;width:var(--ely-field-width)!important;height:var(--ely-field-height)!important;max-height:var(--ely-field-height)!important;min-height:0!important;min-width:0!important;box-sizing:border-box;overflow:auto;overscroll-behavior:contain;margin:0!important;padding:4px 5px!important;border:0!important;border-radius:5px;background:var(--ely-paper);box-shadow:0 0 0 1px #9f493352;color:var(--ely-ink)}
 .ely-on-page-field>header,.ely-on-page-field>.ely-editor-section{display:none!important}
+.ely-on-page-field>.footer .hint{display:none!important}
+.ely-on-page-field>.footer{min-height:16px!important;margin:2px 2px 0!important;padding:0!important;justify-content:flex-end!important;color:var(--ely-muted)!important;font-size:10px!important;line-height:1.2!important}
+.ely-on-page-field>.footer:empty{display:none!important}
 .ely-on-page-field .field-wrapper{min-width:0}
 
 /* Strip CMS form chrome so strings and rich text read as part of the article. */
@@ -221,7 +224,7 @@ section.field[data-key-path='title'] > .ely-editor-section { margin-top: 0; padd
 .ely-inline-control input,.ely-inline-control textarea{font:500 15px/1.5 'Plus Jakarta Sans',sans-serif!important}
 
 .ely-inline-copy .field-wrapper{height:100%;display:flex;flex-direction:column}
-.ely-inline-copy [contenteditable='true']{min-height:190px!important;padding:14px 2px!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;color:var(--ely-forest)!important;font:400 17px/1.72 'Plus Jakarta Sans',sans-serif!important}
+.ely-inline-copy [contenteditable='true']{min-height:140px!important;padding:10px 2px!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;color:var(--ely-forest)!important;font:400 17px/1.72 'Plus Jakarta Sans',sans-serif!important}
 .ely-inline-copy [contenteditable='true']:focus{outline:none!important;box-shadow:inset 0 -2px 0 var(--ely-clay)!important}
 .ely-inline-copy .field-wrapper [role='toolbar'],
 .ely-inline-copy .field-wrapper .toolbar{position:sticky;top:0;z-index:2;margin:0 0 8px!important;padding:4px!important;border:1px solid var(--ely-line)!important;border-radius:8px!important;background:var(--ely-soft)!important;box-shadow:none!important}
@@ -236,10 +239,9 @@ section.field[data-key-path='title'] > .ely-editor-section { margin-top: 0; padd
 .ely-inline-control .field-wrapper .item-list>li,
 .ely-inline-control .field-wrapper .item-list>*{max-width:100%!important}
 
-.ely-on-page-toolbar{display:flex;align-items:center;justify-content:flex-end;gap:8px;z-index:82;padding:6px 10px;border-top:1px solid var(--ely-line);background:var(--ely-paper);font-size:11px;color:var(--ely-muted);pointer-events:auto}
+.ely-on-page-toolbar{display:flex;align-items:center;justify-content:flex-end;z-index:84;padding:0;border:0;background:transparent;pointer-events:auto}
 .ely-on-page-toolbar[hidden]{display:none}
-.ely-on-page-toolbar>span{margin-right:auto}
-.ely-on-page-toolbar button{background:var(--ely-forest);color:var(--ely-surface);border:0;border-radius:6px;min-height:38px;min-width:76px;padding:7px 14px;font:700 12px 'Plus Jakarta Sans',sans-serif;cursor:pointer}
+.ely-on-page-toolbar button{width:70px;height:36px;min-height:36px;padding:6px 12px;border:1px solid #25453547;border-radius:999px;background:var(--ely-forest);box-shadow:0 4px 14px #16271f1a;color:var(--ely-surface);font:700 11px 'Plus Jakarta Sans',sans-serif;cursor:pointer}
 
 .ely-article-backdrop{position:fixed;z-index:70;border:0;pointer-events:none;background:var(--ely-paper);opacity:1!important;filter:none!important}
 .ely-action-status{position:fixed;z-index:83;bottom:14px;left:14px;max-width:min(480px,calc(100vw - 64px));margin:0;padding:10px 13px;border-radius:8px;background:var(--ely-forest);color:var(--ely-surface);font-size:12px;line-height:1.5;pointer-events:none}
@@ -247,7 +249,7 @@ section.field[data-key-path='title'] > .ely-editor-section { margin-top: 0; padd
 
 @media(max-width:767px){
  .ely-mode-switch button{padding-inline:10px}
- .content-editor.ely-page-mode .ely-on-page-field{padding:10px 12px 52px!important}
+ .content-editor.ely-page-mode .ely-on-page-field{padding:4px 5px!important}
  .ely-inline-title input{font-size:36px!important}
  .ely-inline-heading input{font-size:28px!important}
  .ely-on-page-field input,.ely-on-page-field textarea{font-size:16px}
