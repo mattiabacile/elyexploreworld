@@ -1,7 +1,7 @@
 (() => {
   const field = key => document.querySelector(`.content-editor section.field[data-key-path="${key}"]`);
   let currentEditor=null, draftOwner=null, kind=null, scheduled=false;
-  let previewKey='',syncUntil=0,syncPending=false,workspace='article',reuse=true;
+  let previewKey='',syncUntil=0,syncPending=false,syncHost=null,syncRetries=0,workspace='article',reuse=true;
   let lastInput=-Infinity,composing=null;
   const deferred=new Map();
   // Native rich text serializes shortly after input. Wait before unmounting
@@ -55,10 +55,33 @@
     const editor=document.querySelector('.content-editor');if(!key || editor?.classList.contains('ely-page-mode'))return;
     previewKey=key;const doc=editor?.querySelector('iframe.preview')?.contentDocument;
     const target=[...(doc?.querySelectorAll(`[data-key-path="${CSS.escape(key)}"]`) || [])].find(node=>node.getClientRects().length) || (key==='hero'?doc?.querySelector('.preview-cover'):null);
-    if(target){syncUntil=performance.now()+350;target.scrollIntoView({block:'start'});doc.querySelectorAll('.ely-field-highlight').forEach(node=>node.classList.remove('ely-field-highlight'));target.classList.add('ely-field-highlight');}
+    if(target){target.scrollIntoView({block:'start'});doc.querySelectorAll('.ely-field-highlight').forEach(node=>node.classList.remove('ely-field-highlight'));target.classList.add('ely-field-highlight');}
   };
-  document.addEventListener('focusin',event=>{const key=event.target.closest?.('section.field')?.dataset.keyPath;if(key)syncPreview(key);});
-  document.addEventListener('scroll',event=>{const host=event.target;if(!host.matches?.('.ely-editor-content') || performance.now()<syncUntil || syncPending)return;syncPending=true;requestAnimationFrame(()=>{syncPending=false;if(!host.isConnected)return;const top=host.getBoundingClientRect().top+120;const target=[...host.querySelectorAll('section.field[data-key-path]')].find(node=>node.getClientRects().length&&node.getBoundingClientRect().bottom>top);syncPreview(target?.dataset.keyPath);});},true);
+  document.addEventListener('focusin',event=>{const key=event.target.closest?.('section.field')?.dataset.keyPath;if(key){syncUntil=performance.now()+350;syncPreview(key);}});
+  const retryScrollSync=()=>{
+    if(++syncRetries<20){syncPending=true;setTimeout(()=>requestAnimationFrame(syncScrolledField),50);}else syncHost=null;
+  };
+  const syncScrolledField=()=>{
+    syncPending=false;const host=syncHost;
+    if(!host?.isConnected || host!==currentEditor?.querySelector('.ely-editor-content') || performance.now()<syncUntil || currentEditor?.matches('.ely-writing-mode, .ely-page-mode')){syncHost=null;return;}
+    const doc=currentEditor?.querySelector('iframe.preview')?.contentDocument;
+    // Native virtualization briefly rebuilds the preview while the form
+    // scrolls. Wait for its fields instead of restoring the previous chapter.
+    const keys=new Set([...(doc?.querySelectorAll('[data-key-path]') || [])].map(node=>node.dataset.keyPath));
+    if(!keys.size){retryScrollSync();return;}
+    // List and object wrappers can span many chapters. Follow an actual
+    // preview field rather than stopping at their enclosing container.
+    const top=host.getBoundingClientRect().top+120;
+    const target=[...host.querySelectorAll('section.field[data-key-path]')].find(node=>keys.has(node.dataset.keyPath)&&node.getClientRects().length&&node.getBoundingClientRect().bottom>top);
+    if(!target){retryScrollSync();return;}
+    syncHost=null;
+    syncPreview(target?.dataset.keyPath);
+  };
+  document.addEventListener('scroll',event=>{
+    const host=event.target;if(!host.matches?.('.ely-editor-content'))return;
+    syncHost=host;syncRetries=0;if(syncPending)return;
+    syncPending=true;requestAnimationFrame(syncScrolledField);
+  },true);
   const updateKind = () => {
     const selected=field('kind')?.querySelector('[role="radio"][aria-checked="true"]');
     if(selected)kind=selected.value;
