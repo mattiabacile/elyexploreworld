@@ -10,20 +10,18 @@
     config.backend.graphql_api_root = location.origin + '/cms/api/graphql';
     config.load_config_file = false;
     const savedArticles=await fetch('../content/stories.json',{cache:'no-cache'}).then(r=>r.ok?r.json():[]).catch(()=>[]);
-    CMS.registerPreviewStyle('/admin/preview.css?v=2d32702e1537');
+    CMS.registerPreviewStyle('/admin/preview.css?v=d52da3008022');
     const renderStory = ({ entry, widgetFor, widgetsFor, getAsset }) => {
       const data = entry.get('data');
       const asset = path => path ? getAsset(path)?.url || path : '';
       const hero = asset(data.get('hero'));
       const title = data.get('title') || 'Il titolo del tuo racconto';
       const accent = data.get('titleAccent');
-      const accentIndex = accent ? title.lastIndexOf(accent) : -1;
       const chapters = widgetsFor('chapters') || [];
       const appearance = ElyArticle.appearance(Object.fromEntries(['theme', 'coverFormat', 'coverPosition', 'textStyle', 'dropCap', 'showContents'].map(key => [key, data.getIn(['appearance', key])])));
       const gallery = widgetsFor('gallery') || [];
-      const rawTags=data.get('tags');
-      const tagLabels=Array.isArray(rawTags)?rawTags:(rawTags?.toJS?.() || []);
       const editable = (key, label) => ({'data-key-path':key, tabIndex:0, title:`Modifica ${label}`});
+      const formatted=(tag,key,label,value,fallback='')=>h(tag,{...editable(key,label),dangerouslySetInnerHTML:{__html:ElyArticle.inline(value || fallback)}});
       const add = (key, label) => h('button', {...editable(key,label), type:'button', className:'preview-add'}, label);
       const action = (list, operation, label, index, disabled=false) => h('button', {
         type:'button', className:'preview-action', 'data-list':list, 'data-operation':operation,
@@ -38,13 +36,13 @@
         action(list,'remove',`Elimina ${label}`,index)
       );
       // Send the actual draft to the writing tools, including unmounted chapter fields.
-      const values = Object.fromEntries(['id','title','kind','destination','date','deck','hero','heroAlt','heroCaption','intro','conclusion','published','preparing','category','tags'].map(key => [key, data.get(key)]));
+      const values = Object.fromEntries(['id','title','kind','destination','date','deck','hero','heroAlt','heroCaption','intro','conclusion','published','preparing','category','tags','slideText'].map(key => [key, data.get(key)]));
       values.chapters = chapters.map(chapter => Object.fromEntries(['title','body','image','imageAlt','caption','quote','note'].map(key => [key, chapter.get('data').get(key)])));
       values.gallery = gallery.map(photo => Object.fromEntries(['image','alt','caption'].map(key => [key, photo.get('data').get(key)])));
       values.appearance=appearance;
       values.titleAccent=data.get('titleAccent');
       values.travelFacts = Object.fromEntries(['duration','season','style'].map(key => [key, data.getIn(['travelFacts',key])]));
-      values.publicSlug=ElyLinks.assign([...savedArticles.filter(s=>s&&s.id&&s.title&&s.id!==values.id),{id:values.id || 'new-draft',title:values.title}]).find(s=>s.id===(values.id || 'new-draft')).publicSlug;
+
       window.dispatchEvent(new CustomEvent('ely:article-change', {detail:values}));
       const facts = [['duration', 'Durata'], ['season', 'Quando partire'], ['style', 'Tipo di viaggio']].filter(([key]) => data.getIn(['travelFacts', key]));
       return h('article', { className:'preview-story', style:{'--article-accent':appearance.accent}, 'data-text-style':appearance.textStyle, 'data-drop-cap':String(appearance.dropCap), 'data-cover-format':appearance.coverFormat },
@@ -53,19 +51,16 @@
           null
         ),
         h('p', {className:'preview-meta'}, h('span',editable('destination','destinazione'),data.get('destination') || 'Aggiungi la destinazione'), ' · ', h('span',editable('date','data'),data.get('date') || 'Scegli la data')),
-        h('h1', editable('title','titolo'), accentIndex >= 0 ? [title.slice(0,accentIndex), h('em',{},accent), title.slice(accentIndex+accent.length)] : title),
-        tools(add('titleAccent','Corsivo nel titolo')),
-        h('p', {className:'preview-deck',...editable('deck','introduzione breve')},data.get('deck') || 'Presenta il viaggio in poche righe…'),
+        h('h1',{...editable('title','titolo'),dangerouslySetInnerHTML:{__html:ElyArticle.heading(title,accent)}}),
+        h('p',{className:'preview-deck',...editable('deck','introduzione breve'),dangerouslySetInnerHTML:{__html:ElyArticle.inline(data.get('deck') || 'Presenta il viaggio in poche righe…')}}),
         h('figure', {className:'preview-cover'},
           hero ? h('img', {...editable('hero','foto di copertina'),src:hero,alt:data.get('heroAlt') || '',style:{objectPosition:appearance.coverPosition}}) : photoSlot('hero',appearance.coverFormat),
-          hero && h('figcaption',editable('heroCaption','didascalia della copertina'),data.get('heroCaption') || 'Aggiungi una didascalia'),
+          hero && formatted('figcaption','heroCaption','didascalia della copertina',data.get('heroCaption'),'Aggiungi una didascalia'),
           hero && h('p',{className:'preview-image-description',...editable('heroAlt','descrizione della copertina')},'Descrizione della foto: '+(data.get('heroAlt') || 'aggiungi una descrizione…')),
           hero && options('Opzioni della copertina',add('hero','Cambia foto'),add('appearance.coverFormat','Formato'),add('appearance.coverPosition','Ritaglio'))
         ),
         facts.length > 0 && h('dl',{className:'preview-facts'},...facts.map(([key,label]) => h('div',{key},h('dt',{},label),h('dd',editable('travelFacts.'+key,label),data.getIn(['travelFacts',key]))))),
-        options('Informazioni del viaggio',add('travelFacts','Durata, periodo e tipo di viaggio')),
-        appearance.showContents && chapters.length > 1 && h('nav',{className:'preview-contents'},h('h2',{},'In questo racconto'),h('ol',{},...chapters.map((chapter,index) => h('li',{key:index},h('a',{href:'#preview-chapter-'+index},chapter.get('data').get('title') || `Capitolo ${index+1}`))))),
-        tools(h('button',{type:'button','data-toggle-key':'appearance.dropCap','aria-pressed':String(appearance.dropCap)},'Lettera iniziale grande')),
+        appearance.showContents && chapters.length > 1 && h('nav',{className:'preview-contents'},h('h2',{},'In questo racconto'),h('ol',{},...chapters.map((chapter,index) => h('li',{key:index},h('a',{href:'#preview-chapter-'+index,dangerouslySetInnerHTML:{__html:ElyArticle.inline(chapter.get('data').get('title') || `Capitolo ${index+1}`,{links:false})}}))))),
         h('div',{className:'preview-intro'},data.get('intro') ? widgetFor('intro') : emptyText('intro','Scrivi l’apertura del racconto…')),
         ...chapters.map((chapter,index) => {
           const item=chapter.get('data'), photo=asset(item.get('image'));
@@ -73,17 +68,17 @@
           return h('section',{key:index,className:'preview-chapter preview-chapter-'+layout,'data-photo-format':format,'data-chapter-index':index},
             h('div',{className:'preview-chapter-tools'},h('span',{},`Capitolo ${index+1}`),itemTools('chapters',index,chapters.length,'capitolo')),
             h('div',{className:'preview-copy'},
-              h('h2',{id:'preview-chapter-'+index,...editable(`chapters.${index}.title`,'titolo del capitolo')},item.get('title') || 'Titolo del capitolo…'),
+              h('h2',{id:'preview-chapter-'+index,...editable(`chapters.${index}.title`,'titolo del capitolo'),dangerouslySetInnerHTML:{__html:ElyArticle.inline(item.get('title') || 'Titolo del capitolo…')}}),
               item.get('body') ? chapter.getIn(['widgets','body']) : emptyText(`chapters.${index}.body`,'Scrivi il testo del capitolo…'),
               item.get('note') && h('aside',{},h('strong',{},'Da sapere'),chapter.getIn(['widgets','note']))
             ),
             photo ? h('figure',{},
               h('img',{...editable(`chapters.${index}.image`,'foto del capitolo'),src:photo,alt:item.get('imageAlt') || ''}),
-              h('figcaption',editable(`chapters.${index}.caption`,'didascalia'),item.get('caption') || 'Aggiungi una didascalia'),
+              formatted('figcaption',`chapters.${index}.caption`,'didascalia',item.get('caption'),'Aggiungi una didascalia'),
               h('p',{className:'preview-image-description',...editable(`chapters.${index}.imageAlt`,'descrizione della foto')},'Descrizione della foto: '+(item.get('imageAlt') || 'aggiungi una descrizione…')),
               options('Opzioni della foto',add(`chapters.${index}.image`,'Cambia foto'),add(`chapters.${index}.imageFormat`,'Formato'))
             ) : h('figure',{},photoSlot(`chapters.${index}.image`,format)),
-            item.get('quote') && h('blockquote',editable(`chapters.${index}.quote`,'citazione'),item.get('quote')),
+            item.get('quote') && formatted('blockquote',`chapters.${index}.quote`,'citazione',item.get('quote')),
             options('Opzioni del capitolo',
               add(`chapters.${index}.layout`,'Disposizione'),
               !item.get('quote') && add(`chapters.${index}.quote`,'Aggiungi citazione'),
@@ -98,18 +93,15 @@
             const item=photo.get('data'),image=asset(item.get('image'));
             return h('figure',{key:index,'data-gallery-index':index},
               image ? h('img',{...editable(`gallery.${index}.image`,'foto della galleria'),src:image,alt:item.get('alt') || ''}) : photoSlot(`gallery.${index}.image`,'landscape'),
-              h('figcaption',editable(`gallery.${index}.caption`,'didascalia della galleria'),item.get('caption') || 'Aggiungi una didascalia'),
+              formatted('figcaption',`gallery.${index}.caption`,'didascalia della galleria',item.get('caption'),'Aggiungi una didascalia'),
               h('p',{className:'preview-image-description',...editable(`gallery.${index}.alt`,'descrizione della foto')},'Descrizione della foto: '+(item.get('alt') || 'aggiungi una descrizione…')),
               options('Opzioni della foto',add(`gallery.${index}.image`,'Cambia foto'),itemTools('gallery',index,gallery.length,'foto'))
             );
           }))),
           tools(action('gallery','add','Aggiungi foto alla galleria'))
         ),
-        h('section',{className:'preview-conclusion'},h('h2',{},'Prima di ripartire'),data.get('conclusion') ? widgetFor('conclusion') : emptyText('conclusion','Scrivi una conclusione…')),
-        h('footer',{className:'preview-editor-footer'},
-          tools(h('span',{},'Categoria: '+(data.get('category') || 'da scegliere')),add('category','Modifica categoria'),add('tags','Etichette')),
-          h('p',{className:'preview-tags'},tagLabels.join(' · ') || 'Aggiungi le etichette per organizzare questo articolo.')
-        )
+        h('section',{className:'preview-conclusion'},h('h2',{},'Prima di ripartire'),data.get('conclusion') ? widgetFor('conclusion') : emptyText('conclusion','Scrivi una conclusione…'))
+
       );
     };
     // Se il template fallisce, l'errore compare nell'anteprima invece di lasciarla vuota.
@@ -120,6 +112,10 @@
         return h('pre', {style:{padding:'24px',whiteSpace:'pre-wrap',color:'#9f4933',font:'14px/1.6 monospace'}}, 'Errore nell’anteprima: ' + (error && error.message ? error.message : error) + '\n\nMandami questo messaggio per correggere.');
       }
     });
+    CMS.registerEventListener({name:'preSave',handler:({entry})=>{
+      const data=entry.get('data'),previous=savedArticles.find(record=>record.id===data.get('id'));
+      return previous && previous.title!==data.get('title') ? data.set('titleAccent','') : data;
+    }});
     CMS.init({ config });
   } catch {
     const message = document.createElement('p');

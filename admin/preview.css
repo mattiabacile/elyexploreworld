@@ -121,3 +121,10 @@ aside { padding: 20px; background: #e4e9dc; border-radius: 12px; }
 .ely-editable-page .preview-chapter-tools button{min-height:44px}
 .ely-editable-page .preview-add[data-key-path='titleAccent']{width:auto;background:transparent;border-style:solid;padding:8px 12px;font-style:italic}
 .ely-editable-page .preview-local-tools:has([data-key-path='titleAccent']){margin-block:8px 16px}
+
+/* Page editing tools are secondary to the article itself. */
+.ely-editable-page .preview-editor-header{border:0;padding:0;margin:0 0 24px}
+.ely-editable-page .preview-edit-guide{margin:0}
+.preview-chapter-tools{grid-column:1 / -1}
+.ely-editable-page .preview-chapter-tools .preview-local-tools{margin:0}
+.ely-editable-page .preview-chapter-tools .preview-action{padding:6px 10px;background:transparent}
