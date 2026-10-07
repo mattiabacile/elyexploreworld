@@ -99,6 +99,13 @@ async function check(name,run){try{await run();console.log('PASS:',name);}catch(
    await page.waitForTimeout(450);await page.locator('.ely-editor-content').evaluate(node=>node.dispatchEvent(new Event('scroll')));await page.waitForTimeout(100);
    const count=await page.evaluate(()=>window.elyMeasurements);console.log('Field geometry reads per scroll:',count);assert.ok(count<=8,'Unnecessary field measurements: '+count);
   });
+  await check('scrolling chapter fields follows the visible chapter in preview',async()=>{
+   await focusField(page,'chapters');await page.waitForTimeout(450);
+   for(const index of [1,2]){
+    await page.locator('section[data-key-path="chapters"] > .field-wrapper .item-list > .item-wrapper').nth(index).evaluate(node=>node.scrollIntoView({block:'start'}));
+    await page.waitForFunction(index=>document.querySelector('iframe.preview')?.contentDocument?.querySelector('.ely-field-highlight')?.dataset.keyPath?.startsWith('chapters.'+index+'.'),index,{timeout:3000});
+   }
+  });
   await check('editor has no unhandled browser errors',async()=>assert.deepEqual(errors,[]));
   await page.close();
   await check('configuration failure exposes the retry control',async()=>{
@@ -118,6 +125,22 @@ async function check(name,run){try{await run();console.log('PASS:',name);}catch(
    await page.getByText('Il pannello non è disponibile. Riprova tra poco.',{exact:true}).waitFor();assert.equal(await page.getByRole('button',{name:'Accedi',exact:true}).isEnabled(),true);
    await page.unroute('**/cms/login');await page.route('**/cms/login',route=>route.abort('internetdisconnected'));await page.getByRole('button',{name:'Accedi',exact:true}).click();
    await page.getByText('Non riesco a collegarmi al pannello. Controlla la connessione e riprova.',{exact:true}).waitFor();assert.equal(await page.getByRole('button',{name:'Accedi',exact:true}).isEnabled(),true);await page.close();
+  });
+  await check('first activation remains available after a failed request and retry',async()=>{
+   const page=await browser.newPage();let requests=0,received;
+   await page.route('**/cms/status',route=>++requests===1?route.fulfill({status:503,json:{message:'Unavailable'}}):route.fulfill({json:{configured:true,hasAccount:false}}));
+   await page.route('**/cms/session',route=>route.fulfill({status:401,json:{message:'Accedi'}}));
+   await page.route('**/cms/setup',route=>{received=route.request().postDataJSON();return route.fulfill({status:400,json:{message:'Richiesta di prova intercettata'}});});
+   await page.goto(base+'/admin/?activation=retry#setup=isolated-setup-key');
+   await page.getByRole('button',{name:'Riprova ad aprire il pannello',exact:true}).waitFor();assert.equal(new URL(page.url()).hash,'');
+   await page.getByRole('button',{name:'Riprova ad aprire il pannello',exact:true}).click();
+   await page.getByRole('button',{name:'Crea accesso',exact:true}).waitFor();
+   assert.equal(new URL(page.url()).hash,'');assert.equal(new URL(page.url()).search,'?activation=retry');
+   await page.getByLabel('Nome utente',{exact:true}).fill('cliente');
+   await page.getByLabel('Password',{exact:true}).fill('Una password di prova abbastanza lunga');
+   await page.getByLabel('Conferma password',{exact:true}).fill('Una password di prova abbastanza lunga');
+   await page.getByRole('button',{name:'Crea accesso',exact:true}).click();await page.getByText('Richiesta di prova intercettata',{exact:true}).waitFor();
+   assert.equal(received.setupKey,'isolated-setup-key');await page.close();
   });
  }finally{await browser.close();}
  if(failures.length)throw new Error(failures.length+' CMS regression checks failed.');
