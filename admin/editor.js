@@ -24,6 +24,36 @@
   document.addEventListener('beforeinput',event=>{if(editable(event.target))lastInput=performance.now();},true);
   document.addEventListener('compositionstart',event=>{if(editable(event.target))composing=event.target;},true);
   document.addEventListener('compositionend',event=>{if(composing===event.target){composing=null;lastInput=performance.now();}},true);
+  let pendingListOwner=null;
+  const protectListAction=event=>{
+    const button=event.target.closest?.('button'),root=button?.closest('section.field[data-field-type="list"]');
+    const key=root?.dataset.keyPath;if(!['chapters','gallery'].includes(key))return;
+    const keyboard=event.type==='keydown';
+    if(keyboard&&(button.dataset.action!=='reorder'||!['ArrowUp','ArrowDown','Home','End'].includes(event.key)))return;
+    const direction=keyboard?(['ArrowUp','Home'].includes(event.key)?'up':'down'):button.dataset.direction||button.dataset.action?.match(/^move-(up|down)$/)?.[1];
+    const action=direction?'move':button.getAttribute('aria-label')==='Rimuovi'?'remove':button.closest('.toolbar.add')?'add':null;
+    if(!action)return;
+    const owner=root.closest('.content-editor'),custom=button.closest('.ely-chapter-moves');
+    if(!owner)return;
+    if(pendingListOwner===owner){event.preventDefault();event.stopImmediatePropagation();return;}
+    const index=[...(root.querySelector(':scope > .field-wrapper .item-list')?.children || [])].indexOf(button.closest('.item-wrapper'));
+    const busy=root.getAttribute('aria-busy');
+    const finish=()=>{
+      pendingListOwner=null;
+      if(busy===null)root.removeAttribute('aria-busy');else root.setAttribute('aria-busy',busy);
+      // Serialization can remount the control: resolve it in the current list.
+      const liveRoot=field(key),item=liveRoot?.querySelector(':scope > .field-wrapper .item-list')?.children[index];
+      const control=action==='add'?liveRoot?.querySelector(':scope > .field-wrapper .toolbar.add button'):action==='remove'?item?.querySelector('button[aria-label="Rimuovi"]'):item?.querySelector(keyboard?'[data-action="reorder"]':custom?`.ely-chapter-moves [data-direction="${direction}"]`:`[data-action="move-${direction}"]`);
+      if(!control?.isConnected||control.disabled)return;
+      if(keyboard){control.focus({preventScroll:true});control.dispatchEvent(new KeyboardEvent('keydown',{key:event.key,bubbles:true,cancelable:true,composed:true}));}
+      else control.click();
+    };
+    if(defer(finish,'native-list')){
+      pendingListOwner=owner;root.setAttribute('aria-busy','true');event.preventDefault();event.stopImmediatePropagation();
+    }
+  };
+  document.addEventListener('click',protectListAction,true);
+  document.addEventListener('keydown',protectListAction,true);
   const writing=focus=>{
     if(!currentEditor)return;
     currentEditor.classList.toggle('ely-writing-mode',focus);
@@ -100,7 +130,7 @@
     if (previewHeader && !previewHeader.querySelector('.ely-preview-devices')) {
       const controls = document.createElement('div');controls.className = 'ely-preview-devices';controls.setAttribute('role','group');controls.setAttribute('aria-label','Formato dell’anteprima');
       for (const [mode,label] of [['desktop','Desktop'],['phone','Telefono']]) {
-        const button = document.createElement('button');button.type = 'button';button.setAttribute('aria-label',label);button.title=label;button.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">'+(mode==='desktop'?'<rect x="3" y="3" width="18" height="13" rx="2"/><path d="M12 16v5m-5 0h10"/>':'<rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/>')+'</svg>';button.setAttribute('aria-pressed',String(mode === 'desktop'));
+        const button = document.createElement('button');button.type = 'button';button.setAttribute('aria-label',label);button.title=label;button.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">'+(mode==='desktop'?'<rect x="3" y="3" width="18" height="13" rx="2"/><path d="M12 16v5m-5 0h10"/>':'<rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/>')+'</svg>';button.setAttribute('aria-pressed',String(mode === (editor.classList.contains('ely-phone-preview')?'phone':'desktop')));
         button.addEventListener('click',() => {editor.classList.toggle('ely-phone-preview',mode === 'phone');for (const item of controls.children) item.setAttribute('aria-pressed',String(item === button));});controls.append(button);
       }
       previewHeader.append(controls);
