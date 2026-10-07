@@ -19,11 +19,11 @@ Il **Taccuino di Ely** è lo spazio di lavoro dedicato ai racconti, con colori e
 
 ## Modificare sulla pagina
 
-La barra superiore offre due modalità: **Pagina** e **Campi**. Campi mantiene l’editor tradizionale: l’anteprima segue il campo selezionato e lo scorrimento dei campi. Pagina mostra il racconto al centro dello spazio di lavoro.
+Su desktop la barra superiore offre due modalità: **Pagina** e **Campi**. Campi mantiene l’editor tradizionale: l’anteprima segue il campo selezionato e lo scorrimento dei campi. Pagina mostra il racconto al centro dello spazio di lavoro.
 
 In **Pagina**, cliccare il titolo, un testo, una fotografia o una didascalia: il relativo editor appare sulla pagina. Il testo conserva gli strumenti di formattazione e le fotografie usano la libreria del CMS. È possibile selezionare gli elementi anche con Tab e Invio. **Fine** chiude il controllo e torna all’anteprima; **Salva** conserva tutte le modifiche. Per pubblicare, scegliere **Visibile sul sito** nel pannello laterale e premere **Salva**. **Bozza** conserva l’articolo senza mostrarlo sul sito.
 
-I controlli per aggiungere o riordinare capitoli e fotografie sono presenti nella pagina. La visibilità è sempre a lato; tipo di contenuto, categoria, etichette, stile e testo della homepage si aprono dalle impostazioni laterali. Corsivo nel titolo e iniziale grande sono accanto al testo interessato. I campi di testo conservano grassetto e corsivo. Un articolo vuoto offre spazi fotografici proporzionati con **Aggiungi foto**, oltre ai controlli per iniziare il testo e aggiungere capitoli; ogni capitolo consente anche citazioni e consigli pratici. Sui telefoni il campo selezionato si apre in un pannello nella parte inferiore; Fine torna alla pagina. Il passaggio tra Pagina e Campi conserva la stessa bozza.
+I controlli per aggiungere o riordinare capitoli e fotografie sono presenti nella pagina. La visibilità è sempre a lato; tipo di contenuto, categoria, etichette, stile e testo della homepage si aprono dalle impostazioni laterali. Titoli, introduzione breve, didascalie e citazioni si formattano direttamente nei rispettivi campi con grassetto e corsivo. I testi lunghi offrono anche gli altri strumenti di scrittura. La lettera iniziale grande si sceglie in **Stile dell’articolo**. Un articolo vuoto offre spazi fotografici proporzionati con **Aggiungi foto**, oltre ai controlli per iniziare il testo e aggiungere capitoli; ogni capitolo consente anche citazioni e consigli pratici. Sui telefoni si usa **Campi** con il pulsante dell’anteprima: **Pagina** è disabilitata per evitare controlli sovrapposti in uno spazio troppo piccolo. Il passaggio tra Pagina e Campi conserva la stessa bozza.
 
 ## Strumenti per scrivere e rileggere
 

@@ -12,13 +12,7 @@
     try {const decoded=decodeURIComponent(source);return decoded.split('/').some(part=>part==='.'||part==='..')||/[<>\"\\?#\u0000-\u001f]/.test(decoded)?'':source;} catch {return '';}
   };
   const href = story => `racconto.html?story=${encodeURIComponent(story.id)}`;
-  const title = story => {
-    const text = String(story.title ?? '');
-    const accent = String(story.titleAccent ?? '');
-    if (!accent || !text.includes(accent)) return escape(text);
-    const index = text.lastIndexOf(accent);
-    return escape(text.slice(0, index)) + '<em>' + escape(accent) + '</em>' + escape(text.slice(index + accent.length));
-  };
+  const title = story => ElyArticle.heading(story.title,story.titleAccent);
   const markdown = value => {
     const clean = DOMPurify.sanitize(marked.parse(String(value ?? ''), { breaks: true }), {
       ALLOWED_TAGS: ['p', 'br', 'strong', 'em', 's', 'a', 'h2', 'h3', 'h4', 'ul', 'ol', 'li', 'blockquote', 'img', 'hr', 'code', 'pre', 'table', 'thead', 'tbody', 'tr', 'th', 'td'],
@@ -71,9 +65,9 @@
     host.replaceChildren(paragraph);
   };
   const responsive = host => host.querySelectorAll('img[data-content-image]').forEach(node => window.elySetImage(node, node.dataset.contentImage));
-  const card = (story, index = 0) => `<article class="story-card"><a class="story-card-link" href="${href(story)}" aria-label="Leggi ${escape(story.title)}">
+  const card = (story, index = 0) => `<article class="story-card"><a class="story-card-link" href="${href(story)}" aria-label="Leggi ${escape(ElyArticle.plain(story.title))}">
     <figure class="story-card-media"><img src="${escape(image(story.hero))}" data-content-image="${escape(image(story.hero))}" alt="${escape(story.heroAlt)}" width="1600" height="900" ${index ? 'loading="lazy"' : 'fetchpriority="high"'} decoding="async"></figure>
     <div class="story-card-body"><p class="story-card-meta"><time datetime="${escape(story.date)}">${date(story.date)}</time><span>${escape(story.destination)}</span></p>
-    <h3>${escape(story.title)}</h3><p class="story-card-description">${escape(story.deck)}</p><span class="story-card-cta">Leggi il racconto <b aria-hidden="true">→</b></span></div></a></article>`;
+    <h3>${title(story)}</h3><p class="story-card-description">${ElyArticle.inline(story.deck,{links:false})}</p><span class="story-card-cta">Leggi il racconto <b aria-hidden="true">→</b></span></div></a></article>`;
   window.ElyContent = { load, escape, image, href, title, date, markdown, status, responsive, card };
 })();
