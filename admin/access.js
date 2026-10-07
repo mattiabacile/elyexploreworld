@@ -3,10 +3,11 @@
   const form = document.querySelector('#cms-login-form');
   const status = document.querySelector('#cms-login-status');
   const button = form.querySelector('button');
+  const retry=document.querySelector('#cms-retry');retry.addEventListener('click',()=>location.reload());
   const setupKey = new URLSearchParams(location.hash.slice(1)).get('setup');
   // A one-time setup key stays out of server access logs and referrer headers.
   if (setupKey) history.replaceState(null, '', location.pathname);
-  let setup = false, active, signingOut = false;
+  let setup = false, active, exit, signingOut = false;
   const USER_KEY = 'sveltia-cms.user';
   const clear = () => {
     for (const key of [USER_KEY, 'netlify-cms-user', 'decap-cms-user']) localStorage.removeItem(key);
@@ -18,18 +19,18 @@
     return data;
   };
   const script = path => new Promise((resolve, reject) => {
-    const node = document.createElement('script');node.src = path;node.onload = resolve;node.onerror = reject;document.body.append(node);
+    const node = document.createElement('script');node.src = path;node.onload = resolve;node.onerror = () => reject(new Error('Caricamento dell’editor non riuscito.'));document.body.append(node);
   });
   if (['localhost', '127.0.0.1'].includes(location.hostname) && new URLSearchParams(location.search).get('local') === '1') {
     panel.hidden = true;clear();
-    await script('vendor/sveltia-cms.js');
-    await script('boot.js?v=699bff9e0903');return;
+    try{await script('vendor/sveltia-cms.js');await script('boot.js?v=699bff9e0903');}
+    catch{panel.hidden=false;form.hidden=true;retry.hidden=false;status.textContent='Non riesco a caricare l’editor. Riprova ad aprire il pannello.';retry.focus();return;}return;
   }
   const logout = async () => {
     if (signingOut) return;
-    signingOut = true;
+    signingOut = true;if(exit){exit.disabled=true;exit.textContent='Uscita in corso…';}
     try {await request('logout', {method: 'POST', headers: {Authorization: 'Bearer ' + active.token}});}
-    catch { status.textContent = 'Non è stato possibile uscire. Riprova.';signingOut = false;return; }
+    catch {if(exit){exit.disabled=false;exit.textContent='Uscita non riuscita. Riprova';}else status.textContent='Non è stato possibile uscire. Riprova.';signingOut=false;return;}
     clear();location.reload();
   };
   const open = async data => {
@@ -37,9 +38,9 @@
     localStorage.setItem(USER_KEY, JSON.stringify({backendName: 'github', token: data.token}));
     panel.hidden = true;
     document.documentElement.dataset.cmsAccess = 'authenticated';
-    await script('vendor/sveltia-cms.js');
-    await script('boot.js?v=699bff9e0903');
-    const exit = document.createElement('button');exit.className = 'cms-session';exit.textContent = 'Esci dal pannello';exit.addEventListener('click', logout);document.body.append(exit);
+    try{await script('vendor/sveltia-cms.js');await script('boot.js?v=699bff9e0903');}
+    catch{panel.hidden=false;form.hidden=true;retry.hidden=false;status.textContent='Non riesco a caricare l’editor. Riprova ad aprire il pannello.';retry.focus();return;}
+    exit = document.createElement('button');exit.setAttribute('aria-live','polite');exit.className = 'cms-session';exit.textContent = 'Esci dal pannello';exit.addEventListener('click', logout);document.body.append(exit);
     // Sveltia's own sign-out also revokes the server session.
     const remove = Storage.prototype.removeItem;
     Storage.prototype.removeItem = function (key) {
@@ -65,7 +66,7 @@
       button.textContent = 'Crea accesso';
     }
     status.textContent = '';form.hidden = false;
-  } catch {status.textContent = 'Il pannello non è disponibile. Ricarica la pagina tra poco.';}
+  } catch {status.textContent = 'Il pannello non è disponibile. Riprova tra poco.';retry.hidden=false;}
   form.addEventListener('submit', async event => {
     event.preventDefault();status.textContent = '';
     const values = new FormData(form);

@@ -156,7 +156,8 @@
           ],
           "buttons": [
             "bold",
-            "italic"
+            "italic",
+            "link"
           ],
           "editor_components": [],
           "use_emoji_autocomplete": false
