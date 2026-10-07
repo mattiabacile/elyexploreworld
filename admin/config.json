@@ -67,17 +67,7 @@
         {
           "name": "title",
           "label": "Titolo",
-          "widget": "richtext",
-          "minimal": true,
-          "modes": [
-            "rich_text"
-          ],
-          "buttons": [
-            "bold",
-            "italic"
-          ],
-          "editor_components": [],
-          "use_emoji_autocomplete": false
+          "widget": "ely-title"
         },
         {
           "name": "kind",
@@ -111,7 +101,7 @@
           "label": "Destinazione",
           "widget": "string",
           "maxlength": 70,
-          "hint": "Nome del luogo mostrato nello slideshow della homepage."
+          "hint": "Luogo del viaggio, mostrato nei metadati dell’articolo."
         },
         {
           "name": "deck",
@@ -391,18 +381,6 @@
               "body": "",
               "layout": "auto",
               "imageFormat": "auto"
-            },
-            {
-              "title": "",
-              "body": "",
-              "layout": "auto",
-              "imageFormat": "auto"
-            },
-            {
-              "title": "",
-              "body": "",
-              "layout": "auto",
-              "imageFormat": "auto"
             }
           ]
         },
@@ -440,9 +418,17 @@
         {
           "name": "category",
           "label": "Categoria",
-          "widget": "string",
+          "widget": "relation",
+          "collection": "category",
+          "value_field": "{{name}}",
+          "display_fields": [
+            "name"
+          ],
+          "search_fields": [
+            "name"
+          ],
           "required": false,
-          "hint": "Esempio: Natura e cultura."
+          "hint": "Scegli una categoria esistente o aggiungine una. Le categorie salvate restano disponibili."
         },
         {
           "name": "tags",
@@ -537,7 +523,7 @@
             {
               "name": "theme",
               "label": "Colore dei dettagli",
-              "widget": "select",
+              "widget": "hidden",
               "options": [
                 {
                   "label": "Argilla",
@@ -721,6 +707,30 @@
         {
           "name": "name",
           "label": "Nome del tag",
+          "widget": "string",
+          "pattern": [
+            "^[^,\\n]{1,50}$",
+            "Usa un nome da 1 a 50 caratteri, senza virgole."
+          ]
+        }
+      ],
+      "hide": true
+    },
+    {
+      "name": "category",
+      "label": "Categorie",
+      "label_singular": "Categoria",
+      "file": "content/categories.json",
+      "format": "json",
+      "create": true,
+      "delete": false,
+      "duplicate": false,
+      "identifier_field": "name",
+      "summary": "{{name}}",
+      "fields": [
+        {
+          "name": "name",
+          "label": "Nome della categoria",
           "widget": "string",
           "pattern": [
             "^[^,\\n]{1,50}$",

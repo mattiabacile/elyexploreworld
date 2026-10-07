@@ -23,7 +23,7 @@
   });
   if (['localhost', '127.0.0.1'].includes(location.hostname) && new URLSearchParams(location.search).get('local') === '1') {
     panel.hidden = true;clear();
-    try{await script('vendor/sveltia-cms.js');await script('boot.js?v=c9ed58b5a2c4');}
+    try{await script('vendor/sveltia-cms.js');await script('boot.js?v=e3250a871c2f');}
     catch{panel.hidden=false;form.hidden=true;retry.hidden=false;status.textContent='Non riesco a caricare l’editor. Riprova ad aprire il pannello.';retry.focus();return;}return;
   }
   const logout = async () => {
@@ -38,7 +38,7 @@
     localStorage.setItem(USER_KEY, JSON.stringify({backendName: 'github', token: data.token}));
     panel.hidden = true;
     document.documentElement.dataset.cmsAccess = 'authenticated';
-    try{await script('vendor/sveltia-cms.js');await script('boot.js?v=c9ed58b5a2c4');}
+    try{await script('vendor/sveltia-cms.js');await script('boot.js?v=e3250a871c2f');}
     catch{panel.hidden=false;form.hidden=true;retry.hidden=false;status.textContent='Non riesco a caricare l’editor. Riprova ad aprire il pannello.';retry.focus();return;}
     exit = document.createElement('button');exit.setAttribute('aria-live','polite');exit.className = 'cms-session';exit.textContent = 'Esci dal pannello';exit.addEventListener('click', logout);document.body.append(exit);
     // Sveltia's own sign-out also revokes the server session.

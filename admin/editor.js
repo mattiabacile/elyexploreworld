@@ -75,7 +75,7 @@
       root.querySelectorAll('.ely-chapter-label').forEach(node=>{const item=node.closest('.item-wrapper'),items=[...root.querySelector('.item-list').children],index=items.indexOf(item);const value='Capitolo '+(index+1);if(node.textContent!==value)node.textContent=value;for(const button of node.parentElement.querySelectorAll('.ely-chapter-moves button'))button.disabled=button.dataset.direction==='up'?index===0:index===items.length-1;});
     }
     for(const button of editor.querySelectorAll('section.field[data-key-path=chapters] > .field-wrapper .toolbar button'))if(/^(Espandi tutto|Comprimi tutto)$/.test(button.textContent.trim()))button.hidden=true;
-    for(const hint of document.querySelectorAll('[role=dialog] [data-entry-draft-root] > p.hint'))if(hint.textContent.startsWith('The new'))hint.textContent='Il nuovo tag verrà salvato insieme all’articolo.';
+    for(const hint of document.querySelectorAll('[role=dialog] [data-entry-draft-root] > p.hint'))if(hint.textContent.startsWith('The new'))hint.textContent=hint.closest('[role=dialog]').querySelector('[data-key-path=name] h4')?.textContent.includes('categoria')?'La nuova categoria verrà salvata insieme all’articolo.':'Il nuovo tag verrà salvato insieme all’articolo.';
     applyWorkspace();updateKind();
     const frame=editor.querySelector('iframe.preview');if(frame && !frame.dataset.elySync){frame.dataset.elySync='true';frame.addEventListener('load',()=>{applyWorkspace();syncPreview(previewKey);});}
   };

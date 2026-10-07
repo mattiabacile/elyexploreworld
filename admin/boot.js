@@ -22,7 +22,7 @@
       const appearance = ElyArticle.appearance(Object.fromEntries(['theme', 'coverFormat', 'coverPosition', 'textStyle', 'dropCap', 'showContents'].map(key => [key, data.getIn(['appearance', key])])));
       const gallery = widgetsFor('gallery') || [];
       const editable = (key, label) => ({'data-key-path':key, tabIndex:0, title:`Modifica ${label}`});
-      const formatted=(tag,key,label,value,fallback='')=>h(tag,{...editable(key,label),dangerouslySetInnerHTML:{__html:ElyArticle.inline(value || fallback)}});
+      const formatted=(tag,key,label,value,fallback='')=>h(tag,{...editable(key,label),dangerouslySetInnerHTML:{__html:key==='title'?ElyArticle.heading(value || fallback,accent):ElyArticle.inline(value || fallback)}});
       const add = (key, label) => h('button', {...editable(key,label), type:'button', className:'preview-add'}, label);
       const action = (list, operation, label, index, disabled=false) => h('button', {
         type:'button', className:'preview-action', 'data-list':list, 'data-operation':operation,
@@ -124,6 +124,7 @@
       const data=entry.get('data'),previous=savedArticles.find(record=>record.id===data.get('id'));
       return previous && previous.title!==data.get('title') ? data.set('titleAccent','') : data;
     }});
+    ElyTitle.register();
     CMS.init({ config });
   } catch {
     const message = document.createElement('p');
