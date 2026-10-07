@@ -8,7 +8,8 @@
     if (/^https:\/\//i.test(source)) {
       try {const url = new URL(source);return url.protocol === 'https:' && !url.username && !url.password ? url.href : '';} catch {return '';}
     }
-    return /^\/?assets\/[\w\-./% ()]+\.(?:webp|png|jpe?g|avif|gif)$/i.test(source) && !source.includes('..') ? source : '';
+    if (!/^\/?assets\/[^<>\"\\?#\u0000-\u001f]+\.(?:webp|png|jpe?g|avif|gif)$/i.test(source)) return '';
+    try {const decoded=decodeURIComponent(source);return decoded.split('/').some(part=>part==='.'||part==='..')||/[<>\"\\?#\u0000-\u001f]/.test(decoded)?'':source;} catch {return '';}
   };
   const href = story => `racconto.html?story=${encodeURIComponent(story.id)}`;
   const title = story => {

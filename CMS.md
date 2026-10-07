@@ -19,18 +19,18 @@ Il **Taccuino di Ely** è lo spazio di lavoro dedicato ai racconti, con colori e
 
 ## Modificare sulla pagina
 
-La barra superiore offre due modalità: **Pagina** e **Campi**. Campi mantiene l’editor tradizionale; Pagina mostra il racconto al centro dello spazio di lavoro.
+La barra superiore offre due modalità: **Pagina** e **Campi**. Campi mantiene l’editor tradizionale: l’anteprima segue il campo selezionato e lo scorrimento dei campi. Pagina mostra il racconto al centro dello spazio di lavoro.
 
-In **Pagina**, cliccare il titolo, un testo, una fotografia o una didascalia: il relativo editor appare sulla pagina. Il testo conserva gli strumenti di formattazione e le fotografie usano la libreria del CMS. È possibile selezionare gli elementi anche con Tab e Invio. **Fine** chiude il controllo e torna all’anteprima; **Salva** conserva tutte le modifiche. Per pubblicare, usare **Pubblica** e scegliere la visibilità prima di salvare.
+In **Pagina**, cliccare il titolo, un testo, una fotografia o una didascalia: il relativo editor appare sulla pagina. Il testo conserva gli strumenti di formattazione e le fotografie usano la libreria del CMS. È possibile selezionare gli elementi anche con Tab e Invio. **Fine** chiude il controllo e torna all’anteprima; **Salva** conserva tutte le modifiche. Per pubblicare, scegliere **Visibile sul sito** nel pannello laterale e premere **Salva**. **Bozza** conserva l’articolo senza mostrarlo sul sito.
 
-I controlli per aggiungere o riordinare capitoli e fotografie sono presenti nella pagina. Anche **Aspetto**, **Pubblica**, tipo di contenuto, categoria, etichette e testo della homepage si modificano sopra l’anteprima. Un articolo vuoto offre i controlli per iniziare il testo, aggiungere capitoli e caricare foto; ogni capitolo consente anche citazioni e consigli pratici. Sui telefoni il campo selezionato si apre in un pannello nella parte inferiore; Fine torna alla pagina. Il passaggio tra Pagina e Campi conserva la stessa bozza.
+I controlli per aggiungere o riordinare capitoli e fotografie sono presenti nella pagina. La visibilità è sempre a lato; tipo di contenuto, categoria, etichette, stile e testo della homepage si aprono dalle impostazioni laterali. Corsivo nel titolo e iniziale grande sono accanto al testo interessato. I campi di testo conservano grassetto e corsivo. Un articolo vuoto offre spazi fotografici proporzionati con **Aggiungi foto**, oltre ai controlli per iniziare il testo e aggiungere capitoli; ogni capitolo consente anche citazioni e consigli pratici. Sui telefoni il campo selezionato si apre in un pannello nella parte inferiore; Fine torna alla pagina. Il passaggio tra Pagina e Campi conserva la stessa bozza.
 
 ## Strumenti per scrivere e rileggere
 
 - **Statistiche del testo**: parole, tempo di lettura stimato a 200 parole al minuto e numero di capitoli. Il conteggio comprende apertura, testi dei capitoli, citazioni, consigli pratici e conclusione; esclude i titoli e le descrizioni delle fotografie.
 - **Solo scrittura**: su desktop allarga lo spazio per il testo e nasconde l’anteprima. **Mostra anteprima** ripristina i due pannelli. Le modifiche continuano ad aggiornare statistiche e controlli.
 - **Un piccolo aiuto per iniziare**: nella sezione Scrivi, tre spunti facoltativi aiutano a raccontare un ricordo preciso, il proprio ritmo e un consiglio personale, senza inserire testi automaticamente.
-- **Anteprima Desktop / Telefono**: il pulsante Telefono restringe l’anteprima a 390 pixel, quando lo spazio disponibile lo consente, per controllare la leggibilità e le fotografie.
+- **Icone schermo / telefono**: l’icona telefono restringe l’anteprima a 390 pixel, quando lo spazio disponibile lo consente, per controllare la leggibilità e le fotografie.
 - **Scarica il testo**: salva una copia Markdown (`.md`) del testo corrente, incluse le modifiche non ancora salvate. Comprende introduzione, capitoli, citazioni, consigli pratici, informazioni del viaggio, galleria e conclusione. Le fotografie sono riferimenti ai file, non immagini incluse nel download. La copia non sostituisce **Salva** e non ripristina le impostazioni grafiche del CMS.
 
 ## Controlli prima della pubblicazione
