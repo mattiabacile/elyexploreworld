@@ -101,6 +101,7 @@
     requestAnimationFrame(enhance);
   };
   const select=(key,element)=>{
+    if(!visual())return;
     if(nativeValidationReceiver){window.removeEventListener('message',nativeValidationReceiver,true);nativeValidationReceiver=null;}
     // Flush the native rich editor before changing the selected control.
     if(window.elyEditor?.defer(()=>select(key,element)))return;
@@ -270,12 +271,22 @@
       }
       if(currentEditor!==editor)return;
       working=false;editor.classList.remove('ely-list-working');lockFields();enhance();
+      // The user may have chosen Campi while the native list was updating.
+      // Keep that mode and its focus instead of opening an invisible inspector.
+      if(!visual()){
+        announce(operation==='add'?'Elemento aggiunto alla bozza.':'Articolo aggiornato.');
+        return;
+      }
       const targetKey=key+'.'+targetIndex+'.'+(key==='chapters'?'title':'image');
+      const cancelled=Symbol('mode changed');
       const target=targetIndex>=0?await ready(()=>{
+        if(!visual())return cancelled;
         const next=editor?.querySelector('iframe.preview');
         const candidate=next?.contentDocument?.querySelector(`[data-key-path="${targetKey}"]`);
         if(candidate){frame=next;bind();return candidate;}return null;
       }):null;
+      if(currentEditor!==editor)return;
+      if(target===cancelled||!visual()){announce(operation==='add'?'Elemento aggiunto alla bozza.':'Articolo aggiornato.');return;}
       if(target){target.scrollIntoView({block:'center'});target.focus({preventScroll:true});}
       else frame?.contentWindow?.scrollTo(0,oldScroll);
       announce(operation==='add'?(key==='chapters'?'Capitolo aggiunto. Scrivi direttamente nell’articolo.':'Foto aggiunta alla galleria. Scegli l’immagine.') : operation==='remove'?'Elemento eliminato dalla bozza.':'Ordine aggiornato.');
@@ -385,10 +396,12 @@
   const setMode=mode=>{
     if(mode==='page'&&compactScreen.matches)mode='fields';
     if(window.elyEditor?.defer(()=>setMode(mode)))return;
+    const returnToFields=mode==='fields'&&document.activeElement===frame;
     close(false);window.elyEditor?.writing(false);editor.classList.remove('ely-inspector-open');editor.classList.toggle('ely-page-mode',mode==='page');
     if(mode==='fields'){previewSwitch=false;editor.querySelector('#first-pane-header button[aria-label="Anteprima"][aria-pressed="true"]')?.click();}
     editor.querySelectorAll('.ely-mode-switch button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mode===mode)));
     bind();lockFields();draw();
+    if(returnToFields)(editor.querySelector('.ely-mode-switch:not([hidden]) [data-mode="fields"]')||editor.querySelector('#first-pane-header button[aria-label="Anteprima"]'))?.focus({preventScroll:true});
   };
   const createPanel=()=>{
     panel=document.createElement('div');panel.className='ely-inspector';panel.setAttribute('role','dialog');panel.setAttribute('aria-label','Modifica nell’articolo');

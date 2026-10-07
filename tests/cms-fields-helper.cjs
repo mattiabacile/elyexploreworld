@@ -11,7 +11,7 @@ exports.focusField=async(page,key)=>{
    if(await section.getAttribute('data-field-type')==='object' && await expand.count())await expand.first().click();
    const control=section.locator(':scope > .field-wrapper input:not([type=file]), :scope > .field-wrapper [contenteditable=true], :scope > .field-wrapper [role=switch], :scope > .field-wrapper [role=radio], :scope > .field-wrapper [role=checkbox], :scope > .field-wrapper [role=combobox], :scope > .field-wrapper textarea, :scope > .field-wrapper button');
    if(await control.count()){await control.first().focus();return section;}
-  }else await content.evaluate((node,{key,keys})=>{const first=node.querySelector(':scope > section.field')?.dataset.keyPath;node.scrollTop+=(keys.indexOf(key)<keys.indexOf(first)?-1:1)*node.clientHeight*.6;},{key,keys});
+  }else await content.evaluate((node,{key,keys})=>{const first=node.querySelector(':scope > section.field')?.dataset.keyPath;node.scrollTop+=(keys.indexOf(key.split('.')[0])<keys.indexOf(first)?-1:1)*node.clientHeight*.6;},{key,keys});
   await page.waitForTimeout(75);
  }
  throw new Error('Native field did not mount: '+key);
