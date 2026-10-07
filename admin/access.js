@@ -3,10 +3,16 @@
   const form = document.querySelector('#cms-login-form');
   const status = document.querySelector('#cms-login-status');
   const button = form.querySelector('button');
-  const retry=document.querySelector('#cms-retry');retry.addEventListener('click',()=>location.reload());
+  const retry=document.querySelector('#cms-retry');
   const setupKey = new URLSearchParams(location.hash.slice(1)).get('setup');
   // A one-time setup key stays out of server access logs and referrer headers.
-  if (setupKey) history.replaceState(null, '', location.pathname);
+  if (setupKey) history.replaceState(null, '', location.pathname + location.search);
+  retry.addEventListener('click',()=>{
+    // Restore the fragment only for the reload; the next load removes it again.
+    // Otherwise a temporary outage discards the first activation key.
+    if(setupKey)history.replaceState(null,'',location.pathname+location.search+'#setup='+encodeURIComponent(setupKey));
+    location.reload();
+  });
   let setup = false, active, exit, signingOut = false;
   const USER_KEY = 'sveltia-cms.user';
   const clear = () => {
