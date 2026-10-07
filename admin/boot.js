@@ -11,7 +11,7 @@
     config.load_config_file = false;
     const savedArticles=await fetch('../content/stories.json',{cache:'no-cache'}).then(r=>r.ok?r.json():[]).catch(()=>[]);
     CMS.registerPreviewStyle('/admin/preview.css?v=ff1d300ea755');
-    CMS.registerPreviewTemplate('racconti', ({ entry, widgetFor, widgetsFor, getAsset }) => {
+    const renderStory = ({ entry, widgetFor, widgetsFor, getAsset }) => {
       const data = entry.get('data');
       const asset = path => path ? getAsset(path)?.url || path : '';
       const hero = asset(data.get('hero'));
@@ -109,6 +109,14 @@
           h('p',{className:'preview-tags'},tagLabels.join(' · ') || 'Aggiungi le etichette per organizzare questo articolo.')
         )
       );
+    };
+    // Se il template fallisce, l'errore compare nell'anteprima invece di lasciarla vuota.
+    CMS.registerPreviewTemplate('racconti', props => {
+      try { return renderStory(props); }
+      catch (error) {
+        console.error('Anteprima racconto:', error);
+        return h('pre', {style:{padding:'24px',whiteSpace:'pre-wrap',color:'#9f4933',font:'14px/1.6 monospace'}}, 'Errore nell’anteprima: ' + (error && error.message ? error.message : error) + '\n\nMandami questo messaggio per correggere.');
+      }
     });
     CMS.init({ config });
   } catch {
