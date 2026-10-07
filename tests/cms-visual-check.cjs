@@ -1,3 +1,4 @@
+const {focusField}=require('./cms-fields-helper.cjs');
 const {chromium}=require('playwright'), fs=require('fs'), assert=require('assert/strict');
 const root=require('node:path').resolve(__dirname,'..');
 const stories=JSON.parse(fs.readFileSync(root+'/content/stories.json'));
@@ -28,7 +29,7 @@ await page.addInitScript(({files})=>{
 await page.route('**/article-links.js?*',route=>route.request().url().includes('/admin/')?route.continue():route.fulfill({status:404,body:'Missing'}));
 await page.goto((process.env.SITE_URL || 'http://localhost:4173') + '/admin/?local=1');await page.getByRole('button',{name:/Lavora con Repository Locale/}).click();
 await page.getByText(/Giappone: tra templi/).first().waitFor({timeout:30000});await page.getByText(/Giappone: tra templi/).first().click();
-await page.locator('.ely-word-count').filter({hasText:/\d+ parole/}).waitFor();
+await page.locator('.ely-editor-content section.field[data-key-path=title]').waitFor();
 
 await page.getByRole('button',{name:'Pagina',exact:true}).click();
 await page.frameLocator('iframe').getByRole('heading',{name:/Giappone: tra templi/}).waitFor();
@@ -84,10 +85,10 @@ await page.getByRole('button',{name:'Pagina',exact:true}).click();
 await page.setViewportSize({width:390,height:844});
 await page.locator('.content-editor.ely-page-mode').waitFor({state:'detached'});
 assert.equal(await page.locator('.ely-mode-switch').isVisible(),false);
-await page.getByRole('button',{name:'Inizia',exact:true}).click();
+await focusField(page,'title');
 await page.locator('section.field[data-key-path="title"] [contenteditable="true"]').fill('Giappone: campi dal telefono');
 await page.screenshot({path:root+'/.impeccable/review/page-mobile.png'});
-await page.getByRole('button',{name:'Scrivi',exact:true}).click();
+await focusField(page,'intro');
 await page.locator('section.field[data-key-path="intro"] [contenteditable="true"]').fill('Una riflessione scritta dal telefono.');
 assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
 await page.getByRole('button',{name:'Salva',exact:true}).click();

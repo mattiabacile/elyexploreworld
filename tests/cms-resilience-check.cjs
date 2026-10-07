@@ -29,7 +29,7 @@ await page.addInitScript(({files})=>{
 await page.route('**/article-links.js?*',route=>route.request().url().includes('/admin/')?route.continue():route.fulfill({status:404,body:'Missing'}));
 await page.goto((process.env.SITE_URL || 'http://localhost:4173') + '/admin/?local=1');await page.getByRole('button',{name:/Lavora con Repository Locale/}).click();
 await page.getByText(/Giappone: tra templi/).first().waitFor({timeout:30000});await page.getByText(/Giappone: tra templi/).first().click();
-await page.locator('.ely-word-count').filter({hasText:/\d+ parole/}).waitFor();
+await page.locator('.ely-editor-content section.field[data-key-path=title]').waitFor();
 
 await page.getByRole('button',{name:'Pagina',exact:true}).click();
 await page.frameLocator('iframe').getByRole('heading',{name:/Giappone: tra templi/}).waitFor();
@@ -71,7 +71,7 @@ assert.equal(saved.chapters[15].title,longTitle.trim());assert.equal(saved.deck,
 await page.getByText(/Giappone: tra templi/).first().click();await page.getByRole('button',{name:'Pagina',exact:true}).click();
 await page.frameLocator('iframe.preview').getByRole('button',{name:'Aggiungi capitolo',exact:true}).waitFor();
 await page.evaluate(async()=>{const doc=document.querySelector('iframe.preview').contentDocument;[...doc.querySelectorAll('button')].find(b=>b.textContent==='Aggiungi capitolo').click();await new Promise(resolve=>setTimeout(resolve,50));document.querySelector('button[aria-label="Annulla Modifica"]').click();});
-await page.getByText(/Bali: l’isola/).first().click();await page.locator('.ely-word-count').filter({hasText:/\d+ parole/}).waitFor();
+await page.getByText(/Bali: l’isola/).first().click();await page.locator('.ely-editor-content section.field[data-key-path=title]').waitFor();
 await page.waitForTimeout(500);
 assert.equal(await page.getByRole('button',{name:'Salva',exact:true}).isEnabled(),false);
 assert.equal(await page.locator('.ely-on-page-field').count(),0);assert.equal(await page.locator('.ely-action-status').innerText(),'');
