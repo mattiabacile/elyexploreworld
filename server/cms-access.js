@@ -109,7 +109,7 @@ async function startSession(env, username) {
   ]);
   return json({username, token: csrf, expiresAt: expires}, 200, {'Set-Cookie': cookie(token)});
 }
-const writable = path => typeof path === 'string' && (['content/stories.json', 'content/tags.json'].includes(path) || /^assets\/uploads\/[a-zA-Z0-9_-]+\.(?:webp|jpg|jpeg|png|avif|gif)$/i.test(path));
+const writable = path => typeof path === 'string' && (['content/stories.json', 'content/tags.json', 'content/categories.json'].includes(path) || /^assets\/uploads\/[a-zA-Z0-9_-]+\.(?:webp|jpg|jpeg|png|avif|gif)$/i.test(path));
 
 export function validateGraphQL(body) {
   if (!body || typeof body.query !== 'string' || body.query.length > 128000) return false;
