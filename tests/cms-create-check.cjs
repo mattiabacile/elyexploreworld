@@ -53,8 +53,9 @@ await page.locator('.ely-on-page-field').waitFor({state:'detached'});await page.
 await fill('heroAlt','La copertina del viaggio');await fill('heroCaption','Un nuovo inizio');
 await pick('appearance.dropCap');await page.locator('.ely-on-page-field [role=switch]').click();await done();
 await rich('intro','L’apertura del racconto creata direttamente sulla pagina.');
-await page.frameLocator('iframe.preview').getByRole('button',{name:'Aggiungi capitolo',exact:true}).click();
-await page.locator('.ely-on-page-field[data-key-path="chapters.0.title"]').waitFor({state:'visible'});await done();
+assert.equal(await page.frameLocator('iframe.preview').locator('.preview-chapter').count(),3);
+// Retain one default chapter; the author removes the two unused ones directly.
+for(let i=0;i<2;i++){await page.frameLocator('iframe.preview').getByRole('button',{name:'Elimina capitolo',exact:true}).last().click();await page.frameLocator('iframe.preview').getByRole('button',{name:'Elimina',exact:true}).click();await page.locator('.content-editor[aria-busy="false"]').waitFor();}
 await fill('chapters.0.title','Una nuova tappa');await rich('chapters.0.body','Il capitolo nasce qui.');
 await fill('chapters.0.quote','Un ricordo da conservare');await rich('chapters.0.note','Un consiglio pratico.');
 await pick('travelFacts');await page.locator('.ely-on-page-field').getByText(/Aggiungi/).click();await page.getByLabel('Durata',{exact:true}).fill('Una settimana');await done();

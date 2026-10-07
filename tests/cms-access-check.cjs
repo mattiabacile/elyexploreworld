@@ -154,9 +154,15 @@ const createDB=()=>{
     await focusField(page,'published');
     assert.match(await page.getByLabel('Data del racconto',{exact:true}).inputValue(),/^\d{4}-\d{2}-\d{2}$/);
     await page.getByLabel('Data del racconto',{exact:true}).fill('2026-10-06');
-    await page.getByLabel('Descrizione della foto',{exact:true}).fill('Una fotografia del viaggio.');
+    await page.locator('section[data-key-path="heroAlt"]').getByLabel('Descrizione della foto',{exact:true}).fill('Una fotografia del viaggio.');
     await focusField(page,'intro');
     await page.getByRole('textbox',{name:'Apertura del racconto',exact:true}).fill('Il testo completo della nuova storia.');
+    await focusField(page,'chapters');
+    for(let index=0;index<3;index++){
+      await page.locator('section[data-key-path="chapters"] > .field-wrapper .item-list > *').nth(index).scrollIntoViewIfNeeded();await page.waitForTimeout(150);
+      const item=page.locator('section[data-key-path="chapters.'+index+'.title"] [contenteditable=true]');await item.scrollIntoViewIfNeeded();await item.fill('Capitolo '+(index+1));await page.waitForTimeout(300);
+      const body=page.locator('section[data-key-path="chapters.'+index+'.body"] [contenteditable=true]');await body.scrollIntoViewIfNeeded();await body.fill('Testo del capitolo '+(index+1));await page.waitForTimeout(300);
+    }
     await focusField(page,'appearance');
     const appearance=page.locator('section[data-key-path="appearance"]');
     const expandAppearance=appearance.locator(':scope > .field-wrapper button[aria-controls^="object-"][aria-expanded="false"]');
@@ -175,7 +181,7 @@ const createDB=()=>{
     await page.getByRole('button',{name:'Salva',exact:true}).click();
     for(let i=0;i<200&&!records.some(r=>r.title==='Nuovo racconto dal pannello');i++)await new Promise(resolve=>setTimeout(resolve,20));
     const created=records.find(r=>r.title==='Nuovo racconto dal pannello');
-    assert.ok(created);assert.equal(created.published,false);assert.equal(created.destination,'Portogallo');
+    assert.ok(created);assert.equal(created.chapters.length,3);assert.equal(created.chapters[2].title,'Capitolo 3');assert.equal(created.published,false);assert.equal(created.destination,'Portogallo');
     assert.match(created.id,/^[a-f0-9-]{36}$/);assert.match(created.hero,/^\/assets\/uploads\/.+\.webp$/);
     assert.ok(sources.has(created.hero.slice(1)));assert.match(created.intro,/testo completo/);
     assert.equal(created.appearance.theme,'ocean');assert.equal(created.appearance.textStyle,'journal');
