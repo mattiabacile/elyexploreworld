@@ -23,7 +23,7 @@
   if (['localhost', '127.0.0.1'].includes(location.hostname) && new URLSearchParams(location.search).get('local') === '1') {
     panel.hidden = true;clear();
     await script('vendor/sveltia-cms.js');
-    await script('boot.js?v=pg3');return;
+    await script('boot.js?v=5b1e002f92c3');return;
   }
   const logout = async () => {
     if (signingOut) return;
@@ -38,7 +38,7 @@
     panel.hidden = true;
     document.documentElement.dataset.cmsAccess = 'authenticated';
     await script('vendor/sveltia-cms.js');
-    await script('boot.js?v=pg3');
+    await script('boot.js?v=5b1e002f92c3');
     const exit = document.createElement('button');exit.className = 'cms-session';exit.textContent = 'Esci dal pannello';exit.addEventListener('click', logout);document.body.append(exit);
     // Sveltia's own sign-out also revokes the server session.
     const remove = Storage.prototype.removeItem;

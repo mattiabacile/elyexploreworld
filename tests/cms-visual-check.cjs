@@ -6,7 +6,7 @@ stories[0].travelFacts={duration:'Dieci giorni',season:'Primavera'};
 stories[0].gallery=[{image:stories[0].hero,alt:'Foto della galleria',caption:'Il viaggio in immagini'}];
 stories[0].conclusion='Una **riflessione finale**.';
 const files={'content/stories.json':{text:JSON.stringify(stories),type:'application/json'}};
-for(const source of new Set(stories.flatMap(s=>[s.hero,...s.chapters.map(c=>c.image)]).filter(Boolean)))files[source]={base64:fs.readFileSync(root+'/'+source).toString('base64'),type:'image/webp'};
+for(const source of new Set(stories.flatMap(s=>[s.hero,...s.chapters.map(c=>c.image)]).filter(source=>source && !/^https?:\/\//.test(source))))files[source]={base64:fs.readFileSync(root+'/'+source).toString('base64'),type:'image/webp'};
 (async()=>{
 const browser=await chromium.launch({channel:'chrome'}),page=await browser.newPage({viewport:{width:1440,height:1000},reducedMotion:'reduce'});
 const errors=[];page.on('pageerror',error=>errors.push(error.message));
@@ -25,11 +25,25 @@ await page.addInitScript(({files})=>{
   return root;
  };
 },{files});
+await page.route('**/article-links.js?*',route=>route.request().url().includes('/admin/')?route.continue():route.fulfill({status:404,body:'Missing'}));
 await page.goto((process.env.SITE_URL || 'http://localhost:4173') + '/admin/?local=1');await page.getByRole('button',{name:/Lavora con Repository Locale/}).click();
 await page.getByText(/Giappone: tra templi/).first().waitFor({timeout:30000});await page.getByText(/Giappone: tra templi/).first().click();
 await page.locator('.ely-word-count').filter({hasText:/\d+ parole/}).waitFor();
 
 await page.getByRole('button',{name:'Pagina',exact:true}).click();
+await page.frameLocator('iframe').getByRole('heading',{name:/Giappone: tra templi/}).waitFor();
+const hintMutations=await page.evaluate(async()=>{
+ const hint=document.querySelector('.ely-live-hint');
+ const title=document.querySelector('iframe').contentDocument.querySelector('h1');
+ title.dispatchEvent(new MouseEvent('mouseover',{bubbles:true}));
+ await new Promise(resolve=>requestAnimationFrame(resolve));
+ let count=0;const observer=new MutationObserver(records=>count+=records.length);
+ observer.observe(hint,{childList:true});
+ for(let i=0;i<50;i++)title.dispatchEvent(new MouseEvent('mouseover',{bubbles:true}));
+ await new Promise(resolve=>requestAnimationFrame(resolve));observer.disconnect();return count;
+});
+assert.equal(hintMutations,0,'Repeated hover must not rebuild the live hint or retrigger the editor');
+console.log('Performance: 50 repeated hover events, '+hintMutations+' redundant hint updates.');
 await page.frameLocator('iframe').getByRole('heading',{name:/Giappone: tra templi/}).click();
 await page.locator('.ely-on-page-field').waitFor({state:'visible'});
 
@@ -88,13 +102,15 @@ await page.getByRole('button',{name:'Pagina',exact:true}).waitFor();
 assert.equal(await page.locator('.ely-mode-switch').count(),1);
 await page.getByRole('button',{name:'Pagina',exact:true}).click();
 await page.frameLocator('iframe').getByRole('heading',{name:'Giappone: pagina dal telefono'}).waitFor();
-await page.getByRole('button',{name:'Aspetto',exact:true}).click();
+await page.frameLocator('iframe').getByRole('button',{name:'Aspetto',exact:true}).click();
+await page.getByRole('button',{name:'Colori, copertina e lettura',exact:true}).click();
 await page.locator('.ely-on-page-field[data-key-path="appearance"]').waitFor({state:'visible'});
 assert.equal(await page.locator('.content-editor.ely-page-mode').count(),1);
 await page.getByRole('button',{name:'Fine',exact:true}).click();
 await page.getByRole('button',{name:'Pagina',exact:true}).click();
 await page.frameLocator('iframe').getByRole('heading',{name:'Giappone: pagina dal telefono'}).waitFor();
-await page.getByRole('button',{name:'Pubblica',exact:true}).click();
+await page.frameLocator('iframe').getByRole('button',{name:'Visibilità',exact:true}).click();
+await page.getByRole('button',{name:'Visibile sul sito dopo Salva',exact:true}).click();
 await page.locator('.ely-on-page-field[data-key-path="published"]').waitFor({state:'visible'});
 assert.equal(await page.locator('.content-editor.ely-page-mode').count(),1);
 await page.getByRole('button',{name:'Fine',exact:true}).click();
