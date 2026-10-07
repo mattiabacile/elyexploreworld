@@ -35,8 +35,10 @@
     else node.textContent = view[node.dataset.field] || '';
   });
   const hero = document.querySelector('[data-image="hero"]');
-  window.elySetImage(hero, c.image(story.hero));
-  hero.alt = story.heroAlt || '';
+  const opening=ElyArticle.openingPhoto(story);
+  hero.closest('figure').hidden=!c.image(opening.image);
+  if(c.image(opening.image))window.elySetImage(hero, c.image(opening.image));
+  hero.alt = opening.alt || '';
   if (story.appearance) hero.style.objectPosition = appearance.coverPosition;
   document.querySelector('[data-content="intro"]').innerHTML = c.markdown(story.intro);
   const intro = document.querySelector('[data-content="intro"]');
@@ -83,7 +85,8 @@
   }
   const tagHost = document.querySelector('[data-list="tags"]');
   (Array.isArray(story.tags) ? story.tags : []).forEach(tag => {
-    const node = document.createElement('span'); node.textContent = tag; tagHost.append(node);
+    if(typeof tag !== 'string' || !tag.trim())return;
+    const node = document.createElement('a'); node.textContent = tag.trim(); node.href='racconti.html?tag='+encodeURIComponent(tag.trim()); tagHost.append(node);
   });
   document.querySelector('.tag-list').hidden = !tagHost.children.length;
   const currentIndex = stories.indexOf(story);

@@ -10,15 +10,23 @@
   const host = document.querySelector('.stories-archive .stories-grid');
   const tipsHost = document.querySelector('.tips-grid');
   try {
-    const records = await ElyContent.load();
+    let records = await ElyContent.load();
+    const tag=new URLSearchParams(location.search).get('tag')?.trim();
+    if(tag){
+      records=records.filter(story=>(Array.isArray(story.tags)?story.tags:[]).some(value=>ElyArticle.tagKey(value)===ElyArticle.tagKey(tag)));
+      const filter=document.createElement('p');filter.className='archive-tag-filter';filter.setAttribute('role','status');
+      filter.append(document.createTextNode('Tag: '+tag+' · '+records.length+' articoli '));
+      const clear=document.createElement('a');clear.href='racconti.html';clear.textContent='Mostra tutti';filter.append(clear);
+      document.querySelector('.stories-intro-copy').append(filter);
+    }
     const stories = records.filter(story => story.kind !== 'consiglio');
-    if (!stories.length) ElyContent.status(host, 'I primi racconti arriveranno presto.');
+    if (!stories.length) ElyContent.status(host, tag?'Nessun racconto con questo tag.':'I primi racconti arriveranno presto.');
     else {
       host.innerHTML = stories.map(ElyContent.card).join('');
       ElyContent.responsive(host);
     }
     const tips = records.filter(story => story.kind === 'consiglio');
-    if (!tips.length) ElyContent.status(tipsHost, 'Nuovi consigli di viaggio arriveranno presto.');
+    if (!tips.length) ElyContent.status(tipsHost, tag?'Nessun consiglio con questo tag.':'Nuovi consigli di viaggio arriveranno presto.');
     else {
       tipsHost.innerHTML = tips.map(story => {
         if (!story.preparing) return ElyContent.card(story);
