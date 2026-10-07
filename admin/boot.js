@@ -10,7 +10,7 @@
     config.backend.graphql_api_root = location.origin + '/cms/api/graphql';
     config.load_config_file = false;
     const savedArticles=await fetch('../content/stories.json',{cache:'no-cache'}).then(r=>r.ok?r.json():[]).catch(()=>[]);
-    CMS.registerPreviewStyle('/admin/preview.css?v=ff1d300ea755');
+    CMS.registerPreviewStyle('/admin/preview.css?v=2d32702e1537');
     const renderStory = ({ entry, widgetFor, widgetsFor, getAsset }) => {
       const data = entry.get('data');
       const asset = path => path ? getAsset(path)?.url || path : '';
@@ -32,6 +32,7 @@
       const tools = (...children) => h('div', {className:'preview-local-tools'}, ...children);
       const options = (label, ...children) => h('details', {className:'preview-options'}, h('summary', {}, label), tools(...children));
       const emptyText = (key, label, className='preview-empty-text') => h('div', {className, ...editable(key,label)}, label);
+      const photoSlot=(key,format='landscape')=>h('div',{className:'preview-photo-slot','data-photo-format':format},h('button',{...editable(key,'fotografia'),type:'button'},'Aggiungi foto'));
       const itemTools = (list, index, count, label) => tools(
         action(list,'up','Sposta prima',index,index===0), action(list,'down','Sposta dopo',index,index===count-1),
         action(list,'remove',`Elimina ${label}`,index)
@@ -40,23 +41,23 @@
       const values = Object.fromEntries(['id','title','kind','destination','date','deck','hero','heroAlt','heroCaption','intro','conclusion','published','preparing','category','tags'].map(key => [key, data.get(key)]));
       values.chapters = chapters.map(chapter => Object.fromEntries(['title','body','image','imageAlt','caption','quote','note'].map(key => [key, chapter.get('data').get(key)])));
       values.gallery = gallery.map(photo => Object.fromEntries(['image','alt','caption'].map(key => [key, photo.get('data').get(key)])));
+      values.appearance=appearance;
+      values.titleAccent=data.get('titleAccent');
       values.travelFacts = Object.fromEntries(['duration','season','style'].map(key => [key, data.getIn(['travelFacts',key])]));
       values.publicSlug=ElyLinks.assign([...savedArticles.filter(s=>s&&s.id&&s.title&&s.id!==values.id),{id:values.id || 'new-draft',title:values.title}]).find(s=>s.id===(values.id || 'new-draft')).publicSlug;
       window.dispatchEvent(new CustomEvent('ely:article-change', {detail:values}));
       const facts = [['duration', 'Durata'], ['season', 'Quando partire'], ['style', 'Tipo di viaggio']].filter(([key]) => data.getIn(['travelFacts', key]));
       return h('article', { className:'preview-story', style:{'--article-accent':appearance.accent}, 'data-text-style':appearance.textStyle, 'data-drop-cap':String(appearance.dropCap), 'data-cover-format':appearance.coverFormat },
         h('header', {className:'preview-editor-header'},
-          h('p', {className:'preview-edit-guide'}, 'Seleziona il testo e scrivi sul posto. Le modifiche restano nella bozza fino a Salva.'),
-          tools(
-            h('span', {className:'preview-draft-status'}, !data.get('published') ? 'Bozza · fuori dal sito' : data.get('kind')==='consiglio'&&data.get('preparing') ? 'Scheda in preparazione dopo Salva' : 'Visibile sul sito dopo Salva'),
-            ...['details','appearance','publish'].map((group,index) => h('button', {type:'button','data-group':group}, ['Dettagli','Aspetto','Visibilità'][index]))
-          )
+          h('p', {className:'preview-edit-guide'}, 'Clicca un testo o una foto per modificarli.'),
+          null
         ),
         h('p', {className:'preview-meta'}, h('span',editable('destination','destinazione'),data.get('destination') || 'Aggiungi la destinazione'), ' · ', h('span',editable('date','data'),data.get('date') || 'Scegli la data')),
         h('h1', editable('title','titolo'), accentIndex >= 0 ? [title.slice(0,accentIndex), h('em',{},accent), title.slice(accentIndex+accent.length)] : title),
+        tools(add('titleAccent','Corsivo nel titolo')),
         h('p', {className:'preview-deck',...editable('deck','introduzione breve')},data.get('deck') || 'Presenta il viaggio in poche righe…'),
         h('figure', {className:'preview-cover'},
-          hero ? h('img', {...editable('hero','foto di copertina'),src:hero,alt:data.get('heroAlt') || '',style:{objectPosition:appearance.coverPosition}}) : add('hero','Scegli la foto di copertina'),
+          hero ? h('img', {...editable('hero','foto di copertina'),src:hero,alt:data.get('heroAlt') || '',style:{objectPosition:appearance.coverPosition}}) : photoSlot('hero',appearance.coverFormat),
           hero && h('figcaption',editable('heroCaption','didascalia della copertina'),data.get('heroCaption') || 'Aggiungi una didascalia'),
           hero && h('p',{className:'preview-image-description',...editable('heroAlt','descrizione della copertina')},'Descrizione della foto: '+(data.get('heroAlt') || 'aggiungi una descrizione…')),
           hero && options('Opzioni della copertina',add('hero','Cambia foto'),add('appearance.coverFormat','Formato'),add('appearance.coverPosition','Ritaglio'))
@@ -64,11 +65,13 @@
         facts.length > 0 && h('dl',{className:'preview-facts'},...facts.map(([key,label]) => h('div',{key},h('dt',{},label),h('dd',editable('travelFacts.'+key,label),data.getIn(['travelFacts',key]))))),
         options('Informazioni del viaggio',add('travelFacts','Durata, periodo e tipo di viaggio')),
         appearance.showContents && chapters.length > 1 && h('nav',{className:'preview-contents'},h('h2',{},'In questo racconto'),h('ol',{},...chapters.map((chapter,index) => h('li',{key:index},h('a',{href:'#preview-chapter-'+index},chapter.get('data').get('title') || `Capitolo ${index+1}`))))),
+        tools(h('button',{type:'button','data-toggle-key':'appearance.dropCap','aria-pressed':String(appearance.dropCap)},'Lettera iniziale grande')),
         h('div',{className:'preview-intro'},data.get('intro') ? widgetFor('intro') : emptyText('intro','Scrivi l’apertura del racconto…')),
         ...chapters.map((chapter,index) => {
           const item=chapter.get('data'), photo=asset(item.get('image'));
           const {layout,format}=ElyArticle.chapter({layout:item.get('layout'),imageFormat:item.get('imageFormat')},index);
           return h('section',{key:index,className:'preview-chapter preview-chapter-'+layout,'data-photo-format':format,'data-chapter-index':index},
+            h('div',{className:'preview-chapter-tools'},h('span',{},`Capitolo ${index+1}`),itemTools('chapters',index,chapters.length,'capitolo')),
             h('div',{className:'preview-copy'},
               h('h2',{id:'preview-chapter-'+index,...editable(`chapters.${index}.title`,'titolo del capitolo')},item.get('title') || 'Titolo del capitolo…'),
               item.get('body') ? chapter.getIn(['widgets','body']) : emptyText(`chapters.${index}.body`,'Scrivi il testo del capitolo…'),
@@ -79,13 +82,12 @@
               h('figcaption',editable(`chapters.${index}.caption`,'didascalia'),item.get('caption') || 'Aggiungi una didascalia'),
               h('p',{className:'preview-image-description',...editable(`chapters.${index}.imageAlt`,'descrizione della foto')},'Descrizione della foto: '+(item.get('imageAlt') || 'aggiungi una descrizione…')),
               options('Opzioni della foto',add(`chapters.${index}.image`,'Cambia foto'),add(`chapters.${index}.imageFormat`,'Formato'))
-            ) : add(`chapters.${index}.image`,'Aggiungi una fotografia'),
+            ) : h('figure',{},photoSlot(`chapters.${index}.image`,format)),
             item.get('quote') && h('blockquote',editable(`chapters.${index}.quote`,'citazione'),item.get('quote')),
             options('Opzioni del capitolo',
               add(`chapters.${index}.layout`,'Disposizione'),
               !item.get('quote') && add(`chapters.${index}.quote`,'Aggiungi citazione'),
-              !item.get('note') && add(`chapters.${index}.note`,'Aggiungi consiglio pratico'),
-              itemTools('chapters',index,chapters.length,'capitolo')
+              !item.get('note') && add(`chapters.${index}.note`,'Aggiungi consiglio pratico')
             )
           );
         }),
@@ -95,7 +97,7 @@
           gallery.length>0 && h('div',{className:'preview-gallery'},h('div',{},...gallery.map((photo,index) => {
             const item=photo.get('data'),image=asset(item.get('image'));
             return h('figure',{key:index,'data-gallery-index':index},
-              image ? h('img',{...editable(`gallery.${index}.image`,'foto della galleria'),src:image,alt:item.get('alt') || ''}) : add(`gallery.${index}.image`,'Scegli la fotografia'),
+              image ? h('img',{...editable(`gallery.${index}.image`,'foto della galleria'),src:image,alt:item.get('alt') || ''}) : photoSlot(`gallery.${index}.image`,'landscape'),
               h('figcaption',editable(`gallery.${index}.caption`,'didascalia della galleria'),item.get('caption') || 'Aggiungi una didascalia'),
               h('p',{className:'preview-image-description',...editable(`gallery.${index}.alt`,'descrizione della foto')},'Descrizione della foto: '+(item.get('alt') || 'aggiungi una descrizione…')),
               options('Opzioni della foto',add(`gallery.${index}.image`,'Cambia foto'),itemTools('gallery',index,gallery.length,'foto'))
