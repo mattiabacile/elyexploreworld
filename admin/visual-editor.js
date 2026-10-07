@@ -45,6 +45,12 @@
     if(!window.elyEditor?.defer(save,'save-shortcut'))save();
   };
   const field=key=>editor?.querySelector(`section.field[data-key-path="${CSS.escape(key)}"]`);
+  let primary=null;
+  const toolbarSize=new ResizeObserver(([entry])=>{
+    if(!editor||entry?.target!==primary)return;
+    editor.style.setProperty('--ely-toolbar-height',(entry.borderBoxSize?.[0]?.blockSize ?? entry.contentRect.height)+'px');
+    if(active)place();
+  });
   const inlineHeight=key=>/(?:intro|body|note|conclusion)$/.test(key)?340:/(?:^title$|^deck$|heroCaption$|slideText$|\.(title|caption|quote)$)/.test(key)?280:key==='tags'?300:/(?:^title$|^destination$|heroAlt$|\.(alt|imageAlt)$)/.test(key)?220:180;
   const visual=()=>editor?.classList.contains('ely-page-mode');
   const roots=['title','kind','date','destination','deck','hero','heroAlt','reuseCover','articleHero','articleHeroAlt','heroCaption','intro','chapters','travelFacts','category','tags','gallery','conclusion','appearance','titleAccent','slideText','published','preparing'];
@@ -52,11 +58,16 @@
   const clearSelection=()=>frame?.contentDocument?.querySelectorAll('.ely-selected-block').forEach(e=>e.classList.remove('ely-selected-block'));
   const lockFields=()=>{
     if(!editor || working)return;
+    if(!visual()){
+      editor.querySelectorAll('section.field[inert]').forEach(node=>node.inert=false);
+      return;
+    }
     // Native controls set their own visibility; explicitly hide their branches
     // and remove them from keyboard navigation unless they own the selection.
     for(const root of editor.querySelectorAll('.pane[data-mode="edit"] #first-pane-body > .content > section.field')){
-      root.inert=visual() && !(root===active || root.contains(active));
-      for(const child of root.querySelectorAll('section.field'))child.inert=visual() && !(child===active || child.contains(active) || active?.contains(child));
+      const ownsSelection=root===active || root.contains(active);
+      root.inert=!ownsSelection;
+      if(ownsSelection)for(const child of root.querySelectorAll('section.field'))child.inert=!(child===active || child.contains(active) || active?.contains(child));
     }
   };
   const draw=()=>panel?.classList.toggle('ely-inspecting',!!active || selecting);
@@ -73,7 +84,7 @@
     const viewportHeight=window.visualViewport?.height || innerHeight;
     const topbar=editor.querySelector(':scope > .primary')?.getBoundingClientRect().bottom || 64;
     const width=inline&&anchor?Math.min(Math.max(anchor.width,280),innerWidth-32):Math.min(680,innerWidth-32);
-    const height=Math.min(inline&&anchor?Math.max(anchor.height,180):560,viewportHeight-topbar-32);
+    const height=Math.min(inline&&anchor?Math.max(anchor.height,180):active.dataset.fieldType==='image'?380:560,viewportHeight-topbar-32);
     const left=anchor&&frameRect?Math.max(16,Math.min(frameRect.left+anchor.left,innerWidth-width-16)):(innerWidth-width)/2;
     const top=anchor&&frameRect?Math.max(topbar+16,Math.min(frameRect.top+(inline?anchor.top:anchor.bottom+12),viewportHeight-height-16)):topbar+24;
     panel.style.left=left+'px';panel.style.top=top+'px';panel.style.width=width+'px';panel.style.height=height+'px';
@@ -405,14 +416,15 @@
   };
   const createPanel=()=>{
     panel=document.createElement('div');panel.className='ely-inspector';panel.setAttribute('role','dialog');panel.setAttribute('aria-label','Modifica nell’articolo');
-    panel.innerHTML='<header><h2>Articolo</h2><button type="button" class="ely-inspector-dismiss">Torna alla pagina</button></header><p class="ely-inspector-error" role="status"></p><div class="ely-inspector-detail"><h3 class="ely-inspector-title"></h3><div class="ely-inspector-slot"></div></div>';
-    panel.querySelector('.ely-inspector-dismiss').addEventListener('click',()=>{close();editor.classList.remove('ely-inspector-open');editor.querySelector('.ely-page-actions button')?.focus();});
-    toolbar=document.createElement('footer');toolbar.className='ely-on-page-toolbar';toolbar.hidden=true;toolbar.innerHTML='<span>Modifiche nella bozza</span><button type="button">Fine</button>';toolbar.querySelector('button').addEventListener('click',()=>close());editor.append(panel,toolbar);draw();
+    panel.innerHTML='<header><h2 class="ely-inspector-title">Apertura del campo…</h2></header><p class="ely-inspector-error" role="status"></p><div class="ely-inspector-detail"><div class="ely-inspector-slot"></div></div>';
+    toolbar=document.createElement('footer');toolbar.className='ely-on-page-toolbar';toolbar.hidden=true;toolbar.innerHTML='<button type="button">Fine</button>';toolbar.querySelector('button').addEventListener('click',()=>close());editor.append(panel,toolbar);draw();
   };
   const enhance=()=>{
     const next=document.querySelector('.content-editor');
     if(next!==editor){if(nativeValidationReceiver){window.removeEventListener('message',nativeValidationReceiver,true);nativeValidationReceiver=null;}close(false);panel?.remove();toolbar?.remove();settings?.remove();settings=null;panel=null;toolbar=null;editor=next;selection=null;frame=null;previewSwitch=false;validationRefs=[];working=false;pendingPublication=null;saveRequested=false;clearTimeout(statusTimer);actionStatus=null;liveHint=null;if(articleOwner!==next)article={};}
-    if(!editor)return;
+    if(!editor){toolbarSize.disconnect();primary=null;return;}
+    const nextPrimary=editor.querySelector(':scope > .primary');
+    if(nextPrimary!==primary){toolbarSize.disconnect();primary=nextPrimary;if(primary)toolbarSize.observe(primary);}
     const header=editor.querySelector(':scope > .primary > .inner');
     if(header&&!header.querySelector('.ely-mode-switch')){
       const choices=document.createElement('div');choices.className='ely-mode-switch';choices.setAttribute('role','group');choices.setAttribute('aria-label','Modalità di modifica');
@@ -427,11 +439,10 @@
     if(active&&!active.isConnected)close(false);
     if(frame)previewSwitch=false;
     if(visual()&&!working&&!frame&&!active&&!selecting&&!previewSwitch){const toggle=editor.querySelector('#first-pane-header button[aria-label="Anteprima"][aria-pressed="false"]');if(toggle){previewSwitch=true;toggle.click();}}
-    editor.style.setProperty('--ely-toolbar-height',editor.querySelector(':scope > .primary')?.getBoundingClientRect().height+'px');
     const switcher=editor.querySelector('.ely-mode-switch');if(switcher)switcher.hidden=compactScreen.matches;
     if(compactScreen.matches&&visual())setMode('fields');
     lockFields();place();updateSettings();
-    for(const button of document.querySelectorAll('button,[role=menuitem]'))if(/cronologia|history/i.test(button.getAttribute('aria-label')||button.dataset.label||'') || /^(Mostra |Show |View )?(Cronologia|History)$/i.test(button.textContent.trim()))button.hidden=true;
+    for(const button of document.querySelectorAll('button[aria-label*="cronologia" i],button[aria-label*="history" i],button[data-label*="cronologia" i],button[data-label*="history" i],[role="menuitem"]'))if(/cronologia|history/i.test(button.getAttribute('aria-label')||button.dataset.label||'') || /^(Mostra |Show |View )?(Cronologia|History)$/i.test(button.textContent.trim()))button.hidden=true;
     if(visual())for(const button of document.querySelectorAll('button[data-label="Show Errors"]')){
       const label=button.querySelector('.label .truncated-text');if(label&&label.textContent!=='Mostra cosa manca')label.textContent='Mostra cosa manca';
     }

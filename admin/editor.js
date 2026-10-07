@@ -112,9 +112,12 @@
     syncHost=host;syncRetries=0;if(syncPending)return;
     syncPending=true;requestAnimationFrame(syncScrolledField);
   },true);
-  const updateKind = () => {
+  const updateChoices = () => {
     const selected=field('kind')?.querySelector('[role="radio"][aria-checked="true"]');
     if(selected)kind=selected.value;
+    const photo=field('reuseCover')?.querySelector('[role="radio"][aria-checked="true"]');
+    if(photo)reuse=photo.value!=='no';
+    applyWorkspace();
     const preparing=field('preparing');if(preparing && kind)preparing.hidden=kind!=='consiglio';
   };
   const enhance = () => {
@@ -164,11 +167,12 @@
     }
     for(const button of editor.querySelectorAll('section.field[data-key-path=chapters] > .field-wrapper .toolbar button'))if(/^(Espandi tutto|Comprimi tutto)$/.test(button.textContent.trim()))button.hidden=true;
     for(const hint of document.querySelectorAll('[role=dialog] [data-entry-draft-root] > p.hint'))if(hint.textContent.startsWith('The new'))hint.textContent=hint.closest('[role=dialog]').querySelector('[data-key-path=name] h4')?.textContent.includes('categoria')?'La nuova categoria verrà salvata insieme all’articolo.':'Il nuovo tag verrà salvato insieme all’articolo.';
-    applyWorkspace();updateKind();
+    updateChoices();
     const frame=editor.querySelector('iframe.preview');if(frame && !frame.dataset.elySync){frame.dataset.elySync='true';frame.addEventListener('load',()=>{applyWorkspace();syncPreview(previewKey);});}
   };
-  window.addEventListener('ely:article-change',event=>{draftOwner=document.querySelector('.content-editor');kind=event.detail.kind;reuse=event.detail.reuseCover!=='no';applyWorkspace();updateKind();if(previewKey)requestAnimationFrame(()=>syncPreview(previewKey));});
-  document.addEventListener('click',event=>{if(event.target.closest?.('section.field[data-key-path="kind"]'))requestAnimationFrame(updateKind);});
+  window.addEventListener('ely:article-change',event=>{draftOwner=document.querySelector('.content-editor');kind=event.detail.kind;reuse=event.detail.reuseCover!=='no';updateChoices();if(previewKey)requestAnimationFrame(()=>syncPreview(previewKey));});
+  const choicesChanged=event=>{if(event.target.closest?.('section.field[data-key-path="kind"],section.field[data-key-path="reuseCover"]'))requestAnimationFrame(updateChoices);};
+  for(const type of ['click','change','keydown'])document.addEventListener(type,choicesChanged);
   new MutationObserver(records=>{
     if(records.every(record=>record.target.closest?.('[class^="ely-"]')))return;
     if(!scheduled){scheduled=true;requestAnimationFrame(enhance);}
