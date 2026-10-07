@@ -32,6 +32,9 @@ const createDB=()=>{
  assert.equal(validateGraphQL(mutation),true);
  const tagMutation=structuredClone(mutation);tagMutation.variables.input.fileChanges.additions[0].path='content/tags.json';assert.equal(validateGraphQL(tagMutation),true);
  const categoryMutation=structuredClone(mutation);categoryMutation.variables.input.fileChanges.additions[0].path='content/categories.json';assert.equal(validateGraphQL(categoryMutation),true);
+ for(const path of ['assets/uploads/un-articolo-nell’anteprima-123.webp','assets/uploads/città-di-lisbona-123.webp','assets/uploads/日本の旅-123.webp']){const upload=structuredClone(mutation);upload.variables.input.fileChanges.additions[0].path=path;assert.equal(validateGraphQL(upload),true);}
+ for(const path of ['assets/uploads/%2e%2e%2fprivate.webp','assets/uploads/a\\private.webp','assets/uploads/.hidden.webp','assets/uploads/a/b.webp']){const upload=structuredClone(mutation);upload.variables.input.fileChanges.additions[0].path=path;assert.equal(validateGraphQL(upload),false);}
+ for(const key of ['additions','deletions']){const invalid=structuredClone(mutation);invalid.variables.input.fileChanges[key]=[null];assert.equal(validateGraphQL(invalid),false);}
  for(const change of [i=>i.branch.branchName='other',i=>i.branch.repositoryNameWithOwner='attacker/repo',i=>i.fileChanges.additions[0].path='index.html',i=>i.fileChanges.additions[0].path='assets/uploads/../evil.webp',i=>i.fileChanges.additions[0].path='assets/uploads/evil.svg']){const bad=structuredClone(mutation);change(bad.variables.input);assert.equal(validateGraphQL(bad),false)}
  assert.equal(validateGraphQL({query:'mutation {deleteRepository(input:{repositoryId:"x"}){clientMutationId}}'}),false);
  assert.equal(validateGraphQL({query:'query {repository(owner:"attacker",name:"other"){name}}'}),false);
@@ -148,7 +151,7 @@ const createDB=()=>{
     await page.unroute('**/admin/boot.js?*');
     await page.getByRole('button',{name:'Riprova ad aprire il pannello',exact:true}).click();
     await page.getByRole('button',{name:'Crea Nuova Voce',exact:true}).click();
-    await page.locator('section.field[data-key-path="title"] [contenteditable="true"]').fill('Nuovo racconto dal pannello');
+    await page.locator('section.field[data-key-path="title"] [contenteditable="true"]').fill('Nuovo racconto dall’editor');
     await page.getByLabel('Destinazione',{exact:true}).fill('Portogallo');
     await page.locator('section.field[data-key-path="deck"] [contenteditable="true"]').fill('Una nuova storia creata dalla cliente.');
     await focusField(page,'hero');await page.locator('section[data-key-path=hero] input[type=file]').first().setInputFiles(path.join(root,records[0].hero));
@@ -183,11 +186,11 @@ const createDB=()=>{
     }
     await page.setViewportSize({width:1440,height:1000});
     await page.getByRole('button',{name:'Salva',exact:true}).click();
-    for(let i=0;i<200&&!records.some(r=>r.title==='Nuovo racconto dal pannello');i++)await new Promise(resolve=>setTimeout(resolve,20));
-    const created=records.find(r=>r.title==='Nuovo racconto dal pannello');
+    for(let i=0;i<200&&!records.some(r=>r.title==='Nuovo racconto dall’editor');i++)await new Promise(resolve=>setTimeout(resolve,20));
+    const created=records.find(r=>r.title==='Nuovo racconto dall’editor');
     assert.equal(created.category,'Categoria condivisa');assert.ok(JSON.parse(sources.get('content/categories.json')).some(category=>category.name==='Categoria condivisa'));
     assert.ok(created);assert.equal(created.chapters.length,1);assert.ok(created.tags.includes('Tag condiviso'));assert.ok(JSON.parse(sources.get('content/tags.json')).some(tag=>tag.name==='Tag condiviso'));assert.equal(created.chapters[0].title,'Capitolo 1');assert.equal(created.published,false);assert.equal(created.destination,'Portogallo');
-    assert.match(created.id,/^[a-f0-9-]{36}$/);assert.match(created.hero,/^\/assets\/uploads\/.+\.webp$/);
+    assert.match(created.id,/^[a-f0-9-]{36}$/);assert.match(created.hero,/^\/assets\/uploads\/.+\.webp$/);assert.match(created.hero,/dall’editor/);
     assert.ok(sources.has(created.hero.slice(1)));assert.match(created.intro,/testo completo/);
     assert.equal(created.appearance.theme,'clay');assert.equal(created.appearance.textStyle,'journal');
     console.log('PASS: real Sveltia creates a draft with automatic ID and uploads an optimized cover through the restricted proxy.');

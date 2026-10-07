@@ -1,9 +1,9 @@
 /* Contextual article editing. Native fields stay mounted in their CMS owner. */
 (() => {
-  let backdrop, editor, frame, active, selection, panel, toolbar, selecting=false, previewSwitch=false, pending=0, lastInput=0, finishTimer, statusTimer, saveRequested=false, nativeErrorForwarding=false, nativeValidationReceiver, working=false, actionStatus, validationRefs=[], article={};
+  let backdrop, editor, frame, active, selection, panel, toolbar, selecting=false, previewSwitch=false, pending=0, statusTimer, saveRequested=false, nativeErrorForwarding=false, nativeValidationReceiver, working=false, actionStatus, validationRefs=[], article={};
   const compactScreen=matchMedia('(max-width:900px), (pointer:coarse) and (max-width:950px) and (max-height:500px)');
   const boundFrames=new WeakSet();
-  let liveHint,settings,pendingPublication=null;
+  let liveHint,settings,pendingPublication=null,articleOwner=null;
   const settingButton=(label,key)=>{const b=document.createElement('button');b.type='button';b.textContent=label;b.dataset.settingKey=key;b.addEventListener('click',()=>select(key));return b;};
   const updateSettings=()=>{
     if(!settings)return;
@@ -35,10 +35,14 @@
   const labelOf=el=>(el?.getAttribute?.('title')||'').replace(/^Modifica\s+/,'');
   // Ctrl/Cmd+S saves through the CMS's own Salva button, so its safeguards still apply.
   const saveShortcut=event=>{
-    if(!visual()||!(event.metaKey||event.ctrlKey)||(event.key||'').toLowerCase()!=='s')return;
+    if(!editor||!(event.metaKey||event.ctrlKey)||(event.key||'').toLowerCase()!=='s')return;
+    if(document.querySelector('dialog[open], [role="dialog"]:not(.ely-inspector), [role="alertdialog"]'))return;
     event.preventDefault();
-    const save=[...document.querySelectorAll('button')].find(b=>b.textContent.trim()==='Salva'&&!b.disabled);
-    if(save){announce('Salvataggio in corso…');save.click();}
+    const save=()=>{
+      const button=[...editor.querySelectorAll(':scope > .primary button')].find(b=>b.textContent.trim()==='Salva'&&!b.disabled);
+      if(button){announce('Salvataggio in corso…');button.click();}
+    };
+    if(!window.elyEditor?.defer(save,'save-shortcut'))save();
   };
   const field=key=>editor?.querySelector(`section.field[data-key-path="${CSS.escape(key)}"]`);
   const inlineHeight=key=>/(?:intro|body|note|conclusion)$/.test(key)?340:/(?:^title$|^deck$|heroCaption$|slideText$|\.(title|caption|quote)$)/.test(key)?280:key==='tags'?300:/(?:^title$|^destination$|heroAlt$|\.(alt|imageAlt)$)/.test(key)?220:180;
@@ -86,8 +90,8 @@
     }
   };
   const close=(restoreFocus=true)=>{
-    if(restoreFocus && active?.querySelector('[contenteditable="true"]') && performance.now()-lastInput<250){clearTimeout(finishTimer);finishTimer=setTimeout(()=>close(restoreFocus),250-(performance.now()-lastInput));return;}
-    clearTimeout(finishTimer);pending++;selecting=false;backdrop?.remove();backdrop=null;
+    if(restoreFocus && window.elyEditor?.defer(()=>close(restoreFocus)))return;
+    pending++;selecting=false;backdrop?.remove();backdrop=null;
     if(active){for(const property of ['left','top','width','height','max-height'])active.style.removeProperty(property);active.classList.remove('ely-on-page-field');}active=null;
     if(selection?.element)selection.element.style.minHeight='';panel?.classList.remove('ely-inline-edit');
     if(toolbar)toolbar.hidden=true;
@@ -99,7 +103,7 @@
   const select=(key,element)=>{
     if(nativeValidationReceiver){window.removeEventListener('message',nativeValidationReceiver,true);nativeValidationReceiver=null;}
     // Flush the native rich editor before changing the selected control.
-    if(active?.querySelector('[contenteditable="true"]') && performance.now()-lastInput<250){const owner=editor;setTimeout(()=>{if(owner===editor)select(key,element);},250-(performance.now()-lastInput));return;}
+    if(window.elyEditor?.defer(()=>select(key,element)))return;
     if(working)return;
     if(window.elyWorkspace){const surface=element?.closest('.preview-cover-workspace')?'cover':element?.closest('.preview-story')?'article':!['hero','heroAlt'].includes(key)?window.elyWorkspace.forKey(key):null;if(surface)window.elyWorkspace.show(surface);}
     const scroll=frame?.contentWindow?.scrollY ?? selection?.scroll ?? 0;
@@ -176,17 +180,18 @@
     throw new Error('Il comando non è riuscito. Riprova: la bozza resta aperta.');
   };
   const selectInArticle = async key => {
+    const owner=editor;
     try{
       // The native phone validation sheet returns through its edit pane first.
       // Restore the article before positioning the field on its actual block.
-      await pause(100);close(false);enhance();
+      await pause(100);if(owner!==editor||!owner?.isConnected)return;close(false);enhance();
       const element=await ready(()=>{
         const preview=editor?.querySelector('iframe.preview');
         const target=preview?.contentDocument?.querySelector(`[data-key-path="${CSS.escape(key)}"]`);
         if(target&&preview.getBoundingClientRect().width){frame=preview;bind();return target;}return null;
       });
       select(key,element);
-    }catch{announce('Non riesco ad aprire il campo. Riprova dall’articolo; la bozza resta aperta.');}
+    }catch{if(owner===editor)announce('Non riesco ad aprire il campo. Riprova dall’articolo; la bozza resta aperta.');}
   };
   const mountNative = async key => {
     const locale=editor.querySelector('.pane[data-locale]')?.dataset.locale;
@@ -202,8 +207,11 @@
   };
   const setBoolean=async(key,value)=>{
     if(working)return;
+    if(window.elyEditor?.defer(()=>{working=false;setBoolean(key,value);},'structure')){
+      working=true;if(key==='published')pendingPublication=value;
+      editor.setAttribute('aria-busy','true');settings?.querySelectorAll('input').forEach(input=>input.disabled=true);return;
+    }
     const owner=editor;if(key==='published')pendingPublication=value;working=true;editor.setAttribute('aria-busy','true');settings?.querySelectorAll('input').forEach(input=>input.disabled=true);
-    if(active?.querySelector('[contenteditable="true"]'))await pause(Math.max(0,250-(performance.now()-lastInput)));
     if(owner!==editor||!owner.isConnected){pendingPublication=null;working=false;return;}
     close(false);
     preservePreview(frame?.contentWindow?.scrollY||0);
@@ -219,13 +227,13 @@
       else if(key==='appearance.dropCap')article.appearance={...article.appearance,dropCap:value};
       announce('Modifica pronta. Premi Salva per conservarla.');
     }catch(error){if(owner===editor)announce(error.message);}
-    finally{pendingPublication=null;working=false;owner?.setAttribute('aria-busy','false');settings?.querySelectorAll('input').forEach(input=>input.disabled=false);backdrop?.remove();backdrop=null;lockFields();enhance();updateSettings();}
+    finally{owner?.setAttribute('aria-busy','false');if(owner===editor){pendingPublication=null;working=false;settings?.querySelectorAll('input').forEach(input=>input.disabled=false);backdrop?.remove();backdrop=null;lockFields();enhance();updateSettings();}}
   };
   const listItems = root => [...(root?.querySelector(':scope > .field-wrapper .item-list')?.children || [])];
   const announce = message => {clearTimeout(statusTimer);if(actionStatus)actionStatus.textContent=message;if(message&&!working)statusTimer=setTimeout(()=>{if(actionStatus)actionStatus.textContent='';},4000);};
   const changeList = async (key,operation,index) => {
     if(working)return;const currentEditor=editor;
-    if(active?.querySelector('[contenteditable="true"]'))await pause(Math.max(0,250-(performance.now()-lastInput)));
+    if(window.elyEditor?.defer(()=>{working=false;changeList(key,operation,index);},'structure')){working=true;editor.setAttribute('aria-busy','true');return;}
     if(currentEditor!==editor||!editor||!visual()||working)return;
     const oldScroll=frame?.contentWindow?.scrollY || 0;
     close(false);preservePreview(oldScroll);working=true;editor.classList.add('ely-list-working');editor.setAttribute('aria-busy','true');
@@ -273,7 +281,7 @@
       announce(operation==='add'?(key==='chapters'?'Capitolo aggiunto. Scrivi direttamente nell’articolo.':'Foto aggiunta alla galleria. Scegli l’immagine.') : operation==='remove'?'Elemento eliminato dalla bozza.':'Ordine aggiornato.');
       if(operation==='add'&&target)select(targetKey,target);
     }catch(error){if(currentEditor===editor)announce(error.message || 'Il comando non è riuscito. Riprova dalla pagina.');}
-    finally{if(!active){backdrop?.remove();backdrop=null;}working=false;currentEditor?.classList.remove('ely-list-working');currentEditor?.setAttribute('aria-busy','false');lockFields();enhance();}
+    finally{currentEditor?.classList.remove('ely-list-working');currentEditor?.setAttribute('aria-busy','false');if(currentEditor===editor){if(!active){backdrop?.remove();backdrop=null;}working=false;lockFields();enhance();}}
   };
   const renderValidation = doc => {
     if(!validationRefs.length||!doc?.querySelector('.preview-story')||doc.querySelector('.preview-validation'))return;
@@ -376,8 +384,8 @@
   };
   const setMode=mode=>{
     if(mode==='page'&&compactScreen.matches)mode='fields';
-    if(active?.querySelector('[contenteditable="true"]')&&performance.now()-lastInput<250){const owner=editor;setTimeout(()=>{if(owner===editor)setMode(mode);},250-(performance.now()-lastInput));return;}
-    close(false);editor.classList.remove('ely-writing-mode','ely-inspector-open');editor.classList.toggle('ely-page-mode',mode==='page');
+    if(window.elyEditor?.defer(()=>setMode(mode)))return;
+    close(false);window.elyEditor?.writing(false);editor.classList.remove('ely-inspector-open');editor.classList.toggle('ely-page-mode',mode==='page');
     if(mode==='fields'){previewSwitch=false;editor.querySelector('#first-pane-header button[aria-label="Anteprima"][aria-pressed="true"]')?.click();}
     editor.querySelectorAll('.ely-mode-switch button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mode===mode)));
     bind();lockFields();draw();
@@ -390,7 +398,7 @@
   };
   const enhance=()=>{
     const next=document.querySelector('.content-editor');
-    if(next!==editor){if(nativeValidationReceiver){window.removeEventListener('message',nativeValidationReceiver,true);nativeValidationReceiver=null;}close(false);panel?.remove();toolbar?.remove();settings?.remove();settings=null;panel=null;toolbar=null;editor=next;selection=null;frame=null;previewSwitch=false;validationRefs=[];article={};}
+    if(next!==editor){if(nativeValidationReceiver){window.removeEventListener('message',nativeValidationReceiver,true);nativeValidationReceiver=null;}close(false);panel?.remove();toolbar?.remove();settings?.remove();settings=null;panel=null;toolbar=null;editor=next;selection=null;frame=null;previewSwitch=false;validationRefs=[];working=false;pendingPublication=null;saveRequested=false;clearTimeout(statusTimer);actionStatus=null;liveHint=null;if(articleOwner!==next)article={};}
     if(!editor)return;
     const header=editor.querySelector(':scope > .primary > .inner');
     if(header&&!header.querySelector('.ely-mode-switch')){
@@ -416,19 +424,18 @@
     }
     for(const section of editor.querySelectorAll('section.field[data-field-type="richtext"]')){const key=section.dataset.keyPath;section.classList.toggle('ely-compact-richtext',/^(title|deck|heroCaption|slideText)$|\.(title|caption|quote)$/.test(key));}
     if(active?.dataset.fieldType==='image'&&!selection?.mediaClosing){
-      const path=active.querySelector('.field-wrapper [role="textbox"]')?.textContent.trim();
-      if(path&&path!==selection?.initialValue){
+      const path=valueAt(article,selection?.key||'') ?? '';
+      if(selection&&path!==(selection.initialValue ?? '')){
         selection.mediaClosing=true;const token=pending;
         setTimeout(()=>{if(token===pending&&active?.dataset.fieldType==='image')close();},200);
       }
     }
   };
   window.addEventListener('ely:workspace-change',()=>{if(active)close(false);});
-  window.addEventListener('ely:article-change',event=>{article=event.detail;draw();updateSettings();});
+  window.addEventListener('ely:article-change',event=>{articleOwner=document.querySelector('.content-editor');article=event.detail;draw();updateSettings();if(active?.dataset.fieldType==='image')requestAnimationFrame(enhance);});
   window.addEventListener('keydown',saveShortcut,true);
   compactScreen.addEventListener('change',()=>{if(compactScreen.matches&&visual())setMode('fields');enhance();});
   window.addEventListener('resize',()=>{place();});window.visualViewport?.addEventListener('resize',()=>place());
-  document.addEventListener('input',event=>{if(active?.contains(event.target))lastInput=performance.now();},true);
   window.addEventListener('keydown',event=>{
     if(!visual())return;
     if(event.key==='Escape'&&working)return;
@@ -449,6 +456,8 @@
       if(!saveRequested){saveRequested=true;ready(()=>!working).then(()=>{saveRequested=false;if(b.isConnected)b.click();}).catch(()=>{saveRequested=false;});}
       return;
     }
-    if(!visual()||!active?.querySelector('[contenteditable="true"]')||b?.textContent.trim()!=='Salva')return;const remaining=250-(performance.now()-lastInput);if(remaining>0){event.preventDefault();event.stopImmediatePropagation();setTimeout(()=>{if(b.isConnected)b.click();},remaining);}},true);
+    if(b?.closest('.content-editor')!==editor||b?.textContent.trim()!=='Salva')return;
+    if(window.elyEditor?.defer(()=>{if(b.isConnected)b.click();},'save')){event.preventDefault();event.stopImmediatePropagation();}
+  },true);
   let scheduled=false;new MutationObserver(()=>{if(scheduled)return;scheduled=true;requestAnimationFrame(()=>{scheduled=false;enhance();});}).observe(document.body,{childList:true,subtree:true});enhance();
 })();

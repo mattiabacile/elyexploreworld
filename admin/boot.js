@@ -1,6 +1,9 @@
-(async () => {
+window.elyCMSReady = (async () => {
   try {
-    const response = await fetch('config.json', { cache: 'no-cache' });
+    const [response,history] = await Promise.all([
+      fetch('config.json', { cache: 'no-cache', signal:AbortSignal.timeout(15000) }),
+      fetch('../content/stories.json',{cache:'no-cache',signal:AbortSignal.timeout(5000)}).then(r=>r.ok?r.json():[]).catch(()=>[])
+    ]);
     if (!response.ok) throw new Error('Configurazione non disponibile');
     const config = await response.json();
     config.backend.base_url = location.origin;
@@ -9,8 +12,9 @@
     config.backend.api_root = location.origin + '/cms/api/v3';
     config.backend.graphql_api_root = location.origin + '/cms/api/graphql';
     config.load_config_file = false;
-    const savedArticles=await fetch('../content/stories.json',{cache:'no-cache'}).then(r=>r.ok?r.json():[]).catch(()=>[]);
-    CMS.registerPreviewStyle('/admin/preview.css?v=2a5b110797c4');
+    const savedArticles=Array.isArray(history)?history.filter(record=>record&&typeof record.id==='string'):[];
+    const h=CMS.React.createElement;
+    CMS.registerPreviewStyle('/admin/preview.css?v=e0d84e01ee2d');
     const renderStory = ({ entry, widgetFor, widgetsFor, getAsset }) => {
       const data = entry.get('data');
       const asset = path => path ? getAsset(path)?.url || path : '';
@@ -125,10 +129,8 @@
       return previous && previous.title!==data.get('title') ? data.set('titleAccent','') : data;
     }});
     ElyTitle.register();
-    CMS.init({ config });
-  } catch {
-    const message = document.createElement('p');
-    message.textContent = 'Il pannello non è disponibile. Ricarica la pagina oppure contatta chi gestisce il sito.';
-    document.body.append(message);
-  }
+    await CMS.init({ config });
+  } catch (error) { throw error; }
 })();
+// The access controller displays initialization failures with its retry action.
+window.elyCMSReady.catch(()=>{});

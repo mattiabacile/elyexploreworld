@@ -37,7 +37,7 @@
     // Older articles keep their title accent until the author edits the title.
     if(accent && source===plain(source) && source.includes(accent)){
       const index=source.lastIndexOf(accent);
-      return inline(source.slice(0,index),{links:false})+'<em>'+inline(accent,{links:false})+'</em>'+inline(source.slice(index+accent.length),{links:false});
+      return inline(source.slice(0,index),{links:false})+'<em class="ely-legacy-title-accent">'+inline(accent,{links:false})+'</em>'+inline(source.slice(index+accent.length),{links:false});
     }
     return inline(source,{links:false,colors:true});
   };

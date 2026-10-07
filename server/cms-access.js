@@ -109,7 +109,9 @@ async function startSession(env, username) {
   ]);
   return json({username, token: csrf, expiresAt: expires}, 200, {'Set-Cookie': cookie(token)});
 }
-const writable = path => typeof path === 'string' && (['content/stories.json', 'content/tags.json', 'content/categories.json'].includes(path) || /^assets\/uploads\/[a-zA-Z0-9_-]+\.(?:webp|jpg|jpeg|png|avif|gif)$/i.test(path));
+// Sveltia retains Unicode and typographic apostrophes in generated filenames.
+// Keep those uploads within a single safe basename and the image allowlist.
+const writable = path => typeof path === 'string' && (['content/stories.json', 'content/tags.json', 'content/categories.json'].includes(path) || /^assets\/uploads\/[^/\\<>:"|?*#%\s\u0000-\u001f\u007f]+\.(?:webp|jpe?g|png|avif|gif)$/iu.test(path) && !path.split('/').at(-1).startsWith('.'));
 
 export function validateGraphQL(body) {
   if (!body || typeof body.query !== 'string' || body.query.length > 128000) return false;
@@ -135,7 +137,7 @@ export function validateGraphQL(body) {
   const additions = input.fileChanges?.additions || [], deletions = input.fileChanges?.deletions || [];
   if (!Array.isArray(additions) || !Array.isArray(deletions) || !additions.length && !deletions.length) return false;
   if (additions.length + deletions.length > 100) return false;
-  return additions.every(file => writable(file.path) && typeof file.contents === 'string' && /^[A-Za-z0-9+/]*={0,2}$/.test(file.contents)) && deletions.every(file => writable(file.path));
+  return additions.every(file => file && writable(file.path) && typeof file.contents === 'string' && /^[A-Za-z0-9+/]*={0,2}$/.test(file.contents)) && deletions.every(file => file && writable(file.path));
 }
 async function proxy(request, env, active) {
   const token = request.headers.get('Authorization')?.replace(/^(?:Bearer|token) /i, '');
