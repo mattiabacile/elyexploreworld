@@ -106,6 +106,10 @@ const initial = JSON.parse(fs.readFileSync(require('node:path').join(__dirname, 
     assert.equal(await page.locator('.tips-grid .story-card').count(), 1);
     assert.equal(await page.locator('.tips-grid a').getAttribute('href'), 'racconto.html?story=consiglio-nuovo');
     await visit('/'); assert.equal(await page.locator('.stories-slide.is-active').getAttribute('id'), 'story-consiglio-nuovo');
+    const preparing={...initial[0],id:'consiglio-in-preparazione',kind:'consiglio',title:'Consiglio in preparazione',preparing:true};records=[...initial,preparing];
+    await visit('/');assert.equal(await page.locator('.stories-slide').count(),3);
+    await visit('/racconti.html');assert.equal(await page.locator('.tips-grid .story-card').count(),1);assert.equal(await page.locator('.tips-grid a').count(),0);assert.match(await page.locator('.tips-grid').innerText(),/Articolo in preparazione/);
+    await visit('/racconto.html?story=consiglio-in-preparazione');assert.equal(await page.locator('#racconto > article').isVisible(),false);
     unavailable = true;
     await page.goto(base + '/racconti.html');
     await page.getByRole('button', { name: 'Riprova' }).waitFor();
