@@ -11,11 +11,11 @@ Inserire **nome utente e password** nel pannello. Non serve un account GitHub o 
 1. Aprire **Racconti e consigli** e creare un nuovo racconto.
 2. Scegliere **Racconto di viaggio** oppure **Consiglio di viaggio**.
 3. Inserire titolo, data, destinazione, introduzione breve e foto di copertina. Descrivere la foto nel campo dedicato.
-4. Scrivere l’apertura con l’editor. Aggiungere i capitoli necessari: ognuno può avere testo, foto, didascalia, citazione e un consiglio pratico.
+4. Scrivere l’apertura con l’editor. Ogni nuovo articolo parte con tre capitoli vuoti e aperti. Aggiungerli o eliminarli secondo necessità: ognuno può avere testo, foto, didascalia, citazione e un consiglio pratico.
 5. Controllare l’anteprima. Lasciare **Visibile sul sito** disattivato durante la preparazione.
 6. Quando il contenuto è pronto, attivare **Visibile sul sito**, disattivare **Consiglio in preparazione** e premere **Salva**.
 
-**Campi** mostra direttamente il modulo, a partire dal titolo: informazioni dell’articolo, copertina, testi e capitoli, foto e impostazioni. Non contiene navigazione aggiuntiva, schermate introduttive, guide o checklist. Le etichette e le brevi istruzioni dei singoli campi spiegano cosa inserire. Nell’elenco, i filtri distinguono bozze, pubblicati, racconti, consigli e consigli in preparazione.
+**Campi** mostra direttamente il modulo, a partire dal titolo: informazioni dell’articolo, copertina, testi e capitoli, foto e impostazioni. I capitoli si presentano aperti, anche negli articoli esistenti. Non contiene navigazione aggiuntiva, schermate introduttive, guide o checklist. Le etichette e le brevi istruzioni dei singoli campi spiegano cosa inserire. Nell’elenco, i filtri distinguono bozze, pubblicati, racconti, consigli e consigli in preparazione.
 
 ## Modificare sulla pagina
 
@@ -90,4 +90,4 @@ Se il pannello non si carica, **Riprova ad aprire il pannello** ripete il carica
 - Marked `18.1.0` e DOMPurify `3.4.16` sono copie locali: rendono il testo formattato e rimuovono codice eseguibile dai contenuti.
 - Il proxy usa il parser GraphQL ufficiale, versione `16.11.0`; licenza in `server/vendor/graphql-LICENSE.txt`.
 - `_routes.json` limita le funzioni alle API riservate del CMS, lasciando statiche tutte le altre richieste.
-- Verifiche: `python3 tests/check-static.py`, `node tests/cms-check.cjs`, `node tests/cms-editor-check.cjs`, `node tests/cms-visual-check.cjs`, `node tests/cms-page-actions-check.cjs`, `node tests/cms-create-check.cjs`, `node tests/cms-access-check.cjs`, `node tests/cms-resilience-check.cjs`, `node tests/site-check.cjs`, `node tests/mobile-check.cjs`, `node tests/deep-check.cjs`. I controlli Node richiedono Playwright e Chrome.
+- Verifiche: `python3 tests/check-static.py`, `node tests/cms-check.cjs`, `node tests/cms-editor-check.cjs`, `node tests/cms-chapters-check.cjs`, `node tests/cms-visual-check.cjs`, `node tests/cms-page-actions-check.cjs`, `node tests/cms-create-check.cjs`, `node tests/cms-access-check.cjs`, `node tests/cms-resilience-check.cjs`, `node tests/site-check.cjs`, `node tests/mobile-check.cjs`, `node tests/deep-check.cjs`. I controlli Node richiedono Playwright e Chrome.
