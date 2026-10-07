@@ -6,10 +6,10 @@ stories[0].travelFacts={duration:'Dieci giorni',season:'Primavera'};
 stories[0].gallery=[{image:stories[0].hero,alt:'Foto della galleria',caption:'Il viaggio in immagini'}];
 stories[0].conclusion='Una **riflessione finale**.';
 const files={'content/stories.json':{text:JSON.stringify(stories),type:'application/json'}};
-for(const source of new Set(stories.flatMap(s=>[s.hero,...s.chapters.map(c=>c.image)]).filter(Boolean)))files[source]={base64:fs.readFileSync(root+'/'+source).toString('base64'),type:'image/webp'};
+for(const source of new Set(stories.flatMap(s=>[s.hero,...s.chapters.map(c=>c.image)]).filter(source=>source && !/^https?:\/\//.test(source))))files[source]={base64:fs.readFileSync(root+'/'+source).toString('base64'),type:'image/webp'};
 (async()=>{
 const browser=await chromium.launch({channel:'chrome'}),page=await browser.newPage({viewport:{width:1440,height:1000},reducedMotion:'reduce'});
-const errors=[];page.on('pageerror',error=>errors.push(error.message));
+const errors=[];page.on('pageerror',error=>errors.push(error.stack));
 try {
 await page.addInitScript(({files})=>{
  window.showDirectoryPicker=async()=>{
@@ -56,10 +56,14 @@ await page.getByRole('button',{name:'Solo scrittura',exact:true}).click();
 assert.equal(await page.locator('iframe').isVisible(),false);
 await page.getByRole('button',{name:'Scrivi',exact:true}).click();
 const introduction=page.locator('section.field[data-key-path="intro"] [contenteditable="true"]');
+await introduction.click();
+await page.waitForFunction(()=>document.querySelector('iframe.preview')?.contentDocument?.querySelector('[data-key-path="intro"]')?.classList.contains('ely-field-highlight'));
 await introduction.fill('Una giornata tra templi e piccoli rituali. Il viaggio comincia qui.');
 await page.waitForFunction(()=>document.querySelector('.ely-word-count')?.textContent!=='— parole');
 await page.screenshot({path:root+'/.impeccable/review/writing.png'});
 await page.getByRole('button',{name:'Mostra anteprima',exact:true}).click();
+await page.getByRole('button',{name:'Scrivi',exact:true}).click();await introduction.click();
+await page.waitForFunction(()=>{const frame=document.querySelector('iframe.preview');return frame?.contentWindow?.scrollY>0 && frame.contentDocument.querySelector('[data-key-path="intro"]')?.getBoundingClientRect().top<50;});
 await page.getByRole('button',{name:'Telefono',exact:true}).click();
 await page.waitForFunction(()=>document.querySelector('iframe')?.getBoundingClientRect().width<=390,{},{timeout:15000});
 assert.ok((await page.locator('iframe').boundingBox()).width<=390);
