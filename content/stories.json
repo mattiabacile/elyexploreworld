@@ -1,14 +1,10 @@
 [
   {
-    "id": "japan",
-    "published": true,
     "title": "Giappone: tra templi, natura e tradizioni",
-    "titleAccent": "tradizioni",
-    "destination": "Giappone",
-    "category": "Paesaggi e cultura",
+    "kind": "racconto",
     "date": "2026-04-26",
+    "destination": "Giappone",
     "deck": "Un viaggio tra città luminose, paesaggi silenziosi e gesti antichi che continuano a sorprendere.",
-    "slideText": "Templi, natura e tradizioni\nin perfetto equilibrio.",
     "hero": "assets/stories/japan-retouched.webp",
     "heroAlt": "Monte Fuji oltre un lago, incorniciato dai ciliegi in fiore e da una pagoda rossa",
     "heroCaption": "Il profilo del Monte Fuji al tramonto.",
@@ -17,7 +13,9 @@
       {
         "title": "Il ritmo quieto dei templi",
         "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.",
+        "layout": "auto",
         "image": "assets/stories/japan-detail-retouched.webp",
+        "imageFormat": "auto",
         "imageAlt": "Il Giappone tra natura e architettura.",
         "caption": "Il Giappone tra natura e architettura.",
         "quote": "",
@@ -26,7 +24,9 @@
       {
         "title": "Paesaggi che cambiano voce",
         "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+        "layout": "auto",
         "image": "assets/stories/japan-retouched.webp",
+        "imageFormat": "auto",
         "imageAlt": "Il paesaggio si fa quieto lontano dalla città.",
         "caption": "Il paesaggio si fa quieto lontano dalla città.",
         "quote": "“Ogni dettaglio invita a rallentare, osservare e lasciarsi sorprendere.”",
@@ -35,13 +35,17 @@
       {
         "title": "Gesti, sapori e tradizioni",
         "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Integer vitae justo eget magna fermentum iaculis.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.",
+        "layout": "auto",
         "image": "assets/stories/japan-detail-retouched.webp",
+        "imageFormat": "auto",
         "imageAlt": "Tradizioni che convivono con il presente.",
         "caption": "Tradizioni che convivono con il presente.",
         "quote": "",
         "note": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
       }
     ],
+    "travelFacts": null,
+    "category": "Paesaggi e cultura",
     "tags": [
       "Giappone",
       "Asia",
@@ -49,7 +53,21 @@
       "Natura",
       "Tradizioni"
     ],
-    "kind": "racconto"
+    "gallery": [],
+    "conclusion": "",
+    "appearance": {
+      "theme": "clay",
+      "coverFormat": "panoramic",
+      "coverPosition": "center",
+      "textStyle": "journal",
+      "dropCap": true,
+      "showContents": false
+    },
+    "titleAccent": "tradizioni",
+    "slideText": "Templi, natura e tradizioni\nin perfetto equilibrio.",
+    "published": true,
+    "preparing": false,
+    "id": "japan"
   },
   {
     "id": "bali",
