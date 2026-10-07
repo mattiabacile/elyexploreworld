@@ -17,13 +17,14 @@ class Page(HTMLParser):
         for candidate in attrs.get('srcset', '').split(','):
             if candidate.strip(): self.refs.append(candidate.split()[0])
 
-for file in ROOT.glob('*.html'):
+for file in [*ROOT.glob('*.html'), ROOT / 'admin/index.html']:
     page = Page(); page.feed(file.read_text())
     assert len(page.ids) == len(set(page.ids)), f'Duplicate ID: {file.name}'
     for ref in page.refs:
         url = urlsplit(ref)
         if url.scheme or url.netloc: continue
-        target = file.parent / unquote(url.path) if url.path else file
+        target = ((ROOT / unquote(url.path).lstrip('/')) if url.path.startswith('/') else file.parent / unquote(url.path)) if url.path else file
+        if target.is_dir(): target = target / 'index.html'
         assert target.is_file(), f'Missing file: {file.name} -> {ref}'
         if target.suffix in ('.css', '.js'):
             version = hashlib.sha256(target.read_bytes()).hexdigest()[:12]
@@ -31,8 +32,12 @@ for file in ROOT.glob('*.html'):
         if url.fragment and target.suffix == '.html':
             other = Page(); other.feed(target.read_text())
             assert unquote(url.fragment) in other.ids, f'Missing anchor: {file.name} -> {ref}'
-for file in [*ROOT.glob('*.js'), *ROOT.glob('*.css')]:
+for file in [*ROOT.glob('*.js'), *ROOT.glob('*.css'), *ROOT.glob('admin/*.js'), *ROOT.glob('admin/*.css')]:
     source = file.read_text()
+    for ref, version in re.findall(r'''["']([\w./-]+\.(?:css|js))\?v=([0-9a-f]{12})["']''', source):
+        target = ROOT / ref.lstrip('/') if ref.startswith('/') else file.parent / ref
+        assert target.is_file(), f'Missing dynamic resource: {file.name} -> {ref}'
+        assert hashlib.sha256(target.read_bytes()).hexdigest()[:12] == version, f'Stale dynamic resource: {file.name} -> {ref}'
     for ref in re.findall(r'''["'](assets/[^"']+)["']''', source):
         assert (ROOT / ref).is_file(), f'Missing asset: {file.name} -> {ref}'
     if file.suffix == '.css':
