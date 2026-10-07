@@ -15,7 +15,7 @@ Inserire **nome utente e password** nel pannello. Non serve un account GitHub o 
 5. Controllare l’anteprima. Lasciare **Visibile sul sito** disattivato durante la preparazione.
 6. Quando il contenuto è pronto, attivare **Visibile sul sito**, disattivare **Consiglio in preparazione** e premere **Salva**.
 
-Il **Taccuino di Ely** è lo spazio di lavoro dedicato ai racconti, con colori e caratteri di ElyExploreWorld. I pulsanti **Inizia**, **Copertina**, **Scrivi**, **Aspetto** e **Pubblica** restano raggiungibili durante lo scorrimento e portano alla sezione corrispondente. La data è insieme alle informazioni iniziali. La guida per il primo utilizzo è disponibile all’inizio dell’editor. Nell’elenco, i filtri distinguono bozze, pubblicati, racconti, consigli e consigli in preparazione.
+**Campi** mostra direttamente il modulo, a partire dal titolo: informazioni dell’articolo, copertina, testi e capitoli, foto e impostazioni. Non contiene navigazione aggiuntiva, schermate introduttive, guide o checklist. Le etichette e le brevi istruzioni dei singoli campi spiegano cosa inserire. Nell’elenco, i filtri distinguono bozze, pubblicati, racconti, consigli e consigli in preparazione.
 
 ## Modificare sulla pagina
 
@@ -27,17 +27,10 @@ I controlli per aggiungere o riordinare capitoli e fotografie sono presenti nell
 
 ## Strumenti per scrivere e rileggere
 
-- **Statistiche del testo**: parole, tempo di lettura stimato a 200 parole al minuto e numero di capitoli. Il conteggio comprende apertura, testi dei capitoli, citazioni, consigli pratici e conclusione; esclude i titoli e le descrizioni delle fotografie.
-- **Solo scrittura**: su desktop allarga lo spazio per il testo e nasconde l’anteprima. **Mostra anteprima** ripristina i due pannelli. Le modifiche continuano ad aggiornare statistiche e controlli.
-- **Un piccolo aiuto per iniziare**: nella sezione Scrivi, tre spunti facoltativi aiutano a raccontare un ricordo preciso, il proprio ritmo e un consiglio personale, senza inserire testi automaticamente.
-- **Icone schermo / telefono**: l’icona telefono restringe l’anteprima a 390 pixel, quando lo spazio disponibile lo consente, per controllare la leggibilità e le fotografie.
-- **Scarica il testo**: salva una copia Markdown (`.md`) del testo corrente, incluse le modifiche non ancora salvate. Comprende introduzione, capitoli, citazioni, consigli pratici, informazioni del viaggio, galleria e conclusione. Le fotografie sono riferimenti ai file, non immagini incluse nel download. La copia non sostituisce **Salva** e non ripristina le impostazioni grafiche del CMS.
+- **Solo scrittura**: su desktop allarga lo spazio per il testo e nasconde l’anteprima. **Mostra anteprima** ripristina i due pannelli.
+- **Icone schermo / telefono**: l’icona telefono restringe l’anteprima a 390 pixel, quando lo spazio disponibile lo consente.
 
-## Controlli prima della pubblicazione
-
-La checklist della sezione **Pubblica** controlla titolo e destinazione, introduzione breve, copertina, descrizioni delle fotografie, testo e data. Ogni voce porta al campo da rivedere. Le descrizioni vengono controllate anche nelle fotografie dei capitoli chiusi e della galleria. Il controllo del testo segnala capitoli incompleti e segnaposto riconoscibili, come “Lorem ipsum”; resta necessaria una rilettura personale.
-
-La checklist è un aiuto e non blocca il salvataggio, anche quando una bozza è incompleta. Lo stato **Dopo Salva** descrive cosa accadrà premendo il pulsante: non certifica che le modifiche siano già salvate o pubblicate. L’opzione **Consiglio in preparazione** compare solo per il tipo Consiglio di viaggio. La data ordina i contenuti, senza programmare la pubblicazione.
+Per salvare una bozza, lasciare **Visibile sul sito** disattivato. Per pubblicare, attivarlo e premere **Salva**. **Consiglio in preparazione** compare solo per i consigli e pubblica la scheda nell’archivio. La data ordina i contenuti, senza programmare la pubblicazione.
 
 ## Personalizzare un articolo
 
