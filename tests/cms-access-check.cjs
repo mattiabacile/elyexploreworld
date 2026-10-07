@@ -1,3 +1,4 @@
+const {focusField}=require('./cms-fields-helper.cjs');
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),os=require('node:os');
 const {pathToFileURL}=require('node:url'),{DatabaseSync}=require('node:sqlite');
 const root=path.resolve(__dirname,'..');
@@ -150,13 +151,13 @@ const createDB=()=>{
     await page.locator('section.field[data-key-path="deck"] [contenteditable="true"]').fill('Una nuova storia creata dalla cliente.');
     await page.locator('input[type=file]').first().setInputFiles(path.join(root,records[0].hero));
     await page.getByText(/^\/assets\/uploads\//).first().waitFor();
-    await page.getByRole('button',{name:'Pubblica',exact:true}).click();
+    await focusField(page,'published');
     assert.match(await page.getByLabel('Data del racconto',{exact:true}).inputValue(),/^\d{4}-\d{2}-\d{2}$/);
     await page.getByLabel('Data del racconto',{exact:true}).fill('2026-10-06');
     await page.getByLabel('Descrizione della foto',{exact:true}).fill('Una fotografia del viaggio.');
-    await page.getByRole('button',{name:'Scrivi',exact:true}).click();
+    await focusField(page,'intro');
     await page.getByRole('textbox',{name:'Apertura del racconto',exact:true}).fill('Il testo completo della nuova storia.');
-    await page.getByRole('button',{name:'Aspetto',exact:true}).click();
+    await focusField(page,'appearance');
     const appearance=page.locator('section[data-key-path="appearance"]');
     const expandAppearance=appearance.locator(':scope > .field-wrapper button[aria-controls^="object-"][aria-expanded="false"]');
     await appearance.waitFor({state:'visible'});await appearance.locator(':scope > .field-wrapper button[aria-controls^="object-"]').waitFor();if(await expandAppearance.count())await expandAppearance.click();
@@ -165,8 +166,8 @@ const createDB=()=>{
     await page.frameLocator('iframe').locator('[data-text-style="journal"]').waitFor();
     for(const [width,height,label] of [[1440,1000,'desktop'],[390,844,'mobile']]){
       await page.setViewportSize({width,height});
-      await page.getByRole('button',{name:'Inizia',exact:true}).click();
-      await page.waitForFunction(()=>{const field=document.querySelector('section[data-key-path=title]'),heading=field?.querySelector('.ely-editor-section');return heading && heading.getBoundingClientRect().top>=0 && heading.getBoundingClientRect().top<250 && heading.querySelector('p').getBoundingClientRect().bottom<=field.querySelector('header').getBoundingClientRect().top;});
+      await focusField(page,'title');
+      assert.equal(await page.locator('.ely-studio, .ely-editor-nav, .ely-editor-guide, .ely-editor-section').count(),0);
       await page.screenshot({path:'/tmp/ely-editor-'+label+'.png'});
       assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
     }

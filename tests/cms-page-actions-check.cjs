@@ -27,7 +27,7 @@ await page.addInitScript(({files})=>{
 },{files});
 await page.goto((process.env.SITE_URL || 'http://localhost:4173') + '/admin/?local=1');await page.getByRole('button',{name:/Lavora con Repository Locale/}).click();await page.waitForFunction(()=>document.querySelector('.content-editor')?.getAttribute('aria-busy')!=='true');
 await page.getByText(/Giappone: tra templi/).first().waitFor({timeout:30000});await page.getByText(/Giappone: tra templi/).first().click();await page.waitForFunction(()=>document.querySelector('.content-editor')?.getAttribute('aria-busy')!=='true');
-await page.locator('.ely-word-count').filter({hasText:/\d+ parole/}).waitFor();
+await page.locator('.ely-editor-content section.field[data-key-path=title]').waitFor();
 
 
 const width=Number(process.env.CMS_WIDTH || 1440);
