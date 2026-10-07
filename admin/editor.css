@@ -171,7 +171,7 @@ section.field[data-key-path='title'] > .ely-editor-section { margin-top: 0; padd
 .ely-mode-switch{padding:3px;border:1px solid var(--ely-line);border-radius:8px}
 .ely-mode-switch button,.ely-page-actions button,.ely-inspector button{min-height:44px;padding:8px 12px;border:0;border-radius:6px;font:500 13px/1.4 'Plus Jakarta Sans',sans-serif;color:var(--ely-forest);background:transparent;cursor:pointer}
 .ely-mode-switch button[aria-pressed='true']{background:var(--ely-forest);color:var(--ely-surface)}
-.ely-mode-switch button:hover,.ely-page-actions button:hover,.ely-inspector button:hover{background:var(--ely-soft)}
+.ely-mode-switch button:not([aria-pressed='true']):hover,.ely-page-actions button:hover,.ely-inspector button:hover{background:var(--ely-soft)}
 .ely-mode-switch button:focus-visible,.ely-page-actions button:focus-visible,.ely-inspector button:focus-visible,.ely-on-page-toolbar button:focus-visible{outline:2px solid var(--ely-clay);outline-offset:-2px}
 .ely-page-actions,.ely-inspector{display:none}
 .ely-page-mode .ely-page-actions{display:flex}
