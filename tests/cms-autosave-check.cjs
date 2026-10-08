@@ -33,7 +33,7 @@ for(const image of new Set(stories.flatMap(story=>[story.hero,...story.chapters.
  },{files});
  const open=async()=>{const page=await context.newPage();await page.goto(base+'/admin/?local=1');const connect=page.getByRole('button',{name:/Lavora con Repository Locale/});await connect.click();await page.getByRole('button',{name:'Crea Nuova Voce',exact:true}).waitFor();return page;};
  const saved=page=>page.evaluate(async()=>{const dir=await(await navigator.storage.getDirectory()).getDirectoryHandle('content');return JSON.parse(await(await(await dir.getFileHandle('stories.json')).getFile()).text());});
- const backup=page=>page.locator('.ely-backup-status').filter({hasText:'Bozza salvata automaticamente'}).waitFor();
+ const backup=page=>page.locator('.ely-backup-status').filter({hasText:'Bozza salvata'}).waitFor();
  const backups=page=>page.evaluate(async()=>{
   const database=await new Promise((resolve,reject)=>{const request=indexedDB.open('github:mattiabacile/elyexploreworld');request.onsuccess=()=>resolve(request.result);request.onerror=()=>reject(request.error)});
   try {return await new Promise((resolve,reject)=>{const request=database.transaction('draft-backups').objectStore('draft-backups').getAll();request.onsuccess=()=>resolve(request.result);request.onerror=()=>reject(request.error)});}finally{database.close();}

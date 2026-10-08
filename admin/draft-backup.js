@@ -14,9 +14,9 @@
     if (!status) return;
     const {phase, savedAt} = window.elyDraftBackup.status();
     const messages = {
-      ready: 'Salvataggio automatico attivo',
-      pending: 'Salvataggio della bozza…',
-      saved: 'Bozza salvata automaticamente' + (savedAt ? ' · ' + new Date(savedAt).toLocaleTimeString('it-IT', {hour:'2-digit', minute:'2-digit'}) : ''),
+      ready: 'Bozza automatica attiva',
+      pending: 'Salvataggio bozza…',
+      saved: 'Bozza salvata' + (savedAt ? ' · ' + new Date(savedAt).toLocaleTimeString('it-IT', {hour:'2-digit', minute:'2-digit'}) : ''),
       error: 'Bozza non salvata. Riprova o premi Salva.'
     };
     if (status.textContent !== messages[phase]) status.textContent = messages[phase];
@@ -82,7 +82,7 @@
       if (!owner.querySelector('.ely-save-bar')) {
         const bar = document.createElement('div');
         bar.className = 'ely-save-bar';
-        bar.innerHTML = '<div class="ely-backup-copy"><p class="ely-backup-status" role="status" aria-live="polite"></p><p id="ely-backup-note">Bozza in questo browser. Pubblicazione solo dopo Salva.</p></div><button class="ely-backup-retry" type="button" hidden>Riprova</button>';
+        bar.innerHTML = '<div class="ely-backup-copy"><p class="ely-backup-status" role="status" aria-live="polite"></p><p id="ely-backup-note">Nel browser · online dopo Salva.</p></div><button class="ely-backup-retry" type="button" hidden>Riprova</button>';
         bar.querySelector('button').addEventListener('click', window.elyDraftBackup.retry);
         owner.append(bar);
       }
