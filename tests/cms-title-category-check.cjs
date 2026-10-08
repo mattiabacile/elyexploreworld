@@ -43,6 +43,10 @@ assert.equal(await page.getByRole('button',{name:'Salva',exact:true}).isEnabled(
 const preview=page.frameLocator('iframe.preview'),mobile=Number(process.env.CMS_WIDTH||1440)<900;
 const toggle=()=>page.getByRole('button',{name:'Anteprima',exact:true}).click();
 await focusField(page,'title');const input=page.locator('section[data-key-path=title] [contenteditable=true]');
+const customColor=page.getByLabel('Altro colore per il titolo',{exact:true});
+assert.equal(await page.locator('.ely-title-custom-color').innerText(),'Altro colore…');
+assert.equal(await customColor.isEnabled(),false);
+assert.equal(await customColor.evaluate(node=>getComputedStyle(node).opacity),'0');
 assert.equal(await page.getByRole('button',{name:'Salva',exact:true}).isEnabled(),false);
 const selectTitle=async text=>{await input.evaluate((node,text)=>{const start=node.textContent.indexOf(text);if(start<0)throw Error('Missing selected text');const walk=document.createTreeWalker(node,NodeFilter.SHOW_TEXT),range=document.createRange();let leaf,offset=0,started=false;while(leaf=walk.nextNode()){const end=offset+leaf.data.length;if(!started&&start<end){range.setStart(leaf,start-offset);started=true;}if(started&&start+text.length<=end){range.setEnd(leaf,start+text.length-offset);break;}offset=end;}const selection=window.getSelection();selection.removeAllRanges();selection.addRange(range);},text);};
 const selectTempli=()=>selectTitle('templi');
@@ -51,6 +55,10 @@ await selectTitle('tradizioni');await page.getByRole('button',{name:'Rimuovi col
 await selectTitle('tradizioni');await page.getByRole('button',{name:'Rimuovi formattazione',exact:true}).click();assert.equal(await input.innerText(),stories[0].title);assert.equal(await page.getByRole('button',{name:'Salva',exact:true}).isEnabled(),true);await page.getByRole('button',{name:'Salva',exact:true}).click();await page.locator('.content-editor').waitFor({state:'detached'});
 await page.getByText(/Giappone: tra templi/).first().click();await focusField(page,'title');assert.equal(await input.locator('font,em,i').count(),0);assert.equal(await page.getByRole('button',{name:'Salva',exact:true}).isEnabled(),false);
 await input.fill('Viaggio tra templi e natura');
+await selectTempli();await customColor.focus();
+assert.ok(await page.locator('.ely-title-custom-color').evaluate(node=>parseFloat(getComputedStyle(node).outlineWidth)>=2),'The custom color control must show keyboard focus');
+assert.ok((await customColor.boundingBox()).height>=44,'The custom color control must offer a 44 px click target');
+await customColor.fill('#b23372');assert.equal(await input.locator('font[color="#b23372"]').innerText(),'templi');
 await selectTempli();await page.getByRole('button',{name:'Colore Blu oceano',exact:true}).click();await page.locator('section[data-key-path=title]').getByRole('button',{name:'Grassetto',exact:true}).click();
 await page.locator('section[data-key-path=title]').getByRole('button',{name:'Corsivo',exact:true}).click();
 await page.screenshot({path:root+'/.impeccable/review/title-category-'+(mobile?'390':'1440')+'.png'});
@@ -72,7 +80,7 @@ await page.getByRole('button',{name:'Salva',exact:true}).click();await page.loca
 if(mobile)await toggle();await preview.locator('.preview-story h1 em').waitFor({state:'visible'});assert.equal(await preview.locator('.preview-story h1 em').evaluate(node=>getComputedStyle(node).color),await preview.locator('.preview-story h1').evaluate(node=>getComputedStyle(node).color));if(mobile)await toggle();
 if(!mobile){
  await page.getByRole('button',{name:'Pagina',exact:true}).click();await preview.locator('.preview-story h1').click();await page.locator('.ely-on-page-field[data-key-path=title]').waitFor({state:'visible'});
- await selectTempli();await page.getByLabel('Colore personalizzato del titolo',{exact:true}).focus();await page.getByLabel('Colore personalizzato del titolo',{exact:true}).fill('#b23372');
+ await selectTempli();await page.getByLabel('Altro colore per il titolo',{exact:true}).focus();await page.getByLabel('Altro colore per il titolo',{exact:true}).fill('#b23372');
  await page.getByRole('button',{name:'Fine',exact:true}).click();await preview.locator('.preview-story h1 span[data-title-color="#b23372"]').waitFor();
  await page.getByRole('button',{name:'Salva',exact:true}).click();await page.locator('.content-editor').waitFor({state:'detached'});
  const title=await page.evaluate(async()=>{const dir=await(await navigator.storage.getDirectory()).getDirectoryHandle('content');return JSON.parse(await(await(await dir.getFileHandle('stories.json')).getFile()).text())[0].title;});assert.match(title,/<span data-title-color="#b23372">/);

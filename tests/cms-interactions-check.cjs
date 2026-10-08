@@ -106,6 +106,12 @@ async function check(name,run){try{await run();console.log('PASS:',name);}catch(
    });
    await page.waitForTimeout(350);assert.equal(await textbox.innerText(),'Giappone: *testo* seconda riga <mare> & sole');
    assert.equal(await page.frameLocator('iframe.preview').locator('.preview-story h1').innerText(),'Giappone: *testo* seconda riga <mare> & sole');
+   await textbox.press('ControlOrMeta+a');await textbox.evaluate(node=>{
+    const clipboard=new DataTransfer();clipboard.setData('text/plain','Giappone:\rSeconda\u2028Terza\u2029Quarta');
+    node.dispatchEvent(new ClipboardEvent('paste',{bubbles:true,cancelable:true,clipboardData:clipboard}));
+   });
+   await page.waitForTimeout(350);assert.equal(await textbox.textContent(),'Giappone: Seconda Terza Quarta');
+   assert.equal(await page.frameLocator('iframe.preview').locator('.preview-story h1').innerText(),'Giappone: Seconda Terza Quarta');
   });
   assert.deepEqual(errors,[]);
  }finally{await browser.close();}
