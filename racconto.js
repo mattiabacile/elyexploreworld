@@ -15,8 +15,11 @@
   try { stories = (await c.load()).filter(story => !story.preparing); }
   catch { unavailable('Non riesco a caricare il racconto in questo momento.', true); return; }
   const requested = new URLSearchParams(location.search).get('story');
-  const story = requested ? stories.find(item => item.id === requested) : stories[0];
+  const story = requested ? (stories.find(item => item.id === requested) || stories.find(item => item.publicSlug === requested)) : stories[0];
   if (!story) { unavailable('Questo racconto non è disponibile. Scopri gli altri viaggi nell’archivio.'); return; }
+  const readableURL = new URL(location.href);
+  readableURL.searchParams.set('story', story.publicSlug);
+  history.replaceState(history.state, '', readableURL);
   const chapters = Array.isArray(story.chapters) ? story.chapters : [];
   const appearance = ElyArticle.appearance(story.appearance);
   article.style.setProperty('--clay', appearance.accent);

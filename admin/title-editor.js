@@ -57,7 +57,6 @@
           button('Grassetto',h('strong',{},'B'),()=>command('bold')),
           button('Corsivo',h('em',{},'I'),()=>command('italic')),
           ...[['#9f4933','Argilla'],['#254535','Verde foresta'],['#286274','Blu oceano']].map(([color,label])=>h('button',{type:'button',className:'ely-title-swatch','aria-label':'Colore '+label,title:'Colore '+label,disabled:!selected,onMouseDown:event=>event.preventDefault(),onClick:()=>command('foreColor',color)},h('span',{'aria-hidden':'true',style:{backgroundColor:color}}))),
-          h('label',{className:'ely-title-custom-color',title:'Scegli un altro colore per il testo selezionato'},'Altro colore…',h('input',{type:'color','aria-label':'Altro colore per il titolo',defaultValue:'#9f4933',disabled:!selected,onPointerDown:remember,onChange:event=>command('foreColor',event.target.value)})),
           button('Rimuovi colore','Nessun colore',()=>command('foreColor',getComputedStyle(input.current).color),!selected),
           button('Rimuovi formattazione','Cancella formato',()=>command('removeFormat'),!selected)
         ),

@@ -11,7 +11,7 @@
     if (!/^\/?assets\/[^<>\"\\?#\u0000-\u001f]+\.(?:webp|png|jpe?g|avif|gif)$/i.test(source)) return '';
     try {const decoded=decodeURIComponent(source);return decoded.split('/').some(part=>part==='.'||part==='..')||/[<>\"\\?#\u0000-\u001f]/.test(decoded)?'':source;} catch {return '';}
   };
-  const href = story => `racconto.html?story=${encodeURIComponent(story.id)}`;
+  const href = story => ElyLinks.href(story);
   const title = story => ElyArticle.heading(story.title,story.titleAccent);
   const markdown = value => {
     const clean = DOMPurify.sanitize(marked.parse(String(value ?? ''), { breaks: true }), {
@@ -43,12 +43,12 @@
       const records = await response.json();
       if (!Array.isArray(records)) throw new Error('Archivio non valido');
       const ids = new Set();
-      return records.filter(story => {
+      return ElyLinks.assign(records.filter(story => {
         if (!story || story.published !== true || typeof story.id !== 'string' || !/^[a-z0-9][a-z0-9-]{0,100}$/.test(story.id) || ids.has(story.id)) return false;
         if (!story.title?.trim() || !image(story.hero) || !/^\d{4}-\d{2}-\d{2}$/.test(story.date) || Number.isNaN(Date.parse(story.date))) return false;
         ids.add(story.id);
         return true;
-      }).sort((a, b) => b.date.localeCompare(a.date));
+      }).sort((a, b) => b.date.localeCompare(a.date)));
     } finally { clearTimeout(timeout); }
   })();
   const status = (host, message, retry = false) => {

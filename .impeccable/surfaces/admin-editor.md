@@ -123,3 +123,6 @@ L’incolla nel titolo converte anche ritorni a capo isolati e separatori Unicod
 
 ## 8 ottobre: annullamento delle eliminazioni da tastiera
 Esc annulla la conferma di eliminazione di un capitolo o di una foto e restituisce il focus al comando originale. Prima la conferma rimaneva aperta. La regressione riproduce il problema prima della correzione e verifica entrambe le liste, contenuto conservato e focus ripristinato, insieme alle operazioni e al salvataggio esistenti.
+
+## 8 ottobre: rimozione del colore personalizzato e URL leggibili
+Su richiesta esplicita, rimosso Altro colore insieme al selettore e agli stili dedicati. Restano i tre colori della barra e i controlli di rimozione del colore/formato. Gli URL pubblici derivano dal testo visibile del titolo, con accenti normalizzati, collisioni gestite e compatibilità con gli identificativi precedenti. Le verifiche coprono il titolo su desktop e telefono e la navigazione pubblica tramite titolo e identificativo.
