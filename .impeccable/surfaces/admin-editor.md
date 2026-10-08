@@ -120,3 +120,6 @@ Su telefono la scelta di una prima foto indipendente aggiorna subito la visibili
 Il quadrato rosso del selettore nativo non spiegava la propria funzione e sembrava un controllo aggiuntivo. Il comando mostra ora Altro colore…; il selettore resta nativo, accessibile e attivabile su tutta l’area del comando, alta almeno 44 px. Il focus da tastiera è visibile sul contenitore anche se il campione nativo non viene mostrato. Le verifiche del titolo controllano scelta del colore personalizzato in Campi su desktop e telefono, selezione conservata, formattazione, rimozione parziale del colore, annullamento e salvataggio/riapertura.
 
 L’incolla nel titolo converte anche ritorni a capo isolati e separatori Unicode di riga/paragrafo in spazi: prima il CMS univa alcune parole o conservava separatori invisibili. Una regressione riproduce il difetto e verifica testo e anteprima, insieme al caso esistente di punteggiatura letterale.
+
+## 8 ottobre: annullamento delle eliminazioni da tastiera
+Esc annulla la conferma di eliminazione di un capitolo o di una foto e restituisce il focus al comando originale. Prima la conferma rimaneva aperta. La regressione riproduce il problema prima della correzione e verifica entrambe le liste, contenuto conservato e focus ripristinato, insieme alle operazioni e al salvataggio esistenti.

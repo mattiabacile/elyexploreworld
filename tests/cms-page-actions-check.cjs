@@ -61,6 +61,10 @@ await chapter(4).getByRole('heading',{name:'Una seconda tappa',exact:true}).wait
 await page.locator('.content-editor[aria-busy="false"]').waitFor();
 await options(chapter(4),'Opzioni del capitolo');
 await chapter(4).getByRole('button',{name:'Elimina capitolo',exact:true}).click();await page.waitForFunction(()=>document.querySelector('.content-editor')?.getAttribute('aria-busy')!=='true');
+await chapter(4).getByRole('button',{name:'Annulla',exact:true}).press('Escape');
+assert.equal(await chapter(4).locator('.preview-remove-confirm').count(),0,'Esc must dismiss the chapter removal confirmation');
+assert.equal(await chapter(4).getByRole('button',{name:'Elimina capitolo',exact:true}).evaluate(node=>node===node.ownerDocument.activeElement),true);
+await chapter(4).getByRole('button',{name:'Elimina capitolo',exact:true}).click();
 await chapter(4).getByRole('button',{name:'Annulla',exact:true}).click();await page.waitForFunction(()=>document.querySelector('.content-editor')?.getAttribute('aria-busy')!=='true');
 assert.equal(await preview().locator('.preview-chapter').count(),5);
 await chapter(4).getByRole('button',{name:'Elimina capitolo',exact:true}).click();await page.waitForFunction(()=>document.querySelector('.content-editor')?.getAttribute('aria-busy')!=='true');
@@ -89,6 +93,11 @@ await photo(1).getByRole('button',{name:'Sposta prima',exact:true}).click();awai
 await photo(0).getByText('La foto aggiunta direttamente alla galleria',{exact:true}).waitFor();
 await options(photo(1),'Opzioni della foto');
 await photo(1).getByRole('button',{name:'Elimina foto',exact:true}).click();await page.waitForFunction(()=>document.querySelector('.content-editor')?.getAttribute('aria-busy')!=='true');
+await photo(1).getByRole('button',{name:'Annulla',exact:true}).press('Escape');
+assert.equal(await photo(1).locator('.preview-remove-confirm').count(),0,'Esc must dismiss the photo removal confirmation');
+assert.equal(await photo(1).getByRole('button',{name:'Elimina foto',exact:true}).evaluate(node=>node===node.ownerDocument.activeElement),true);
+assert.equal(await preview().locator('.preview-gallery figure').count(),2);
+await photo(1).getByRole('button',{name:'Elimina foto',exact:true}).click();
 await photo(1).getByRole('button',{name:'Elimina',exact:true}).click();await page.waitForFunction(()=>document.querySelector('.content-editor')?.getAttribute('aria-busy')!=='true');
 await page.waitForFunction(()=>document.querySelector('iframe.preview')?.contentDocument?.querySelectorAll('.preview-gallery figure').length===1);
 assert.equal(await preview().locator('.preview-gallery figure').count(),1);

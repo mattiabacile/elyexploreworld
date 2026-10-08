@@ -353,7 +353,7 @@
     const row=doc.createElement('span');row.className='preview-remove-confirm';row.setAttribute('role','group');row.setAttribute('aria-label','Conferma eliminazione');
     const label=doc.createElement('span');label.textContent=element.dataset.list==='chapters'?'Eliminare questo capitolo e il suo contenuto?':'Eliminare questa foto dalla galleria?';
     const yes=doc.createElement('button');yes.type='button';yes.textContent='Elimina';yes.dataset.list=element.dataset.list;yes.dataset.index=element.dataset.index;yes.dataset.operation='confirm-remove';
-    const no=doc.createElement('button');no.type='button';no.textContent='Annulla';no.addEventListener('click',()=>{row.remove();element.hidden=false;element.focus();});
+    const no=doc.createElement('button');no.type='button';no.textContent='Annulla';no.dataset.cancelRemoval='true';no.addEventListener('click',()=>{row.remove();element.hidden=false;element.focus();});
     row.append(label,yes,no);scope.append(row);element.hidden=true;no.focus();
   };
   const bind=()=>{
@@ -361,6 +361,10 @@
     if(!doc.body)return;doc.body.classList.toggle('ely-editable-page',visual());if(visual())renderValidation(doc);
     if(boundFrames.has(doc))return;boundFrames.add(doc);
     const activate=event=>{
+      if(event.type==='keydown'&&event.key==='Escape'&&visual()){
+        const cancel=event.target.closest?.('.preview-remove-confirm')?.querySelector('[data-cancel-removal]');
+        if(cancel){event.preventDefault();event.stopPropagation();cancel.click();return;}
+      }
       if(event.type==='keydown'&&event.key==='Escape'&&visual()&&(active||editor.classList.contains('ely-inspector-open'))){
         event.preventDefault();event.stopPropagation();close();return;
       }
