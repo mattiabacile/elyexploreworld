@@ -2,7 +2,7 @@ const {chromium}=require('playwright');
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
 const {focusField}=require('./cms-fields-helper.cjs');
 const root=path.resolve(__dirname,'..'),base=process.env.SITE_URL||'http://localhost:4173';
-const stories=JSON.parse(fs.readFileSync(path.join(root,'content/stories.json')));
+const stories=require('./cms-fields-helper.cjs').readStories();
 stories[0].reuseCover='no';stories[0].articleHero=stories[0].hero;stories[0].articleHeroAlt='Una prima foto indipendente';
 stories[0].gallery=[{image:stories[0].hero,alt:'Prima foto',caption:'Prima didascalia'},{image:stories[0].hero,alt:'Seconda foto',caption:'Seconda didascalia'}];
 const files=Object.fromEntries(['stories','tags','categories'].map(name=>['content/'+name+'.json',fs.readFileSync(path.join(root,'content',name+'.json'),'utf8')]));

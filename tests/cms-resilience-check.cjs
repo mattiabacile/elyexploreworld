@@ -1,6 +1,6 @@
 const {chromium}=require('playwright'), fs=require('fs'), assert=require('assert/strict');
 const root=require('node:path').resolve(__dirname,'..');
-const stories=JSON.parse(fs.readFileSync(root+'/content/stories.json'));
+const stories=require('./cms-fields-helper.cjs').readStories();
 stories[0].appearance={theme:'ocean',textStyle:'journal',coverFormat:'natural',showContents:true,dropCap:false};
 stories[0].travelFacts={duration:'Dieci giorni',season:'Primavera'};
 stories[0].gallery=[{image:stories[0].hero,alt:'Foto della galleria',caption:'Il viaggio in immagini'}];

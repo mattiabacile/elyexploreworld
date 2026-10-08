@@ -16,3 +16,14 @@ exports.focusField=async(page,key)=>{
  }
  throw new Error('Native field did not mount: '+key);
 };
+
+// Stable sample articles keep isolated CMS checks independent of live publishing order.
+exports.readStories=()=>{
+ const {readFileSync}=require('node:fs'),{join}=require('node:path');
+ const stories=JSON.parse(readFileSync(join(__dirname,'../content/stories.json')));
+ return ['japan','bali','singapore'].map(id=>{
+  const story=stories.find(story=>story.id===id);
+  if(!story)throw new Error('Missing CMS sample article: '+id);
+  return story;
+ });
+};
