@@ -116,26 +116,36 @@
   c.responsive(relatedHost);
   article.hidden = false;
   statusHost.remove();
-  document.documentElement.dataset.contentReady = 'true';
-  const shareUrl = encodeURIComponent(location.href);
-  document.querySelector('[data-share-link="facebook"]').href = `https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`;
+  document.querySelector('[data-share-link="email"]').href = `mailto:?subject=${encodeURIComponent(document.title)}&body=${encodeURIComponent(location.href)}`;
   const status = document.querySelector('.copy-status');
+  const manualLink = document.querySelector('.share-manual-link');
+  const shareButton = document.querySelector('[data-share="native"]');
+  manualLink.value = location.href;
+  manualLink.addEventListener('click', () => manualLink.select());
   let statusTimer;
   const copyLink = async () => {
     clearTimeout(statusTimer);
     try {
       if (!navigator.clipboard?.writeText) throw new Error('Clipboard unavailable');
       await navigator.clipboard.writeText(location.href);
+      manualLink.hidden = true;
       status.textContent = 'Link copiato negli appunti.';
+      statusTimer = setTimeout(() => { status.textContent = ''; }, 5000);
     } catch {
-      status.textContent = 'Copia il link dalla barra degli indirizzi del browser.';
+      status.textContent = 'La copia automatica non è disponibile. Copia il link selezionato qui sotto oppure dalla barra degli indirizzi.';
+      manualLink.hidden = false;
+      manualLink.focus({ preventScroll: true });
+      manualLink.select();
     }
-    statusTimer = setTimeout(() => { status.textContent = ''; }, 5000);
   };
-  document.querySelector('[data-share="native"]').addEventListener('click', async () => {
+  shareButton.addEventListener('click', async () => {
     if (!navigator.share) return copyLink();
+    clearTimeout(statusTimer);status.textContent = '';
+    shareButton.disabled = true;
     try { await navigator.share({ title: document.title, url: location.href }); }
     catch (error) { if (error.name !== 'AbortError') await copyLink(); }
+    finally { shareButton.disabled = false; }
   });
   document.querySelector('[data-share="copy"]').addEventListener('click', copyLink);
+  document.documentElement.dataset.contentReady = 'true';
 })();

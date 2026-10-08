@@ -8,7 +8,7 @@
   <title>Racconto di viaggio — ElyExploreWorld</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23254535'/%3E%3Ctext x='32' y='44' text-anchor='middle' font-family='Georgia' font-size='40' fill='%23F7F3E9'%3EE%3C/text%3E%3C/svg%3E">
   <link rel="stylesheet" href="fonts.css?v=91a20dad9440">
-  <link rel="stylesheet" href="racconto.css?v=47cdb14fbd63">
+  <link rel="stylesheet" href="racconto.css?v=29a79a86876b">
   <link rel="stylesheet" href="navigation.css?v=57dc40a97422">
   <link rel="stylesheet" href="footer.css?v=9deff0197e30">
   <link rel="stylesheet" href="mobile.css?v=df338cfae62b">
@@ -80,10 +80,14 @@
         <div class="end-rule"><span>Fine del racconto</span></div>
         <div class="story-utilities">
           <div class="tag-list" aria-label="Tag del racconto"><span>Tag:</span><div data-list="tags"></div></div>
+          <div class="share-controls">
           <div class="share-list"><span>Condividi il racconto:</span>
             <button type="button" data-share="native" aria-label="Condividi il racconto"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.7 10.7 6.6-4.1M8.7 13.3l6.6 4.1"/></svg></button>
-            <a data-share-link="facebook" href="#" aria-label="Condividi su Facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 8h3V4h-3c-3 0-5 2-5 5v3H6v4h3v5h4v-5h3l1-4h-4V9c0-.7.3-1 1-1Z"/></svg></a>
+            <a data-share-link="email" href="mailto:" aria-label="Condividi via email"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></svg></a>
             <button type="button" data-share="copy" aria-label="Copia il link"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.1 0l2-2a5 5 0 0 0-7.1-7.1l-1.1 1.1M14 11a5 5 0 0 0-7.1 0l-2 2A5 5 0 0 0 12 20.1l1.1-1.1"/></svg></button>
+          </div>
+          <p class="copy-status" role="status" aria-live="polite"></p>
+          <input class="share-manual-link" type="text" readonly hidden aria-label="Link del racconto da copiare">
           </div>
         </div>
 
@@ -116,7 +120,6 @@
 
   <div id="site-footer-root"></div>
 
-  <p class="copy-status" role="status" aria-live="polite"></p>
   <script src="vendor/marked.js?v=f424dcb508fd" defer></script>
   <script src="vendor/dompurify.js?v=2c90a9b46d64" defer></script>
   <script src="article-links.js?v=f6d15ae290a0" defer></script>
@@ -125,6 +128,6 @@
   <script src="mobile.js?v=ee11b21120e1" defer></script>
   <script src="footer.js?v=ef66813fd206" defer></script>
   <script src="navigation.js?v=9540f8848ee4" defer></script>
-  <script src="racconto.js?v=ff130799f4b9" defer></script>
+  <script src="racconto.js?v=993b1937d28e" defer></script>
 </body>
 </html>

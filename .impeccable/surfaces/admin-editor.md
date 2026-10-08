@@ -126,3 +126,6 @@ Esc annulla la conferma di eliminazione di un capitolo o di una foto e restituis
 
 ## 8 ottobre: rimozione del colore personalizzato e URL leggibili
 Su richiesta esplicita, rimosso Altro colore insieme al selettore e agli stili dedicati. Restano i tre colori della barra e i controlli di rimozione del colore/formato. Gli URL pubblici derivano dal testo visibile del titolo, con accenti normalizzati, collisioni gestite e compatibilità con gli identificativi precedenti. Le verifiche coprono il titolo su desktop e telefono e la navigazione pubblica tramite titolo e identificativo.
+
+## 8 ottobre: condivisione dei racconti pubblici
+Dall’archivio si accede al racconto, dove i controlli di condivisione ora mostrano esito e recupero accanto ai pulsanti. La copia negata offre il link completo selezionabile, mentre la condivisione di sistema assente o fallita usa la stessa copia. Annullare la condivisione non copia nulla. Facebook sostituito dalla condivisione via email su richiesta. Verifica isolata su desktop e telefono, senza inviare messaggi reali.

@@ -39,6 +39,7 @@ const base = process.env.SITE_URL || 'http://localhost:4173';
     const images = [];
     page.on('request', request => { if (request.resourceType() === 'image' && request.url().includes('/assets/')) images.push(request.url()); });
     await page.goto(base + '/racconto.html?story=bali');
+    await page.locator('html[data-content-ready=true]').waitFor();
     assert.ok(images[0].endsWith('/bali-retouched.webp'), `Wrong first article image: ${images[0]}`);
     await page.evaluate(() => {
       window.copyCalls = 0;
