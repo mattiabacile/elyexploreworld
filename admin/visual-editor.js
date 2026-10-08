@@ -81,7 +81,7 @@
     const anchor=selection?.element?.isConnected?selection.element.getBoundingClientRect():selection?.anchor;
     const frameRect=frame?.isConnected?frame.getBoundingClientRect():selection?.frameBounds;
     if(inline&&anchor)anchor.height=Math.max(anchor.height,inlineHeight(selection.key));
-    const viewportHeight=window.visualViewport?.height || innerHeight;
+    const viewportHeight=Math.min(window.visualViewport?.height || innerHeight,editor.querySelector('.ely-save-bar')?.getBoundingClientRect().top ?? Infinity);
     const topbar=editor.querySelector(':scope > .primary')?.getBoundingClientRect().bottom || 64;
     const width=inline&&anchor?Math.min(Math.max(anchor.width,280),innerWidth-32):Math.min(680,innerWidth-32);
     const height=Math.min(inline&&anchor?Math.max(anchor.height,180):active.dataset.fieldType==='image'?380:560,viewportHeight-topbar-32);
@@ -392,6 +392,7 @@
         return;
       }
             event.preventDefault();event.stopPropagation();
+      if(event.isTrusted)window.elyDraftBackup?.touch();
       if(element.dataset.toggleKey){setBoolean(element.dataset.toggleKey,!valueAt(article,element.dataset.toggleKey));}
       else if(element.dataset.operation){
         if(element.dataset.operation==='remove')confirmRemoval(element);
@@ -424,7 +425,8 @@
     toolbar=document.createElement('footer');toolbar.className='ely-on-page-toolbar';toolbar.hidden=true;toolbar.innerHTML='<button type="button">Fine</button>';toolbar.querySelector('button').addEventListener('click',()=>close());editor.append(panel,toolbar);draw();
   };
   const enhance=()=>{
-    const next=document.querySelector('.content-editor');
+    const candidate=document.querySelector('.content-editor');
+    const next=candidate?.matches('.ely-placement-editor')||candidate?.querySelector('section.field[data-key-path=slideshowKind]')?null:candidate;
     if(next!==editor){if(nativeValidationReceiver){window.removeEventListener('message',nativeValidationReceiver,true);nativeValidationReceiver=null;}close(false);panel?.remove();toolbar?.remove();settings?.remove();settings=null;panel=null;toolbar=null;editor=next;selection=null;frame=null;previewSwitch=false;validationRefs=[];working=false;pendingPublication=null;saveRequested=false;clearTimeout(statusTimer);actionStatus=null;liveHint=null;if(articleOwner!==next)article={};}
     if(!editor){toolbarSize.disconnect();primary=null;return;}
     const nextPrimary=editor.querySelector(':scope > .primary');

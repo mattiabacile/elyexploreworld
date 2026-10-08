@@ -14,6 +14,7 @@ Aprire http://localhost:4173/.
 - `racconti.html`: archivio dei racconti.
 - `racconto.html` e `racconto.js`: modello articolo con capitoli dinamici, fotografie, tag, condivisione e navigazione. I collegamenti inesistenti mostrano un messaggio e il ritorno all’archivio.
 - `content/stories.json`: sorgente dei racconti e consigli gestiti da Sveltia. `content.js` la carica e fornisce la resa sicura del testo formattato.
+- `content/placement.json`: scelta dei contenuti e ordine indipendente per lo slideshow della home e l’archivio, gestiti in **Slideshow e archivio → Selezione e ordine**.
 - `admin/`: Sveltia CMS, configurazione in italiano, anteprima e libreria fotografica. [Guida al CMS](CMS.md).
 - `functions/` e `server/`: accesso GitHub tramite l’Authenticator ufficiale Sveltia, eseguito da Cloudflare Pages Functions.
 - `navigation.js` e `navigation.css`: unico menu condiviso, gestione focus, blocco dello scorrimento e navigazione alle sezioni.

@@ -10,7 +10,7 @@
   const host = document.querySelector('.stories-archive .stories-grid');
   const tipsHost = document.querySelector('.tips-grid');
   try {
-    let records = await ElyContent.load();
+    let records = await ElyContent.forSurface('archive');
     const query=new URLSearchParams(location.search),tag=query.get('tag')?.trim(),category=query.get('category')?.trim();
     if(tag || category){
       records=records.filter(story=>(!tag||(Array.isArray(story.tags)?story.tags:[]).some(value=>ElyArticle.tagKey(value)===ElyArticle.tagKey(tag)))&&(!category||ElyArticle.tagKey(story.category)===ElyArticle.tagKey(category)));

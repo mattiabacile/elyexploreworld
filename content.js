@@ -51,6 +51,20 @@
       }).sort((a, b) => b.date.localeCompare(a.date)));
     } finally { clearTimeout(timeout); }
   })();
+  let placementRequest;
+  const placements = () => placementRequest ??= (async () => {
+    const response = await fetch('content/placement.json', { cache: 'no-cache', signal: AbortSignal.timeout(12000) });
+    // Older deployments without preferences retain their original date order.
+    if (response.status === 404) return {};
+    if (!response.ok) throw new Error('Selezione non disponibile');
+    const data = await response.json();
+    if (!data || typeof data !== 'object' || Array.isArray(data)) throw new Error('Selezione non valida');
+    return data;
+  })();
+  const forSurface = async surface => {
+    const [records, settings] = await Promise.all([load(), placements()]);
+    return ElyPlacement.select(records, settings, surface);
+  };
   const status = (host, message, retry = false) => {
     const paragraph = document.createElement('p');
     paragraph.className = 'content-status';
@@ -69,5 +83,5 @@
     <figure class="story-card-media"><img src="${escape(image(story.hero))}" data-content-image="${escape(image(story.hero))}" alt="${escape(story.heroAlt)}" width="1600" height="900" ${index ? 'loading="lazy"' : 'fetchpriority="high"'} decoding="async"></figure>
     <div class="story-card-body"><p class="story-card-meta"><time datetime="${escape(story.date)}">${date(story.date)}</time><span>${escape(story.destination)}</span></p>
     <h3>${title(story)}</h3><p class="story-card-description">${ElyArticle.inline(story.deck,{links:false})}</p><span class="story-card-cta">Leggi il racconto <b aria-hidden="true">→</b></span></div></a></article>`;
-  window.ElyContent = { load, escape, image, href, title, date, markdown, status, responsive, card };
+  window.ElyContent = { load, forSurface, escape, image, href, title, date, markdown, status, responsive, card };
 })();

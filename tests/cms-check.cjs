@@ -104,7 +104,7 @@ const initial = JSON.parse(fs.readFileSync(require('node:path').join(__dirname, 
     records = [...initial, { ...initial[0], id: 'consiglio-nuovo', kind: 'consiglio', title: 'Nuovo consiglio', date: '2026-10-06' }];
     await visit('/racconti.html');
     assert.equal(await page.locator('.tips-grid .story-card').count(), 1);
-    assert.equal(await page.locator('.tips-grid a').getAttribute('href'), 'racconto.html?story=consiglio-nuovo');
+    assert.equal(await page.locator('.tips-grid a').getAttribute('href'), 'racconto.html?story=nuovo-consiglio');
     await visit('/'); assert.equal(await page.locator('.stories-slide.is-active').getAttribute('id'), 'story-consiglio-nuovo');
     const preparing={...initial[0],id:'consiglio-in-preparazione',kind:'consiglio',title:'Consiglio in preparazione',preparing:true};records=[...initial,preparing];
     await visit('/');assert.equal(await page.locator('.stories-slide').count(),3);

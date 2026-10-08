@@ -246,3 +246,33 @@ section.field[data-key-path=chapters] .item > .header button[data-action],sectio
 .ely-title-hint{margin:0;padding:0 16px 12px;color:var(--ely-muted);font-size:12px}
 .ely-title-status:empty{display:none}
 @media(max-width:767px){.ely-title-tools button{min-height:44px;min-width:44px}.ely-title-input{font-size:18px}}
+.ely-placement-moves { display: inline-flex; gap: 4px; margin-inline-start: auto; }
+.ely-placement-moves button { display: grid; place-items: center; width: 44px; height: 44px; border: 0; border-radius: 8px; background: var(--ely-soft); color: var(--ely-forest); cursor: pointer; }
+.ely-placement-moves button:hover:enabled { background: var(--ely-line); }
+.ely-placement-moves button:disabled { opacity: .4; cursor: default; }
+.ely-placement-moves button:focus-visible { outline: 2px solid var(--ely-clay); outline-offset: 2px; }
+.ely-placement-moves svg { width: 20px; height: 20px; }
+
+/* Keep the native Save action and its safeguards, anchored beside draft status. */
+.ely-save-bar { position: fixed; z-index: 83; inset: auto 0 0; display: flex; align-items: center; gap: 16px; min-height: 88px; box-sizing: border-box; padding: 16px 184px calc(16px + env(safe-area-inset-bottom)) 24px; background: var(--ely-paper); border-top: 1px solid var(--ely-line); color: var(--ely-ink); font: 13px/1.5 'Plus Jakarta Sans', sans-serif; }
+.ely-backup-copy { min-width: 0; }
+.ely-backup-copy p { margin: 0; }
+.ely-backup-status { font-weight: 600; }
+#ely-backup-note { margin-top: 4px; color: var(--ely-muted); }
+.ely-backup-status[data-phase='error'] { color: var(--ely-clay); }
+.ely-backup-retry { min-height: 44px; padding: 8px 12px; border: 1px solid var(--ely-line); border-radius: 6px; background: var(--ely-surface); color: var(--ely-forest); font: inherit; cursor: pointer; }
+.ely-backup-retry[hidden] { display: none; }
+.content-editor .ely-save-button { position: fixed !important; z-index: 84; right: 24px; bottom: calc(18px + env(safe-area-inset-bottom)); min-width: 136px !important; min-height: 52px !important; padding: 12px 24px !important; border-radius: 8px !important; background: var(--ely-forest) !important; color: var(--ely-paper) !important; font: 700 16px/1.4 'Plus Jakarta Sans', sans-serif !important; box-shadow: 0 4px 12px #16271f26; }
+.content-editor .ely-save-button:hover:enabled { background: var(--sui-primary-accent-color-dark) !important; }
+.content-editor .ely-save-button:disabled { background: var(--ely-soft) !important; color: var(--ely-muted) !important; opacity: 1 !important; box-shadow: none; cursor: default; }
+.content-editor .ely-save-button:focus-visible, .ely-backup-retry:focus-visible { outline: 3px solid var(--ely-clay); outline-offset: 3px; }
+.content-editor.ely-draft-enabled > .body { padding-bottom: calc(88px + env(safe-area-inset-bottom)); box-sizing: border-box; }
+.ely-draft-enabled.ely-page-mode .ely-page-settings { bottom: calc(88px + env(safe-area-inset-bottom)); }
+.ely-draft-enabled .ely-live-hint { bottom: calc(104px + env(safe-area-inset-bottom)); }
+.ely-draft-enabled .ely-action-status { bottom: calc(104px + env(safe-area-inset-bottom)); }
+@media (max-width: 767px) {
+  .ely-save-bar { padding: 12px 156px calc(12px + env(safe-area-inset-bottom)) 16px; min-height: 100px; font-size: 12px; flex-wrap: wrap; gap: 4px; }
+  .content-editor .ely-save-button { right: 16px; bottom: calc(24px + env(safe-area-inset-bottom)); min-width: 124px !important; padding-inline: 20px !important; }
+  .content-editor.ely-draft-enabled > .body { padding-bottom: calc(100px + env(safe-area-inset-bottom)); }
+  .ely-draft-enabled.ely-page-mode .ely-page-settings { bottom: calc(100px + env(safe-area-inset-bottom)); }
+}

@@ -111,7 +111,7 @@ async function startSession(env, username) {
 }
 // Sveltia retains Unicode and typographic apostrophes in generated filenames.
 // Keep those uploads within a single safe basename and the image allowlist.
-const writable = path => typeof path === 'string' && (['content/stories.json', 'content/tags.json', 'content/categories.json'].includes(path) || /^assets\/uploads\/[^/\\<>:"|?*#%\s\u0000-\u001f\u007f]+\.(?:webp|jpe?g|png|avif|gif)$/iu.test(path) && !path.split('/').at(-1).startsWith('.'));
+const writable = path => typeof path === 'string' && (['content/stories.json', 'content/tags.json', 'content/categories.json', 'content/placement.json'].includes(path) || /^assets\/uploads\/[^/\\<>:"|?*#%\s\u0000-\u001f\u007f]+\.(?:webp|jpe?g|png|avif|gif)$/iu.test(path) && !path.split('/').at(-1).startsWith('.'));
 
 export function validateGraphQL(body) {
   if (!body || typeof body.query !== 'string' || body.query.length > 128000) return false;

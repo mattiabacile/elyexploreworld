@@ -693,6 +693,127 @@
       ]
     },
     {
+      "name": "homepage",
+      "label": "Slideshow e archivio",
+      "description": "Scegli racconti e consigli da mostrare nella home e nell’archivio.",
+      "files": [
+        {
+          "name": "placement",
+          "label": "Selezione e ordine",
+          "file": "content/placement.json",
+          "format": "json",
+          "description": "Scegli dove mostrare racconti e consigli e in quale ordine. Per mostrarli in entrambi, inseriscili in tutte e due le liste. Le bozze restano fuori dal sito.",
+          "fields": [
+            {
+              "name": "slideshowKind",
+              "label": "Slideshow: quali contenuti mostrare?",
+              "widget": "select",
+              "default": "both",
+              "options": [
+                {
+                  "label": "Racconti e consigli",
+                  "value": "both"
+                },
+                {
+                  "label": "Solo racconti",
+                  "value": "racconto"
+                },
+                {
+                  "label": "Solo consigli",
+                  "value": "consiglio"
+                }
+              ],
+              "hint": "Per lasciare un articolo solo in Tutti i racconti, scegli Solo quelli scelti per lo slideshow e non inserirlo nella sua lista. Per mostrarlo in entrambi, inseriscilo nelle due liste. I consigli in preparazione compaiono solo nell’archivio."
+            },
+            {
+              "name": "slideshowSelection",
+              "label": "Slideshow: selezione",
+              "widget": "select",
+              "default": "all",
+              "options": [
+                {
+                  "label": "Tutti i contenuti pubblicati",
+                  "value": "all"
+                },
+                {
+                  "label": "Solo quelli scelti nella lista",
+                  "value": "selected"
+                }
+              ]
+            },
+            {
+              "name": "slideshow",
+              "label": "Slideshow: articoli e ordine",
+              "widget": "list",
+              "required": false,
+              "collapsed": false,
+              "default": [],
+              "label_singular": "Articolo",
+              "hint": "Aggiungi gli articoli e trascinali, oppure usa Sposta prima e Sposta dopo. In modalità Tutti, gli altri seguono per data. La lista vuota in modalità Solo quelli scelti non mostra alcun articolo.",
+              "field": {
+                "name": "article",
+                "label": "Articolo",
+                "widget": "relation",
+                "collection": "racconti",
+                "value_field": "id",
+                "display_fields": [
+                  "title",
+                  "destination"
+                ],
+                "search_fields": [
+                  "title",
+                  "destination"
+                ],
+                "required": true
+              }
+            },
+            {
+              "name": "archiveSelection",
+              "label": "Tutti i racconti: selezione",
+              "widget": "select",
+              "default": "all",
+              "options": [
+                {
+                  "label": "Tutti i contenuti pubblicati",
+                  "value": "all"
+                },
+                {
+                  "label": "Solo quelli scelti nella lista",
+                  "value": "selected"
+                }
+              ]
+            },
+            {
+              "name": "archive",
+              "label": "Tutti i racconti: articoli e ordine",
+              "widget": "list",
+              "required": false,
+              "collapsed": false,
+              "default": [],
+              "label_singular": "Articolo",
+              "hint": "Aggiungi gli articoli e trascinali, oppure usa Sposta prima e Sposta dopo. In modalità Tutti, gli altri seguono per data. La lista vuota in modalità Solo quelli scelti non mostra alcun articolo.",
+              "field": {
+                "name": "article",
+                "label": "Articolo",
+                "widget": "relation",
+                "collection": "racconti",
+                "value_field": "id",
+                "display_fields": [
+                  "title",
+                  "destination"
+                ],
+                "search_fields": [
+                  "title",
+                  "destination"
+                ],
+                "required": true
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
       "name": "tag",
       "label": "Tag",
       "label_singular": "Tag",

@@ -3,7 +3,7 @@
   const track = section?.querySelector('.stories-track');
   if (!track) return;
   let stories;
-  try { stories = (await ElyContent.load()).filter(story => !story.preparing); }
+  try { stories = await ElyContent.forSurface('slideshow'); }
   catch {
     ElyContent.status(track, 'Non riesco a caricare i racconti in questo momento.', true);
     return;

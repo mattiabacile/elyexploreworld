@@ -14,7 +14,7 @@ window.elyCMSReady = (async () => {
     config.load_config_file = false;
     const savedArticles=Array.isArray(history)?history.filter(record=>record&&typeof record.id==='string'):[];
     const h=CMS.React.createElement;
-    CMS.registerPreviewStyle('/admin/preview.css?v=e0d84e01ee2d');
+    CMS.registerPreviewStyle('/admin/preview.css?v=f8a9163ab771');
     const renderStory = ({ entry, widgetFor, widgetsFor, getAsset }) => {
       const data = entry.get('data');
       const asset = path => path ? getAsset(path)?.url || path : '';
@@ -124,11 +124,13 @@ window.elyCMSReady = (async () => {
         return h('pre', {style:{padding:'24px',whiteSpace:'pre-wrap',color:'#9f4933',font:'14px/1.6 monospace'}}, 'Errore nell’anteprima: ' + (error && error.message ? error.message : error) + '\n\nMandami questo messaggio per correggere.');
       }
     });
-    CMS.registerEventListener({name:'preSave',handler:({entry})=>{
+    CMS.registerEventListener({name:'preSave',handler:async({entry})=>{
+      await window.elyDraftBackup?.beforeSave();
       const data=entry.get('data'),previous=savedArticles.find(record=>record.id===data.get('id'));
       return previous && previous.title!==data.get('title') ? data.set('titleAccent','') : data;
     }});
     ElyTitle.register();
+    ElyPlacementEditor.register();
     await CMS.init({ config });
   } catch (error) { throw error; }
 })();

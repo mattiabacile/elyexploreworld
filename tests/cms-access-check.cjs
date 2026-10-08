@@ -31,6 +31,7 @@ const createDB=()=>{
  const mutation={query:'mutation($input:CreateCommitOnBranchInput!){createCommitOnBranch(input:$input){commit{oid}}}',variables:{input}};
  assert.equal(validateGraphQL(mutation),true);
  const tagMutation=structuredClone(mutation);tagMutation.variables.input.fileChanges.additions[0].path='content/tags.json';assert.equal(validateGraphQL(tagMutation),true);
+ const placementMutation=structuredClone(mutation);placementMutation.variables.input.fileChanges.additions[0].path='content/placement.json';assert.equal(validateGraphQL(placementMutation),true);
  const categoryMutation=structuredClone(mutation);categoryMutation.variables.input.fileChanges.additions[0].path='content/categories.json';assert.equal(validateGraphQL(categoryMutation),true);
  for(const path of ['assets/uploads/un-articolo-nell’anteprima-123.webp','assets/uploads/città-di-lisbona-123.webp','assets/uploads/日本の旅-123.webp']){const upload=structuredClone(mutation);upload.variables.input.fileChanges.additions[0].path=path;assert.equal(validateGraphQL(upload),true);}
  for(const path of ['assets/uploads/%2e%2e%2fprivate.webp','assets/uploads/a\\private.webp','assets/uploads/.hidden.webp','assets/uploads/a/b.webp']){const upload=structuredClone(mutation);upload.variables.input.fileChanges.additions[0].path=path;assert.equal(validateGraphQL(upload),false);}
@@ -77,7 +78,7 @@ const createDB=()=>{
   env.CMS_DB.db.prepare('DELETE FROM cms_attempts').run();
   const {parse,valueFromASTUntyped}=await import(pathToFileURL(path.join(temp,'server/vendor/graphql.js')));
   let records=require('./cms-fields-helper.cjs').readStories(),head='a'.repeat(40);
-  const sources=new Map([['content/categories.json',fs.readFileSync(path.join(root,'content/categories.json'))],['content/tags.json',fs.readFileSync(path.join(root,'content/tags.json'))]]);
+  const sources=new Map([['content/placement.json',fs.readFileSync(path.join(root,'content/placement.json'))],['content/categories.json',fs.readFileSync(path.join(root,'content/categories.json'))],['content/tags.json',fs.readFileSync(path.join(root,'content/tags.json'))]]);
   for(const image of new Set(records.flatMap(s=>[s.hero,...s.chapters.map(c=>c.image)]).filter(source=>source && !/^https?:\/\//.test(source)))) sources.set(image.replace(/^\//,''),fs.readFileSync(path.join(root,image)));
   const source=()=>{sources.set('content/stories.json',Buffer.from(JSON.stringify(records)));return sources};
   const sha=value=>require('node:crypto').createHash('sha1').update(value).digest('hex');
@@ -195,6 +196,12 @@ const createDB=()=>{
     assert.equal(created.appearance.theme,'clay');assert.equal(created.appearance.textStyle,'journal');
     console.log('PASS: real Sveltia creates a draft with automatic ID and uploads an optimized cover through the restricted proxy.');
     assert.deepEqual(errors,[]);
+    await page.getByText('Slideshow e archivio',{exact:true}).first().click();await page.getByText('Selezione e ordine',{exact:true}).first().click();
+    await page.locator('section.field[data-key-path=slideshowKind]').getByRole('radio',{name:'Solo consigli',exact:true}).check();
+    await page.getByRole('button',{name:'Salva',exact:true}).click();
+    await page.locator('.content-editor').waitFor({state:'detached'});
+    assert.equal(JSON.parse(sources.get('content/placement.json')).slideshowKind,'consiglio');
+    console.log('PASS: slideshow preferences save through the authenticated, restricted GitHub proxy.');
     await page.route('**/cms/logout',route=>route.fulfill({status:503,contentType:'application/json',body:JSON.stringify({message:'Riprova'})}));
     await page.getByRole('button',{name:'Esci dal pannello',exact:true}).click();
     await page.getByRole('button',{name:'Uscita non riuscita. Riprova',exact:true}).waitFor({state:'visible'});

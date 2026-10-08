@@ -27,6 +27,10 @@ I controlli per aggiungere o riordinare capitoli e fotografie sono presenti nell
 
 ## Strumenti per scrivere e rileggere
 
+**Salva** è sempre visibile in basso a destra, sia in Campi sia in Pagina. La barra inferiore mostra lo stato del **salvataggio automatico**: conserva la bozza nel browser dopo le modifiche, anche quando mancano campi obbligatori, senza pubblicare o aggiornare il sito. Include capitoli, formattazione, fotografie appena caricate e nuovi tag/categorie. Se il browser non riesce a conservare la bozza, la barra indica l’errore e offre **Riprova**; resta disponibile il salvataggio manuale.
+
+Se si chiude la scheda, riaprire il pannello nello **stesso browser** e aprire l’articolo: **Ripristina Bozza** recupera il lavoro. Per un articolo nuovo mai salvato, premere **Crea Nuova Voce** e scegliere **Ripristina**. **Scarta** elimina la copia automatica. La copia locale non passa ad altri browser o dispositivi e viene eliminata quando si cancellano i dati del sito. Un salvataggio manuale riuscito elimina la copia recuperabile. Anche per un articolo già pubblicato, le modifiche automatiche rimangono locali: per mandarle online servono **Visibile sul sito** e **Salva**.
+
 - **Solo scrittura**: su desktop allarga lo spazio per il testo e nasconde l’anteprima. **Mostra anteprima** ripristina i due pannelli.
 - **Icone schermo / telefono**: l’icona telefono restringe l’anteprima a 390 pixel, quando lo spazio disponibile lo consente.
 - **Ctrl+S / Cmd+S**: salva la bozza sia in Pagina sia in Campi, aspettando la conclusione del testo in corso di inserimento.
@@ -52,9 +56,22 @@ La foto di **Copertina** appare nello slideshow e nelle schede dell’archivio. 
 
 Tutte queste opzioni sono facoltative. Gli articoli esistenti mantengono il loro aspetto fino a quando si sceglie una personalizzazione.
 
-Il racconto compare nella sezione racconti dell’archivio; il consiglio nella sezione consigli. Entrambi entrano automaticamente nello slideshow della homepage e hanno una pagina di lettura. Sono ordinati dal più recente. Cloudflare pubblica la modifica dopo il salvataggio: l’aggiornamento può richiedere qualche minuto.
+Il racconto compare nella sezione racconti dell’archivio; il consiglio nella sezione consigli. Le posizioni e l’ordine si gestiscono in **Slideshow e archivio → Selezione e ordine**. Inizialmente tutti i contenuti pubblicati compaiono per data; i consigli in preparazione restano esclusi dallo slideshow. Cloudflare pubblica la modifica dopo il salvataggio: l’aggiornamento può richiedere qualche minuto.
 
 La data serve a ordinare i contenuti, non a programmare la pubblicazione. Per ritirare un contenuto, disattivare **Visibile sul sito** e salvare. Per eliminarlo, usare l’azione di eliminazione nel pannello. Le immagini non vengono cancellate insieme all’articolo, per evitare di rompere altri contenuti che le utilizzano.
+
+## Slideshow e archivio
+
+Aprire **Slideshow e archivio** accanto a **Racconti e consigli**, poi **Selezione e ordine**.
+
+- **Slideshow: quali contenuti mostrare?** permette di scegliere solo racconti, solo consigli oppure entrambi.
+- **Tutti i contenuti pubblicati** include anche i nuovi articoli salvati in seguito. Gli articoli nella lista vengono prima, nell’ordine scelto; gli altri seguono dal più recente.
+- **Solo quelli scelti nella lista** mostra esclusivamente gli articoli inseriti. Aggiungere un articolo scegliendolo per titolo, poi trascinarlo o usare **Sposta prima / Sposta dopo**. Una lista vuota lascia vuota quella sezione.
+- Le due liste sono indipendenti: per un articolo solo in **Tutti i racconti**, escluderlo dalla selezione dello slideshow; per mostrarlo in entrambi, includerlo nelle due selezioni. Anche l’ordine può essere diverso. L’archivio conserva le sezioni separate per racconti e consigli.
+
+L’anteprima mostra gli articoli effettivamente visibili. Le bozze restano escluse, anche quando sono selezionate. I consigli in preparazione compaiono solo nell’archivio. I riferimenti a un articolo eliminato vengono ignorati. La scelta delle posizioni non cambia il testo né il link della pagina di lettura.
+
+**Salva** conserva la selezione attraverso il CMS; il sito la applica dopo la pubblicazione Cloudflare. Le modifiche non salvate mantengono la protezione delle bozze. Per cambiare foto, titolo o didascalia di uno slideshow, aprire l’articolo in **Racconti e consigli → Copertina**.
 
 ## Fotografie
 
@@ -72,7 +89,7 @@ I tre racconti precedenti sono stati trasferiti nel CMS conservando i contenuti.
 
 ## Configurazione iniziale dell’accesso
 
-Questa parte riguarda soltanto chi configura il sito. L’accesso diretto è un’integrazione dedicata per questa installazione di Sveltia: una sessione protetta consente al CMS di pubblicare tramite un proxy sullo stesso dominio. La chiave GitHub rimane sul server. Il proxy consente scritture solo su `content/stories.json`, sui registri `content/tags.json` e `content/categories.json` e sulle immagini in `assets/uploads`, sul branch `main` del repository del sito. Non consente di modificare il codice del sito o altri repository.
+Questa parte riguarda soltanto chi configura il sito. L’accesso diretto è un’integrazione dedicata per questa installazione di Sveltia: una sessione protetta consente al CMS di pubblicare tramite un proxy sullo stesso dominio. La chiave GitHub rimane sul server. Il proxy consente scritture solo su `content/stories.json`, sui registri `content/tags.json` e `content/categories.json`, sulle preferenze `content/placement.json` e sulle immagini in `assets/uploads`, sul branch `main` del repository del sito. Non consente di modificare il codice del sito o altri repository.
 
 1. Registrare una GitHub App privata **ElyExploreWorld Editor**, con Homepage `https://elyexploreworld.pages.dev/admin/`, senza OAuth per gli utenti e senza webhook. Concedere **Contents: Read and write**; Metadata viene aggiunto in sola lettura. Installarla **solo** sul repository `mattiabacile/elyexploreworld`.
 2. Generare la chiave privata dell’app e convertirla nel formato PEM PKCS#8. Conservare App ID e Installation ID. Il server genera automaticamente credenziali di pubblicazione di breve durata, limitate al repository.
@@ -94,8 +111,9 @@ Se il pannello non si carica, **Riprova ad aprire il pannello** ripete il carica
 
 ## Manutenzione
 
-- Non è necessario un comando di build per i contenuti: `content/stories.json` è la sorgente condivisa da archivio, slideshow e articolo.
+- Non è necessario un comando di build per i contenuti: `content/stories.json` contiene gli articoli; `content/placement.json` conserva le selezioni e gli ordini di slideshow e archivio.
 - Sveltia è ospitato nel sito e fissato alla versione `0.229.0`. Gli aggiornamenti si provano prima di sostituire il file.
+- Il bundle include una patch circoscritta per consentire i backup nativi della collezione JSON ad array: `admin/draft-backup.js` gestisce identità stabile, coda e stato; il CMS conserva serializzazione, allegati, IndexedDB e ripristino. Dopo aver sostituito il bundle, eseguire `node admin/vendor/apply-draft-patch.cjs` e `node tests/cms-autosave-check.cjs`. La patch si interrompe se il codice del fornitore non corrisponde, richiedendo una verifica prima di aggiornarlo.
 - Marked `18.1.0` e DOMPurify `3.4.16` sono copie locali: rendono il testo formattato e rimuovono codice eseguibile dai contenuti.
 - Il proxy usa il parser GraphQL ufficiale, versione `16.11.0`; licenza in `server/vendor/graphql-LICENSE.txt`.
 - `_routes.json` limita le funzioni alle API riservate del CMS, lasciando statiche tutte le altre richieste.
@@ -104,3 +122,5 @@ Se il pannello non si carica, **Riprova ad aprire il pannello** ripete il carica
 ### Indirizzi degli articoli
 
 I link pubblici usano il titolo leggibile: **Borneo Malese** diventa `racconto.html?story=borneo-malese`. Gli accenti sono normalizzati, gli spazi diventano trattini e la formattazione del titolo non entra nell’indirizzo. I titoli uguali ricevono un suffisso numerico. I vecchi link con l’identificativo restano validi; aprendoli, la barra degli indirizzi mostra il titolo leggibile. Il titolo determina l’indirizzo, quindi cambiarlo cambia anche il link generato.
+
+`tests/cms-placement-check.cjs` verifica selezione, ordine, salvataggio e riapertura su desktop e telefono, anteprima e resa pubblica. Usa dati isolati e non modifica i contenuti pubblicati.

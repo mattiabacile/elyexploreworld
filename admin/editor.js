@@ -125,6 +125,7 @@
     const editor=document.querySelector('.content-editor');
     if(!editor){currentEditor=null;kind=null;previewKey='';return;}
     if(editor!==currentEditor){currentEditor=editor;previewKey='';workspace='article';if(draftOwner!==editor){kind=null;reuse=true;}}
+    if(editor.classList.contains('ely-placement-editor')||editor.querySelector('section.field[data-key-path=slideshowKind]'))return;
     const content=editor.querySelector('.pane[data-mode="edit"] #first-pane-body > .content');
     const preview=editor.querySelector('.pane[data-mode="preview"] #first-pane-body > .content');
     preview?.classList.remove('ely-editor-content');
@@ -169,6 +170,7 @@
     for(const hint of document.querySelectorAll('[role=dialog] [data-entry-draft-root] > p.hint'))if(hint.textContent.startsWith('The new'))hint.textContent=hint.closest('[role=dialog]').querySelector('[data-key-path=name] h4')?.textContent.includes('categoria')?'La nuova categoria verrà salvata insieme all’articolo.':'Il nuovo tag verrà salvato insieme all’articolo.';
     updateChoices();
     const frame=editor.querySelector('iframe.preview');if(frame && !frame.dataset.elySync){frame.dataset.elySync='true';frame.addEventListener('load',()=>{applyWorkspace();syncPreview(previewKey);});}
+    window.elyDraftBackup?.enhance(editor);
   };
   window.addEventListener('ely:article-change',event=>{draftOwner=document.querySelector('.content-editor');kind=event.detail.kind;reuse=event.detail.reuseCover!=='no';updateChoices();if(previewKey)requestAnimationFrame(()=>syncPreview(previewKey));});
   const choicesChanged=event=>{if(event.target.closest?.('section.field[data-key-path="kind"],section.field[data-key-path="reuseCover"]'))requestAnimationFrame(updateChoices);};

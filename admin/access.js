@@ -31,7 +31,7 @@
     const fail=()=>{clearTimeout(timer);node.remove();reject(new Error('Caricamento dell’editor non riuscito.'));};
     const timer=setTimeout(fail,30000);node.src=path;node.onload=()=>{clearTimeout(timer);resolve();};node.onerror=fail;document.body.append(node);
   });
-  const loadEditor=async()=>{await script('vendor/sveltia-cms.js');await script('boot.js?v=c12444f25442');await window.elyCMSReady;};
+  const loadEditor=async()=>{await script('vendor/sveltia-cms.js?v=68ca96c23e52');await script('boot.js?v=90c52b1d8e16');await window.elyCMSReady;};
   if (['localhost', '127.0.0.1'].includes(location.hostname) && new URLSearchParams(location.search).get('local') === '1') {
     panel.hidden = true;clear();
     try{await loadEditor();}
