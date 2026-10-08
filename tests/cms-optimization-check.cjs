@@ -74,4 +74,3 @@ for(const source of new Set(stories.flatMap(story=>[story.hero,story.articleHero
   assert.deepEqual(errors,[]);console.log('PASS: one close action, uncluttered photo popup, preserved keyboard focus, responsive settings, bounded DOM work, hidden history and persisted writing.');
  }finally{await browser.close();}
 })().catch(error=>{console.error(error);process.exitCode=1;});
-
