@@ -119,7 +119,8 @@
   .home-page .bio-section::before { content: ''; display: block; position: absolute; z-index: 2; top: -48px; left: 0; width: 100%; height: 50px; background: #eee2d4; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 390 50' preserveAspectRatio='none'%3E%3Cpath d='M0 48C59-4 113 17 176 22C248 30 298-2 390 8V50H0Z'/%3E%3C/svg%3E") center / 100% 100% no-repeat; }
   .bio-frame { position: relative; display: flow-root; padding: 24px var(--mobile-gutter) 36px; }
   .bio-frame::before { display: none; }
-  .bio-portrait { position: relative; float: right; z-index: 1; top: auto; left: auto; width: clamp(136px, 45vw, 210px); height: auto; aspect-ratio: 780 / 1088; margin: 48px 0 14px 16px; }
+  /* Raise the artwork without changing the float's space or the section height. */
+  .bio-portrait { position: relative; float: right; z-index: 1; top: -72px; left: auto; width: clamp(136px, 45vw, 210px); height: auto; aspect-ratio: 780 / 1088; margin: 48px 0 14px 16px; }
   /* Follow the existing portrait and botanical outline. */
   .bio-portrait { shape-outside: polygon(34% 0, 100% 0, 100% 100%, 28% 100%, 19% 91%, 10% 84%, 2% 72%, -8% 59%, -5% 48%, 17% 40%, 8% 30%, 5% 19%, 13% 8%) border-box; shape-margin: 12px; }
   .bio-portrait-art { height: 100%; aspect-ratio: 780 / 1088; overflow: visible; border-radius: 0; }
