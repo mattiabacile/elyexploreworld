@@ -41,7 +41,7 @@ const base = process.env.SITE_URL || 'http://localhost:4173';
           assert.ok(fields.date.right < fields.travelers.left, `Date overlaps travelers at ${width}`);
           assert.ok(Math.abs(fields.date.width - fields.display.width) < 1 && Math.abs(fields.date.height - 44) < 1, `Native date is not bounded at ${width}`);
           assert.ok(Math.abs(fields.date.top - fields.travelers.top) < 1, `Trip fields misaligned at ${width}`);
-          assert.ok(fields.portrait.width <= 210 && fields.portrait.left >= fields.greeting.right - 1 && fields.portrait.top > fields.greeting.top, `Portrait placement at ${width}`);
+          assert.ok(fields.portrait.width <= 210 && fields.portrait.left >= fields.greeting.right - 1 && fields.portrait.top < fields.greeting.top, `Portrait placement at ${width}`);
           assert.ok(fields.order.indexOf('chi-sono') < fields.order.indexOf('servizi'));
           assert.ok(fields.consultationHeight < 350 && fields.itineraryHeight < 700 && fields.imageHeight <= 400, `Oversized mobile section at ${width}`);
           assert.ok(fields.storyCopy.top >= fields.storyPhoto.top && fields.storyCopy.bottom <= fields.storyPhoto.bottom + 1, `Story text is outside its photo at ${width}`);
