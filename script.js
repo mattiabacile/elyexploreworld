@@ -50,6 +50,7 @@
   contentPreview?.querySelector('.preview-close')?.addEventListener('click', () => contentPreview.close());
 
   const contactForm = document.getElementById('contact-form');
+  if (contactForm) window.ElySettings.load().catch(() => {});
   const dateField = contactForm?.querySelector('.contact-date-field');
   const dateTrigger = dateField?.querySelector('.contact-date-trigger');
   const calendar = dateField?.querySelector('.contact-calendar');
@@ -95,7 +96,12 @@
     dateTrigger.addEventListener('click', () => {
       calendar.hidden = !calendar.hidden;
       dateTrigger.setAttribute('aria-expanded', String(!calendar.hidden));
-      if (!calendar.hidden) renderCalendar();
+      if (!calendar.hidden) {
+        const [day, monthNumber, year] = dateInput.value.split('/').map(Number);
+        selected = day && monthNumber && year ? new Date(year, monthNumber - 1, day) : null;
+        if (selected) month = new Date(selected.getFullYear(), selected.getMonth(), 1);
+        renderCalendar();
+      }
     });
     calendar.querySelector('.calendar-prev').addEventListener('click', () => { month = new Date(month.getFullYear(), month.getMonth() - 1, 1); renderCalendar(); });
     calendar.querySelector('.calendar-next').addEventListener('click', () => { month = new Date(month.getFullYear(), month.getMonth() + 1, 1); renderCalendar(); });
@@ -114,6 +120,15 @@
     });
     document.addEventListener('pointerdown', event => { if (!dateField.contains(event.target)) closeCalendar(); });
     dateField.addEventListener('keydown', event => { if (event.key === 'Escape' && !calendar.hidden) { event.preventDefault(); closeCalendar(); dateTrigger.focus(); } });
+    contactForm.addEventListener('reset', event => queueMicrotask(() => {
+      if (event.defaultPrevented) return;
+      selected = null;
+      month = new Date(today.getFullYear(), today.getMonth(), 1);
+      dateInput.value = '';
+      dateValue.textContent = 'Quando pensi di partire?';
+      dateTrigger.classList.remove('has-value');
+      closeCalendar();
+    }));
   }
 
   const travelerInput = contactForm?.querySelector('#traveler-count');
@@ -128,6 +143,9 @@
   };
   travelerMinus?.addEventListener('click', () => setTravelers(Number(travelerInput.value) - 1));
   travelerPlus?.addEventListener('click', () => setTravelers(Number(travelerInput.value) + 1));
+  contactForm?.addEventListener('reset', event => queueMicrotask(() => {
+    if (!event.defaultPrevented) setTravelers(1);
+  }));
   let contactSending = false;
   contactForm?.addEventListener('submit', async (event) => {
     event.preventDefault();
@@ -135,11 +153,6 @@
     const status = contactForm.querySelector('#contact-status');
     const button = contactForm.querySelector('button[type="submit"]');
     const data = new FormData(contactForm);
-    const accessKey = String(data.get('access_key') || '').trim();
-    if (!accessKey) {
-      status.textContent = 'L’invio dal sito non è ancora disponibile. Scrivimi a elisa.exploreworld@gmail.com.';
-      return;
-    }
     if (data.get('botcheck')) return;
     const message = [
       `Destinazione: ${data.get('destinazione') || 'Da definire'}`,
@@ -152,9 +165,16 @@
     button.disabled = true;
     contactForm.setAttribute('aria-busy', 'true');
     status.textContent = 'Invio in corso…';
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 20000);
+    let timeout;
     try {
+      await window.ElySettings.load();
+      const accessKey = contactForm.querySelector('input[name="access_key"]').value.trim();
+      if (!accessKey) {
+        status.textContent = 'L’invio dal sito non è ancora disponibile. Scrivimi a elisa.exploreworld@gmail.com.';
+        return;
+      }
+      const controller = new AbortController();
+      timeout = setTimeout(() => controller.abort(), 20000);
       const response = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },

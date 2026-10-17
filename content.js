@@ -1,6 +1,11 @@
 (() => {
   const escape = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
   const date = value => new Intl.DateTimeFormat('it-IT', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }).format(new Date(`${String(value).slice(0, 10)}T12:00:00Z`));
+  const validDate = value => {
+    if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+    const parsed = new Date(`${value}T12:00:00Z`);
+    return !Number.isNaN(parsed.getTime()) && parsed.toISOString().slice(0, 10) === value;
+  };
   const image = value => {
     const source = String(value ?? '').trim();
     // Keep local assets and previously saved HTTPS cover URLs usable.
@@ -45,7 +50,7 @@
       const ids = new Set();
       return ElyLinks.assign(records.filter(story => {
         if (!story || story.published !== true || typeof story.id !== 'string' || !/^[a-z0-9][a-z0-9-]{0,100}$/.test(story.id) || ids.has(story.id)) return false;
-        if (!story.title?.trim() || !image(story.hero) || !/^\d{4}-\d{2}-\d{2}$/.test(story.date) || Number.isNaN(Date.parse(story.date))) return false;
+        if (typeof story.title !== 'string' || !story.title.trim() || !image(story.hero) || !validDate(story.date)) return false;
         ids.add(story.id);
         return true;
       }).sort((a, b) => b.date.localeCompare(a.date)));

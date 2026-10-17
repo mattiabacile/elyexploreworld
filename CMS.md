@@ -73,6 +73,15 @@ L’anteprima mostra gli articoli effettivamente visibili. Le bozze restano escl
 
 **Salva** conserva la selezione attraverso il CMS; il sito la applica dopo la pubblicazione Cloudflare. Le modifiche non salvate mantengono la protezione delle bozze. Per cambiare foto, titolo o didascalia di uno slideshow, aprire l’articolo in **Racconti e consigli → Copertina**.
 
+## Impostazioni del modulo contatti e della consulenza
+
+Aprire **Impostazioni sito → Contatti e consulenza**.
+
+- **Chiave Web3Forms**: incollare l’Access Key ricevuta da [Web3Forms](https://web3forms.com/) per l’indirizzo che deve ricevere le richieste. È la chiave pubblica del modulo, non la password dell’account. Con una chiave valida il modulo invia i messaggi a quell’indirizzo; lasciando il campo vuoto, il sito continua a proporre il contatto email senza inviare richieste.
+- **Link consulenza Calendly**: incollare il link HTTPS completo della propria pagina di prenotazione, per esempio `https://calendly.com/elyexploreworld/30min`. Viene usato da tutti i pulsanti della consulenza, compresi quelli nei popup dei servizi.
+
+Premere **Salva**. Il CMS conserva le due impostazioni in `content/settings.json`; dopo la pubblicazione Cloudflare, ricaricare il sito per utilizzare i nuovi valori. Il pannello controlla il formato della chiave e accetta soltanto link HTTPS di Calendly. Il funzionamento dell’invio richiede una chiave attiva collegata al proprio indirizzo email; il link deve corrispondere a una pagina di prenotazione attiva nel proprio account Calendly.
+
 ## Fotografie
 
 Caricare le immagini dal relativo campo o dalla libreria. Le nuove foto vengono salvate in `assets/uploads`, con nomi univoci, convertite in WebP e ridimensionate entro 2400 pixel di lato con qualità 88. Il limite di caricamento è 25 MB per file. Preferire immagini orizzontali per la copertina; scegliere una foto diversa per ogni capitolo è facoltativo. Le fotografie già utilizzate nei racconti sono disponibili come raccolta in sola lettura.
@@ -89,7 +98,7 @@ I tre racconti precedenti sono stati trasferiti nel CMS conservando i contenuti.
 
 ## Configurazione iniziale dell’accesso
 
-Questa parte riguarda soltanto chi configura il sito. L’accesso diretto è un’integrazione dedicata per questa installazione di Sveltia: una sessione protetta consente al CMS di pubblicare tramite un proxy sullo stesso dominio. La chiave GitHub rimane sul server. Il proxy consente scritture solo su `content/stories.json`, sui registri `content/tags.json` e `content/categories.json`, sulle preferenze `content/placement.json` e sulle immagini in `assets/uploads`, sul branch `main` del repository del sito. Non consente di modificare il codice del sito o altri repository.
+Questa parte riguarda soltanto chi configura il sito. L’accesso diretto è un’integrazione dedicata per questa installazione di Sveltia: una sessione protetta consente al CMS di pubblicare tramite un proxy sullo stesso dominio. La chiave GitHub rimane sul server. Il proxy consente scritture solo su `content/stories.json`, sui registri `content/tags.json` e `content/categories.json`, sulle preferenze `content/placement.json`, sulle impostazioni `content/settings.json` e sulle immagini in `assets/uploads`, sul branch `main` del repository del sito. Non consente di modificare il codice del sito o altri repository.
 
 1. Registrare una GitHub App privata **ElyExploreWorld Editor**, con Homepage `https://elyexploreworld.pages.dev/admin/`, senza OAuth per gli utenti e senza webhook. Concedere **Contents: Read and write**; Metadata viene aggiunto in sola lettura. Installarla **solo** sul repository `mattiabacile/elyexploreworld`.
 2. Generare la chiave privata dell’app e convertirla nel formato PEM PKCS#8. Conservare App ID e Installation ID. Il server genera automaticamente credenziali di pubblicazione di breve durata, limitate al repository.

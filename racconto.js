@@ -20,7 +20,7 @@
   const readableURL = new URL(location.href);
   readableURL.searchParams.set('story', story.publicSlug);
   history.replaceState(history.state, '', readableURL);
-  const chapters = Array.isArray(story.chapters) ? story.chapters : [];
+  const chapters = (Array.isArray(story.chapters) ? story.chapters : []).filter(item => item && typeof item === 'object' && !Array.isArray(item));
   const appearance = ElyArticle.appearance(story.appearance);
   article.style.setProperty('--clay', appearance.accent);
   article.style.setProperty('--accent', appearance.accent);
@@ -58,7 +58,7 @@
     intro.before(contents);
   }
   const host = document.querySelector('[data-content="chapters"]');
-  host.innerHTML = chapters.filter(item => item && typeof item === 'object').map((chapter, index) => {
+  host.innerHTML = chapters.map((chapter, index) => {
     const {layout, format} = ElyArticle.chapter(chapter, index);
     const photo = c.image(chapter.image);
     const figure = photo ? `<figure class="chapter-photo chapter-photo-${['tall', 'wide', 'square'][index % 3]}"${chapter.imageFormat && chapter.imageFormat !== 'auto' ? ` data-photo-format="${format}"` : ''}><img src="${c.escape(photo)}" data-content-image="${c.escape(photo)}" alt="${c.escape(chapter.imageAlt || ElyArticle.plain(chapter.caption) || '')}" loading="lazy" width="1600" height="900" decoding="async">${chapter.caption ? `<figcaption>${ElyArticle.inline(chapter.caption)}</figcaption>` : ''}</figure>` : '';
