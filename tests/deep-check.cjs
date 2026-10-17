@@ -90,10 +90,11 @@ assert.ok(['chromium', 'webkit'].includes(engine), 'Choose chromium or webkit');
     await page.locator('.travelers-minus').evaluate(node => { for (let repeat = 0; repeat < 8; repeat++) node.click(); });
     assert.equal(await page.locator('#traveler-count').inputValue(), '1');
     assert.equal(await page.locator('.travelers-minus').isDisabled(), true);
+    const defaultStory = await page.evaluate(async () => (await ElyContent.load()).find(story => !story.preparing).id);
     for (const slug of ['', 'invalid', 'constructor', '__proto__', 'toString', '<img src=x onerror=alert(1)>', 'bali&story=singapore']) {
       await page.goto(`${base}/racconto.html?story=${encodeURIComponent(slug)}`);
       await page.waitForFunction(() => document.documentElement.dataset.contentReady === 'true');
-      assert.equal(await page.locator('html').getAttribute('data-story'), slug ? 'not-found' : 'japan');
+      assert.equal(await page.locator('html').getAttribute('data-story'), slug ? 'not-found' : defaultStory);
       assert.equal(await page.locator('[data-list="related"] article').count(), slug ? 0 : 3);
     }
     await page.close();

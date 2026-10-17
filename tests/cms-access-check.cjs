@@ -32,6 +32,8 @@ const createDB=()=>{
  assert.equal(validateGraphQL(mutation),true);
  const tagMutation=structuredClone(mutation);tagMutation.variables.input.fileChanges.additions[0].path='content/tags.json';assert.equal(validateGraphQL(tagMutation),true);
  const placementMutation=structuredClone(mutation);placementMutation.variables.input.fileChanges.additions[0].path='content/placement.json';assert.equal(validateGraphQL(placementMutation),true);
+ const settingsMutation=structuredClone(mutation);settingsMutation.variables.input.fileChanges.additions[0].path='content/settings.json';assert.equal(validateGraphQL(settingsMutation),true);
+ for(const path of ['content/../admin/config.json','content/settings.json/extra','content/private-settings.json']){const invalid=structuredClone(mutation);invalid.variables.input.fileChanges.additions[0].path=path;assert.equal(validateGraphQL(invalid),false);}
  const categoryMutation=structuredClone(mutation);categoryMutation.variables.input.fileChanges.additions[0].path='content/categories.json';assert.equal(validateGraphQL(categoryMutation),true);
  for(const path of ['assets/uploads/un-articolo-nell’anteprima-123.webp','assets/uploads/città-di-lisbona-123.webp','assets/uploads/日本の旅-123.webp']){const upload=structuredClone(mutation);upload.variables.input.fileChanges.additions[0].path=path;assert.equal(validateGraphQL(upload),true);}
  for(const path of ['assets/uploads/%2e%2e%2fprivate.webp','assets/uploads/a\\private.webp','assets/uploads/.hidden.webp','assets/uploads/a/b.webp']){const upload=structuredClone(mutation);upload.variables.input.fileChanges.additions[0].path=path;assert.equal(validateGraphQL(upload),false);}
@@ -78,7 +80,7 @@ const createDB=()=>{
   env.CMS_DB.db.prepare('DELETE FROM cms_attempts').run();
   const {parse,valueFromASTUntyped}=await import(pathToFileURL(path.join(temp,'server/vendor/graphql.js')));
   let records=require('./cms-fields-helper.cjs').readStories(),head='a'.repeat(40);
-  const sources=new Map([['content/placement.json',fs.readFileSync(path.join(root,'content/placement.json'))],['content/categories.json',fs.readFileSync(path.join(root,'content/categories.json'))],['content/tags.json',fs.readFileSync(path.join(root,'content/tags.json'))]]);
+  const sources=new Map(['placement','categories','tags','settings'].map(name=>['content/'+name+'.json',fs.readFileSync(path.join(root,'content',name+'.json'))]));
   for(const image of new Set(records.flatMap(s=>[s.hero,...s.chapters.map(c=>c.image)]).filter(source=>source && !/^https?:\/\//.test(source)))) sources.set(image.replace(/^\//,''),fs.readFileSync(path.join(root,image)));
   const source=()=>{sources.set('content/stories.json',Buffer.from(JSON.stringify(records)));return sources};
   const sha=value=>require('node:crypto').createHash('sha1').update(value).digest('hex');
@@ -118,7 +120,7 @@ const createDB=()=>{
       }else{
         const pathname=new URL(req.url,origin).pathname,filename=path.join(root,pathname.endsWith('/')?pathname+'index.html':pathname);
         const type=filename.endsWith('.html')?'text/html':filename.endsWith('.js')?'text/javascript':filename.endsWith('.css')?'text/css':filename.endsWith('.json')?'application/json':filename.endsWith('.webp')?'image/webp':'application/octet-stream';
-        response=pathname.startsWith('/assets/uploads/')&&sources.has(pathname.slice(1))?new Response(source().get(pathname.slice(1)),{headers:{'Content-Type':'image/webp'}}):filename.startsWith(root+path.sep)&&fs.existsSync(filename)?new Response(fs.readFileSync(filename),{headers:{'Content-Type':type}}):new Response('',{status:404});
+        response=(pathname.startsWith('/assets/uploads/')||pathname==='/content/settings.json')&&sources.has(pathname.slice(1))?new Response(source().get(pathname.slice(1)),{headers:{'Content-Type':type}}):filename.startsWith(root+path.sep)&&fs.existsSync(filename)?new Response(fs.readFileSync(filename),{headers:{'Content-Type':type}}):new Response('',{status:404});
       }
       res.writeHead(response.status,Object.fromEntries(response.headers));res.end(Buffer.from(await response.arrayBuffer()));
     }catch(error){res.writeHead(500);res.end(error.message)}
@@ -126,7 +128,7 @@ const createDB=()=>{
   await new Promise(resolve=>server.listen(0,'localhost',resolve));
   const browser=await require('playwright').chromium.launch({channel:'chrome'});
   try{
-    const page=await browser.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));
+    const context=await browser.newContext(),page=await context.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));
     await page.goto('http://localhost:'+server.address().port+'/admin/');await page.getByRole('button',{name:'Accedi',exact:true}).waitFor();
     await page.screenshot({path:'/tmp/ely-direct-login.png'});
     await page.getByLabel('Nome utente',{exact:true}).fill(account.username);await page.getByLabel('Password',{exact:true}).fill(account.password);await page.getByRole('button',{name:'Accedi',exact:true}).click();
@@ -202,6 +204,20 @@ const createDB=()=>{
     await page.locator('.content-editor').waitFor({state:'detached'});
     assert.equal(JSON.parse(sources.get('content/placement.json')).slideshowKind,'consiglio');
     console.log('PASS: slideshow preferences save through the authenticated, restricted GitHub proxy.');
+    await page.getByText('Impostazioni sito',{exact:true}).first().click();await page.getByText('Contatti e consulenza',{exact:true}).first().click();
+    const publicKey='12345678-1234-1234-1234-123456789abc',booking='https://calendly.com/elyexploreworld/consulenza-test';
+    await page.getByLabel('Chiave Web3Forms',{exact:true}).fill(publicKey);await page.getByLabel('Link consulenza Calendly',{exact:true}).fill(booking);
+    await page.getByRole('button',{name:'Salva',exact:true}).click();await page.locator('.content-editor').waitFor({state:'detached'});
+    assert.deepEqual(JSON.parse(sources.get('content/settings.json')),{web3formsAccessKey:publicKey,calendlyUrl:booking});
+    await page.getByText('Contatti e consulenza',{exact:true}).first().click();assert.equal(await page.getByLabel('Link consulenza Calendly',{exact:true}).inputValue(),booking);assert.equal(await page.getByLabel('Chiave Web3Forms',{exact:true}).inputValue(),publicKey);
+    const publicPage=await page.context().newPage();let sent=0;publicPage.on('pageerror',error=>errors.push(error.message));
+    await publicPage.route('https://api.web3forms.com/submit',route=>{sent++;assert.equal(route.request().postDataJSON().access_key,publicKey);return route.fulfill({json:{success:true}});});
+    await publicPage.goto('http://localhost:'+server.address().port+'/');await publicPage.waitForFunction(key=>document.querySelector('input[name=access_key]').value===key,publicKey);
+    assert.deepEqual(await publicPage.locator('[data-calendly]').evaluateAll(nodes=>nodes.map(node=>node.href)),[booking,booking]);
+    await publicPage.locator('.mobile-service-more').first().click();assert.equal(await publicPage.locator('#content-preview [data-calendly]').getAttribute('href'),booking);await publicPage.keyboard.press('Escape');
+    await publicPage.locator('input[name=nome]').fill('Verifica locale');await publicPage.locator('input[name=email]').fill('audit@example.invalid');await publicPage.locator('input[name=destinazione]').fill('Bali');await publicPage.locator('textarea').fill('Test locale senza invio reale.');await publicPage.locator('.contact-option-grid > label').first().click();await publicPage.locator('#contact-form button[type=submit]').click();
+    await publicPage.waitForFunction(()=>document.querySelector('#contact-status').textContent.startsWith('Messaggio inviato.'));assert.equal(sent,1);await publicPage.close();assert.deepEqual(errors,[]);
+    console.log('PASS: contact settings save/reopen through the authenticated proxy and supply every public Calendly link and the submitted Web3Forms key.');
     await page.route('**/cms/logout',route=>route.fulfill({status:503,contentType:'application/json',body:JSON.stringify({message:'Riprova'})}));
     await page.getByRole('button',{name:'Esci dal pannello',exact:true}).click();
     await page.getByRole('button',{name:'Uscita non riuscita. Riprova',exact:true}).waitFor({state:'visible'});
