@@ -125,7 +125,7 @@
     const editor=document.querySelector('.content-editor');
     if(!editor){currentEditor=null;kind=null;previewKey='';return;}
     if(editor!==currentEditor){currentEditor=editor;previewKey='';workspace='article';if(draftOwner!==editor){kind=null;reuse=true;}}
-    if(editor.classList.contains('ely-placement-editor')||editor.querySelector('section.field[data-key-path=slideshowKind]'))return;
+    if(editor.classList.contains('ely-placement-editor')||editor.querySelector('section.field[data-key-path=slideshowKind],section.field[data-key-path=web3formsAccessKey],section.field[data-key-path=calendlyUrl]'))return;
     const content=editor.querySelector('.pane[data-mode="edit"] #first-pane-body > .content');
     const preview=editor.querySelector('.pane[data-mode="preview"] #first-pane-body > .content');
     preview?.classList.remove('ely-editor-content');

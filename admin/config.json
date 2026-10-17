@@ -814,6 +814,49 @@
       ]
     },
     {
+      "name": "settings",
+      "label": "Impostazioni sito",
+      "description": "Gestisci l’invio delle richieste e la prenotazione della consulenza.",
+      "editor": {
+        "preview": false
+      },
+      "files": [
+        {
+          "name": "contact",
+          "label": "Contatti e consulenza",
+          "file": "content/settings.json",
+          "format": "json",
+          "description": "Le impostazioni aggiornano il modulo contatti e tutti i pulsanti della consulenza. Premi Salva; la pubblicazione può richiedere qualche minuto.",
+          "fields": [
+            {
+              "name": "web3formsAccessKey",
+              "label": "Chiave Web3Forms",
+              "widget": "string",
+              "required": false,
+              "default": "",
+              "hint": "Incolla l’Access Key ricevuta da Web3Forms per l’indirizzo che deve ricevere le richieste. È una chiave pubblica del modulo, non la password dell’account. Lascia vuoto per mantenere il solo contatto email.",
+              "pattern": [
+                "^(?:[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12})?$",
+                "Incolla la chiave Web3Forms completa, nel formato xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx."
+              ]
+            },
+            {
+              "name": "calendlyUrl",
+              "label": "Link consulenza Calendly",
+              "widget": "string",
+              "type": "url",
+              "default": "https://calendly.com/elyexploreworld/30min",
+              "hint": "Incolla il link completo della pagina di prenotazione, per esempio https://calendly.com/elyexploreworld/30min. Aggiorna tutti i pulsanti Prenota la consulenza, anche nei popup.",
+              "pattern": [
+                "^https://(?:www\\.)?calendly\\.com/[^\\s]+$",
+                "Inserisci un link HTTPS di Calendly, completo della pagina di prenotazione."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
       "name": "tag",
       "label": "Tag",
       "label_singular": "Tag",
