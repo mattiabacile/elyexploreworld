@@ -125,8 +125,16 @@ window.elyCMSReady = (async () => {
       }
     });
     CMS.registerEventListener({name:'preSave',handler:async({entry})=>{
+      const data=entry.get('data');
+      if (data.has('calendlyUrl')) {
+        const key = String(data.get('web3formsAccessKey') || '').trim();
+        const url = window.ElySettings.calendly(data.get('calendlyUrl'));
+        if (key && !window.ElySettings.validKey(key)) throw new Error('Incolla la chiave di accesso Web3Forms completa oppure lascia il campo vuoto.');
+        if (!url) throw new Error('Inserisci un link di prenotazione HTTPS di Calendly valido.');
+        return data.set('web3formsAccessKey', key).set('calendlyUrl', url);
+      }
       await window.elyDraftBackup?.beforeSave();
-      const data=entry.get('data'),previous=savedArticles.find(record=>record.id===data.get('id'));
+      const previous=savedArticles.find(record=>record.id===data.get('id'));
       return previous && previous.title!==data.get('title') ? data.set('titleAccent','') : data;
     }});
     ElyTitle.register();

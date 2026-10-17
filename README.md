@@ -14,6 +14,7 @@ Aprire http://localhost:4173/.
 - `racconti.html`: archivio dei racconti.
 - `racconto.html` e `racconto.js`: modello articolo con capitoli dinamici, fotografie, tag, condivisione e navigazione. I collegamenti inesistenti mostrano un messaggio e il ritorno all’archivio.
 - `content/stories.json`: sorgente dei racconti e consigli gestiti da Sveltia. `content.js` la carica e fornisce la resa sicura del testo formattato.
+- `content/settings.json`: chiave pubblica Web3Forms e link Calendly, modificabili in **Impostazioni sito → Contatti e consulenza**. `site-settings.js` applica i valori al modulo e a tutti i pulsanti della consulenza.
 - `content/placement.json`: scelta dei contenuti e ordine indipendente per lo slideshow della home e l’archivio, gestiti in **Slideshow e archivio → Selezione e ordine**.
 - `admin/`: Sveltia CMS, configurazione in italiano, anteprima e libreria fotografica. [Guida al CMS](CMS.md).
 - `functions/` e `server/`: accesso GitHub tramite l’Authenticator ufficiale Sveltia, eseguito da Cloudflare Pages Functions.
@@ -54,7 +55,7 @@ Le due card mobile adottano il riferimento «Servizi di viaggio su misura»: fot
 
 ## Contenuti da completare
 
-Il modulo invia i dati a `https://api.web3forms.com/submit` soltanto al submit; non carica script esterni o CAPTCHA. Per attivarlo inserire in `index.html` la chiave pubblica Web3Forms nel campo `access_key`, associata a `elisa.exploreworld@gmail.com`. Finché manca la chiave, nessuna richiesta viene inviata e viene proposto il contatto email. I dati restano nel modulo in caso di errore; il successo è mostrato solo dopo una risposta positiva del servizio. Prima dell’uso verificare l’account, il DPA Web3Forms e l’eventuale restrizione al dominio definitivo. Gli articoli e alcune parti dell’itinerario conservano i testi provvisori; i ritratti restano segnaposto. Il footer collega `privacy.html` (informativa unica privacy e cookie) e `note-legali.html` (ruolo del sito e collaborazione con Act Travel). Titolare dei contatti: Elisa Tosi. Hosting: Cloudflare, collegato a GitHub; posta: Gmail. Prima della pubblicazione verificare configurazione e conservazione dei log, accordi dei fornitori e informazioni identificative eventualmente richieste per l’attività effettiva. Non aggiungere banner cookie o consenso obbligatorio al modulo per semplici richieste precontrattuali. Verificare sul dominio pubblicato che hosting/CDN non aggiungano cookie, analytics o altri tracciatori.
+Il modulo invia i dati a `https://api.web3forms.com/submit` soltanto al submit; non carica script esterni o CAPTCHA. Per attivarlo inserire in **Impostazioni sito → Contatti e consulenza** la chiave pubblica Web3Forms associata a `elisa.exploreworld@gmail.com` e premere **Salva**. Nella stessa schermata si modifica il link Calendly di tutti i pulsanti della consulenza, anche nei popup. I nuovi valori si applicano al caricamento del sito dopo la pubblicazione Cloudflare. Finché manca la chiave, nessuna richiesta viene inviata e viene proposto il contatto email. I dati restano nel modulo in caso di errore; il successo è mostrato solo dopo una risposta positiva del servizio. Prima dell’uso verificare l’account, il DPA Web3Forms e l’eventuale restrizione al dominio definitivo. Gli articoli e alcune parti dell’itinerario conservano i testi provvisori; i ritratti restano segnaposto. Il footer collega `privacy.html` (informativa unica privacy e cookie) e `note-legali.html` (ruolo del sito e collaborazione con Act Travel). Titolare dei contatti: Elisa Tosi. Hosting: Cloudflare, collegato a GitHub; posta: Gmail. Prima della pubblicazione verificare configurazione e conservazione dei log, accordi dei fornitori e informazioni identificative eventualmente richieste per l’attività effettiva. Non aggiungere banner cookie o consenso obbligatorio al modulo per semplici richieste precontrattuali. Verificare sul dominio pubblicato che hosting/CDN non aggiungano cookie, analytics o altri tracciatori.
 
 La cartella contiene le risorse del sito corrente. Mockup, schermate, PDF di progetto, report storici e immagini inutilizzate sono stati eliminati definitivamente. Sono conservati i test, le specifiche di progetto e la provenienza delle immagini ancora utilizzate.
 
@@ -71,6 +72,8 @@ node tests/mobile-check.cjs
 node tests/services-screen.cjs
 node tests/contact-check.cjs
 node tests/deep-check.cjs
+node tests/audit-regression-check.cjs
+node tests/cms-settings-check.cjs
 ```
 
 I comandi Node richiedono Playwright disponibile in Node e Google Chrome installato. `SITE_URL` permette di cambiare l’indirizzo del server. Il controllo verifica sette URL (inclusi parametri non validi), cinque larghezze da 320 a 1440 px, menu, focus, ripristino dello scroll, anteprime, carosello, errori JavaScript, condivisione senza permesso agli appunti e collegamenti interni.
@@ -78,6 +81,8 @@ I comandi Node richiedono Playwright disponibile in Node e Google Chrome install
 Il controllo statico verifica anche i file dei font e la versione del contenuto di ogni CSS e script. Il controllo dei servizi copre le card e i popup attuali a nove dimensioni, con contenuto scorrevole e chiusura visibile. Il controllo del modulo intercetta tutte le richieste a Web3Forms e simula invio, errori e mancanza della chiave, senza inviare messaggi reali.
 
 Il controllo approfondito verifica i punti di cambio del layout, ridimensionamenti con menu e popup aperti, riaperture consecutive, attestati, trasferimento della data tra mobile e desktop, parametri degli articoli, arresto e ripresa degli slideshow e risposte incomplete o timeout del modulo. Si può eseguire anche con `BROWSER_ENGINE=webkit node tests/deep-check.cjs`, se il browser WebKit di Playwright è disponibile. Tutte le richieste del modulo sono simulate localmente.
+
+Il controllo delle regressioni dell’audit verifica che titoli o date non validi non blocchino gli altri articoli, che capitoli incompleti non interrompano la lettura o il sommario e che data e viaggiatori si azzerino correttamente. Verifica anche la data selezionata passando dal telefono al calendario desktop; supporta `BROWSER_ENGINE=webkit`.
 
 ## Immagini aggiornate — 5 ottobre 2026
 

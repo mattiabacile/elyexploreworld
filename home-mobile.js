@@ -105,6 +105,7 @@
     button.addEventListener('click', () => {
       if (servicePreview.open) return;
       const card = item.cardTemplate.cloneNode(true);
+      window.ElySettings.applyLinks(card);
       card.classList.add('service-preview-card');
       card.removeAttribute('aria-labelledby');
       card.querySelectorAll('[id]').forEach(node => node.removeAttribute('id'));
@@ -198,15 +199,6 @@
       nativeDate.value = parts.length === 3 ? `${parts[2]}-${parts[1].padStart(2, '0')}-${parts[0].padStart(2, '0')}` : '';
       syncDateDisplay();
     }).observe(document.querySelector('#departure-value'), { childList: true });
-    form.addEventListener('reset', () => {
-      if (!mobile.matches) return;
-      queueMicrotask(() => {
-        date.value = '';
-        document.querySelector('#departure-value').textContent = nativeDate.getAttribute('aria-label');
-        form.querySelector('.contact-date-trigger').classList.remove('has-value');
-        syncDateDisplay();
-      });
-    });
     syncDateDisplay();
   }
   mobile.addEventListener('change', syncControls);

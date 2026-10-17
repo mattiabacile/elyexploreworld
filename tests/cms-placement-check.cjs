@@ -29,6 +29,8 @@ const settings={slideshowKind:'both',slideshowSelection:'selected',slideshow:['j
   await field('slideshow').getByRole('button',{name:'Sposta dopo',exact:true}).first().click();
   await field('slideshowKind').getByRole('radio',{name:'Solo consigli',exact:true}).check();
   await field('archive').locator(':scope > .field-wrapper .toolbar.add button').click();
+  // Finish native list scrolling before opening its relation popover.
+  await field('archive.3').scrollIntoViewIfNeeded();await page.waitForTimeout(250);
   const chooser=field('archive.3').getByRole('combobox');await chooser.click();
   await page.getByRole('option',{name:/Consiglio pronto/}).click();
   await field('archive.3').scrollIntoViewIfNeeded();
