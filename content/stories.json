@@ -223,24 +223,25 @@
     "kind": "racconto"
   },
   {
-    "id": "bali",
-    "published": true,
     "title": "Bali: l’isola che sa di casa",
-    "titleAccent": "casa",
-    "destination": "Bali",
-    "category": "Isole e spiritualità",
+    "kind": "racconto",
     "date": "2026-03-18",
+    "destination": "Bali",
     "deck": "Templi sull’acqua, risaie e incontri: un’isola da vivere seguendo un ritmo più gentile.",
-    "slideText": "La mia seconda casa.",
     "hero": "assets/stories/bali-retouched.webp",
     "heroAlt": "Tempio balinese sul lago Beratan tra montagne e luce del mattino",
+    "reuseCover": "yes",
+    "articleHero": "",
+    "articleHeroAlt": "",
     "heroCaption": "Il tempio di Ulun Danu Beratan al mattino.",
     "intro": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus faucibus, sapien vel tincidunt posuere, augue lorem consequat arcu, vitae fermentum sem justo sed neque.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
     "chapters": [
       {
         "title": "L’acqua e i templi",
         "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.",
+        "layout": "auto",
         "image": "assets/stories/bali-detail-retouched.webp",
+        "imageFormat": "auto",
         "imageAlt": "Acqua, pietra e vegetazione nel cuore dell’isola.",
         "caption": "Acqua, pietra e vegetazione nel cuore dell’isola.",
         "quote": "",
@@ -249,7 +250,9 @@
       {
         "title": "Dentro il verde dell’isola",
         "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+        "layout": "auto",
         "image": "assets/hero-river-retouched.webp",
+        "imageFormat": "auto",
         "imageAlt": "La natura accompagna ogni spostamento.",
         "caption": "La natura accompagna ogni spostamento.",
         "quote": "“Bali non chiede di essere visitata in fretta: invita a trovare il proprio ritmo.”",
@@ -258,13 +261,17 @@
       {
         "title": "Il tempo delle piccole cose",
         "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Integer vitae justo eget magna fermentum iaculis.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.",
+        "layout": "auto",
         "image": "assets/hero-temple-retouched.webp",
+        "imageFormat": "auto",
         "imageAlt": "Un tempio custodito dal giardino tropicale.",
         "caption": "Un tempio custodito dal giardino tropicale.",
         "quote": "",
         "note": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
       }
     ],
+    "travelFacts": null,
+    "category": "Isole e spiritualità",
     "tags": [
       "Bali",
       "Indonesia",
@@ -272,7 +279,21 @@
       "Natura",
       "Spiritualità"
     ],
-    "kind": "racconto"
+    "gallery": [],
+    "conclusion": "",
+    "appearance": {
+      "theme": "clay",
+      "coverFormat": "panoramic",
+      "coverPosition": "center",
+      "textStyle": "modern",
+      "dropCap": true,
+      "showContents": false
+    },
+    "titleAccent": "casa",
+    "slideText": "La mia seconda casa.",
+    "published": false,
+    "preparing": false,
+    "id": "bali"
   },
   {
     "id": "valigia-giusta",
