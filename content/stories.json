@@ -295,5 +295,37 @@
     "intro": "Piccoli gesti per vivere un luogo quotidiano senza sentirsi soltanto di passaggio.",
     "chapters": [],
     "tags": []
+  },
+  {
+    "title": "Bali: l’isola che sa di<strong><span data-title-color=\"#9f4933\"> casa</span></strong>",
+    "kind": "racconto",
+    "date": "2026-10-20",
+    "destination": "Bali_Indonesia",
+    "deck": "Templi mistici, risaie e incontri autentici: Bali è un'isola che rapisce l'anima.",
+    "hero": "/assets/uploads/bali-l’isola-che-sa-di-strong-span-data-title-color-9f4933-casa-span-strong-b0e2a71775ff.webp",
+    "heroAlt": "Risaie di Jatiluwih",
+    "reuseCover": "yes",
+    "articleHero": "",
+    "articleHeroAlt": "",
+    "heroCaption": "Risaie di Jatiluwih",
+    "intro": "Se pensate che Bali sia ormai solo traffico, influencer e spiagge affollate, vi state perdendo la sua vera essenza. C'è un'altra isola, ed è quella che io chiamo casa. Dal mio primo viaggio quattro anni fa, son tornata ogni estate, ed ho scelto di vivere Bali in modo diverso spegnendo il navigatore per le rotte turistiche principali, quelle che ti fanno fare 7 tappe al giorno per soddisfare i social con foto alla moda. Ho invece iniziato a esplorare anche i suoi piccoli paesi rurali, quelli incastonati tra le risaie a terrazza del nord e nascosti lungo le scogliere meno battute. In questo articolo vi porto alla scoperta della mia Bali preferita, dove l'ospitalità è sacra, le tradizioni millenarie sono intatte e ci sono quegli angoli di isola che si conoscono solo grazie ai suggerimenti dei balinesi stessi. Il vero lusso, oggi, non è correre da un'attrazione all'altra con una lista di cose da vedere. È potersi fermare a respirare. Oggi vi svelo come si viaggia davvero a Bali, rallentando il passo tra i piccoli centri rurali per connettersi profondamente con l'energia più pura dell'isola. Bali, o “Isola degli Dei” è una delle oltre 17.000 isole dell’Indonesia nota in tutto il mondo per la sua unicità spirituale e geografica. Incastonato tra l’isola di Giava a ovest e quella di Lombok a est, questo gioiello racchiude in un territorio raccolto una varietà incredibile di scenari. Il paesaggio spazia dalle maestose catene montuose dominate dal Monte Agung-[ ](https://www.google.com/goto?url=CAESkwEB6zswFbvNwGF66yFwX6vc0MDZbgtS5oPZ7gzs-zuyuCjx8v0viKx7r90hyHAFebfovHz7H0e0qe24X3484hB7EF2QF-bMKJhUIKoZURroinVFaZrbAmDKz_3gcTAYAp3zBqRm6k4jRgqRQu1qe3FqmHeYFkWRqnIz36v8q_X6anfiOHYpSIR5pw5LfW_l_OqKuCc)un vulcano attivo e sacro alto 3.142 metri — fino alle tropicali spiagge sabbiose lambite da barriere coralline. Spostandosi verso l'interno, la natura esplode tra spettacolari risaie terrazzate, fitte foreste tropicali e cascate nascoste.",
+    "chapters": [],
+    "travelFacts": null,
+    "category": "",
+    "tags": [],
+    "gallery": [],
+    "conclusion": "",
+    "appearance": {
+      "theme": "clay",
+      "coverFormat": "panoramic",
+      "coverPosition": "center",
+      "textStyle": "modern",
+      "dropCap": true,
+      "showContents": false
+    },
+    "slideText": "",
+    "published": true,
+    "preparing": false,
+    "id": "98c9bd11-ef49-4023-b4df-aa55eb57c650"
   }
 ]
