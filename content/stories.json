@@ -332,21 +332,35 @@
     "tags": []
   },
   {
-    "id": "mercati-locali",
-    "kind": "consiglio",
-    "published": true,
-    "preparing": true,
-    "date": "2026-10-06",
     "title": "Mercati locali: entrare con curiosità e rispetto",
+    "kind": "consiglio",
+    "date": "2026-10-06",
     "destination": "Bali",
-    "category": "Sul posto · Bali",
     "deck": "Piccoli gesti per vivere un luogo quotidiano senza sentirsi soltanto di passaggio.",
-    "slideText": "Piccoli gesti per vivere un luogo quotidiano senza sentirsi soltanto di passaggio.",
     "hero": "assets/tips/bali-market-retouched.webp",
     "heroAlt": "Banco di frutta e verdura in un mercato tradizionale di Denpasar, Bali",
+    "reuseCover": "yes",
+    "articleHero": "",
+    "articleHeroAlt": "",
     "heroCaption": "",
     "intro": "Piccoli gesti per vivere un luogo quotidiano senza sentirsi soltanto di passaggio.",
     "chapters": [],
-    "tags": []
+    "travelFacts": null,
+    "category": "Sul posto · Bali",
+    "tags": [],
+    "gallery": [],
+    "conclusion": "",
+    "appearance": {
+      "theme": "clay",
+      "coverFormat": "panoramic",
+      "coverPosition": "center",
+      "textStyle": "modern",
+      "dropCap": true,
+      "showContents": false
+    },
+    "slideText": "Piccoli gesti per vivere un luogo quotidiano senza sentirsi soltanto di passaggio.",
+    "published": false,
+    "preparing": true,
+    "id": "mercati-locali"
   }
 ]
