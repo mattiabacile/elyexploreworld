@@ -171,24 +171,25 @@
     "id": "japan"
   },
   {
-    "id": "singapore",
-    "published": true,
     "title": "Singapore: un mondo in una città",
-    "titleAccent": "città",
-    "destination": "Singapore",
-    "category": "Città e contrasti",
+    "kind": "racconto",
     "date": "2026-01-05",
+    "destination": "Singapore",
     "deck": "Quartieri, giardini e architetture si incontrano in una città sorprendentemente verde.",
-    "slideText": "Un mondo in una città.",
     "hero": "assets/stories/singapore-retouched.webp",
     "heroAlt": "Veduta di Marina Bay a Singapore con la baia e lo skyline",
+    "reuseCover": "yes",
+    "articleHero": "",
+    "articleHeroAlt": "",
     "heroCaption": "Marina Bay e il profilo contemporaneo della città.",
     "intro": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus faucibus, sapien vel tincidunt posuere, augue lorem consequat arcu, vitae fermentum sem justo sed neque.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
     "chapters": [
       {
         "title": "Una città sull’acqua",
         "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.",
+        "layout": "auto",
         "image": "assets/stories/singapore-retouched.webp",
+        "imageFormat": "auto",
         "imageAlt": "La città si riflette sull’acqua della baia.",
         "caption": "La città si riflette sull’acqua della baia.",
         "quote": "",
@@ -197,7 +198,9 @@
       {
         "title": "Giardini dentro la metropoli",
         "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+        "layout": "auto",
         "image": "assets/hero-river-retouched.webp",
+        "imageFormat": "auto",
         "imageAlt": "Il lato tropicale della città.",
         "caption": "Il lato tropicale della città.",
         "quote": "“Qui il futuro non cancella la natura: le lascia spazio tra una strada e l’altra.”",
@@ -206,13 +209,17 @@
       {
         "title": "Quartieri, cucine e incontri",
         "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Integer vitae justo eget magna fermentum iaculis.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.",
+        "layout": "auto",
         "image": "assets/stories/singapore-retouched.webp",
+        "imageFormat": "auto",
         "imageAlt": "Architetture e quartieri da esplorare a piedi.",
         "caption": "Architetture e quartieri da esplorare a piedi.",
         "quote": "",
         "note": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
       }
     ],
+    "travelFacts": null,
+    "category": "Città e contrasti",
     "tags": [
       "Singapore",
       "Asia",
@@ -220,7 +227,21 @@
       "Architettura",
       "Natura"
     ],
-    "kind": "racconto"
+    "gallery": [],
+    "conclusion": "",
+    "appearance": {
+      "theme": "clay",
+      "coverFormat": "panoramic",
+      "coverPosition": "center",
+      "textStyle": "modern",
+      "dropCap": true,
+      "showContents": false
+    },
+    "titleAccent": "città",
+    "slideText": "Un mondo in una città.",
+    "published": false,
+    "preparing": false,
+    "id": "singapore"
   },
   {
     "title": "Bali: l’isola che sa di casa",
