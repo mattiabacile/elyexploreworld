@@ -1,6 +1,6 @@
 # Gestione di racconti e consigli
 
-Il pannello è all’indirizzo **https://elyexploreworld.pages.dev/admin/**. Per il lavoro quotidiano non serve aprire Cloudflare.
+Il pannello è all’indirizzo **https://elyexploreworld.it/admin/**. Per il lavoro quotidiano non serve aprire Cloudflare.
 
 ## Entrare
 
@@ -100,7 +100,7 @@ I tre racconti precedenti sono stati trasferiti nel CMS conservando i contenuti.
 
 Questa parte riguarda soltanto chi configura il sito. L’accesso diretto è un’integrazione dedicata per questa installazione di Sveltia: una sessione protetta consente al CMS di pubblicare tramite un proxy sullo stesso dominio. La chiave GitHub rimane sul server. Il proxy consente scritture solo su `content/stories.json`, sui registri `content/tags.json` e `content/categories.json`, sulle preferenze `content/placement.json`, sulle impostazioni `content/settings.json` e sulle immagini in `assets/uploads`, sul branch `main` del repository del sito. Non consente di modificare il codice del sito o altri repository.
 
-1. Registrare una GitHub App privata **ElyExploreWorld Editor**, con Homepage `https://elyexploreworld.pages.dev/admin/`, senza OAuth per gli utenti e senza webhook. Concedere **Contents: Read and write**; Metadata viene aggiunto in sola lettura. Installarla **solo** sul repository `mattiabacile/elyexploreworld`.
+1. Registrare una GitHub App privata **ElyExploreWorld Editor**, con Homepage `https://elyexploreworld.it/admin/`, senza OAuth per gli utenti e senza webhook. Concedere **Contents: Read and write**; Metadata viene aggiunto in sola lettura. Installarla **solo** sul repository `mattiabacile/elyexploreworld`.
 2. Generare la chiave privata dell’app e convertirla nel formato PEM PKCS#8. Conservare App ID e Installation ID. Il server genera automaticamente credenziali di pubblicazione di breve durata, limitate al repository.
 3. Creare il database D1 `elyexploreworld-cms`, eseguire `server/cms-schema.sql` e collegarlo al progetto Pages di produzione con il nome `CMS_DB`.
 4. Nelle variabili di produzione impostare `CMS_GITHUB_APP_ID` e `CMS_GITHUB_INSTALLATION_ID`. Nei **Secret** impostare `CMS_GITHUB_PRIVATE_KEY` (PEM PKCS#8 oppure DER PKCS#8 codificato in base64) e `CMS_SECRET` (segreto casuale di almeno 32 caratteri). Non salvare questi segreti nel repository. Ripubblicare il progetto dopo la configurazione.
