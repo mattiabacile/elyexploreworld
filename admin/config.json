@@ -5,7 +5,7 @@
     "name": "github",
     "repo": "mattiabacile/elyexploreworld",
     "branch": "main",
-    "base_url": "https://elyexploreworld.pages.dev",
+    "base_url": "https://elyexploreworld.it",
     "auth_methods": [
       "token"
     ],
@@ -16,11 +16,11 @@
       "uploadMedia": "Aggiungi foto: {{path}}",
       "deleteMedia": "Rimuovi foto: {{path}}"
     },
-    "api_root": "https://elyexploreworld.pages.dev/cms/api/v3",
-    "graphql_api_root": "https://elyexploreworld.pages.dev/cms/api/graphql"
+    "api_root": "https://elyexploreworld.it/cms/api/v3",
+    "graphql_api_root": "https://elyexploreworld.it/cms/api/graphql"
   },
-  "site_url": "https://elyexploreworld.pages.dev",
-  "display_url": "https://elyexploreworld.pages.dev",
+  "site_url": "https://elyexploreworld.it",
+  "display_url": "https://elyexploreworld.it",
   "publish_mode": "simple",
   "media_folder": "assets/uploads",
   "public_folder": "/assets/uploads",
