@@ -21,12 +21,12 @@
     </nav>
 
     <address class="site-footer-contact" aria-label="Contatti">
-      <a href="mailto:elisa.exploreworld@gmail.com" aria-label="Scrivi a elisa.exploreworld@gmail.com">
+      <a href="mailto:info@elyexploreworld.it" aria-label="Scrivi a info@elyexploreworld.it">
         <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
           <rect x="3" y="5" width="18" height="14" rx="2"></rect>
           <path d="m4 7 8 6 8-6"></path>
         </svg>
-        <span>elisa.exploreworld@gmail.com</span>
+        <span>info@elyexploreworld.it</span>
       </a>
       <a href="https://www.instagram.com/elyexploreworld/" target="_blank" rel="noreferrer" aria-label="Apri Instagram @elyexploreworld">
         <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
